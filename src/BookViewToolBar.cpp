@@ -202,9 +202,12 @@ void BookViewToolBar::OnListKey(wxCommandEvent & event)
     GetMargins().GetWidth();
 
   if (m_SubFrame) {
-
-    m_SubFrame->Move(pos.x, pos.y);
-    m_SubFrame->Show(true);
+    if (m_SubFrame->IsShown()) {
+      m_SubFrame->Show(false);
+    } else {
+      m_SubFrame->Move(pos.x, pos.y);
+      m_SubFrame->Show(true);
+    }
   }
 }
 
