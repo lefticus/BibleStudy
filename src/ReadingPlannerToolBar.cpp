@@ -38,6 +38,7 @@ DEFINE_EVENT_TYPE(bsEVT_CAL_CHOOSER)
 DEFINE_EVENT_TYPE(bsEVT_PLAN_CHANGED)
 
 BEGIN_EVENT_TABLE(ReadingPlannerToolBar, wxToolBar)
+	EVT_COMBOBOX(ID_ComboPlans, ReadingPlannerToolBar::OnPlanChanged)
   EVT_TOOL(ID_ToolNext, ReadingPlannerToolBar::OnBrowseNextDay)
 	EVT_TOOL(ID_ToolPrev, ReadingPlannerToolBar::OnBrowsePrevDay)
 	EVT_CHECKBOX(ID_CheckDone, ReadingPlannerToolBar::OnBrowseCheckDone)
@@ -46,7 +47,6 @@ BEGIN_EVENT_TABLE(ReadingPlannerToolBar, wxToolBar)
 	EVT_BUTTON(ID_DateToday, ReadingPlannerToolBar::OnCalendarToday)
 	EVT_CALENDAR_SEL_CHANGED(ID_DateCalendar, ReadingPlannerToolBar::OnCalendarChange)
 	EVT_CALENDAR(ID_DateCalendar, ReadingPlannerToolBar::OnCalendarClose) 
-	EVT_TEXT(ID_ComboPlans, ReadingPlannerToolBar::OnPlanChanged)
 END_EVENT_TABLE()
 
 
@@ -202,6 +202,8 @@ void ReadingPlannerToolBar::OnCalendarToday(wxCommandEvent & event)
 
 void ReadingPlannerToolBar::OnPlanChanged(wxCommandEvent &event)
 {
+	long sel = event.GetInt();
+	m_DropDownPlans->SetValue(m_DropDownPlans->GetString(sel));
 	wxCommandEvent eventCustom(bsEVT_PLAN_CHANGED);
 	eventCustom.SetString(m_DropDownPlans->GetValue());
   eventCustom.SetEventObject(this);

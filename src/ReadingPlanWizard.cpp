@@ -1,4 +1,5 @@
 #include "ReadingPlanWizard.h"
+#include <typeinfo>
 #include <wx/combobox.h>
 #include <wx/panel.h>
 #include <typeinfo>
@@ -112,13 +113,13 @@ ReadingPlanWizardDatesPage::ReadingPlanWizardDatesPage(wxWizard *parent) : wxWiz
 	m_strStart = new wxStaticText(this, -1,wxT("Start Date:"), wxDefaultPosition);
 	m_strEnd = new wxStaticText(this, -1,wxT("End Date:"), wxDefaultPosition);
 	
-	startDatesizer->Add(m_strStart, 0, wxALIGN_TOP | wxALIGN_LEFT, 7);
+	startDatesizer->Add(m_strStart, 0, wxALIGN_TOP | wxALIGN_LEFT);
 	startDatesizer->Add(m_calStart, 0, wxALIGN_CENTER | wxALIGN_LEFT);
 	startDatesizer->SetSizeHints(this);
 	endDatesizer->Add(m_strEnd, 0, wxALIGN_LEFT, 2);
 	endDatesizer->Add(m_calEnd, 0, wxALIGN_LEFT, 2);
 	topDatesizer->Add(startDatesizer, 0, wxALIGN_TOP | wxALIGN_LEFT, 10);
-	topDatesizer->Add(5,5);
+	topDatesizer->Add(15,5);
 	topDatesizer->Add(endDatesizer, 0, wxALIGN_TOP | wxALIGN_LEFT, 10);
 	
 	m_statBox = new wxStaticBox(this, -1, wxT("Days of Week"));

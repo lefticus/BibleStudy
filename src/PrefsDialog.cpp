@@ -16,10 +16,12 @@
 #include <wx/valtext.h>
 #include <wx/valgen.h>
 #include <wx/dirdlg.h> 
+#include <wx/filename.h>
 //#include <wx/boxsizer.h>
 
 #include <BibleStudyMainFrame.h>
 #include <biblestudy.h>
+#include "dirtraversersimple.h"
 #include "pdbResource.h"
 #include "BookList.h"
 
@@ -149,31 +151,25 @@ void PrefsDialog::OnChangeConfig(wxCommandEvent &event)
 void PrefsDialog::OnDetectPalmConfig(wxCommandEvent &event)
 {
 // If Windows build we want to handle being able to detect the Palm Desktop settings.
-
 #ifdef WIN32 
-	wxArrayString choices;
-	wxString choice;
+	wxArrayString users;
+	wxString user;
 	char pPath[MAX_PATH_NAME];
 	char buf[32];
 	char pUser[64];
-	
 	int psPathBufSize = sizeof (pPath);
 	short psbufSize = sizeof(buf);
-	
-
 	int userCount = PltGetUserCount();
 	
 	for(int i = 0; i < userCount;i++)
 	{
 		PltGetUser(i,buf,&psbufSize);
-		choices.Add(wxString(buf, wxConvUTF8));
+		users.Add(wxString(buf, wxConvUTF8));
 	}
+	user = wxGetSingleChoice(wxT("Select a user name to use for configuration:"),wxT("Choose HotSync ID"),users ,this);
 	
-	
-	choice = wxGetSingleChoice(wxT("Select a user name to use for configuration:"),wxT("Choose HotSync ID"),choices ,this);
-	
-	m_gConfig->m_PalmUserName = choice;
-	memcpy(&pUser, choice.mb_str(), choice.length() + 1);
+	m_gConfig->m_PalmUserName = user;
+	memcpy(&pUser, user.mb_str(), user.length() + 1);
 	PltGetUserDirectory(pUser, pPath, &psPathBufSize);
 	wxString rootPath = wxString(pPath, wxConvUTF8);
 	wxString backupPath = wxString(rootPath, wxConvUTF8);
@@ -182,6 +178,35 @@ void PrefsDialog::OnDetectPalmConfig(wxCommandEvent &event)
 	installPath += wxT("\\Install\\");
 	m_InstallPathCtl->SetValue(installPath);
 	m_BackupPathCtl->SetValue(backupPath);
-	
+#endif
+// Actually this should be a specific define for Linux since Macs will be entirely different as well, but I am being lazy and no one is building on a Mac yet so, if you are I apologize: dtrotzjr
+#ifndef WIN32
+	wxMessageDialog* errorMsg = new wxMessageDialog(this, wxT("Error locating KPilot's directories, if you know you have KPilot installed then locate and browse the directory manually"),wxT("Cannot find KPilot Directories"),wxOK );
+	wxString basePath = ::wxGetHomeDir();
+	wxString installPath, backupPath;
+	installPath = backupPath = basePath += wxT("/.kde/share/apps/kpilot/");
+	installPath += wxT("pending_install");
+	backupPath += wxT("DBBackup/");
+	if(!wxFileName::DirExists(basePath) || !wxFileName::DirExists(installPath))
+	{
+		errorMsg->ShowModal();
+		return;
+	}
+	wxString user;
+	int leafIndex = 0;
+	wxArrayString paths;
+	wxArrayString users;
+	DirTraverserSimple traverser(paths);
+	wxDir dir(backupPath);
+	dir.Traverse(traverser);
+	for(int i = 0; i < paths.GetCount(); i++)
+	{
+		leafIndex = paths[i].Find('/',true);
+		users.Add(paths[i].SubString(++leafIndex, paths[i].Length()));
+	}
+	user = wxGetSingleChoice(wxT("Select a user name to use for configuration:"),wxT("Choose HotSync ID"),users ,this);
+	backupPath += user;
+	m_InstallPathCtl->SetValue(installPath);
+	m_BackupPathCtl->SetValue(backupPath);
 #endif
 }
