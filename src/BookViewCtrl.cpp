@@ -41,7 +41,7 @@ DEFINE_EVENT_TYPE(bsEVT_CHILD_SET_FOCUS)
 BEGIN_EVENT_TABLE(BookViewCtrl, wxNotebook)
 	EVT_SET_FOCUS(BookViewCtrl::OnSetFocus)
 	EVT_NOTEBOOK_PAGE_CHANGED(-1, BookViewCtrl::OnNotebookPageChanged)
-
+	EVT_LEFT_UP(BookViewCtrl::OnSetFocus)
 END_EVENT_TABLE()
 
 

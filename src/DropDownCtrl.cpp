@@ -50,7 +50,7 @@ DropDownCtrl::DropDownCtrl(wxWindow *parent, SWModule *module, bsDropDownMode mo
 		m_Calendar->Move(GetClientAreaOrigin());
 		break;
 	case bsTree:
-		m_Tree = new wxTreeCtrl(this, -1, wxDefaultPosition, wxSize(200,100), wxTR_HIDE_ROOT|wxTR_HAS_BUTTONS);
+		m_Tree = new wxTreeCtrl(this, -1, wxDefaultPosition, wxSize(200,100), wxTR_HIDE_ROOT|wxTR_HAS_BUTTONS|wxTR_LINES_AT_ROOT);
 		//m_Tree->PushEventHandler(this);
 		SetClientSize(m_Tree->GetSize());
 		m_Tree->Move(GetClientAreaOrigin());
