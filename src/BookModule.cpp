@@ -178,10 +178,11 @@ wxString BookModule::LookupKey(wxString key)
 						
 						wxString thisverse = wxString((const char *)(*curMod), wxConvUTF8);
 						if ((*element) > element->LowerBound()) {
-							
-							(*curMod)--;
+						
+							(*element)--;
+							curMod->Key((*element));
 							wxString prevverse = wxString((const char *)(*curMod), wxConvUTF8);
-							(*curMod)++;
+							(*element)++;
 							
 							wxLogDebug(wxT("BookModule:LookupKey: Previous:"));
 							wxLogDebug(prevverse);
