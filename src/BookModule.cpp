@@ -293,7 +293,7 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
   for (it = m_Modules.begin(); it != m_Modules.end(); it++) {
     curMod = (*it).second;
     output.append(wxT("<th><font color='#0000FF'>"));
-    output.append(wxString(curMod->Name(), wxConvUTF8));
+    output.append(wxString(curMod->Description(), wxConvUTF8));
     output.append(wxT("</font></th>"));
   }
   output.append(wxT("</tr>"));
