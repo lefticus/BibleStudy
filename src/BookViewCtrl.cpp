@@ -104,8 +104,10 @@ int BookViewCtrl::AddTab()
 	panelsizer->Add(html, 1, wxEXPAND);
 	page->SetSizer(panelsizer);
 	AddPage(page, wxT("*Empty*"));
-	
+
 	SetSelection(GetPageCount() - 1);
+
+	OpenInCurrentTab(wxT("<html><head><title>*Empty*</title></head></html>"));
 
 	return GetPageCount() - 1;
 }
@@ -301,6 +303,8 @@ void BookViewCtrl::OpenInCurrentTab(SWModule *newModule)
 
 	SetIcon();
 
+	html->SetFocus();
+	html->Refresh();
 
 	if (prevbookmod)
 		delete prevbookmod;
