@@ -53,29 +53,48 @@ DropDownCtrl::DropDownCtrl(wxWindow *parent, SWModule *module,
     m_Tree->Move(GetClientAreaOrigin());
     break;
   case bsBible:
-    SetClientSize(wxSize(305, 50));
+    SetClientSize(wxSize(305, 70));
+    m_BookLabel = new wxStaticText(this, -1, wxT("Book:"),
+                                   wxPoint(GetClientAreaOrigin().x + 2,
+				           GetClientAreaOrigin().y + 2),
+                                   wxSize(150, wxDefaultSize.GetHeight()),
+			           0);
+				   
+    m_ChapterLabel = new wxStaticText(this, -1, wxT("Chapter:"),
+                                      wxPoint(m_BookLabel->GetPosition().x +
+				          m_BookLabel->GetSize().GetWidth() + 2,
+				          m_BookLabel->GetPosition().y),
+				      wxSize(73, wxDefaultSize.GetHeight()),
+				      0);
+				      
+    m_VerseLabel = new wxStaticText(this, -1, wxT("Verse:"),
+                                    wxPoint(m_ChapterLabel->GetPosition().x +
+				       m_ChapterLabel->GetSize().GetWidth() + 2,
+				       m_ChapterLabel->GetPosition().y),
+				    wxSize(m_ChapterLabel->GetSize().GetWidth(),
+				           wxDefaultSize.GetHeight()),
+				    0);
     m_BookCB =
       new wxComboBox(this, -1, wxT(""),
-                     wxPoint(GetClientAreaOrigin().x + 2,
-                             GetClientAreaOrigin().y + 2), wxSize(150,
-                                                                  wxDefaultSize.
-                                                                  GetHeight()),
+                     wxPoint(m_BookLabel->GetPosition().x,
+                             m_BookLabel->GetSize().GetHeight() + 
+			     m_BookLabel->GetPosition().y + 2), 
+                     wxSize(m_BookLabel->GetSize().GetWidth(), 
+			    wxDefaultSize.GetHeight()),
                      0, NULL, wxCB_READONLY);
     m_ChapterCB =
       new wxComboBox(this, -1, wxT(""),
-                     wxPoint(m_BookCB->GetPosition().x +
-                             m_BookCB->GetSize().GetWidth() + 2,
-                             m_BookCB->GetPosition().y), wxSize(73,
-                                                                wxDefaultSize.
-                                                                GetHeight()), 0,
-                     NULL, wxCB_READONLY);
+                     wxPoint(m_ChapterLabel->GetPosition().x,
+                             m_BookCB->GetPosition().y), 
+		     wxSize(m_ChapterLabel->GetSize().GetWidth(),
+                            wxDefaultSize.GetHeight()), 
+	             0, NULL, wxCB_READONLY);
     m_VerseCB =
       new wxComboBox(this, -1, wxT(""),
-                     wxPoint(m_ChapterCB->GetPosition().x +
-                             m_ChapterCB->GetSize().GetWidth() + 2,
-                             m_ChapterCB->GetPosition().y), wxSize(73,
-                                                                   wxDefaultSize.
-                                                                   GetHeight()),
+                     wxPoint(m_VerseLabel->GetPosition().x,
+                             m_ChapterCB->GetPosition().y), 
+	             wxSize(m_VerseLabel->GetSize().GetWidth(), 
+		            wxDefaultSize.GetHeight()),
                      0, NULL, wxCB_READONLY);
     m_Button =
       new wxButton(this, -1, wxT("Select"),
@@ -91,14 +110,18 @@ DropDownCtrl::DropDownCtrl(wxWindow *parent, SWModule *module,
      * m_Button->PushEventHandler(this); 
      */
     SetClientSize(wxSize
-                  (m_VerseCB->GetPosition().x +
-                   m_VerseCB->GetSize().GetWidth() + 4,
+                  (m_VerseLabel->GetPosition().x +
+                   m_VerseLabel->GetSize().GetWidth() + 4,
                    m_Button->GetPosition().y + m_Button->GetSize().GetHeight() +
                    4));
 
     UpdateBookCB();
     UpdateChapterCB();
     UpdateVerseCB();
+
+    m_VerseCB->SetSelection(0,0);
+    m_BookCB->SetSelection(0,0);
+    m_ChapterCB->SetSelection(0,0);
 
     break;
   }

@@ -16,7 +16,7 @@
 #include <wx/calctrl.h>
 #include <wx/treectrl.h>
 #include <wx/minifram.h>
-
+#include <wx/stattext.h>
 #include <sword/swmodule.h>
 
 enum bsDropDownMode {
@@ -37,6 +37,9 @@ private:
   wxComboBox *m_BookCB;
   wxComboBox *m_ChapterCB;
   wxComboBox *m_VerseCB;
+  wxStaticText *m_BookLabel;
+  wxStaticText *m_ChapterLabel;
+  wxStaticText *m_VerseLabel;
   wxButton *m_Button;
  
   void UpdateBookCB();
