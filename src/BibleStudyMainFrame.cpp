@@ -183,6 +183,7 @@ void BibleStudyMainFrame::OnShowWhyBecomeChristian(wxCommandEvent &)
 {
 	SWModule *mod = NULL;
 	mod = m_SwordTools->GetModule("WEB");
+	wxWindowDisabler *disableAll = new wxWindowDisabler();	
 
 	BibleStudyWizard *wiz = new BibleStudyWizard(this, -1, wxT("Why Should I Become a Christian?"));
 
@@ -192,8 +193,10 @@ void BibleStudyMainFrame::OnShowWhyBecomeChristian(wxCommandEvent &)
 	wiz->AddPage(mod, wxT("Because of the sin of Adam, the first human, all now have the tendancy to sin. Thankfully, just as sin entered the world through one man, one Man can remove the sin of the world."), wxT("Ro 5:12"));
 	wiz->AddPage(mod, wxT("It is easy for us to be nice to someone who is nice to us, but God reached out to us while we weren't his friend and sent his son, Jesus to die for our sin."), wxT("Ro 5:8"));
 	wiz->AddPage(mod, wxT("If you accept the death of Jesus as the covering for your sin, you will not have to face eternal separation from God."), wxT("Ro 10:9-13"));
-
+	delete disableAll;
+	
 	wiz->RunWizard();
+	wiz->Destroy();
 }
 
 
@@ -201,6 +204,8 @@ void BibleStudyMainFrame::OnShowHowBecomeChristian(wxCommandEvent &)
 {
 	SWModule *mod = NULL;
 	mod = m_SwordTools->GetModule("WEB");
+
+	wxWindowDisabler *disableAll = new wxWindowDisabler();	
 
 	BibleStudyWizard *wiz = new BibleStudyWizard(this, -1, wxT("How Can I Become a Christian?"));
 	wiz->AddPage(NULL, wxT("Becoming a Christian means loving Christ, serving His church, and wanting to spread His Love throughout the world."), wxT(""));
@@ -211,6 +216,7 @@ void BibleStudyMainFrame::OnShowHowBecomeChristian(wxCommandEvent &)
 	wiz->AddPage(mod, wxT("Follow Jesus by observing His teachings, participating in His church, and furthering His mission."), wxT("jn 12:26"));
 	wiz->AddPage(mod, wxT("If you have questions regarding the Christian Faith or if you are still investigating Christianity, please call 1-800-NEED-HIM"), wxT(""));
 	
+	delete disableAll;	
 	wiz->RunWizard();
 	wiz->Destroy();
 }
@@ -220,6 +226,7 @@ void BibleStudyMainFrame::OnShowHowGrowSpiritually(wxCommandEvent &)
 {
 	SWModule *mod = NULL;
 	mod = m_SwordTools->GetModule("WEB");
+	wxWindowDisabler *disableAll = new wxWindowDisabler();	
 
 	BibleStudyWizard *wiz = new BibleStudyWizard(this, -1, wxT("How Can I Grow as a Christian?"));
 
@@ -230,7 +237,7 @@ void BibleStudyMainFrame::OnShowHowGrowSpiritually(wxCommandEvent &)
 	wiz->AddPage(mod, wxT("Get involved with God's people.\n\nYou are special and unique, created with gifts and talents that are needed in God's kingdom."), wxT("I Cor 12:14"));
 	wiz->AddPage(mod, wxT("Guard yourself against temptation.\n\nWe do have an enemy. He is called the Devil, Satan. Now that you have given your life over to God, he will come tempt you to change your ming. Guard yourself!"), wxT("James 4:7-8; I Peter 5:8-9"));
 	wiz->AddPage(mod, wxT("Rejoice!\n\nYou belong to God. You are His child and in His family! You will always be in His presence. Jesus is ocming back for all His children!"), wxT("Jn 14:3"));
-
+	delete disableAll;
 	wiz->RunWizard();
 	wiz->Destroy();
 }

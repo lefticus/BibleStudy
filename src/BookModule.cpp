@@ -386,10 +386,13 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype, bo
 							if (!isfootnote) {
 								output.append(verseout);
 							} else {
-								wxString body;
-								body = wxString((const char *)(curMod->getEntryAttributes()["Footnote"]["1"]["body"].c_str()), wxConvUTF8);
-								wxLogDebug(wxT("BookModule::LookupKey adding footnote ") + body);
-								output.append(body);
+								SWBuf body;
+								wxString wxBody;
+								curMod->RenderText();
+								body = curMod->getEntryAttributes()["Footnote"]["1"]["body"].c_str();
+								curMod->RenderText(body);
+								wxBody = wxString((const char *)body.c_str(), wxConvUTF8);
+								output.append(wxBody);
 							}
 
 							output.append(wxT("</td>"));
