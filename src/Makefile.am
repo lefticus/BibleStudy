@@ -2,6 +2,7 @@ RESCOMP=@RESCOMP@
 
 if USE_WINDOWS
 RESOURCE_FILES = biblestudy_resource.o
+WINDOWS_LINKFLAGS = --Wl,--subsystem,windows -mwindows
 endif
 
 biblestudy_resource.o: biblestudy.rc
@@ -17,14 +18,14 @@ biblestudy_SOURCES = biblestudy.cpp biblestudy.h BibleStudyApp.cpp BibleStudyApp
 
 
 # set the include path found by configure
-INCLUDES = -I/usr/include/sword $(all_includes)
+INCLUDES = -I/usr/local/include/sword -I/usr/include/sword $(all_includes)
 
 # the library search path.
-biblestudy_LDFLAGS = $(all_libraries) `wx-config --libs`
-biblestudy_LDADD = $(RESOURCE_FILES) -lsword -lz 
+biblestudy_LDFLAGS = $(all_libraries) $(WINDOWS_LINKFLAGS) `wx-config --libs`
+biblestudy_LDADD = $(RESOURCE_FILES) -lsword -lz
 
 
-AM_CFLAGS = 
+AM_CFLAGS =
 AM_CXXFLAGS = `wx-config --cxxflags` -Wall
-AM_FFLAGS = 
-SUBDIRS = 
+AM_FFLAGS =
+SUBDIRS =
