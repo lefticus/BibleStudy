@@ -6,32 +6,53 @@
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   Part of BibleStudy: www.sf.net/projects/christiangame                 *
  ***************************************************************************/
 
 #ifndef _BIBLESTUDYLANGUAGES_H_
-#define _BIBLESTUDYLANGUAGES_H_
+	#define _BIBLESTUDYLANGUAGES_H_
 
-#include <wx/string.h>
-#include <map>
+	#include <wx/string.h>
+	#include <map>
 
-using namespace std;
+	using namespace std;
 
-/**
- * 
- * Jason Turner
- **/
-class BibleStudyLanguages
-{
-private:
-	map<wxString, wxString> mLanguages;
+	/**
+	* Used to decode language abbreviations to language names
+	**/
+	class BibleStudyLanguages
+	{
+	private:
+		/** The C++ map which links abbreviations to full names */
+		map<wxString, wxString> mLanguages;
 
-public:
-  BibleStudyLanguages();
-  ~BibleStudyLanguages();
-  
-  void AddLanguage(wxString, wxString);
-  void AddLanguage(const char *abbreviation, const char *description);
-  wxString GetLanguage(wxString);
-};
+	public:
+		BibleStudyLanguages();
+		~BibleStudyLanguages();
+
+		/** 
+		* Add a language using wxString objects 
+		* called by AddLanguage (const char *, const char *)
+		*
+		* @param abbreviation Language abbreviation
+		* @param description Full Name of language
+		*/
+		void AddLanguage(wxString abbreviation, wxString description);
+
+		/** Add a language using char arrays 
+		*
+		* @param abbreviation Language abbreviation
+		* @param description Full Name of language
+		*/
+			void AddLanguage(const char *abbreviation, const char *description);
+
+		/** 
+		* Returns the full name of a language from an abbreviation 
+		*
+		* @param abbreviation Abbreviation of the language being looked up.
+		*/
+		wxString GetLanguage(wxString abbreviation);
+	};
 
 #endif

@@ -25,7 +25,8 @@ BookViewEventHandler::~BookViewEventHandler()
 
 void BookViewEventHandler::OnSetFocus(wxFocusEvent &event)
 {
-	
+	wxLogTrace(wxTRACE_Messages, "BookViewEventHandler::OnSetFocus called");
+
 	m_parent->ChildGotFocus();
 }
 

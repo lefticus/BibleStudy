@@ -18,19 +18,24 @@
 	/**
 	* Main Class for BibleStudy.
 	*
-	* \todo Move SwordTools to be owned by app, so there is only one instance for
-	* multiple windows.
-	* 
+	* Straight forward subclass of wxApp 
 	**/
 	class BibleStudyApp: public wxApp
 	{
 	private:
+		/** 
+		 * Global reference to sword tools, so that sword
+		 * gets initialized only once.
+		 **/
 		SwordTools m_SwordTools;
 	
 	public:
 		BibleStudyApp();
 		~BibleStudyApp();
 		
+		/**
+		 * Automatically executed on application start
+		 */
 		bool OnInit();
 	};
 

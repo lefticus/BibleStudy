@@ -30,7 +30,9 @@ wxString BookModule::GetLastLookupKey()
 {
 	return m_LastLookupKey;
 }
-
+/**
+ * @todo handle non-unicode case
+ */
 wxString BookModule::LookupKey(wxString key)
 {
 	VerseKey vk;
@@ -39,7 +41,12 @@ wxString BookModule::LookupKey(wxString key)
 	char numstr[10];
 	int chapter = 0, verse = 0;
 	
-	output = wxT("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>");
+	#ifdef wxUSE_UNICODE
+		output = wxT("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>");
+	#else
+		//Do Something Else!
+	#endif
+	
 	ListKey listkey = vk.ParseVerseList(key.mb_str(), "Gen1:1", true);
 	int i;
 	
@@ -98,12 +105,4 @@ wxString BookModule::LookupKey(wxString key)
 	
 	m_LastLookupKey = key;
 	return output;
-	//mod->SetKey((const char *)key);
-	
-	//wxMessageBox(output, wxT("HTML Output"), wxOK | wxICON_INFORMATION, this);
-	//wxFontData data;
-	//wxFontDialog dialog(this, data);
-	//dialog.ShowModal();
-	//html->SetFont(data.GetChosenFont());
-	//html->SetPage(key);
 }

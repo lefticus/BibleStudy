@@ -16,14 +16,18 @@
 	using namespace sword;
 
 	/**
+	* Wraps a SWModule and contains data related to the module, i.e. last search
+	* performed. Used for duplicating/detaching tabs as well as updating the toolbar
 	* 
-	* Jason Turner
 	**/
 	class BookModule
 	{
 
 	private:
+		/** The SWModule being wrapped */
 		SWModule *m_Module;
+		
+		/** The last key looked up */
 		wxString m_LastLookupKey;
 		
 
@@ -31,8 +35,13 @@
 		BookModule(SWModule *);
 		~BookModule();
 
+		/** Returns underlying module */
 		SWModule *GetModule();
+		
+		/** Lookups up a key, returning HTML representation */
 		wxString LookupKey(wxString key);
+		
+		/** Return the last lookup key */
 		wxString GetLastLookupKey();
 	};
 

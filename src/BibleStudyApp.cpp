@@ -21,8 +21,8 @@ BibleStudyApp::~BibleStudyApp()
 
 bool BibleStudyApp::OnInit()
 {
+	/* create a default frame and display it */
 	BibleStudyMainFrame *frame = new BibleStudyMainFrame(&m_SwordTools, APPTITLE, wxPoint(50,50), wxSize(450,340));
 	frame->Show(TRUE);
-	//SetTopWindow(frame);
 	return TRUE;
 }

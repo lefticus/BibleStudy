@@ -19,10 +19,6 @@ BEGIN_EVENT_TABLE(BookViewCtrl, wxNotebook)
 	EVT_NOTEBOOK_PAGE_CHANGED(-1, BookViewCtrl::OnNotebookPageChanged)
 END_EVENT_TABLE()
 
-BookViewCtrl::BookViewCtrl()
-{
-}
-
 
 BookViewCtrl::~BookViewCtrl()
 {
@@ -49,7 +45,7 @@ int BookViewCtrl::AddTab()
 	neweventhandler->SetParent(this);
 	html->PushEventHandler(neweventhandler);
 
-	#if wxMAJOR_VERSION ==2 && wxMINOR_VERSION > 4
+	#if wxMAJOR_VERSION == 2 && wxMINOR_VERSION > 4
 		html->SetFonts(wxT("Arial"), wxT("Courier New"), 0); // crashes wx2.4
 	#endif
 	
@@ -90,13 +86,7 @@ void BookViewCtrl::LookupKey(wxString key)
 {
 	wxHtmlWindow *html;
 	BookModule *mod;
-	VerseKey vk;
-	wxString output;
-	char book = 0;
-	char numstr[10];
-	int chapter = 0, verse = 0;
 	
-	output = wxT("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><body dir='rtl' lang='he'>");
 	html = (wxHtmlWindow *)GetPage(GetSelection())->GetChildren().GetFirst()->GetData();
 	mod = (BookModule *)html->GetClientData();
 	
@@ -112,15 +102,13 @@ void BookViewCtrl::OpenInCurrentTab(BookModule *bm)
 
 void BookViewCtrl::OpenInCurrentTab(SWModule *newModule)
 {
-	printf("BookView:Got Open in current tab event\n");
 	wxHtmlWindow *html;
 	BookModule *bookmod;
 	wxString key;
 	bool performsearch;
 	html = (wxHtmlWindow *)GetPage(GetSelection())->GetChildren().GetFirst()->GetData();
 	SetPageText(GetSelection(), wxString(newModule->Name(), wxConvUTF8));
-	//newBookModule->SetKey("jn 3:16");
-	//html->SetPage((const char *)(*newBookModule));
+	
 	bookmod = (BookModule *)html->GetClientData();
 	if (bookmod) {
 		key = bookmod->GetLastLookupKey();
@@ -137,13 +125,10 @@ void BookViewCtrl::OpenInCurrentTab(SWModule *newModule)
 		LookupKey(key);
 	else
 		LookupKey(wxT(""));
-	//html->AppendToPage("hi");
 }
 
 void BookViewCtrl::OpenInNewTab(SWModule *newModule)
 {
-	printf("BookView:Got Open in new tab event\n");
-	//AddTab();
 	SetSelection(AddTab());
 	OpenInCurrentTab(newModule);
 }
@@ -224,4 +209,3 @@ void BookViewCtrl::DuplicateTab(BookModule *bm)
 	
 	SetSelection(selection);
 }
-

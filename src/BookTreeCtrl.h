@@ -39,10 +39,8 @@
 	};
 	
 	/**
-	* 
-	* Jason Turner
+	* Item data for one tree node.
 	**/
-
 	class BookTreeItemData : public wxTreeItemData
 	{
 	private:
@@ -54,7 +52,9 @@
 		SWModule *GetModule();
 	};
 
-
+	/**
+	* Treeview of BookModules installed
+	*/
 	class BookTreeCtrl : public wxTreeCtrl
 	{
 	private:
@@ -74,7 +74,6 @@
 		void SetupIcons();
 
 	public:
-		BookTreeCtrl();
 		~BookTreeCtrl();
 		BookTreeCtrl(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size);
 

@@ -33,12 +33,6 @@ DEFINE_EVENT_TYPE(bsEVT_OPEN_IN_NEW_TAB)
 DEFINE_EVENT_TYPE(bsEVT_OPEN_IN_NEW_WINDOW)
 
 
-BookTreeCtrl::BookTreeCtrl()
-{
-	
-
-}
-
 
 BookTreeCtrl::~BookTreeCtrl()
 {
@@ -49,7 +43,7 @@ BookTreeCtrl::~BookTreeCtrl()
 
 void BookTreeCtrl::OnItemActivated(wxEvent &event)
 {
-	wxLogDebug(wxT("BookTreeCtrl::OnItemActivated"));
+	wxLogTrace(wxTRACE_Messages, "BookTreeCtrl::OnItemActivated called");
 	if (GetChildrenCount(GetSelection(), false)) {
 		wxLogDebug(wxT("BookTreeCtrl::OnItemActivated not a leaf"));
 		
@@ -74,37 +68,35 @@ void BookTreeCtrl::OnOpenModule(wxMenuEvent &event)
 {
 	wxCommandEvent *eventCustom;
 	
+	wxLogTrace(wxTRACE_Messages, wxT("BookTreeCtrl::OnOpenModule called"));
 	
 	switch (event.GetId()) {
 	case ID_BookTreePopupOpenInNewTab:
 		eventCustom = new wxCommandEvent(bsEVT_OPEN_IN_NEW_TAB);
-		printf("Open In New Tab\n");
 		break;
 	case ID_BookTreePopupOpenInNewWindow:
 		eventCustom = new wxCommandEvent(bsEVT_OPEN_IN_NEW_WINDOW);
-		printf("Open In New Window\n");
 		break;
 	case ID_BookTreePopupOpen:
 		eventCustom = new wxCommandEvent(bsEVT_OPEN_IN_CURRENT_TAB);
-		printf("Open In Cur Tab\n");
 		break;
 	}
 	
-	printf("Selection: %i", (int)GetSelection());
 	eventCustom->SetEventObject(this);
 	if (GetItemData(GetSelection())) {
 		eventCustom->SetClientData(GetItemData(GetSelection())->GetModule());
 	} else {
-		printf("No Item Data\n");
+		wxLogDebug(wxT("BookTreeCtrl::OnOpenModule no item selected"));
 	}
 	ProcessEvent(*eventCustom);
-	//delete eventCustom;
 	
+	delete eventCustom;
 }
 
 
 void BookTreeCtrl::OnRightUp(wxMouseEvent &event) 
 {
+	wxLogTrace(wxTRACE_Messages, wxT("BookTreeCtrl::OnRightUp called"));
 	if (!GetChildrenCount(GetSelection(), false)) {
 		PopupMenu(m_PopupMenu, event.GetPosition());
 	}
@@ -112,6 +104,8 @@ void BookTreeCtrl::OnRightUp(wxMouseEvent &event)
 
 void BookTreeCtrl::OnRightDown(wxMouseEvent &event)
 {
+	wxLogTrace(wxTRACE_Messages, wxT("BookTreeCtrl::OnRightDown called"));
+
 	wxTreeItemId hititem;
 	int flags;
 	

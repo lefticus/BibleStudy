@@ -42,7 +42,6 @@
 		BookViewEventHandler *m_CustEventHandler;
 	
 	public:
-		BookViewCtrl();
 		BookViewCtrl(wxWindow *parent, int id, const wxPoint pos, const wxSize size);
 		~BookViewCtrl();
 		

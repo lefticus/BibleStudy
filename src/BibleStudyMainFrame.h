@@ -29,21 +29,28 @@
 	{
 
 	private:
+		/** Reference to the main split that seperates treeview from books */
 		BookViewSplitterCtrl *m_WindowSplit;
-		//BookViewCtrl *m_BookViewer1;
-		//BookTreeCtrl *m_BookTree;
+		
+		/** Reference to globabl SwordTools */
 		SwordTools *m_SwordTools;
+		
+		/** Reference to MainFrame toolbar */
 		BookViewToolBar *m_ToolBar;
 		
-		
+		/** Initial setup of splitters, called by constructor */
 		void SetupSplitterWindows();
+		
+		/** Update the toolbars to represent the currently viewed tab */
 		void UpdateToolbars(BookModule *);
+		
+		/** Create a new window */
 		BibleStudyMainFrame *OpenNewWindow();
 		
 	public:
-		BibleStudyMainFrame();
 		~BibleStudyMainFrame(); 
 		
+		/** Default constructor */
 		BibleStudyMainFrame(SwordTools *, const wxString& title, const wxPoint& pos, const wxSize& size);
 		
 		void OnQuit(wxCommandEvent& event);
@@ -75,7 +82,6 @@
 		void DisplayModule(BookModule *module);
 		
 		DECLARE_EVENT_TABLE()
-		
 	};
 
 #endif

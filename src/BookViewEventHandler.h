@@ -19,25 +19,23 @@ class BookViewEventHandler;
 #include "BookViewCtrl.h"
 
 
-/**
- * 
- * Jason Turner
- **/
-class BookViewEventHandler : public wxEvtHandler
-{
-private:
-	BookViewCtrl *m_parent;
+	/**
+	* 
+	* Custom event handler for wxHTMLWindow
+	**/
+	class BookViewEventHandler : public wxEvtHandler
+	{
+	private:
+		BookViewCtrl *m_parent;
 
-public:
-	BookViewEventHandler();
-	~BookViewEventHandler();
-  
-	void OnSetFocus(wxFocusEvent &event);
-	void SetParent(BookViewCtrl *parent);
-	
-	DECLARE_EVENT_TABLE()  
-	
-	
-};
+	public:
+		BookViewEventHandler();
+		~BookViewEventHandler();
+
+		void OnSetFocus(wxFocusEvent &event);
+		void SetParent(BookViewCtrl *parent);
+
+		DECLARE_EVENT_TABLE()  
+	};
 
 #endif

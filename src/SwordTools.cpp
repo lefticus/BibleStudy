@@ -17,9 +17,6 @@ SwordTools::SwordTools()
 	m_SwordManager = new SWMgr(myFilterMgr);
 	myFilterMgr->Markup(FMT_HTML);
 	myFilterMgr->Encoding(ENC_HTML);
-	
-	//ModInfo();
-	//OptionInfo();
 }
 
 SWMgr *SwordTools::GetSwordManager()
