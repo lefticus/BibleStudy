@@ -23,8 +23,13 @@ using namespace sword;
 
 SwordTools::SwordTools()
 {
+#if wxUSE_UNICODE
   m_SwordManager =
     new SWMgr(0, 0, TRUE, new MarkupFilterMgr(FMT_HTMLHREF, ENC_HTML));
+#else
+   m_SwordManager =
+    new SWMgr(0, 0, TRUE, new MarkupFilterMgr(FMT_HTMLHREF, ENC_LATIN1));
+#endif
 }
 
 BookModule *SwordTools::GetModuleFromLink(const wxString &link, 

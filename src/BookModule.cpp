@@ -236,7 +236,7 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
     wxT("<meta http-equiv='Content-Type' content='text/html; charset=UTF8'>");
 #else
   output = 
-    wxT("<meta http-equiv='Content-Type' content='text/html; charset='ISO-8859-1>");
+    wxT("<meta http-equiv='Content-Type' content='text/html; charset=ISO-8859-1'>");
 #endif
 
   ListKey listkey;

@@ -183,7 +183,8 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools,
   SetStatusText(wxT("Welcome to BibleStudy!"));
 
   m_ToolBar =
-    new BookViewToolBar(this, ID_BookViewToolBar, wxTB_HORIZONTAL | wxTB_FLAT);
+    new BookViewToolBar(this, ID_BookViewToolBar, wxTB_HORIZONTAL | 
+                        wxTB_FLAT );
   SetToolBar(m_ToolBar);
 
   SetupSplitterWindows();

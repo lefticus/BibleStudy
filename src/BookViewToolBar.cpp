@@ -50,21 +50,31 @@ BookViewToolBar::BookViewToolBar(wxWindow * parent, wxWindowID id, long style)
   SetToolSeparation(5);
 
   AddTool(ID_ToolShowHideBookTree, wxT("Book List"), wxBitmap(booktree_xpm),
-          wxT("Show/Hide Book List"), wxITEM_CHECK);
+          wxNullBitmap, wxITEM_CHECK, wxT("Show/Hide Book List"), 
+	  wxT("Show or hide the list of books that are on the left side of the window."));
   AddSeparator();
+  
   AddTool(ID_ToolNewTab, wxT("Add Tab"), wxBitmap(addtab_xpm),
-          wxT("Add a New Tab"), wxITEM_NORMAL);
+          wxNullBitmap, wxITEM_NORMAL, wxT("Add a New Tab"),
+	  wxT("Add a new tab in the current view."));
+	  
   AddTool(ID_ToolRemoveTab, wxT("Remove Tab"), wxBitmap(removetab_xpm),
-          wxT("Removes the Active Tab"), wxITEM_NORMAL);
+          wxNullBitmap, wxITEM_NORMAL, wxT("Remove Current Tab"), 
+	  wxT("Remove the currently selected tab."));
+	  
   AddSeparator();
+  
   m_LookupKey = new wxTextCtrl(this, ID_ToolTextKey);
   m_LookupKey->SetSize((int) (m_LookupKey->GetSize().GetWidth() * 1.5),
                        m_LookupKey->GetSize().GetHeight());
   AddControl(m_LookupKey);
-  AddTool(ID_ToolListKey, wxT("List"), wxBitmap(list_xpm), wxT("List Keys"),
-          wxITEM_NORMAL);
+  AddTool(ID_ToolListKey, wxT("Sections"), wxBitmap(list_xpm), 
+          wxNullBitmap, wxITEM_NORMAL, wxT("List Sections"), 
+	  wxT("List all sections, chapters or words in the currently opened book."));
+	  
   AddTool(ID_ToolLookupKey, wxT("Lookup"), wxBitmap(lookup_xpm),
-          wxT("Lookup Key"), wxITEM_NORMAL);
+          wxNullBitmap, wxITEM_NORMAL, wxT("Lookup Entry"), 
+	  wxT("Lookup the section, word or reference currently entered on the toolbar."));
 
   m_DropDownRange =
     new wxComboBox(this, ID_ToolDropDownRange, wxT(""), wxDefaultPosition,
@@ -74,13 +84,17 @@ BookViewToolBar::BookViewToolBar(wxWindow * parent, wxWindowID id, long style)
   AddRanges();
 
   AddControl(m_DropDownRange);
-  AddTool(ID_ToolSearchKey, wxT("Search"), wxBitmap(search_xpm), wxT("Search"),
-          wxITEM_NORMAL);
+  AddTool(ID_ToolSearchKey, wxT("Search"), wxBitmap(search_xpm), 
+          wxNullBitmap, wxITEM_NORMAL, wxT("Search Entry"),
+          wxT("Search for the words currently entered on the toolbar."));
 
-  AddTool(ID_ToolBackward, wxT("Backward"), wxBitmap(back_xpm), wxT("Backward"),
-          wxITEM_NORMAL);
-  AddTool(ID_ToolForward, wxT("Forward"), wxBitmap(forward_xpm), wxT("Forward"),
-          wxITEM_NORMAL);
+  AddTool(ID_ToolBackward, wxT("Backward"), wxBitmap(back_xpm), 
+          wxNullBitmap, wxITEM_NORMAL, wxT("Go Backward"),
+          wxT("Browse backward in the current book."));
+	  
+  AddTool(ID_ToolForward, wxT("Forward"), wxBitmap(forward_xpm), 
+          wxNullBitmap, wxITEM_NORMAL, wxT("Go Forward"),
+          wxT("Browse forward in the current book."));
 
   Realize();
 
