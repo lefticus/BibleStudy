@@ -66,7 +66,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /GZ /c
-# ADD CPP /nologo /MDd /Gm /GX /Zi /Od /I "$(WXWIN)/lib/mswud" /I "$(WXWIN)/include" /I "$(WXWIN)/contrib/include" /I "../../sword/include" /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /D "_WINDOWS" /D WINVER=0x400 /D "_MT" /D wxUSE_GUI=1 /D "__WXDEBUG__" /D WXDEBUG=1 /YX /FD /GZ /c
+# ADD CPP /nologo /MDd /Gm /GX /Zi /Od /I "$(WXWIN)/lib/mswud" /I "$(WXWIN)/include" /I "$(WXWIN)/contrib/include" /I "../../sword/include" /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /D "_LIB" /D "REGEX_MALLOC" /D "_WINDOWS" /D WINVER=0x400 /D "_MT" /D wxUSE_GUI=1 /D "__WXDEBUG__" /D WXDEBUG=1 /YX /FD /GZ /c
 # SUBTRACT CPP /Fr
 # ADD BASE RSC /l 0x809 /d "_DEBUG"
 # ADD RSC /l 0x809 /i "$(WXWIN)/include" /d "_DEBUG"
@@ -75,7 +75,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib zlibd.lib regexd.lib pngd.lib jpegd.lib tiffd.lib wxmswud.lib libswordicud.lib icuucd.lib icuind.lib /nologo /subsystem:windows /debug /machine:I386 /out:"./biblestudyd.exe" /pdbtype:sept /libpath:"$(WXWIN)/lib" /libpath:"$(WXWIN)/contrib/lib" /libpath:"../../sword/lib" /libpath:"../../icu-sword/lib"
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib zlibd.lib regexd.lib pngd.lib jpegd.lib tiffd.lib wxmswd.lib libswordd.lib /nologo /subsystem:windows /debug /machine:I386 /out:"./biblestudyd.exe" /pdbtype:sept /libpath:"$(WXWIN)/lib" /libpath:"$(WXWIN)/contrib/lib" /libpath:"../../sword/lib" /libpath:"../../icu-sword/lib" /verbose:lib
 # SUBTRACT LINK32 /pdb:none
 
 !ENDIF 
@@ -109,6 +109,10 @@ SOURCE=..\src\BibleStudyMainFrame.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\BibleStudyWizard.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\BookModule.cpp
 # End Source File
 # Begin Source File
@@ -125,11 +129,27 @@ SOURCE=..\src\BookViewEventHandler.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\BookViewHtml.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\BookViewSplitterCtrl.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=..\src\BookViewToolBar.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\DropDownCtrl.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\DropDownEventHandler.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\HTMLToolTip.cpp
 # End Source File
 # Begin Source File
 
@@ -161,6 +181,10 @@ SOURCE=..\src\BibleStudyMainFrame.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\BibleStudyWizard.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\BookModule.h
 # End Source File
 # Begin Source File
@@ -177,11 +201,27 @@ SOURCE=..\src\BookViewEventHandler.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\BookViewHtml.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\BookViewSplitterCtrl.h
 # End Source File
 # Begin Source File
 
 SOURCE=..\src\BookViewToolBar.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\DropDownCtrl.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\DropDownEventHandler.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\HTMLToolTip.h
 # End Source File
 # Begin Source File
 

@@ -19,9 +19,12 @@
 	#include <sword/versekey.h>
 	#include <sword/swmodule.h>
 
+	#include <wx/wx.h>
 	#include <wx/minifram.h>
 	#include <wx/treectrl.h>
-
+	#include <wx/string.h>
+	#include <wx/frame.h>
+	#include <wx/treectrl.h>
 
 	using namespace sword;
 

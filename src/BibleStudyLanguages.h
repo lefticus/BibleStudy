@@ -16,10 +16,11 @@
 #ifndef _BIBLESTUDYLANGUAGES_H_
 	#define _BIBLESTUDYLANGUAGES_H_
 
+	#include <wx/wx.h>
 	#include <wx/string.h>
 	#include <map>
 
-	using namespace std;
+//using namespace std;
 
 	/**
 	* Used to decode language abbreviations to language names
@@ -28,7 +29,7 @@
 	{
 	private:
 		/** The C++ map which links abbreviations to full names */
-		map<wxString, wxString> mLanguages;
+		std::map<wxString, wxString> mLanguages;
 
 	public:
 		BibleStudyLanguages();

@@ -16,6 +16,7 @@
 	#define DROPDOWNCTRL_H
 	#include <swmodule.h>
 
+	#include <wx/wx.h>
 	#include <wx/minifram.h>
 	#include <wx/treectrl.h>
 	#include <wx/calctrl.h>

@@ -10,6 +10,7 @@
 #ifdef __GNUG__
 	#pragma implementation "BibleStudyMainFrame.h"
 #endif
+#include <wx/wx.h>
 #include <wx/icon.h>
 #include <wx/menu.h>
 #include <wx/log.h>
