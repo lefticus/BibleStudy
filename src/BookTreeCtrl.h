@@ -59,9 +59,9 @@
 	private:
 		SwordTools *m_SwordTools;
 
-		wxBitmap m_ClosedFolderBMP;
-		wxBitmap m_OpenFolderBMP;
-		wxBitmap m_BookBMP;
+		wxIcon m_ClosedFolderBMP;
+		wxIcon m_OpenFolderBMP;
+		wxIcon m_BookBMP;
 
 		wxImageList *m_ImageList;
 		
@@ -83,6 +83,7 @@
 		void SetItemData(const wxTreeItemId&, BookTreeItemData*);
 		
 		void OnRightUp(wxMouseEvent &event);
+		void OnRightDown(wxMouseEvent &event);
 		void OnItemActivated(wxEvent &event); 
 		
 		DECLARE_EVENT_TABLE()

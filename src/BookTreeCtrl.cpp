@@ -16,6 +16,7 @@ BEGIN_EVENT_TABLE(BookTreeCtrl, wxGenericTreeCtrl)
 BEGIN_EVENT_TABLE(BookTreeCtrl, wxTreeCtrl)
 #endif
 	EVT_RIGHT_UP(BookTreeCtrl::OnRightUp)
+	EVT_RIGHT_DOWN(BookTreeCtrl::OnRightDown)
 	EVT_MENU(ID_BookTreePopupOpenInNewTab, BookTreeCtrl::OnOpenModule)
 	EVT_MENU(ID_BookTreePopupOpenInNewWindow, BookTreeCtrl::OnOpenModule)
 	EVT_MENU(ID_BookTreePopupOpen, BookTreeCtrl::OnOpenModule)
@@ -43,10 +44,18 @@ BookTreeCtrl::~BookTreeCtrl()
 
 void BookTreeCtrl::OnItemActivated(wxEvent &event)
 {
-	wxCommandEvent eventCustom(bsEVT_OPEN_IN_CURRENT_TAB);
-	eventCustom.SetEventObject(this);
-	eventCustom.SetClientData(GetItemData(GetSelection())->GetModule());
-	ProcessEvent(eventCustom);
+	if (GetChildrenCount(GetSelection(), false)) {
+		if (IsExpanded(GetSelection())) {
+			Collapse(GetSelection());
+		} else {
+			Expand(GetSelection());
+		}
+	} else {
+		wxCommandEvent eventCustom(bsEVT_OPEN_IN_CURRENT_TAB);
+		eventCustom.SetEventObject(this);
+		eventCustom.SetClientData(GetItemData(GetSelection())->GetModule());
+		ProcessEvent(eventCustom);
+	}
 }
 
 void BookTreeCtrl::OnOpenModule(wxMenuEvent &event)
@@ -84,7 +93,19 @@ void BookTreeCtrl::OnOpenModule(wxMenuEvent &event)
 
 void BookTreeCtrl::OnRightUp(wxMouseEvent &event) 
 {
-	PopupMenu(m_PopupMenu, event.GetPosition());
+	if (!GetChildrenCount(GetSelection(), false)) {
+		PopupMenu(m_PopupMenu, event.GetPosition());
+	}
+}
+
+void BookTreeCtrl::OnRightDown(wxMouseEvent &event)
+{
+	wxTreeItemId hititem;
+	int flags;
+	
+	hititem = HitTest(event.GetPosition(), flags);
+	
+	SelectItem(hititem);
 }
 
 void BookTreeCtrl::SetSwordTools(SwordTools *newSwordTools)
