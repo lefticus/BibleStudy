@@ -17,7 +17,7 @@
 	#include "biblestudy.h"
 	#include "BookViewCtrl.h"
 	#include <wx/wizard.h>
-	#include <wx/stattext.h>
+	#include <wx/textctrl.h>
 
 	/**
 	* 
@@ -34,7 +34,7 @@
 		
 	private:
 		BookViewCtrl *m_BookViewCtrl;
-		wxStaticText *m_StaticText;
+		wxTextCtrl *m_TextCtrl;
 		SWModule *m_Module;
 	
 		

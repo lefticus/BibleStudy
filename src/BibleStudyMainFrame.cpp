@@ -120,7 +120,7 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools, const wxStri
 		id++;
 	}
 
-	menuBibleStudies->Append(ID_MenuBibleStudyWhy, wxT("Why Should I Become a Christian?"));	
+	//menuBibleStudies->Append(ID_MenuBibleStudyWhy, wxT("Why Should I Become a Christian?"));	
 	menuBibleStudies->Append(ID_MenuBibleStudyHow, wxT("How Can I Become a Christian?"));
 	menuBibleStudies->Append(ID_MenuBibleStudyGrow, wxT("How Can I Grow as a Christian?"));
 	
@@ -144,18 +144,21 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools, const wxStri
 	SetupSplitterWindows();
 }
 
-
+/* note: this biblestudy is hardcoded into the .exe to make sure that it
+   can never be seperated from the application */
 void BibleStudyMainFrame::OnShowWhyBecomeChristian()
 {
 	SWModule *mod = NULL;
-	mod = m_SwordTools->GetModule("MKJV");
+	mod = m_SwordTools->GetModule("WEB");
 
 	BibleStudyWizard *wiz = new BibleStudyWizard(this, -1, wxT("Why Should I Become a Christian?"));
 	
-	wiz->AddPage(NULL, wxT("Why Should You Become A Christian?"), wxT(""));
-	wiz->AddPage(mod, wxT("John 3:16"), wxT("jn 3:16"));
-	wiz->AddPage(mod, wxT("John 3:20"), wxT("jn 3:20"));
-	wiz->AddPage(mod, wxT("John 3:22"), wxT("jn 3:22"));
+	wiz->AddPage(NULL, wxT("You are probably wondering why you are reading this right now.\n\nYou received this software because someone cares about you and what happens to you when you die.\n\nThe following pages will discuss where you stand with a Holy and Loving God. \n\nThe information contained here is based on the Christian Bible. If you have questions about the bible, and wonder why it should have any authority in your life I suggest that you look at this website:\nhttp://www.answersingenesis.org/home/area/faq/bible.asp"), wxT(""));
+	wiz->AddPage(mod, wxT("The bible teaches that everyone has sinned. What is sin? Sin is any thought or action that is not perfect. Have you ever done anything that you knew was wrong? Like being mean? Then you have sinned."), wxT("Ro 3:23"));
+	wiz->AddPage(mod, wxT("Because God is perfect, he can not live with sin, so, the \"wage of sin is death.\" Everyone dies someday, we all know that. Here the Bible is talking about eternal death, or eternal seperation from God."), wxT("Ro 6:23"));
+	wiz->AddPage(mod, wxT("Because of the sin of Adam, the first human, all now have the tendancy to sin. Thankfully, just as sin entered the world through one man, one Man can remove the sin of the world."), wxT("Ro 5:12"));
+	wiz->AddPage(mod, wxT("It is easy for us to be nice to someone who is nice to us, but God reached out to us while we weren't his friend and sent his son, Jesus to die for our sin."), wxT("Ro 5:8"));
+	wiz->AddPage(mod, wxT("If you accept the death of Jesus as the covering for your sin, you will not have to face eternal separation from God."), wxT("Ro 10:9-13"));
 	
 	wiz->RunWizard();
 }
@@ -164,13 +167,16 @@ void BibleStudyMainFrame::OnShowWhyBecomeChristian()
 void BibleStudyMainFrame::OnShowHowBecomeChristian()
 {
 	SWModule *mod = NULL;
-	mod = m_SwordTools->GetModule("MKJV");
+	mod = m_SwordTools->GetModule("WEB");
 
 	BibleStudyWizard *wiz = new BibleStudyWizard(this, -1, wxT("How Can I Become a Christian?"));
-	
-	wiz->AddPage(mod, wxT("John 3:16"), wxT("jn 3:16"));
-	wiz->AddPage(mod, wxT("John 3:20"), wxT("jn 3:20"));
-	wiz->AddPage(mod, wxT("John 3:22"), wxT("jn 3:22"));
+	wiz->AddPage(NULL, wxT("Becoming a Christian means loving Christ, serving His church, and adopting His cause of furthering love and justice in the world."), wxT(""));
+	wiz->AddPage(mod, wxT("Recognize that God loves us but our sin has separated us from God, fram a live with eternal purpose, and from a healthy relationship with others."), wxT("ro 3:23"));
+	wiz->AddPage(mod, wxT("Realize you cannot do enough good to earn God's forgiveness from sin, nor can you find true fulfillment through your own efforts."), wxT("eph 2:8-9"));
+	wiz->AddPage(mod, wxT("Jesus Christ alone can provide forgiveness from eternal punishment for sin. He alone can free us from the present penalty of sin, our selfishness, which damages our relationships with others. He alone can take away the price of sin, our sense of emptiness, and give our lives meaning and purpose."), wxT("jn 14:6"));
+	wiz->AddPage(mod, wxT("Confess, believe, and repent in order to be saved from sin."), wxT("Ro 10:9; Acts 3:19"));
+	wiz->AddPage(mod, wxT("Follow Jesus by observing His teachings, participating in His church, and furthering His mission."), wxT("jn 12:26"));
+	wiz->AddPage(mod, wxT("If you have questions regarding the Christian Faith or if you are still investigating Christianity, please call 1-800-NEED-HIM"), wxT(""));
 	
 	wiz->RunWizard();
 }
@@ -179,13 +185,17 @@ void BibleStudyMainFrame::OnShowHowBecomeChristian()
 void BibleStudyMainFrame::OnShowHowGrowSpiritually()
 {
 	SWModule *mod = NULL;
-	mod = m_SwordTools->GetModule("MKJV");
+	mod = m_SwordTools->GetModule("WEB");
 
 	BibleStudyWizard *wiz = new BibleStudyWizard(this, -1, wxT("How Can I Grow as a Christian?"));
 	
-	wiz->AddPage(mod, wxT("John 3:16"), wxT("jn 3:16"));
-	wiz->AddPage(mod, wxT("John 3:20"), wxT("jn 3:20"));
-	wiz->AddPage(mod, wxT("John 3:22"), wxT("jn 3:22"));
+	wiz->AddPage(mod, wxT("Now that you have started your new life, you are probably asking yourself \"What do I do now?\"\n\nThe old habits and character traits that marked your life before Christ are passing away."), wxT("II Cor 5:17"));
+	wiz->AddPage(mod, wxT("Allow the Holy Spirit (God's Spirit) to work in and through you."), wxT("John 16:13; John 14:16"));
+	wiz->AddPage(mod, wxT("Read God's Word.\n\nAs much as we need daily food to nourish our physical bodies, we need spiritual nourishment."), wxT("Mat 14:16"));
+	wiz->AddPage(mod, wxT("Talk to God.\n\nNow that you belong to Him, do not hesitate to talk with Him daily."), wxT("I John 5:14"));
+	wiz->AddPage(mod, wxT("Get involved with God's people.\n\nYou are special and unique, created with gifts and talents that are needed in God's kingdom."), wxT("I Cor 12:14"));
+	wiz->AddPage(mod, wxT("Guard yourself against temptation.\n\nWe do have an enemy. He is called the Devil, Satan. Now that you have given your life over to God, he will come tempt you to change your ming. Guard yourself!"), wxT("James 4:7-8; I Peter 5:8-9"));
+	wiz->AddPage(mod, wxT("Rejoice!\n\nYou belong to God. You are His child and in His family! You will always be in His presence. Jesus is ocming back for all His children!"), wxT("Jn 14:3"));
 	
 	wiz->RunWizard();
 }
@@ -370,4 +380,78 @@ void BibleStudyMainFrame::OnDuplicateTab(wxMenuEvent& event)
 {
 	wxLogTrace(wxTRACE_Messages, wxT("BibleStudyMainFrame::OnDuplicateTab called"));
 	m_WindowSplit->DuplicateTab();
+}
+
+void BibleStudyMainFrame::ShowStartPage()
+{
+	wxString page;
+	
+	page = wxT("<html><title>Start Page</title>");
+	page += wxT("<table>");
+	page += wxT("<tr><td colspan=2 align=center bgcolor=#aaaaFF border=1>") + Heading() + wxT("</td></tr>");
+	page += wxT("<tr><td>") + BibleStudies() + wxT("</td><td rowspan = 10 valign=top>") + ProverbOfTheDay() + wxT("</td>");
+	page += wxT("<tr><td>") + DevotionalOfTheDay() + wxT("</td></tr>");
+	page += wxT("<tr><td></td></tr>");
+	page += wxT("<tr><td></td></tr>");
+	page += wxT("<tr><td></td></tr>");
+	page += wxT("<tr><td></td></tr>");
+	page += wxT("<tr><td></td></tr>");
+	page += wxT("<tr><td></td></tr>");
+	page += wxT("<tr><td></td></tr>");
+	page += wxT("<tr><td></td></tr>");
+	page += wxT("</table>");
+	page += wxT("</html>");
+	
+	wxLogDebug(page);
+	
+	m_WindowSplit->OpenInCurrentTab(page);
+}
+
+wxString BibleStudyMainFrame::ProverbOfTheDay()
+{
+	wxString output;
+	wxString key;
+	wxDateTime today = wxDateTime::Today();
+	BookModule web(m_SwordTools->GetModule("WEB"));
+	key = wxT("prov ");
+	key += wxString::Format(wxT("%i"), today.GetDay());
+	
+	output = wxT("<table><tr><td align=center bgcolor=#FFAAAA>Proverb Of The Day</td></tr>");
+	output += wxT("<tr><td>");
+	output += web.LookupKey(key);
+	output += wxT("</td></tr></table>");
+	return output;
+}
+
+wxString BibleStudyMainFrame::BibleStudies()
+{
+	wxString output;
+	output = wxT("<table><tr><td align=center bgcolor=#AAFFAA>Bible Studies</td></tr>");
+	output += wxT("<tr><td>How Can I Become a Christian?</td></tr>");
+	output += wxT("<tr><td>How Can I Grow as a Christian?</td></tr>");
+	output += wxT("</table>");
+	return output;
+}
+
+wxString BibleStudyMainFrame::DevotionalOfTheDay()
+{
+	wxString output;
+	wxDateTime today = wxDateTime::Today();
+	BookModule sme(m_SwordTools->GetModule("SME"));
+	wxString key;
+	key = wxString::Format(wxT("%02i.%02i"), today.GetMonth(), today.GetDay());
+	
+	output = wxT("<table><tr><td align=center bgcolor=#AAAAAA>Daily Devotional</td></tr>");
+	output += wxT("<tr><td>");
+	output += sme.LookupKey(key);
+	output += wxT("</td></tr></table>");
+	return output;
+}
+
+wxString BibleStudyMainFrame::Heading()
+{
+	wxString output;
+	wxDateTime today = wxDateTime::Today();
+	output = wxT("<b><font size=+1>Welcome To BibleStudy ") + today.FormatDate() + wxT("</font></b>");
+	return output;
 }

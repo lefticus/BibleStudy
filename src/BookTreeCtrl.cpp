@@ -145,7 +145,7 @@ void BookTreeCtrl::SetSwordTools(SwordTools *newSwordTools)
 	m_SwordTools = newSwordTools;
 }
 
-void BookTreeCtrl::RefreshBookList()
+void BookTreeCtrl::RefreshBookList(bool ShowLanguages)
 {	
 	using namespace sword;
 	ModMap::iterator it;
@@ -202,22 +202,27 @@ void BookTreeCtrl::RefreshBookList()
 		wxLogDebug(wxT("language %s"), (const wxChar *)wxString(curMod->Lang(), wxConvUTF8));
 		grouplang.append( curMod->Lang() );
 		
-		langnode = treelangnodes[grouplang];
-		if (!langnode.IsOk()) {
-			wxString language;
-			wxLogDebug(wxT("appending language"));
-			
-			language = m_Languages.GetLanguage(wxString(curMod->Lang(), wxConvUTF8));
+		if (ShowLanguages) {
+			langnode = treelangnodes[grouplang];
+			if (!langnode.IsOk()) {
+				wxString language;
+				wxLogDebug(wxT("appending language"));
 
-			langnode = AppendItem(childnode, language, ID_CLOSEDFOLDER_ICON, ID_CLOSEDFOLDER_ICON);
-			
-			#ifndef __WINDOWS__
-			SetItemImage(langnode, ID_OPENFOLDER_ICON, wxTreeItemIcon_Expanded);
-			SetItemImage(langnode, ID_OPENFOLDER_ICON, wxTreeItemIcon_SelectedExpanded);
-			#endif
-			
-			treelangnodes[grouplang] = langnode;
+				language = m_Languages.GetLanguage(wxString(curMod->Lang(), wxConvUTF8));
+
+				langnode = AppendItem(childnode, language, ID_CLOSEDFOLDER_ICON, ID_CLOSEDFOLDER_ICON);
+
+				#ifndef __WINDOWS__
+				SetItemImage(langnode, ID_OPENFOLDER_ICON, wxTreeItemIcon_Expanded);
+				SetItemImage(langnode, ID_OPENFOLDER_ICON, wxTreeItemIcon_SelectedExpanded);
+				#endif
+
+				treelangnodes[grouplang] = langnode;
+			}
+		} else {
+			langnode = childnode;
 		}
+			
 		wxString modname = wxString(curMod->Name(), wxConvUTF8);
 		modname += wxT(" - ");
 		modname += wxString(curMod->Description(), wxConvUTF8);
@@ -271,8 +276,8 @@ void BookTreeCtrl::SetupIcons()
 	wxImageList *images = new wxImageList(size, size, TRUE);
 	wxIcon icons[7];
 	icons[ID_BOOK_ICON] = wxIcon(book_xpm);
-	icons[ID_CLOSEDFOLDER_ICON] = wxIcon(closedfolder_xpm);
-	icons[ID_OPENFOLDER_ICON] = wxIcon(openfolder_xpm);
+	icons[ID_CLOSEDFOLDER_ICON] = wxArtProvider::GetIcon(wxART_FOLDER, wxART_OTHER, wxSize(16,16));
+	icons[ID_OPENFOLDER_ICON] = wxArtProvider::GetIcon(wxART_FOLDER, wxART_OTHER, wxSize(16,16));
 	icons[ID_BIBLICAL_TEXT_ICON] = wxIcon(bible_xpm);
 	icons[ID_LEXICON_ICON] = wxIcon(lexicon_xpm);
 	icons[ID_COMMENTARY_ICON] = wxIcon(commentary_xpm);

@@ -28,12 +28,12 @@ BibleStudyWizardPage::BibleStudyWizardPage(wxWizard *parent, SWModule *module, w
 	
 	if (reference != wxT("")) {
 		
-		m_StaticText = new wxStaticText(this, -1, text, wxPoint(0,0),wxSize(size.GetWidth(), size.GetHeight()*1/3), 0);
+		m_TextCtrl = new wxTextCtrl(this, -1, text, wxPoint(0,0),wxSize(size.GetWidth(), size.GetHeight()*1/3), wxTE_MULTILINE|wxTE_READONLY|wxTE_WORDWRAP);
 		m_BookViewCtrl = new BookViewCtrl(this, -1, wxPoint(0,size.GetHeight()*1/3+1), wxSize(size.GetWidth(), size.GetHeight()*2/3-1));
 		m_BookViewCtrl->OpenInNewTab(module);
 		m_BookViewCtrl->LookupKey(reference);
 	} else {
-		m_StaticText = new wxStaticText(this, -1, text, wxPoint(0,0), size, 0);
+		m_TextCtrl = new wxTextCtrl(this, -1, text, wxPoint(0,0), size, wxTE_MULTILINE|wxTE_READONLY|wxTE_WORDWRAP);
 		m_BookViewCtrl = NULL;
 	}
 }
@@ -48,10 +48,10 @@ void BibleStudyWizardPage::OnResize(wxSizeEvent &event)
 	wxSize size = GetClientSize();
 
 	if (m_BookViewCtrl) {
-		m_StaticText->SetSize(wxSize(size.GetWidth(), size.GetHeight()*1/3));
+		m_TextCtrl->SetSize(wxSize(size.GetWidth(), size.GetHeight()*1/3));
 		m_BookViewCtrl->Move(wxPoint(0,size.GetHeight()*1/3+1));
 		m_BookViewCtrl->SetSize(wxSize(size.GetWidth(), size.GetHeight()*2/3-1));
 	} else {
-		m_StaticText->SetSize(size);	
+		m_TextCtrl->SetSize(size);	
 	}
 }

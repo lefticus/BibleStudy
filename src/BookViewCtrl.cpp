@@ -147,6 +147,16 @@ void BookViewCtrl::OpenInCurrentTab(BookModule *bm)
 	LookupKey(bm->GetLastLookupKey());
 }
 
+void BookViewCtrl::OpenInCurrentTab(wxString html)
+{
+	wxHtmlWindow *htmlwindow;
+	
+	htmlwindow = (wxHtmlWindow *)GetPage(GetSelection())->GetChildren().GetFirst()->GetData();
+	htmlwindow->SetPage( html );
+	SetPageText(GetSelection(), wxString(htmlwindow->GetOpenedPageTitle()));
+	//SetIcon();
+}
+
 void BookViewCtrl::AddToCurrentTab(SWModule *mod)
 {
 	GetActiveBookModule()->AddModule(mod);

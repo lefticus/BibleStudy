@@ -100,6 +100,13 @@
 		void OnShowWhyBecomeChristian();
 		void OnShowHowGrowSpiritually();
 		
+		void ShowStartPage();
+		
+		wxString BibleStudies();
+		wxString Heading();
+		wxString DevotionalOfTheDay();
+		wxString ProverbOfTheDay();
+		
 		DECLARE_EVENT_TABLE()
 	};
 

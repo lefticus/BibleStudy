@@ -64,6 +64,7 @@
 		void DuplicateTab();
 		
 		void OpenInCurrentTab(SWModule *);
+		void OpenInCurrentTab(wxString html);
 		void OpenInNewTab(SWModule *);
 		void OpenInNewTab(BookModule *);
 		void OpenInCurrentTab(BookModule *);
@@ -85,5 +86,6 @@
 		BookModule* GetActiveBookModule();
 		DECLARE_EVENT_TABLE()
 	};
+	
 
 #endif

@@ -47,10 +47,11 @@ bool BibleStudyApp::OnInit()
 	wxYield();
 	
 	/* create a default frame and display it */
-	BibleStudyMainFrame *frame = new BibleStudyMainFrame(&m_SwordTools, APPTITLE, wxPoint(50,50), wxSize(450,340));
+	BibleStudyMainFrame *frame = new BibleStudyMainFrame(&m_SwordTools, APPTITLE, wxDefaultPosition, wxSize(640, 480));
 	frame->Show(TRUE);
-	
-	splash->Destroy();
+	wxYield();
+	frame->ShowStartPage();	
+	//splash->Destroy();
 	
 	return TRUE;
 }

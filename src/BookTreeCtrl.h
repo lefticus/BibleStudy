@@ -24,7 +24,7 @@
 	#include <wx/bitmap.h>
 	#include <wx/imaglist.h>
 	#include <wx/image.h>
-
+	#include <wx/artprov.h>
 
 	BEGIN_DECLARE_EVENT_TYPES()
 		DECLARE_EVENT_TYPE(bsEVT_OPEN_IN_CURRENT_TAB, 1)
@@ -84,7 +84,7 @@
 		~BookTreeCtrl();
 		BookTreeCtrl(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size);
 
-		void RefreshBookList();
+		void RefreshBookList(bool = true);
 		void SetSwordTools(SwordTools *);
 		
 		BookTreeItemData *GetItemData(const wxTreeItemId&);

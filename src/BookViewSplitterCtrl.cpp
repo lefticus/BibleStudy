@@ -59,7 +59,7 @@ BookViewSplitterCtrl::BookViewSplitterCtrl(wxWindow *parent, SwordTools *nswordt
 	//m_BookViewer1 = new BookViewCtrl(this, ID_BookViewer1, wxDefaultPosition, wxDefaultSize);
 	bookview->AddTab();
 	
-	m_BookTree->RefreshBookList();
+	m_BookTree->RefreshBookList(false);
 
 	ShowHideBookTree();
 }
@@ -337,3 +337,8 @@ BookModule* BookViewSplitterCtrl::GetActiveBookModule()
 	return m_LastFocus->GetActiveBookModule();
 }
 
+
+void BookViewSplitterCtrl::OpenInCurrentTab(wxString html)
+{
+	m_LastFocus->OpenInCurrentTab(html);
+}
