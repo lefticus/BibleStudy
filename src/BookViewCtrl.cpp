@@ -48,9 +48,9 @@ int BookViewCtrl::AddTab()
 	neweventhandler = new BookViewEventHandler();
 	neweventhandler->SetParent(this);
 	html->PushEventHandler(neweventhandler);
-	
-	#if !__WXMSW__
-		html->SetFonts(wxT("Arial"), wxT("Courier New"), 0); // crashes MSW wx2.4
+
+	#if wxMAJOR_VERSION ==2 && wxMINOR_VERSION > 4
+		html->SetFonts(wxT("Arial"), wxT("Courier New"), 0); // crashes wx2.4
 	#endif
 	
 	panelsizer->Add(html, 1, wxEXPAND);
