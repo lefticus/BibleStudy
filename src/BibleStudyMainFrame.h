@@ -20,7 +20,9 @@
 	#include "BookViewSplitterCtrl.h"
 	#include "BookViewCtrl.h"
 	#include "BookViewToolBar.h"
-
+	#include "BibleStudyWizard.h"
+	#include "BibleStudyWizardPage.h"
+	
 	/**
 	* Main window of BibleStudy
 	* 
@@ -82,6 +84,10 @@
 		
 		void DisplayModule(SWModule *module);
 		void DisplayModule(BookModule *module);
+		
+		void OnShowHowBecomeChristian();
+		void OnShowWhyBecomeChristian();
+		void OnShowHowGrowSpiritually();
 		
 		DECLARE_EVENT_TABLE()
 	};

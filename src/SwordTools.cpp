@@ -34,6 +34,11 @@ SwordTools::~SwordTools()
 {
 }
 
+SWModule *SwordTools::GetModule(const char *modulename)
+{
+	return m_SwordManager->Modules[modulename];
+}
+
 void SwordTools::ModInfo()
 {
 	using namespace sword;

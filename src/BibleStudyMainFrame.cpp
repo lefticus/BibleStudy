@@ -31,6 +31,11 @@ BEGIN_EVENT_TABLE(BibleStudyMainFrame, wxFrame)
 	EVT_MENU(ID_MenuDetachTab, BibleStudyMainFrame::OnDetachTab)
 	EVT_MENU(ID_MenuDuplicateTab, BibleStudyMainFrame::OnDuplicateTab)
 
+	EVT_MENU(ID_MenuBibleStudyHow, BibleStudyMainFrame::OnShowHowBecomeChristian)
+	EVT_MENU(ID_MenuBibleStudyWhy, BibleStudyMainFrame::OnShowWhyBecomeChristian)
+	EVT_MENU(ID_MenuBibleStudyGrow, BibleStudyMainFrame::OnShowHowGrowSpiritually)
+
+	
 	EVT_MENU_RANGE(ID_MenuTopBookOption, ID_MenuTopBookOption+50, BibleStudyMainFrame::OnOptionChange)
 
 	EVT_TOOL(ID_ToolShowHideBookTree, BibleStudyMainFrame::OnShowHideBookTree)
@@ -60,6 +65,7 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools, const wxStri
 
 	wxMenu *menuFile = new wxMenu();
 	wxMenu *menuHelp = new wxMenu();
+	wxMenu *menuBibleStudies = new wxMenu();
 	wxMenu *menuWindow = new wxMenu();
 	wxMenu *menuOptions = new wxMenu();
 		
@@ -105,11 +111,14 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools, const wxStri
 		
 		id++;
 	}
-	
-	
+
+	menuBibleStudies->Append(ID_MenuBibleStudyWhy, wxT("Why Should I Become a Christian?"));	
+	menuBibleStudies->Append(ID_MenuBibleStudyHow, wxT("How Can I Become a Christian?"));
+	menuBibleStudies->Append(ID_MenuBibleStudyGrow, wxT("How Can I Grow as a Christian?"));
 	
 	wxMenuBar *menuBar = new wxMenuBar();
 	menuBar->Append( menuFile, wxT("&File") );
+	menuBar->Append( menuBibleStudies, wxT("&Bible Studies") );
 	menuBar->Append( menuOptions, wxT("&Options") );
 	menuBar->Append( menuWindow, wxT("&Window") );
 	menuBar->Append( menuHelp, wxT("&Help") );
@@ -125,6 +134,64 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools, const wxStri
 	SetToolBar(m_ToolBar);
 	
 	SetupSplitterWindows();
+}
+
+
+void BibleStudyMainFrame::OnShowWhyBecomeChristian()
+{
+	SWModule *mod = NULL;
+	mod = m_SwordTools->GetModule("MKJV");
+
+	BibleStudyWizard *wiz = new BibleStudyWizard(this, -1, wxT("Why Should I Become a Christian?"));
+	
+	wiz->AddPage(NULL, wxT("Why Should You Become A Christian?"), wxT(""));
+	wiz->AddPage(mod, wxT("John 3:16"), wxT("jn 3:16"));
+	wiz->AddPage(mod, wxT("John 3:20"), wxT("jn 3:20"));
+	wiz->AddPage(mod, wxT("John 3:22"), wxT("jn 3:22"));
+	
+//	BibleStudyWizardPage::Chain(p1, p2);
+//	BibleStudyWizardPage::Chain(p2, p3);
+	
+	//wiz->SetSize(p1->GetBestSize());
+	wiz->RunWizard();
+}
+
+
+void BibleStudyMainFrame::OnShowHowBecomeChristian()
+{
+	SWModule *mod = NULL;
+	mod = m_SwordTools->GetModule("MKJV");
+
+	BibleStudyWizard *wiz = new BibleStudyWizard(this, -1, wxT("How Can I Become a Christian?"));
+	
+	wiz->AddPage(mod, wxT("John 3:16"), wxT("jn 3:16"));
+	wiz->AddPage(mod, wxT("John 3:20"), wxT("jn 3:20"));
+	wiz->AddPage(mod, wxT("John 3:22"), wxT("jn 3:22"));
+	
+//	BibleStudyWizardPage::Chain(p1, p2);
+//	BibleStudyWizardPage::Chain(p2, p3);
+	
+	//wiz->SetSize(p1->GetBestSize());
+	wiz->RunWizard();
+}
+
+
+void BibleStudyMainFrame::OnShowHowGrowSpiritually()
+{
+	SWModule *mod = NULL;
+	mod = m_SwordTools->GetModule("MKJV");
+
+	BibleStudyWizard *wiz = new BibleStudyWizard(this, -1, wxT("How Can I Grow as a Christian?"));
+	
+	wiz->AddPage(mod, wxT("John 3:16"), wxT("jn 3:16"));
+	wiz->AddPage(mod, wxT("John 3:20"), wxT("jn 3:20"));
+	wiz->AddPage(mod, wxT("John 3:22"), wxT("jn 3:22"));
+	
+//	BibleStudyWizardPage::Chain(p1, p2);
+//	BibleStudyWizardPage::Chain(p2, p3);
+	
+	//wiz->SetSize(p1->GetBestSize());
+	wiz->RunWizard();
 }
 
 /**
@@ -200,6 +267,8 @@ void BibleStudyMainFrame::OnBookTreeChange(wxCommandEvent& event)
 
 void BibleStudyMainFrame::OnExit(wxCommandEvent& event)
 {
+//	ShowSampleWizard();
+/*	
 	wxLogTrace(wxTRACE_Messages, wxT("BibleStudyMainFrame::OnExit called"));
 	wxWindow *window;
 		
@@ -209,6 +278,7 @@ void BibleStudyMainFrame::OnExit(wxCommandEvent& event)
 		window->Close();
 		window = FindWindowByName(wxT("BibleStudyWindow"));
 	}
+*/
 }
 
 void BibleStudyMainFrame::OnCloseWindow(wxCommandEvent& event)

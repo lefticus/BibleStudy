@@ -39,6 +39,9 @@
 		ID_MenuCloseOtherTabs,
 		ID_MenuDuplicateTab,
 		ID_MenuCloseWindow,
+		ID_MenuBibleStudyWhy,
+		ID_MenuBibleStudyHow,
+		ID_MenuBibleStudyGrow,
 		
 		/* Must remain last */
 		ID_MenuTopBookOption

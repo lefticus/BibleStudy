@@ -1,5 +1,5 @@
 bin_PROGRAMS = biblestudy
-biblestudy_SOURCES = biblestudy.cpp biblestudy.h BibleStudyApp.cpp BibleStudyApp.h BibleStudyMainFrame.cpp BibleStudyMainFrame.h BookModule.cpp BookModule.h BookTreeCtrl.cpp BookTreeCtrl.h BookViewCtrl.cpp BookViewCtrl.h BookViewSplitterCtrl.cpp BookViewSplitterCtrl.h SwordTools.cpp SwordTools.h TestSword.cpp TestSword.h BookViewToolBar.h BookViewToolBar.cpp BibleStudyLanguages.h BibleStudyLanguages.cpp BookViewEventHandler.h BookViewEventHandler.cpp DropDownEventHandler.h DropDownEventHandler.cpp
+biblestudy_SOURCES = biblestudy.cpp biblestudy.h BibleStudyApp.cpp BibleStudyApp.h BibleStudyMainFrame.cpp BibleStudyMainFrame.h BookModule.cpp BookModule.h BookTreeCtrl.cpp BookTreeCtrl.h BookViewCtrl.cpp BookViewCtrl.h BookViewSplitterCtrl.cpp BookViewSplitterCtrl.h SwordTools.cpp SwordTools.h TestSword.cpp TestSword.h BookViewToolBar.h BookViewToolBar.cpp BibleStudyLanguages.h BibleStudyLanguages.cpp BookViewEventHandler.h BookViewEventHandler.cpp DropDownEventHandler.h DropDownEventHandler.cpp BibleStudyWizard.h BibleStudyWizard.cpp BibleStudyWizardPage.h BibleStudyWizardPage.cpp
 
 # set the include path found by configure
 INCLUDES = -I/usr/include/sword $(all_includes)

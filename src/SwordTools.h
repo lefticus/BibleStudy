@@ -43,6 +43,7 @@
 		
 		ModMap *GetModuleMap();
 		SWMgr *GetSwordManager();
+		SWModule *GetModule(const char *ModuleName);
 	};
 
 #endif
