@@ -1,3 +1,4 @@
+
 /***************************************************************************
  *   Copyright (C) 2003 by Jason Turner                                    *
  *   jason@whensdinner.com                                                 *
@@ -9,54 +10,49 @@
  *                                                                         *
  *   Part of BibleStudy: www.sf.net/projects/christiangame                 *
  ***************************************************************************/
-#if defined(__GNUG__) && !defined(__APPLE__)
-	#pragma interface "BibleStudyLanguages.h"
-#endif
 
 #ifndef _BIBLESTUDYLANGUAGES_H_
-	#define _BIBLESTUDYLANGUAGES_H_
+#define _BIBLESTUDYLANGUAGES_H_
 
-	#include <wx/wx.h>
-	#include <wx/string.h>
-	#include <map>
+#include <map>
 
-//using namespace std;
+#include <wx/string.h>
 
-	/**
-	* Used to decode language abbreviations to language names
-	**/
-	class BibleStudyLanguages
-	{
-	private:
-		/** The C++ map which links abbreviations to full names */
-		std::map<wxString, wxString> mLanguages;
+/**
+ * Used to decode language abbreviations to language names
+ **/
+class BibleStudyLanguages {
+private:
 
-	public:
-		BibleStudyLanguages();
-		~BibleStudyLanguages();
+  /** The C++ map which links abbreviations to full names */
+  std::map < wxString, wxString > mLanguages;
 
-		/** 
-		* Add a language using wxString objects 
-		* called by AddLanguage (const char *, const char *)
-		*
-		* @param abbreviation Language abbreviation
-		* @param description Full Name of language
-		*/
-		void AddLanguage(wxString abbreviation, wxString description);
+public:
+  BibleStudyLanguages();
+  ~BibleStudyLanguages();
+  
+  /** 
+   * Add a language using wxString objects 
+   * called by AddLanguage (const char *, const char *)
+   *
+   * @param abbreviation Language abbreviation
+   * @param description Full Name of language
+   */
+  void AddLanguage(const wxString &abbreviation, const wxString &description);
 
-		/** Add a language using char arrays 
-		*
-		* @param abbreviation Language abbreviation
-		* @param description Full Name of language
-		*/
-			void AddLanguage(const char *abbreviation, const char *description);
+  /** Add a language using char arrays 
+   *
+   * @param abbreviation Language abbreviation
+   * @param description Full Name of language
+   */
+  void AddLanguage(const char *abbreviation, const char *description);
 
-		/** 
-		* Returns the full name of a language from an abbreviation 
-		*
-		* @param abbreviation Abbreviation of the language being looked up.
-		*/
-		wxString GetLanguage(wxString abbreviation);
-	};
+  /** 
+   * Returns the full name of a language from an abbreviation 
+   *
+   * @param abbreviation Abbreviation of the language being looked up.
+   */
+  wxString GetLanguage(const wxString &abbreviation);
+};
 
 #endif

@@ -1,3 +1,4 @@
+
 /***************************************************************************
  *   Copyright (C) 2003 by Jason Turner                                    *
  *   jason@whensdinner.com                                                 *
@@ -7,41 +8,36 @@
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  ***************************************************************************/
-#if defined(__GNUG__) && !defined(__APPLE__)
-	#pragma interface "BibleStudyApp.h"
-#endif
-
 #ifndef _BIBLESTUDYAPP_H_
 #define _BIBLESTUDYAPP_H_
-	#include "SwordTools.h"
-	#include <wx/wx.h>
-	#include <wx/app.h>
 
-	/**
-	* Main Class for BibleStudy.
-	*
-	* Straight forward subclass of wxApp
-	**/
-	class BibleStudyApp: public wxApp
-	{
-	private:
-		/**
-		 * Global reference to sword tools, so that sword
-		 * gets initialized only once.
-		 **/
-		SwordTools m_SwordTools;
+#include <wx/app.h>
+#include <SwordTools.h>
 
-	public:
-		BibleStudyApp();
-		~BibleStudyApp();
+/**
+ * Main Class for BibleStudy.
+ *
+ * Straight forward subclass of wxApp
+ **/
+class BibleStudyApp:public wxApp {
+private:
 
-		/**
-		 * Automatically executed on application start
-		 */
-		bool OnInit();
-		void OnExitApp(wxCommandEvent &event);
+  /**
+   * Global reference to sword tools, so that sword
+   * gets initialized only once.
+  **/
+  SwordTools m_SwordTools;
 
-		DECLARE_EVENT_TABLE()
-	};
+public:
+  BibleStudyApp();
+  ~BibleStudyApp();
+
+  /**
+   * Automatically executed on application start
+   */
+  bool OnInit();
+  void OnExitApp(wxCommandEvent &event);
+
+  DECLARE_EVENT_TABLE()};
 
 #endif

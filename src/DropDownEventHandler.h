@@ -1,3 +1,4 @@
+
 /***************************************************************************
  *   Copyright (C) 2003 by Jason Turner                                    *
  *   jason@whensdinner.com                                                 *
@@ -7,42 +8,39 @@
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  ***************************************************************************/
-#if defined(__GNUG__) && !defined(__APPLE__)
-	#pragma interface "DropDownEventHandler.h"
-#endif
 
 #ifndef _DROPDOWNEVENTHANDLER_H_
-	#define _DROPDOWNEVENTHANDLER_H_
+#define _DROPDOWNEVENTHANDLER_H_
 
-	class DropDownEventHandler;
-	#include <wx/wx.h>
-	#include <wx/event.h>
-	#include "BookViewToolBar.h"
+#include <wx/event.h>
+#include <wx/treectrl.h>
+#include <wx/calctrl.h>
+
+class BookViewToolBar;
 
 
-	/**
-	*
-	* Custom event handler
-	**/
-	class DropDownEventHandler : public wxEvtHandler
-	{
-	private:
-		BookViewToolBar *m_parent;
+/**
+ *
+ * Custom event handler
+ **/
+class DropDownEventHandler : public wxEvtHandler {
+private:
+  BookViewToolBar * m_parent;
 
-	public:
-		DropDownEventHandler();
-		~DropDownEventHandler();
+public:
+  DropDownEventHandler();
+  ~DropDownEventHandler();
 
-		void OnSetFocus(wxFocusEvent &event);
-		void OnKillFocus(wxFocusEvent &event);
-		void OnItemActivated(wxTreeEvent &event);
-		void OnDateSelected(wxCalendarEvent &event);
-		void OnMove(wxMoveEvent &event);
-		void OnVerseSelected(wxCommandEvent &event);
+  void OnSetFocus(wxFocusEvent &event);
+  void OnKillFocus(wxFocusEvent &event);
+  void OnItemActivated(wxTreeEvent &event);
+  void OnDateSelected(wxCalendarEvent &event);
+  void OnMove(wxMoveEvent &event);
+  void OnVerseSelected(wxCommandEvent &event);
 
-		void SetParent(BookViewToolBar *parent);
+  void SetParent(BookViewToolBar *parent);
 
-		DECLARE_EVENT_TABLE()
-	};
+  DECLARE_EVENT_TABLE()
+};
 
 #endif

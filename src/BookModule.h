@@ -1,3 +1,4 @@
+
 /***************************************************************************
  *   Copyright (C) 2003 by Jason Turner                                    *
  *   jason@whensdinner.com                                                 *
@@ -7,94 +8,82 @@
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  ***************************************************************************/
-#if defined(__GNUG__) && !defined(__APPLE__)
-	#pragma interface "BookModule.h"
-#endif
-
 #ifndef _BOOKMODULE_H_
 #define _BOOKMODULE_H_
+#include <sword/swmodule.h>
+#include <sword/swmgr.h>
+#include <sword/treekey.h>
 
-	#include <wx/wx.h>
-	
-	#include <swmgr.h>
-	#include <treekey.h>
-	#include <versekey.h>
-	#include <swmodule.h>
+#include <wx/frame.h>
+#include <wx/treectrl.h>
+#include <wx/string.h>
 
+enum bsKeyType {
+  bsVerseKey = 1,
+  bsStringKey,
+  bsTreeKey
+};
 
-	#include <wx/minifram.h>
-	#include <wx/treectrl.h>
-	#include <wx/string.h>
-	#include <wx/frame.h>
-	#include <wx/treectrl.h>
+/**
+ * Wraps a SWModule and contains data related to the module, i.e. last search
+ * performed. Used for duplicating/detaching tabs as well as updating the 
+ * toolbar
+ **/
+class BookModule {
+public:
+  BookModule(sword::SWModule *);
+  ~BookModule();
 
-	using namespace sword;
+  /** Returns underlying module */
+  sword::SWModule * GetModule();
+  sword::ModMap * GetModules();
 
-	enum bsKeyType {
-		bsVerseKey = 1,
-		bsStringKey,
-		bsTreeKey
-	};
+  /** Lookups up a key, returning HTML representation */
+  wxString LookupKey(wxString key, wxString search = wxT(""), 
+                     int searchtype = 0, bool tooltip = false, 
+		     bool browse = false);
+		     
+  wxString BrowseForward();
+  wxString BrowseBackward();
 
-	/**
-	* Wraps a SWModule and contains data related to the module, i.e. last search
-	* performed. Used for duplicating/detaching tabs as well as updating the toolbar
-	**/
-	class BookModule
-	{
+  /** Return the last lookup key */
+  wxString GetLastLookupKey() const;
 
-	private:
-		/** The SWModule being wrapped */
-		SWModule *m_Module;
-		SWModule *m_Second_Module;
+  wxString GetLastSearch() const;
+  wxString ModInfo() const;
 
-		/** The last key looked up */
-		wxString m_LastLookupKey;
-		wxString m_LastSearch;
-		wxString m_Description;
+  /** Returns a combobox for this book */
+  wxFrame *GetControl(wxWindow * parent);
 
-		wxFrame *m_Frame;
+  void AddModule(sword::SWModule * mod);
 
-		ModMap m_Modules;
-		ListKey m_LastKey;
-		void AddTreeSiblings(wxTreeCtrl *tree, wxTreeItemId parentid, TreeKey *key);
+  wxString GetName() const;
+  bsKeyType GetKeyType() const;
+  bsKeyType GetKeyType(sword::SWModule * mod) const;
+  bool IsBrowsing() const;
 
-		bool m_isbrowsing;
-		bsKeyType m_keytype;
+  static void Percent(char, void *);
 
+private:
+  /** The SWModule being wrapped */
+  sword::SWModule *m_Module;
+  sword::SWModule *m_Second_Module;
 
-	public:
-		BookModule(SWModule *);
-		~BookModule();
+  /** The last key looked up */
+  wxString m_LastLookupKey;
+  wxString m_LastSearch;
+  mutable wxString m_Description;
 
-		/** Returns underlying module */
-		SWModule *GetModule();
-		ModMap *GetModules();
+  wxFrame *m_Frame;
 
-		/** Lookups up a key, returning HTML representation */
-		wxString LookupKey(wxString key, wxString search=wxT(""), int searchtype=0, bool tooltip=false, bool browse=false);
-		wxString BrowseForward();
-		wxString BrowseBackward();
+  sword::ModMap m_Modules;
+  sword::ListKey m_LastKey;
+  void AddTreeSiblings(wxTreeCtrl * tree, wxTreeItemId parentid,
+                       sword::TreeKey * key);
 
-		/** Return the last lookup key */
-		wxString GetLastLookupKey();
+  bool m_isbrowsing;
+  bsKeyType m_keytype;
 
-		wxString GetLastSearch();
-		wxString ModInfo();
-
-
-		/** Returns a combobox for this book */
-		wxFrame *GetControl(wxWindow *parent);
-
-		void AddModule(SWModule *mod);
-
-		wxString GetName();
-		bsKeyType GetKeyType();
-		bsKeyType GetKeyType(SWModule *mod);
-		bool IsBrowsing();
-
-
-		static void Percent(char, void *);
-	};
+};
 
 #endif

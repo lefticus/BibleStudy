@@ -1,3 +1,4 @@
+
 /***************************************************************************
  *   Copyright (C) 2003 by Jason Turner                                    *
  *   jason@whensdinner.com                                                 *
@@ -7,26 +8,19 @@
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  ***************************************************************************/
-#if defined(__GNUG__) && !defined(__APPLE__)
-	#pragma interface "TestSword.h"
-#endif
-
 #ifndef _TESTSWORD_H_
-	#define _TESTSWORD_H_
-	
-	
-	/**
-	* 
-	* Jason Turner
-	**/
-	class TestSword
-	{
+#define _TESTSWORD_H_
 
-	public:
-		TestSword();
-		~TestSword();
-		void TestAPI();
-	};
+/**
+ * 
+ * Jason Turner
+ **/
+class TestSword {
+
+public:
+  TestSword();
+  ~TestSword();
+  void TestAPI();
+};
 
 #endif
-

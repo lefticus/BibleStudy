@@ -1,3 +1,4 @@
+
 /***************************************************************************
  *   Copyright (C) 2003 by Jason Turner                                    *
  *   jason@whensdinner.com                                                 *
@@ -7,83 +8,73 @@
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  ***************************************************************************/
-#if defined(__GNUG__) && !defined(__APPLE__)
-	#pragma interface "BookViewCtrl.h"
-#endif
-
 #ifndef _BOOKVIEWCTRL_H_
+#define _BOOKVIEWCTRL_H_
 
-	#define _BOOKVIEWCTRL_H_
+class BookModule;
 
-	#include <wx/wx.h>
-	#include "biblestudy.h"
-	#include <wx/notebook.h>
-	#include "BookModule.h"
+#include <BookViewEventHandler.h>
 
-	class BookViewCtrl;
+#include <wx/notebook.h>
 
-	#include "BookViewEventHandler.h"
+#include <sword/swmgr.h>
 
-	using namespace sword;
-	using namespace std;
+BEGIN_DECLARE_EVENT_TYPES()
+  DECLARE_EVENT_TYPE(bsEVT_CHILD_SET_FOCUS, 1)
+END_DECLARE_EVENT_TYPES()
 
-	BEGIN_DECLARE_EVENT_TYPES()
-		DECLARE_EVENT_TYPE(bsEVT_CHILD_SET_FOCUS, 1)
-	END_DECLARE_EVENT_TYPES()
+#define EVT_CHILD_SET_FOCUS(id, fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_CHILD_SET_FOCUS, id, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
 
-	#define EVT_CHILD_SET_FOCUS(id, fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_CHILD_SET_FOCUS, id, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
+/**
+ * Tabbed viewing of book modules
+ *
+ **/
+class BookViewCtrl:public wxNotebook {
+private:
+  BookViewEventHandler *m_CustEventHandler;
 
+public:
+  BookViewCtrl(wxWindow *parent, int id, const wxPoint pos,
+               const wxSize size);
+  ~BookViewCtrl();
 
-	/**
-	* Tabbed viewing of book modules
-	*
-	**/
-	class BookViewCtrl : public wxNotebook
-	{
-	private:
-		BookViewEventHandler *m_CustEventHandler;
+  int AddTab();
+  void CloseTab();
+  void CloseOtherTabs();
+  void DuplicateTab();
+  void DuplicateTab(BookModule *);
 
-	public:
-		BookViewCtrl(wxWindow *parent, int id, const wxPoint pos, const wxSize size);
-		~BookViewCtrl();
+  /**
+   * Sets the module for the active tab
+   */
+  void OpenInCurrentTab(sword::SWModule *);
+  void OpenInCurrentTab(BookModule *);
+  void OpenInCurrentTab(const wxString &html);
 
-		int AddTab();
-		void CloseTab();
-		void CloseOtherTabs();
-		void DuplicateTab();
-		void DuplicateTab(BookModule *);
+  void OpenInNewTab(sword::SWModule *);
+  void OpenInNewTab(BookModule *);
+  void OpenInNewTab(const wxString &html);
 
-		/**
-		 * Sets the module for the active tab
-		 */
-		void OpenInCurrentTab(SWModule *);
-		void OpenInCurrentTab(BookModule *);
-		void OpenInCurrentTab(wxString html);
+  void AddToCurrentTab(sword::SWModule *);
+  void AddToCurrentTab(BookModule *);
 
-		void OpenInNewTab(SWModule *);
-		void OpenInNewTab(BookModule *);
-		void OpenInNewTab(wxString html);
+  void LookupKey(const wxString &key);
+  void BrowseKey(const wxString &key);
+  void Search(const wxString &range, const wxString &search, int searchtype);
+  void BrowseForward();
+  void BrowseBackward();
 
-		void AddToCurrentTab(SWModule *);
-		void AddToCurrentTab(BookModule *);
+  void ChildGotFocus();
+  void PostChildSetFocus(BookModule *bm = NULL);
+  void OnSetFocus(wxFocusEvent &event);
+  void OnLeftUp(wxMouseEvent &event);
+  void OnNotebookPageChanged(wxNotebookEvent &event);
 
-		void LookupKey(wxString key);
-		void BrowseKey(wxString key);
-		void Search(wxString range, wxString search, int searchtype);
-		void BrowseForward();
-		void BrowseBackward();
+  void SetIcon();
 
-		void ChildGotFocus();
-		void PostChildSetFocus(BookModule *bm=NULL);
-		void OnSetFocus(wxFocusEvent &event);
-		void OnLeftUp(wxMouseEvent &event);
-		void OnNotebookPageChanged(wxNotebookEvent &event);
+  BookModule *GetActiveBookModule();
 
-		void SetIcon();
-
-		BookModule *GetActiveBookModule();
-
-		DECLARE_EVENT_TABLE()
-	};
+  DECLARE_EVENT_TABLE()
+};
 
 #endif

@@ -1,3 +1,4 @@
+
 /***************************************************************************
  *   Copyright (C) 2003 by Jason Turner                                    *
  *   jason@whensdinner.com                                                 *
@@ -7,96 +8,89 @@
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  ***************************************************************************/
-#if defined(__GNUG__) && !defined(__APPLE__)
-	#pragma interface "BookTreeCtrl.h"
-#endif
-
-
 #ifndef _BOOKTREECTRL_H_
-	#define _BOOKTREECTRL_H_
+#define _BOOKTREECTRL_H_
 
-	#include <wx/wx.h>
+#include <sword/swmodule.h>
+#include <wx/event.h>
+#include <wx/icon.h>
+#include <wx/treectrl.h>
+#include <BibleStudyLanguages.h>
 
-	#include "SwordTools.h"
-	#include "BibleStudyLanguages.h"
-	#include <wx/treectrl.h>
+class SwordTools;
 
-	#include <wx/bitmap.h>
-	#include <wx/image.h>
-	#include <wx/icon.h>
+BEGIN_DECLARE_EVENT_TYPES()DECLARE_EVENT_TYPE(bsEVT_OPEN_IN_CURRENT_TAB, 1)
+  DECLARE_EVENT_TYPE(bsEVT_OPEN_IN_NEW_TAB, 2)
+  DECLARE_EVENT_TYPE(bsEVT_OPEN_IN_NEW_WINDOW, 3)
+  DECLARE_EVENT_TYPE(bsEVT_ADD_TO_CURRENT_TAB, 4) 
+END_DECLARE_EVENT_TYPES()
 
+#define EVT_OPEN_IN_CURRENT_TAB(id, fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_OPEN_IN_CURRENT_TAB, id, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
 
-	BEGIN_DECLARE_EVENT_TYPES()
-		DECLARE_EVENT_TYPE(bsEVT_OPEN_IN_CURRENT_TAB, 1)
-		DECLARE_EVENT_TYPE(bsEVT_OPEN_IN_NEW_TAB, 2)
-		DECLARE_EVENT_TYPE(bsEVT_OPEN_IN_NEW_WINDOW, 3)
-		DECLARE_EVENT_TYPE(bsEVT_ADD_TO_CURRENT_TAB, 4)
-	END_DECLARE_EVENT_TYPES()
+#define EVT_OPEN_IN_NEW_TAB(id, fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_OPEN_IN_NEW_TAB, id, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
 
-	#define EVT_OPEN_IN_CURRENT_TAB(id, fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_OPEN_IN_CURRENT_TAB, id, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
-	#define EVT_OPEN_IN_NEW_TAB(id, fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_OPEN_IN_NEW_TAB, id, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
-	#define EVT_OPEN_IN_NEW_WINDOW(id, fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_OPEN_IN_NEW_WINDOW, id, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
-	#define EVT_ADD_TO_CURRENT_TAB(id, fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_ADD_TO_CURRENT_TAB, id, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_OPEN_IN_NEW_WINDOW(id, fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_OPEN_IN_NEW_WINDOW, id, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
 
-	enum {
-		ID_BookTreePopupOpenInNewTab = 2000,
-		ID_BookTreePopupOpenInNewWindow,
-		ID_BookTreePopupOpen,
-		ID_BookTreePopupAddToCurrentTab,
-		ID_BookTreePopupInformation
-	};
+#define EVT_ADD_TO_CURRENT_TAB(id, fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_ADD_TO_CURRENT_TAB, id, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
 
-	/**
-	* Item data for one tree node.
-	**/
-	class BookTreeItemData : public wxTreeItemData
-	{
-	private:
-		SWModule *m_Module;
+enum {
+  ID_BookTreePopupOpenInNewTab = 2000,
+  ID_BookTreePopupOpenInNewWindow,
+  ID_BookTreePopupOpen,
+  ID_BookTreePopupAddToCurrentTab,
+  ID_BookTreePopupInformation
+};
 
-	public:
-		BookTreeItemData(SWModule *);
-		void SetModule(SWModule *);
-		SWModule *GetModule();
-	};
+/**
+ * Item data for one tree node.
+ **/
+class BookTreeItemData:public wxTreeItemData {
+private:
+  sword::SWModule * m_Module;
 
-	/**
-	* Treeview of BookModules installed
-	*/
-	class BookTreeCtrl : public wxTreeCtrl
-	{
-	private:
-		SwordTools *m_SwordTools;
+public:
+  BookTreeItemData(sword::SWModule *);
+  void SetModule(sword::SWModule *);
+  sword::SWModule * GetModule();
+};
 
-		wxIcon m_ClosedFolderBMP;
-		wxIcon m_OpenFolderBMP;
-		wxIcon m_BookBMP;
+/**
+ * Treeview of BookModules installed
+ */
+class BookTreeCtrl: public wxTreeCtrl {
+private:
+  SwordTools * m_SwordTools;
 
-		wxImageList *m_ImageList;
+  wxIcon m_ClosedFolderBMP;
+  wxIcon m_OpenFolderBMP;
+  wxIcon m_BookBMP;
 
-		wxMenu *m_PopupMenu;
+  wxImageList *m_ImageList;
 
-		BibleStudyLanguages m_Languages;
+  wxMenu *m_PopupMenu;
 
-		void OnOpenModule(wxCommandEvent &event);
-		void SetupIcons();
+  BibleStudyLanguages m_Languages;
 
-	public:
-		~BookTreeCtrl();
-		BookTreeCtrl(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size);
+  void OnOpenModule(wxCommandEvent & event);
+  void SetupIcons();
 
-		void RefreshBookList(bool = true);
-		void SetSwordTools(SwordTools *);
+public:
+  ~BookTreeCtrl();
+  BookTreeCtrl(wxWindow *parent, wxWindowID id, const wxPoint & pos,
+               const wxSize & size);
 
-		BookTreeItemData *GetItemData(const wxTreeItemId&);
-		void SetItemData(const wxTreeItemId&, BookTreeItemData*);
+  void RefreshBookList(bool = true);
+  void SetSwordTools(SwordTools *);
 
-		void OnRightUp(wxMouseEvent &event);
-		void OnRightDown(wxMouseEvent &event);
-		void OnItemActivated(wxTreeEvent &event);
-		void OnInformation(wxCommandEvent &event);
-		
-		DECLARE_EVENT_TABLE()
-	};
+  BookTreeItemData *GetItemData(const wxTreeItemId &);
+  void SetItemData(const wxTreeItemId &, BookTreeItemData *);
+
+  void OnRightUp(wxMouseEvent &event);
+  void OnRightDown(wxMouseEvent &event);
+  void OnItemActivated(wxTreeEvent &event);
+  void OnInformation(wxCommandEvent &event);
+
+  DECLARE_EVENT_TABLE()
+};
 
 #endif

@@ -1,3 +1,4 @@
+
 /***************************************************************************
  *   Copyright (C) 2003 by Jason Turner                                    *
  *   jason@whensdinner.com                                                 *
@@ -7,46 +8,42 @@
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  ***************************************************************************/
-#if defined(__GNUG__) && !defined(__APPLE__)
-	#pragma interface "SwordTools.h"
-#endif
-
 #ifndef _SWORDTOOLS_H_
-	#define _SWORDTOOLS_H_
+#define _SWORDTOOLS_H_
 
-	#include <wx/wx.h>
-	#include "BookModule.h"
-	#include <swmgr.h>
+#include <wx/string.h>
 
-	using namespace sword;
-	using namespace std;
+#include <sword/swmgr.h>
+#include <sword/swmodule.h>
 
-	/**
-	* Wrapper for SWMgr, with utilities
-	*
-	**/
-	class SwordTools
-	{
+class BookModule;
 
-	private:
-		/** testing function */
-		void ModInfo();
+/**
+ * Wrapper for SWMgr, with utilities
+ *
+ **/
+class SwordTools {
 
-		/** testing function */
-		void OptionInfo();
+private:
 
-		SWMgr *m_SwordManager;
+  /** testing function */
+  void ModInfo();
 
-	public:
-		SwordTools();
-		~SwordTools();
+  /** testing function */
+  void OptionInfo();
 
-		ModMap *GetModuleMap();
-		SWMgr *GetSwordManager();
-		SWModule *GetModule(const char *ModuleName);
+  sword::SWMgr *m_SwordManager;
 
-		BookModule *GetModuleFromLink(wxString link, BookModule*);
-		wxString GetKeyFromLink(wxString link);
-	};
+public:
+  SwordTools();
+  ~SwordTools();
+
+  sword::ModMap *GetModuleMap();
+  sword::SWMgr *GetSwordManager();
+  sword::SWModule *GetModule(const char *ModuleName);
+
+  BookModule *GetModuleFromLink(const wxString &link, BookModule *);
+  wxString GetKeyFromLink(const wxString &link);
+};
 
 #endif

@@ -1,3 +1,4 @@
+
 /***************************************************************************
  *   Copyright (C) 2003 by Jason Turner                                    *
  *   jason@whensdinner.com                                                 *
@@ -8,75 +9,64 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#if defined(__GNUG__) && !defined(__APPLE__)
-	#pragma interface "biblestudy.h"
+#ifndef _BIBLESTUDY_H_
+#define _BIBLESTUDY_H_
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
 #endif
 
-#ifndef _BIBLESTUDY_H_
-	#include <wx/wx.h>
-	#define _BIBLESTUDY_H_
+#define APPTITLE wxT("BibleStudy")
 
+/* Resource IDs */
 
-	#ifdef HAVE_CONFIG_H
-		#include <config.h>
-	#endif
+/** Menu Item IDs */
+enum {
+  ID_MenuExit = 1,
+  ID_MenuAbout,
+  ID_MenuSplitVertically,
+  ID_MenuSplitHorizontally,
+  ID_MenuRemoveSplit,
+  ID_MenuNewTab,
+  ID_MenuCloseTab,
+  ID_MenuShowHideBookTree,
+  ID_MenuNewWindow,
+  ID_MenuDetachTab,
+  ID_MenuCloseOtherTabs,
+  ID_MenuDuplicateTab,
+  ID_MenuCloseWindow,
+  ID_MenuBibleStudyWhy,
+  ID_MenuBibleStudyHow,
+  ID_MenuBibleStudyGrow,
+  ID_MenuShowStartPage,
 
-	#define APPTITLE wxT("BibleStudy Software")
+  /* Must remain last */
+  ID_MenuTopBookOption
+};
 
+/** Tool bar button IDs */
+enum {
+  ID_ToolShowHideBookTree = 100,
+  ID_ToolLookupKey,
+  ID_ToolTextKey,
+  ID_ToolSearchKey,
+  ID_ToolListKey,
+  ID_ToolNewTab,
+  ID_ToolRemoveTab,
+  ID_ToolForward,
+  ID_ToolBackward,
+  ID_ToolDropDownRange
+};
 
-	/* Resource IDs */
+/** General Controls */
+enum {
+  ID_BookTree = 200,
+  ID_BookViewer1
+};
 
-	/** Menu Item IDs */
-	enum
-	{
-		ID_MenuExit = 1,
-		ID_MenuAbout,
-		ID_MenuSplitVertically,
-		ID_MenuSplitHorizontally,
-		ID_MenuRemoveSplit,
-		ID_MenuNewTab,
-		ID_MenuCloseTab,
-		ID_MenuShowHideBookTree,
-		ID_MenuNewWindow,
-		ID_MenuDetachTab,
-		ID_MenuCloseOtherTabs,
-		ID_MenuDuplicateTab,
-		ID_MenuCloseWindow,
-		ID_MenuBibleStudyWhy,
-		ID_MenuBibleStudyHow,
-		ID_MenuBibleStudyGrow,
-		ID_MenuShowStartPage,
-
-		/* Must remain last */
-		ID_MenuTopBookOption
-	};
-
-	/** Tool bar button IDs */
-	enum
-	{
-		ID_ToolShowHideBookTree = 100,
-		ID_ToolLookupKey,
-		ID_ToolTextKey,
-		ID_ToolSearchKey,
-		ID_ToolListKey,
-		ID_ToolNewTab,
-		ID_ToolRemoveTab,
-		ID_ToolForward,
-		ID_ToolBackward,
-		ID_ToolDropDownRange
-	};
-
-	/** General Controls */
-	enum
-	{
-		ID_BookTree = 200,
-		ID_BookViewer1
-	};
-
-	/** Tool Bar IDs */
-	enum
-	{
-		ID_BookViewToolBar = 300
-	};
+/** Tool Bar IDs */
+enum {
+  ID_BookViewToolBar = 300
+};
 
 #endif

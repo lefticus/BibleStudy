@@ -1,3 +1,4 @@
+
 /***************************************************************************
  *   Copyright (C) 2003 by Jason Turner                                    *
  *   jason@whensdinner.com                                                 *
@@ -7,34 +8,32 @@
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  ***************************************************************************/
-#ifdef __GNUG__
-	#pragma implementation "BookViewEventHandler.h"
-#endif
+#include <BookViewEventHandler.h>
 
-#include "BookViewEventHandler.h"
+#include <BookViewCtrl.h>
+
 #include <wx/log.h>
 
 BEGIN_EVENT_TABLE(BookViewEventHandler, wxEvtHandler)
-	EVT_SET_FOCUS(BookViewEventHandler::OnSetFocus)
+  EVT_SET_FOCUS(BookViewEventHandler::OnSetFocus)
 END_EVENT_TABLE()
 
 BookViewEventHandler::BookViewEventHandler()
 {
 }
 
-
 BookViewEventHandler::~BookViewEventHandler()
 {
 }
 
-void BookViewEventHandler::OnSetFocus(wxFocusEvent &event)
+void BookViewEventHandler::OnSetFocus(wxFocusEvent & event)
 {
-	wxLogTrace(wxTRACE_Messages, wxT("BookViewEventHandler::OnSetFocus called"));
+  wxLogTrace(wxTRACE_Messages, wxT("BookViewEventHandler::OnSetFocus called"));
 
-	m_parent->ChildGotFocus();
+  m_parent->ChildGotFocus();
 }
 
-void BookViewEventHandler::SetParent(BookViewCtrl *nparent)
+void BookViewEventHandler::SetParent(BookViewCtrl * nparent)
 {
-	m_parent = nparent;
+  m_parent = nparent;
 }

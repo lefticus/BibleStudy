@@ -1,3 +1,4 @@
+
 /***************************************************************************
  *   Copyright (C) 2003 by Jason Turner                                    *
  *   jason@whensdinner.com                                                 *
@@ -7,72 +8,68 @@
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  ***************************************************************************/
-#if defined(__GNUG__) && !defined(__APPLE__)
-	#pragma interface "BookViewToolBar.h"
-#endif
 
 #ifndef _BOOKVIEWTOOLBAR_H_
+#define _BOOKVIEWTOOLBAR_H_
 
-	#define _BOOKVIEWTOOLBAR_H_
+#include <wx/toolbar.h>
+#include <wx/combobox.h>
+#include <wx/treectrl.h>
+#include <wx/calctrl.h>
 
-	class BookViewToolBar;
-	#include <wx/wx.h>
+BEGIN_DECLARE_EVENT_TYPES()DECLARE_EVENT_TYPE(bsEVT_LOAD_KEY, 1)
+  DECLARE_EVENT_TYPE(bsEVT_SEARCH, 1)
+  DECLARE_EVENT_TYPE(bsEVT_BROWSE_KEY, 1)
+  DECLARE_EVENT_TYPE(bsEVT_BROWSE_BACKWARD, 1)
+  DECLARE_EVENT_TYPE(bsEVT_BROWSE_FORWARD, 1) 
+END_DECLARE_EVENT_TYPES()
 
-	#include <wx/toolbar.h>
-	#include <wx/treectrl.h>
-	#include <wx/calctrl.h>
+#define EVT_LOAD_KEY(fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_LOAD_KEY, -1, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
 
-	BEGIN_DECLARE_EVENT_TYPES()
-		DECLARE_EVENT_TYPE(bsEVT_LOAD_KEY, 1)
-		DECLARE_EVENT_TYPE(bsEVT_SEARCH, 1)
-		DECLARE_EVENT_TYPE(bsEVT_BROWSE_KEY, 1)
-		DECLARE_EVENT_TYPE(bsEVT_BROWSE_BACKWARD, 1)
-		DECLARE_EVENT_TYPE(bsEVT_BROWSE_FORWARD, 1)
-	END_DECLARE_EVENT_TYPES()
+#define EVT_BROWSE_KEY(fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_BROWSE_KEY, -1, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
 
-	#define EVT_LOAD_KEY(fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_LOAD_KEY, -1, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
-	#define EVT_BROWSE_KEY(fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_BROWSE_KEY, -1, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
-	#define EVT_SEARCH(fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_SEARCH, -1, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
-	#define EVT_BROWSE_BACKWARD(fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_BROWSE_BACKWARD, -1, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
-	#define EVT_BROWSE_FORWARD(fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_BROWSE_FORWARD, -1, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_SEARCH(fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_SEARCH, -1, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
 
-	/**
-	* Toolbar with inputs for searching in a Module.
-	*
-	**/
-	class BookViewToolBar : public wxToolBar
-	{
-	private:
-		wxTextCtrl *m_LookupKey;
-		wxComboBox *m_DropDownRange;
-		wxFrame *m_SubFrame;
-		void AddRanges();
+#define EVT_BROWSE_BACKWARD(fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_BROWSE_BACKWARD, -1, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
 
-	public:
-		BookViewToolBar(wxWindow *parent, wxWindowID id, long style);
-		~BookViewToolBar();
+#define EVT_BROWSE_FORWARD(fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_BROWSE_FORWARD, -1, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
 
-		wxString GetLookupKey();
-		void SetLookupKey(wxString);
+/**
+ * Toolbar with inputs for searching in a Module.
+ *
+ **/
+class BookViewToolBar: public wxToolBar {
+private:
+  wxTextCtrl *m_LookupKey;
+  wxComboBox *m_DropDownRange;
+  wxFrame *m_SubFrame;
+  void AddRanges();
 
-		void SetDropDownFrame(wxFrame *subframe);
-		void OnShowDropDown(wxCommandEvent &event);
+public:
+  BookViewToolBar(wxWindow * parent, wxWindowID id, long style);
+  ~BookViewToolBar();
 
-		void DropDownGotFocus();
-		void DropDownLostFocus();
-		void DropDownItemActivated(wxTreeEvent &event);
-		void DropDownDateSelected(wxCalendarEvent &event);
-		void DropDownVerseSelected(wxCommandEvent &event);
+  wxString GetLookupKey() const;
+  void SetLookupKey(const wxString&);
 
-		void OnLookupKey(wxCommandEvent &event);
-		void OnListKey(wxCommandEvent &event);
-		void OnSearch(wxCommandEvent &event);
-		void OnBrowseForward(wxCommandEvent &event);
-		void OnBrowseBackward(wxCommandEvent &event);
+  void SetDropDownFrame(wxFrame * subframe);
+  void OnShowDropDown(wxCommandEvent & event);
 
-		wxString *GetRange();
+  void DropDownGotFocus();
+  void DropDownLostFocus();
+  void DropDownItemActivated(wxTreeEvent & event);
+  void DropDownDateSelected(wxCalendarEvent & event);
+  void DropDownVerseSelected(wxCommandEvent & event);
 
-		DECLARE_EVENT_TABLE()
-	};
+  void OnLookupKey(wxCommandEvent & event);
+  void OnListKey(wxCommandEvent & event);
+  void OnSearch(wxCommandEvent & event);
+  void OnBrowseForward(wxCommandEvent & event);
+  void OnBrowseBackward(wxCommandEvent & event);
+
+  wxString GetRange();
+
+  DECLARE_EVENT_TABLE()
+};
 
 #endif

@@ -1,3 +1,4 @@
+
 /***************************************************************************
  *   Copyright (C) 2003 by Jason Turner                                    *
  *   jason@whensdinner.com                                                 *
@@ -8,66 +9,72 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#include "BookViewHtml.h"
+#include <BookViewHtml.h>
+#include <HTMLToolTip.h>
+
 #include <wx/log.h>
 
 BEGIN_EVENT_TABLE(BookViewHtml, wxHtmlWindow)
-	EVT_LEFT_DOWN(BookViewHtml::OnMouseDown)
+  EVT_LEFT_DOWN(BookViewHtml::OnMouseDown)
 END_EVENT_TABLE()
-
 
 DEFINE_EVENT_TYPE(bsEVT_LINK_CLICKED)
 DEFINE_EVENT_TYPE(bsEVT_LINK_HOVER)
 
-BookViewHtml::BookViewHtml(wxWindow *parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name) : wxHtmlWindow(parent,id,pos,size, style, name)
+BookViewHtml::BookViewHtml(wxWindow * parent, wxWindowID id,
+                           const wxPoint & pos, const wxSize & size,
+                           long style,
+                           const wxString &name)
+             : wxHtmlWindow(parent, id, pos, size, style, name),
+	       m_htmltooltip(this)
 {
-	m_htmltooltip = new HTMLToolTip(this);
 }
-
 
 BookViewHtml::~BookViewHtml()
 {
 }
 
-void BookViewHtml::OnLinkClicked(const wxHtmlLinkInfo& info)
+void BookViewHtml::OnLinkClicked(const wxHtmlLinkInfo &info)
 {
-	wxLogDebug(wxT("Link Clicked: %s"), info.GetHref().c_str());
-	wxCommandEvent eventCustom(bsEVT_LINK_CLICKED);
-	eventCustom.SetEventObject(this);
-	eventCustom.SetString(info.GetHref());
-	ProcessEvent(eventCustom);
+  wxLogDebug(wxT("Link Clicked: %s"), info.GetHref().c_str());
+  wxCommandEvent eventCustom(bsEVT_LINK_CLICKED);
 
-	m_htmltooltip->Show(false);
+  eventCustom.SetEventObject(this);
+  eventCustom.SetString(info.GetHref());
+  ProcessEvent(eventCustom);
+
+  m_htmltooltip.Show(false);
 }
 
 void BookViewHtml::OnCellMouseHover(wxHtmlCell *cell, wxCoord x, wxCoord y)
 {
-	wxHtmlLinkInfo *link;
+  wxHtmlLinkInfo *link;
 
-	link = cell->GetLink();
+  link = cell->GetLink();
 
-	if (link) {
-		wxCommandEvent eventCustom(bsEVT_LINK_HOVER);
-		eventCustom.SetEventObject(this);
-		eventCustom.SetString(link->GetHref());
-		ProcessEvent(eventCustom);
-	} else {
-		m_htmltooltip->SetHTML(wxT(""));
-	}
+  if (link) {
+    wxCommandEvent eventCustom(bsEVT_LINK_HOVER);
 
-	m_htmltooltip->Show(true);
-	if (m_htmltooltip->IsShown()) {
-		m_htmltooltip->SetFocus();
-	}
+    eventCustom.SetEventObject(this);
+    eventCustom.SetString(link->GetHref());
+    ProcessEvent(eventCustom);
+  } else {
+    m_htmltooltip.SetHTML(wxT(""));
+  }
+
+  m_htmltooltip.Show(true);
+  if (m_htmltooltip.IsShown()) {
+    m_htmltooltip.SetFocus();
+  }
 }
 
-void BookViewHtml::SetHTMLToolTip(wxString html)
+void BookViewHtml::SetHTMLToolTip(const wxString &html)
 {
-	m_htmltooltip->SetHTML(html);
+  m_htmltooltip.SetHTML(html);
 }
 
-void BookViewHtml::OnMouseDown(wxMouseEvent &event)
+void BookViewHtml::OnMouseDown(wxMouseEvent & event)
 {
-	m_htmltooltip->Show(false);
-	event.Skip();
+  m_htmltooltip.Show(false);
+  event.Skip();
 }

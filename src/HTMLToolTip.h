@@ -1,3 +1,4 @@
+
 /***************************************************************************
  *   Copyright (C) 2003 by Jason Turner                                    *
  *   jason@whensdinner.com                                                 *
@@ -7,38 +8,34 @@
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  ***************************************************************************/
-#if defined(__GNUG__) && !defined(__APPLE__)
-	#pragma interface "HTMLToolTip.h"
-#endif
-
 #ifndef _HTMLTOOLTIP_H_
-	#define _HTMLTOOLTIP_H_
-	#include <wx/wx.h>
-	#include <wx/frame.h>
-	#include <wx/html/htmlwin.h>
+#define _HTMLTOOLTIP_H_
 
-	/**
-	*
-	* Jason Turner
-	**/
-	class HTMLToolTip : public wxFrame
-	{
-	private:
-		wxHtmlWindow *htmlwin;
-		wxString m_html;
-		bool m_tooltipchanged;
+#include <wx/frame.h>
+#include <wx/html/htmlwin.h>
 
-	public:
-		HTMLToolTip(wxWindow *parent);
-		~HTMLToolTip();
+/**
+ *
+ * Jason Turner
+ **/
+class HTMLToolTip:public wxFrame {
+private:
+  wxHtmlWindow *htmlwin;
+  wxString m_html;
+  bool m_tooltipchanged;
 
-		void SetHTML(wxString);
-		bool Show(bool show=TRUE);
-		void OnLeftWindow(wxMouseEvent &event);
-		void OnKillFocus(wxFocusEvent &event);
-		void OnKeyDown(wxKeyEvent &event);
-		DECLARE_EVENT_TABLE()
+public:
+  HTMLToolTip(wxWindow * parent);
+  ~HTMLToolTip();
 
-	};
+  void SetHTML(const wxString&);
+  bool Show(bool show = TRUE);
+  void OnLeftWindow(wxMouseEvent &event);
+  void OnKillFocus(wxFocusEvent &event);
+  void OnKeyDown(wxKeyEvent &event);
+  
+  DECLARE_EVENT_TABLE()
+
+};
 
 #endif

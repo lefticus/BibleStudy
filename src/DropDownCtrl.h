@@ -1,3 +1,4 @@
+
 /***************************************************************************
  *   Copyright (C) 2003 by Jason Turner                                    *
  *   jason@whensdinner.com                                                 *
@@ -7,68 +8,59 @@
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  ***************************************************************************/
-#if defined(__GNUG__) && !defined(__APPLE__)
-	#pragma interface "DropDownCtrl.h"
-#endif
-
-
 #ifndef DROPDOWNCTRL_H
-	#define DROPDOWNCTRL_H
-	#include <wx/wx.h>
+#define DROPDOWNCTRL_H
 
-	#include <swmodule.h>
+#include <wx/combobox.h>
+#include <wx/button.h>
+#include <wx/calctrl.h>
+#include <wx/treectrl.h>
+#include <wx/minifram.h>
 
+#include <sword/swmodule.h>
 
-	#include <wx/minifram.h>
-	#include <wx/treectrl.h>
-	#include <wx/calctrl.h>
-	#include <wx/button.h>
+enum bsDropDownMode {
+  bsCalendar = 1,
+  bsTree = 2,
+  bsBible = 4
+};
 
-	using namespace sword;
+/**
+ * @author Jason Turner
+ */
+class DropDownCtrl : public wxMiniFrame {
+private:
+  bsDropDownMode m_Mode;
+  
+  wxTreeCtrl * m_Tree;
+  wxCalendarCtrl *m_Calendar;
+  wxComboBox *m_BookCB;
+  wxComboBox *m_ChapterCB;
+  wxComboBox *m_VerseCB;
+  wxButton *m_Button;
+ 
+  void UpdateBookCB();
+  void UpdateVerseCB();
+  void UpdateChapterCB();
 
+  char m_LastBook;
+  int m_LastChapter;
+  int m_LastVerse;
 
-	enum bsDropDownMode {
-		bsCalendar = 1,
-		bsTree = 2,
-		bsBible = 4
-	};
+  sword::SWModule *m_Module;
 
-	/**
-	* @author Jason Turner
-	*/
-	class DropDownCtrl : public wxMiniFrame{
-	private:
-		wxTreeCtrl *m_Tree;
-		wxCalendarCtrl *m_Calendar;
-		wxComboBox *m_BookCB;
-		wxComboBox *m_ChapterCB;
-		wxComboBox *m_VerseCB;
-		wxButton *m_Button;
+public:
+  DropDownCtrl(wxWindow * parent, sword::SWModule *, bsDropDownMode mode);
+  ~DropDownCtrl();
 
-		SWModule *m_Module;
+  wxTreeCtrl *GetTree();
+  wxCalendarCtrl *GetCalendar();
 
-		bsDropDownMode m_Mode;
-		void UpdateBookCB();
-		void UpdateVerseCB();
-		void UpdateChapterCB();
+  void UpdateCBs(wxCommandEvent &event);
+  void OnButtonPress(wxCommandEvent &event);
+  void OnKeyDown(wxKeyEvent &event);
 
-		int m_LastChapter;
-		char m_LastBook;
-		int m_LastVerse;
-
-	public:
-		DropDownCtrl(wxWindow *parent, SWModule*, bsDropDownMode mode);
-		~DropDownCtrl();
-
-		wxTreeCtrl *GetTree();
-		wxCalendarCtrl *GetCalendar();
-
-		void UpdateCBs(wxCommandEvent &event);
-		void OnButtonPress(wxCommandEvent &event);
-		void OnKeyDown(wxKeyEvent &event);
-
-		DECLARE_EVENT_TABLE()
-	};
-
+  DECLARE_EVENT_TABLE()
+};
 
 #endif
