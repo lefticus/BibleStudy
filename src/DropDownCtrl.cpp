@@ -55,9 +55,9 @@ DropDownCtrl::DropDownCtrl(wxWindow *parent, SWModule *module, bsDropDownMode mo
 		break;
 	case bsBible:
 		SetClientSize(wxSize(305, 50));
-		m_BookCB = new wxComboBox(this, -1, wxT(""), wxPoint(GetClientAreaOrigin().x+2, GetClientAreaOrigin().y+2), wxSize(wxDefaultSize.GetHeight(), 150), 0, NULL, wxCB_READONLY);
-		m_ChapterCB = new wxComboBox(this, -1, wxT(""), wxPoint(m_BookCB->GetPosition().x+m_BookCB->GetSize().GetWidth()+2, m_BookCB->GetPosition().y), wxSize(wxDefaultSize.GetHeight(), 73), 0, NULL, wxCB_READONLY);
-		m_VerseCB = new wxComboBox(this, -1, wxT(""), wxPoint(m_ChapterCB->GetPosition().x+m_ChapterCB->GetSize().GetWidth()+2, m_ChapterCB->GetPosition().y), wxSize(wxDefaultSize.GetHeight(), 73), 0, NULL, wxCB_READONLY);
+		m_BookCB = new wxComboBox(this, -1, wxT(""), wxPoint(GetClientAreaOrigin().x+2, GetClientAreaOrigin().y+2), wxSize( 150, wxDefaultSize.GetHeight()), 0, NULL, wxCB_READONLY);
+		m_ChapterCB = new wxComboBox(this, -1, wxT(""), wxPoint(m_BookCB->GetPosition().x+m_BookCB->GetSize().GetWidth()+2, m_BookCB->GetPosition().y), wxSize(73,wxDefaultSize.GetHeight()), 0, NULL, wxCB_READONLY);
+		m_VerseCB = new wxComboBox(this, -1, wxT(""), wxPoint(m_ChapterCB->GetPosition().x+m_ChapterCB->GetSize().GetWidth()+2, m_ChapterCB->GetPosition().y), wxSize(73,wxDefaultSize.GetHeight()), 0, NULL, wxCB_READONLY);
 		m_Button = new wxButton(this, -1, wxT("Select"), wxPoint(m_BookCB->GetPosition().x, m_VerseCB->GetPosition().y+m_VerseCB->GetSize().GetHeight()+2), wxDefaultSize, 0, wxDefaultValidator, wxT("Select"));
 
 		/*

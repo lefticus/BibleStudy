@@ -3,7 +3,31 @@ Microsoft Developer Studio Workspace File, Format Version 6.00
 
 ###############################################################################
 
+Project: "base"="..\..\wxWindows-2.5.1\build\msw\wx_base.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "biblestudy"=".\biblestudy.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "core"="..\..\wxWindows-2.5.1\build\msw\wx_core.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{

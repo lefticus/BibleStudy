@@ -16,6 +16,7 @@
 #include "BookViewHtml.h"
 
 #include <wx/image.h>
+#include <wx/imaglist.h>
 #include <wx/icon.h>
 #include <wx/sizer.h>
 #include <wx/log.h>
