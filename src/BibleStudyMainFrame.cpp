@@ -31,7 +31,7 @@ BEGIN_EVENT_TABLE(BibleStudyMainFrame, wxFrame)
 	EVT_MENU_RANGE(ID_MenuTopBookOption, ID_MenuTopBookOption+50, BibleStudyMainFrame::OnOptionChange)
 
 	EVT_TOOL(ID_ToolShowHideBookTree, BibleStudyMainFrame::OnShowHideBookTree)
-	EVT_TOOL(ID_ToolLookupKey, BibleStudyMainFrame::OnLookupKey)
+	//EVT_TOOL(ID_ToolLookupKey, BibleStudyMainFrame::OnLookupKey)
 	EVT_TOOL(ID_ToolNewTab, BibleStudyMainFrame::OnNewTab)
 	EVT_TOOL(ID_ToolRemoveTab, BibleStudyMainFrame::OnCloseTab)
 		
@@ -41,6 +41,8 @@ BEGIN_EVENT_TABLE(BibleStudyMainFrame, wxFrame)
 	
 	EVT_ACTIVE_MODULE_CHANGE(-1, BibleStudyMainFrame::OnActiveModuleChange)
 	EVT_BOOK_TREE_CHANGE(-1, BibleStudyMainFrame::OnBookTreeChange)
+	
+	EVT_LOAD_KEY(BibleStudyMainFrame::OnLoadKey)
 END_EVENT_TABLE() 
 
 
@@ -139,16 +141,18 @@ void BibleStudyMainFrame::UpdateToolbars(BookModule *bm)
 {
 	if (bm) {
 		m_ToolBar->SetLookupKey(bm->GetLastLookupKey());
+		m_ToolBar->SetDropDownFrame(bm->GetControl(this));
 	} else {
 		m_ToolBar->SetLookupKey(wxT(""));
 	}
 
+	
 }
 
-void BibleStudyMainFrame::OnLookupKey(wxCommandEvent& event)
+void BibleStudyMainFrame::OnLoadKey(wxCommandEvent& event)
 {
 	wxLogTrace(wxTRACE_Messages, wxT("BibleStudyMainFrame::OnLookupKey called"));
-	m_WindowSplit->LookupKey( m_ToolBar->GetLookupKey() );
+	m_WindowSplit->LookupKey( event.GetString() );
 }
 
 void BibleStudyMainFrame::SetupSplitterWindows()

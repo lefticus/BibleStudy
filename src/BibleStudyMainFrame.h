@@ -67,9 +67,10 @@
 		void OnCloseOtherTabs(wxMenuEvent& event);
 		void OnShowHideBookTree(wxCommandEvent& event);
 		void OnTreeItemActivated(wxCommandEvent& event);
-		void OnLookupKey(wxCommandEvent& event);
 		void OnOptionChange(wxMenuEvent& event);
 		void OnNewWindow(wxMenuEvent& event);
+		
+		void OnLoadKey(wxCommandEvent& event);
 		
 		void OnOpenInNewTab(wxCommandEvent &event);
 		void OnOpenInNewWindow(wxCommandEvent &event);

@@ -12,7 +12,12 @@
 #define _BOOKMODULE_H_
 
 	#include "biblestudy.h"
-
+	#include <sword/treekey.h>
+	#include <wx/combobox.h>
+	#include <wx/treectrl.h>
+	#include <wx/minifram.h>
+	#include <wx/calctrl.h>
+	
 	using namespace sword;
 
 	/**
@@ -30,6 +35,10 @@
 		/** The last key looked up */
 		wxString m_LastLookupKey;
 		
+		/** */
+		wxMiniFrame *m_Frame;
+		
+		void AddTreeSiblings(wxTreeCtrl *tree, wxTreeItemId parentid, TreeKey *key);
 
 	public:
 		BookModule(SWModule *);
@@ -43,6 +52,9 @@
 		
 		/** Return the last lookup key */
 		wxString GetLastLookupKey();
+		
+		/** Returns a combobox for this book */
+		wxFrame *GetControl(wxWindow *parent);
 	};
 
 #endif

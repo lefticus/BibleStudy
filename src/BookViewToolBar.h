@@ -12,9 +12,21 @@
 	
 	#define _BOOKVIEWTOOLBAR_H_
 
+	class BookViewToolBar;
+	
 	#include "biblestudy.h"
 	#include <wx/toolbar.h>
 	#include <wx/bitmap.h>
+	#include <wx/button.h>
+	#include <wx/utils.h>
+	#include "DropDownEventHandler.h"
+	
+	
+	BEGIN_DECLARE_EVENT_TYPES()
+		DECLARE_EVENT_TYPE(bsEVT_LOAD_KEY, 1)
+	END_DECLARE_EVENT_TYPES()
+
+	#define EVT_LOAD_KEY(fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_LOAD_KEY, -1, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
 
 	
 	/**
@@ -25,14 +37,32 @@
 	{
 	private:
 		wxTextCtrl *m_LookupKey;
-		void SetupIcons();
+		wxTextCtrl *m_DropDownKey;
+		
+		wxButton *m_DropDownBtn;
 
+		wxFrame *m_SubFrame;
+		
+		
 	public:
 		BookViewToolBar(wxWindow *parent, wxWindowID id, long style);
 		~BookViewToolBar();
 
 		wxString GetLookupKey();
 		void SetLookupKey(wxString);
+		
+		void SetDropDownFrame(wxFrame *subframe);
+		void OnShowDropDown(wxEvent &event);
+		
+		void DropDownGotFocus();
+		void DropDownLostFocus();
+		void DropDownItemActivated(wxTreeEvent &event);
+		void DropDownDateSelected(wxCalendarEvent &event);
+		
+		void OnLookupKey(wxEvent &event);
+
+		
+		DECLARE_EVENT_TABLE()
 	};
 
 #endif

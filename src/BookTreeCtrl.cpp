@@ -161,6 +161,7 @@ void BookTreeCtrl::RefreshBookList()
 				treenodes[(const char *)configEntry.mb_str()] = childnode;
 			}
 			
+			curMod->Type((const char *)configEntry.mb_str());
 			group = (const char *)configEntry.mb_str();
 		}
 		

@@ -14,11 +14,14 @@
 BookModule::BookModule(SWModule *newModule)
 {
 	m_Module = newModule;
+	m_Frame = NULL;
 }
 
 
 BookModule::~BookModule()
 {
+	if (m_Frame)
+		m_Frame->Destroy();
 }
 
 SWModule *BookModule::GetModule()
@@ -105,4 +108,54 @@ wxString BookModule::LookupKey(wxString key)
 	
 	m_LastLookupKey = key;
 	return output;
+}
+
+wxFrame *BookModule::GetControl(wxWindow *parent)
+{
+	if (m_Frame) return m_Frame;
+	
+	
+	if (!strcmp(m_Module->Type(), "Generic Books")) {
+		TreeKey *key;
+		wxTreeCtrl *tree;
+		
+		m_Frame = new wxMiniFrame(parent, -1, wxT("Select A Section"));
+		tree = new wxTreeCtrl(m_Frame, -1, wxDefaultPosition, wxDefaultSize, wxTR_HIDE_ROOT|wxTR_HAS_BUTTONS);
+		
+		key = (TreeKey *)m_Module->CreateKey();
+		key->firstChild();
+
+		AddTreeSiblings(tree, tree->AddRoot(wxT("Root")), key);
+	} else if (!strcmp(m_Module->Type(), "Daily Devotional")) {
+		wxCalendarCtrl *cal;
+		
+		m_Frame = new wxMiniFrame(parent, -1, wxT("Select A Date"));
+		
+		cal = new wxCalendarCtrl(m_Frame, -1, wxDateTime::Now(), wxDefaultPosition, wxDefaultSize, wxCAL_SEQUENTIAL_MONTH_SELECTION|wxCAL_NO_YEAR_CHANGE|wxCAL_SHOW_SURROUNDING_WEEKS|wxCAL_SUNDAY_FIRST|wxCAL_SHOW_HOLIDAYS);
+		m_Frame->SetClientSize(cal->GetSize());
+		cal->Move(0,0);
+	}
+	
+	return m_Frame;
+}
+
+
+void BookModule::AddTreeSiblings(wxTreeCtrl *tree, wxTreeItemId parentid, TreeKey *key)
+{
+	wxTreeItemId itemadded;
+	wxLogDebug(wxT("BookModule::AddTreeSiblings called: %s"), (const wxChar*)wxString(key->getFullName(), wxConvUTF8));
+	bool cont;
+	cont = true;
+	
+	while (cont) {
+		itemadded = tree->AppendItem(parentid, wxString(key->getLocalName(), wxConvUTF8));
+		
+		if (key->hasChildren()) {
+			key->firstChild();
+			AddTreeSiblings(tree, itemadded, key);
+			key->parent();
+		}
+		
+		cont = key->nextSibling();
+	}
 }

@@ -50,7 +50,9 @@
 		ID_ToolLookupKey,
 		ID_ToolTextKey,
 		ID_ToolNewTab,
-		ID_ToolRemoveTab
+		ID_ToolRemoveTab,
+		ID_ToolDropDownKey,
+		ID_ToolDropDownBtn
 	};
  
 	/** General Controls */

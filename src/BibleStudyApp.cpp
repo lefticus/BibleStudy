@@ -21,8 +21,14 @@ BibleStudyApp::~BibleStudyApp()
 
 bool BibleStudyApp::OnInit()
 {
+	wxLogWindow *mylogwindow;
+	mylogwindow = new wxLogWindow(NULL, wxT("Log Output"));
+	mylogwindow->Show();
+	
 	/* create a default frame and display it */
 	BibleStudyMainFrame *frame = new BibleStudyMainFrame(&m_SwordTools, APPTITLE, wxPoint(50,50), wxSize(450,340));
 	frame->Show(TRUE);
 	return TRUE;
+	
+	
 }
