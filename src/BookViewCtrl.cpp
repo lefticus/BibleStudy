@@ -11,6 +11,14 @@
 #include "BookViewCtrl.h"
 
 
+DEFINE_EVENT_TYPE(bsEVT_CHILD_SET_FOCUS)
+
+
+BEGIN_EVENT_TABLE(BookViewCtrl, wxNotebook)
+	EVT_SET_FOCUS(BookViewCtrl::OnSetFocus)
+	EVT_NOTEBOOK_PAGE_CHANGED(-1, BookViewCtrl::OnNotebookPageChanged)
+END_EVENT_TABLE()
+
 BookViewCtrl::BookViewCtrl()
 {
 }
@@ -23,6 +31,8 @@ BookViewCtrl::~BookViewCtrl()
 BookViewCtrl::BookViewCtrl(wxWindow *parent, int id, const wxPoint pos, const wxSize size) : wxNotebook(parent, id, pos, size, wxSIMPLE_BORDER, wxT("notebook"))
 {
 	wxNotebookSizer *nbs = new wxNotebookSizer( this );
+	m_CustEventHandler = new BookViewEventHandler();
+	m_CustEventHandler->SetParent(this);
 }
 
 int BookViewCtrl::AddTab()
@@ -33,7 +43,12 @@ int BookViewCtrl::AddTab()
 	
 	page = new wxPanel( this );
 	html = new wxHtmlWindow( page, -1, wxDefaultPosition, wxDefaultSize, wxVSCROLL, wxT("htmlwindow"));
-	//html->SetFonts("Shalohm", "Courier New", 0);
+	
+	BookViewEventHandler *neweventhandler;
+	neweventhandler = new BookViewEventHandler();
+	neweventhandler->SetParent(this);
+	html->PushEventHandler(neweventhandler);
+	html->SetFonts(wxT("Arial"), wxT("Courier New"), 0);
 	panelsizer->Add(html, 1, wxEXPAND);
 	page->SetSizer(panelsizer);
 	AddPage(page, wxT("*Empty*"));
@@ -76,6 +91,7 @@ void BookViewCtrl::LookupKey(wxString key)
 
 void BookViewCtrl::OpenInCurrentTab(SWModule *newModule)
 {
+	printf("BookView:Got Open in current tab event\n");
 	wxHtmlWindow *html;
 	BookModule *bookmod;
 	wxString key;
@@ -105,6 +121,8 @@ void BookViewCtrl::OpenInCurrentTab(SWModule *newModule)
 
 void BookViewCtrl::OpenInNewTab(SWModule *newModule)
 {
+	printf("BookView:Got Open in new tab event\n");
+	//AddTab();
 	SetSelection(AddTab());
 	OpenInCurrentTab(newModule);
 }
@@ -115,4 +133,31 @@ BookModule* BookViewCtrl::GetActiveBookModule()
 	wxHtmlWindow *html;
 	html = (wxHtmlWindow *)GetPage(GetSelection())->GetChildren().GetFirst()->GetData();
 	return (BookModule *)html->GetClientData();
+}
+
+void BookViewCtrl::ChildGotFocus()
+{	
+	PostChildSetFocus();
+}
+
+void BookViewCtrl::PostChildSetFocus()
+{
+	wxCommandEvent eventCustom(bsEVT_CHILD_SET_FOCUS);
+	eventCustom.SetEventObject(this);
+	eventCustom.SetClientData(GetActiveBookModule());
+	ProcessEvent(eventCustom);
+
+}
+
+void BookViewCtrl::OnNotebookPageChanged(wxEvent &event)
+{
+	event.Skip();
+	Refresh();
+	PostChildSetFocus();
+}
+
+void BookViewCtrl::OnSetFocus(wxEvent &event)
+{
+	event.Skip();
+	PostChildSetFocus();
 }

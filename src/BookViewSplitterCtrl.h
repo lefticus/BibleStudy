@@ -60,8 +60,8 @@
 		void OpenInNewTab(SWModule *);
 		void LookupKey(wxString key);
 		
-		void OnTabPageChange(wxNotebookEvent& event);
-		void OnFocusLost(wxFocusEvent& event);
+		void OnNewActiveChild(wxCommandEvent& event);
+		void OnFocusGot(wxEvent& event);
 		
 		void SplitHorizontally();
 		void SplitVertically();

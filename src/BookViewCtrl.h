@@ -18,17 +18,29 @@
 	#include <wx/fontdlg.h>
 	#include <string>
 	#include "BookModule.h"
-
+	
+	class BookViewCtrl;
+	
+	#include "BookViewEventHandler.h"
+	
 	using namespace sword;
 	using namespace std;
 
+	BEGIN_DECLARE_EVENT_TYPES()
+		DECLARE_EVENT_TYPE(bsEVT_CHILD_SET_FOCUS, 1)
+	END_DECLARE_EVENT_TYPES()
+
+	#define EVT_CHILD_SET_FOCUS(id, fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_CHILD_SET_FOCUS, id, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
+	
 	/**
 	* Tabbed viewing of book modules
 	* 
 	**/
 	class BookViewCtrl : public wxNotebook
 	{
-
+	private:
+		BookViewEventHandler *m_CustEventHandler;
+	
 	public:
 		BookViewCtrl();
 		BookViewCtrl(wxWindow *parent, int id, const wxPoint pos, const wxSize size);
@@ -43,7 +55,14 @@
 		void OpenInCurrentTab(SWModule *);
 		void OpenInNewTab(SWModule *);
 		void LookupKey(wxString key);
+		void ChildGotFocus();
+		void PostChildSetFocus();
+		void OnSetFocus(wxEvent &event);
+		void OnNotebookPageChanged(wxEvent &event);
+		
 		BookModule *GetActiveBookModule();
+		
+		DECLARE_EVENT_TABLE()
 	};
 
 #endif

@@ -52,22 +52,32 @@ void BookTreeCtrl::OnItemActivated(wxEvent &event)
 void BookTreeCtrl::OnOpenModule(wxMenuEvent &event)
 {
 	wxCommandEvent *eventCustom;
+	
+	
 	switch (event.GetId()) {
 	case ID_BookTreePopupOpenInNewTab:
 		eventCustom = new wxCommandEvent(bsEVT_OPEN_IN_NEW_TAB);
-	break;
+		printf("Open In New Tab\n");
+		break;
 	case ID_BookTreePopupOpenInNewWindow:
 		eventCustom = new wxCommandEvent(bsEVT_OPEN_IN_NEW_WINDOW);
-	break;
+		printf("Open In New Window\n");
+		break;
 	case ID_BookTreePopupOpen:
 		eventCustom = new wxCommandEvent(bsEVT_OPEN_IN_CURRENT_TAB);
-	break;
+		printf("Open In Cur Tab\n");
+		break;
 	}
 	
+	printf("Selection: %i", (int)GetSelection());
 	eventCustom->SetEventObject(this);
-	eventCustom->SetClientData(GetItemData(GetSelection())->GetModule());
+	if (GetItemData(GetSelection())) {
+		eventCustom->SetClientData(GetItemData(GetSelection())->GetModule());
+	} else {
+		printf("No Item Data\n");
+	}
 	ProcessEvent(*eventCustom);
-	delete eventCustom;
+	//delete eventCustom;
 	
 }
 

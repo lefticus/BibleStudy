@@ -15,8 +15,8 @@ BEGIN_EVENT_TABLE(BookViewSplitterCtrl, wxGenericSplitterWindow)
 #else
 BEGIN_EVENT_TABLE(BookViewSplitterCtrl, wxSplitterWindow)
 #endif
-	EVT_NOTEBOOK_PAGE_CHANGED(-1, BookViewSplitterCtrl::OnTabPageChange)
-	EVT_KILL_FOCUS(BookViewSplitterCtrl::OnFocusLost)
+	EVT_CHILD_SET_FOCUS(-1, BookViewSplitterCtrl::OnNewActiveChild)
+
 END_EVENT_TABLE()
 
 DEFINE_EVENT_TYPE(bsEVT_ACTIVE_MODULE_CHANGE)
@@ -27,12 +27,12 @@ BookViewSplitterCtrl::BookViewSplitterCtrl()
 {
 }
 
-BookViewSplitterCtrl::BookViewSplitterCtrl(wxWindow *parent, SwordTools *nswordtools, const wxPoint pos, const wxSize size) : wxSplitterWindow(parent, -1, pos, size, wxSP_3D|wxSP_FULLSASH|wxSP_LIVE_UPDATE, wxT("splitterWindow"))
+BookViewSplitterCtrl::BookViewSplitterCtrl(wxWindow *parent, SwordTools *nswordtools, const wxPoint pos, const wxSize size) : wxSplitterWindow(parent, -1, pos, size, wxSP_3D|wxSP_LIVE_UPDATE, wxT("splitterWindow"))
 {
 	SetMinimumPaneSize(50);
 	
 	m_SwordTools = nswordtools;
-	m_TopLevelSplit = new wxSplitterWindow(this, -1);
+	m_TopLevelSplit = new wxSplitterWindow(this, -1, wxDefaultPosition, wxDefaultSize, wxSP_3DSASH|wxSP_PERMIT_UNSPLIT);
 	m_FirstChildSplit = new wxSplitterWindow(m_TopLevelSplit, -1, wxDefaultPosition, wxDefaultSize, wxSP_3DSASH|wxSP_PERMIT_UNSPLIT);
 	m_SecondChildSplit = new wxSplitterWindow(m_TopLevelSplit, -1, wxDefaultPosition, wxDefaultSize, wxSP_3DSASH|wxSP_PERMIT_UNSPLIT);
 	
@@ -108,6 +108,7 @@ void BookViewSplitterCtrl::AddTab()
 
 void BookViewSplitterCtrl::OpenInCurrentTab(SWModule *mod)
 {
+	printf("Splitter:Got Open in current tab event\n");
 	GetActiveBookViewCtrl()->OpenInCurrentTab(mod);
 	
 	wxCommandEvent eventCustom(bsEVT_ACTIVE_MODULE_CHANGE);
@@ -118,13 +119,18 @@ void BookViewSplitterCtrl::OpenInCurrentTab(SWModule *mod)
 
 void BookViewSplitterCtrl::OpenInNewTab(SWModule *mod)
 {
-	GetActiveBookViewCtrl()->OpenInNewTab(mod);
+	printf("Splitter:Got Open in new tab event\n");
+	if (GetActiveBookViewCtrl()) {
+		printf("Splitter:Valid ActiveBookView\n");
+		GetActiveBookViewCtrl()->OpenInNewTab(mod);
 
-	wxCommandEvent eventCustom(bsEVT_ACTIVE_MODULE_CHANGE);
-	eventCustom.SetEventObject(this);
-	eventCustom.SetClientData(GetActiveBookViewCtrl()->GetActiveBookModule());
-	ProcessEvent(eventCustom);
-
+		/*
+		wxCommandEvent eventCustom(bsEVT_ACTIVE_MODULE_CHANGE);
+		eventCustom.SetEventObject(this);
+		eventCustom.SetClientData(GetActiveBookViewCtrl()->GetActiveBookModule());
+		ProcessEvent(eventCustom);
+		*/
+	}	
 }
 
 void BookViewSplitterCtrl::LookupKey(wxString key)
@@ -132,8 +138,16 @@ void BookViewSplitterCtrl::LookupKey(wxString key)
 	GetActiveBookViewCtrl()->LookupKey(key);
 }
 
-void BookViewSplitterCtrl::OnTabPageChange(wxNotebookEvent& event)
+void BookViewSplitterCtrl::OnNewActiveChild(wxCommandEvent& event)
 {
+	printf("New Active Child: %s\n", (const char *)wxString(event.GetEventObject()->GetClassInfo()->GetClassName(), wxConvUTF8).mb_str());
+	if (!wxString(wxT("wxNotebook")).CompareTo(event.GetEventObject()->GetClassInfo()->GetClassName())) {
+		printf("New Tab Has Focus\n");
+		m_LastFocus = (BookViewCtrl *)event.GetEventObject();
+	}
+	
+	event.Skip();
+
 	wxCommandEvent eventCustom(bsEVT_ACTIVE_MODULE_CHANGE);
 	eventCustom.SetEventObject(this);
 	eventCustom.SetClientData(((BookViewCtrl *)(event.GetEventObject()))->GetActiveBookModule());
@@ -142,9 +156,11 @@ void BookViewSplitterCtrl::OnTabPageChange(wxNotebookEvent& event)
 
 BookViewCtrl *BookViewSplitterCtrl::GetActiveBookViewCtrl()
 {
+	return m_LastFocus;
+/*
 	printf("Current Focus Class Name: %s\n", (const char *)wxString(FindFocus()->GetClassInfo()->GetClassName(), wxConvUTF8).mb_str());
 	if (FindFocus()) {
-		if (!wxString(wxT("BookViewCtrl")).CompareTo(FindFocus()->GetClassInfo()->GetClassName())) {
+		if (!wxString(wxT("wxNotebook")).CompareTo(FindFocus()->GetClassInfo()->GetClassName())) {
 			m_LastFocus = (BookViewCtrl *)FindFocus();
 			return (BookViewCtrl *)FindFocus();
 		} else {
@@ -153,15 +169,18 @@ BookViewCtrl *BookViewSplitterCtrl::GetActiveBookViewCtrl()
 	} else {
 		return m_LastFocus;
 	}
+*/
 }
 
-void BookViewSplitterCtrl::OnFocusLost(wxFocusEvent &event)
+void BookViewSplitterCtrl::OnFocusGot(wxEvent &event)
 {
 	printf("Focus Lost Class Name: %s\n", (const char *)wxString(event.GetEventObject()->GetClassInfo()->GetClassName(), wxConvUTF8).mb_str());
-	if (!wxString(wxT("BookViewCtrl")).CompareTo(event.GetEventObject()->GetClassInfo()->GetClassName())) {
+	if (!wxString(wxT("wxNotebook")).CompareTo(event.GetEventObject()->GetClassInfo()->GetClassName())) {
 		printf("FocusLost\n");
 		m_LastFocus = (BookViewCtrl *)event.GetEventObject();
 	}
+	
+	event.Skip();
 }
 
 void BookViewSplitterCtrl::SplitHorizontally()

@@ -30,7 +30,7 @@ BEGIN_EVENT_TABLE(BibleStudyMainFrame, wxFrame)
 	EVT_TOOL(ID_ToolLookupKey, BibleStudyMainFrame::OnLookupKey)
 	EVT_TOOL(ID_ToolNewTab, BibleStudyMainFrame::OnNewTab)
 	EVT_TOOL(ID_ToolRemoveTab, BibleStudyMainFrame::OnRemoveTab)
-	
+		
 	EVT_OPEN_IN_CURRENT_TAB(-1, BibleStudyMainFrame::OnOpenInCurrentTab)
 	EVT_OPEN_IN_NEW_TAB(-1, BibleStudyMainFrame::OnOpenInNewTab)
 	EVT_OPEN_IN_NEW_WINDOW(-1, BibleStudyMainFrame::OnOpenInNewWindow)
@@ -203,16 +203,19 @@ BibleStudyMainFrame *BibleStudyMainFrame::OpenNewWindow()
 
 void BibleStudyMainFrame::OnOpenInNewTab(wxCommandEvent &event)
 {
+	printf("MainFrame:Got Open in new tab event\n");
 	m_WindowSplit->OpenInNewTab((SWModule *)event.GetClientData());
 }
 
 void BibleStudyMainFrame::OnOpenInNewWindow(wxCommandEvent &event)
 {
+	printf("MainFrame:Got Open in new window event\n");
 	OpenNewWindow()->DisplayModule((SWModule *)event.GetClientData());
 }
 
 void BibleStudyMainFrame::OnOpenInCurrentTab(wxCommandEvent &event)
 {
+	printf("MainFrame:Got Open in current tab event\n");
 	m_WindowSplit->OpenInCurrentTab((SWModule *)event.GetClientData());
 }
 
