@@ -38,6 +38,7 @@ class DropDownEventHandler;
 		void OnKillFocus(wxFocusEvent &event);
 		void OnItemActivated(wxTreeEvent &event);
 		void OnDateSelected(wxCalendarEvent &event);
+		void OnMove(wxMoveEvent &event);
 		
 		void SetParent(BookViewToolBar *parent);
 

@@ -53,8 +53,9 @@
 		/** Default constructor */
 		BibleStudyMainFrame(SwordTools *, const wxString& title, const wxPoint& pos, const wxSize& size);
 		
-		void OnQuit(wxCommandEvent& event);
+		void OnExit(wxCommandEvent& event);
 		void OnAbout(wxCommandEvent& event);
+		void OnCloseWindow(wxCommandEvent& event);
 		
 		void OnSplitHorizontally(wxCommandEvent& event);
 		void OnSplitVertically(wxCommandEvent& event);

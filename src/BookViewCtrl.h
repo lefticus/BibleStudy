@@ -32,6 +32,7 @@
 
 	#define EVT_CHILD_SET_FOCUS(id, fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_CHILD_SET_FOCUS, id, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
 	
+	
 	/**
 	* Tabbed viewing of book modules
 	* 
@@ -64,6 +65,8 @@
 		void PostChildSetFocus();
 		void OnSetFocus(wxEvent &event);
 		void OnNotebookPageChanged(wxEvent &event);
+		
+		void SetIcon();
 		
 		BookModule *GetActiveBookModule();
 		

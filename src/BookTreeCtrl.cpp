@@ -11,9 +11,22 @@
 #include "BookTreeCtrl.h"
 
 #include "../icons/book.xpm"
+#include "../icons/bible.xpm"
+#include "../icons/lexicon.xpm"
+#include "../icons/commentary.xpm"
+#include "../icons/devotional.xpm"
 #include "../icons/closedfolder.xpm"
 #include "../icons/openfolder.xpm"
 
+enum {
+	ID_CLOSEDFOLDER_ICON = 0,
+	ID_OPENFOLDER_ICON,
+	ID_BIBLICAL_TEXT_ICON,
+	ID_LEXICON_ICON,
+	ID_COMMENTARY_ICON,
+	ID_BOOK_ICON,
+	ID_DEVOTIONAL_ICON
+};
 
 #if USE_GENERIC_TREECTRL
 BEGIN_EVENT_TABLE(BookTreeCtrl, wxGenericTreeCtrl)
@@ -147,8 +160,8 @@ void BookTreeCtrl::RefreshBookList()
 			childnode = treenodes[curMod->Type()];
 			if (!childnode.IsOk()) {
 				wxLogDebug(wxT("appending type"));
-				childnode = AppendItem(rootnode, wxString(curMod->Type(), wxConvUTF8), 1);
-				SetItemImage(childnode, 2, wxTreeItemIcon_Expanded);
+				childnode = AppendItem(rootnode, wxString(curMod->Type(), wxConvUTF8), ID_CLOSEDFOLDER_ICON);
+				SetItemImage(childnode, ID_OPENFOLDER_ICON, wxTreeItemIcon_Expanded);
 				treenodes[curMod->Type()] = childnode;
 			}
 			
@@ -156,8 +169,8 @@ void BookTreeCtrl::RefreshBookList()
 		} else {
 			childnode = treenodes[(const char *)configEntry.mb_str()];
 			if (!childnode.IsOk()) {
-				childnode = AppendItem(rootnode, configEntry, 1);
-				SetItemImage(childnode, 2, wxTreeItemIcon_Expanded);
+				childnode = AppendItem(rootnode, configEntry, ID_CLOSEDFOLDER_ICON);
+				SetItemImage(childnode, ID_OPENFOLDER_ICON, wxTreeItemIcon_Expanded);
 				treenodes[(const char *)configEntry.mb_str()] = childnode;
 			}
 			
@@ -178,15 +191,31 @@ void BookTreeCtrl::RefreshBookList()
 			
 			language = m_Languages.GetLanguage(wxString(curMod->Lang(), wxConvUTF8));
 
-			langnode = AppendItem(childnode, language, 1);
-			SetItemImage(langnode, 2, wxTreeItemIcon_Expanded);
+			langnode = AppendItem(childnode, language, ID_CLOSEDFOLDER_ICON);
+			SetItemImage(langnode, ID_OPENFOLDER_ICON, wxTreeItemIcon_Expanded);
 			treelangnodes[grouplang] = langnode;
 		}
 		wxString modname = wxString(curMod->Name(), wxConvUTF8);
 		modname += wxT(" - ");
 		modname += wxString(curMod->Description(), wxConvUTF8);
-		wxLogDebug(wxT("appending module %s"), (const wxChar *)modname);	
-		curNode = AppendItem(langnode, wxString(curMod->Name(), wxConvUTF8) + wxT(" - ") + wxString(curMod->Description(), wxConvUTF8), 0);
+		wxLogDebug(wxT("appending module %s"), (const wxChar *)modname);
+		curNode = AppendItem(langnode, wxString(curMod->Name(), wxConvUTF8) + wxT(" - ") + wxString(curMod->Description(), wxConvUTF8));
+
+		/** SET ICON **/
+		if (!strcmp(curMod->Type(), "Biblical Texts")) {
+			SetItemImage(curNode, ID_BIBLICAL_TEXT_ICON);
+		} else if (!strcmp(curMod->Type(), "Lexicons / Dictionaries") ||
+					!strcmp(curMod->Type(), "Glossaries")) {
+			SetItemImage(curNode, ID_LEXICON_ICON);
+		} else if (!strcmp(curMod->Type(), "Commentaries")) {
+			SetItemImage(curNode, ID_COMMENTARY_ICON);
+		} else if (!strcmp(curMod->Type(), "Daily Devotional")) {
+			SetItemImage(curNode, ID_DEVOTIONAL_ICON);
+		} else {
+			SetItemImage(curNode, ID_BOOK_ICON);
+		}
+		/** END SET ICON **/
+		
 		SetItemData(curNode, new BookTreeItemData(curMod));
 		//curMod->AddRenderFilter(new PLAINHTML());
 		SortChildren(childnode);
@@ -198,7 +227,7 @@ void BookTreeCtrl::RefreshBookList()
 
 
 
-BookTreeCtrl::BookTreeCtrl(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size) : wxTreeCtrl(parent, id, pos, size, wxTR_HIDE_ROOT|wxTR_LINES_AT_ROOT, wxDefaultValidator, wxT("listCtrl")) 
+BookTreeCtrl::BookTreeCtrl(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size) : wxTreeCtrl(parent, id, pos, size, wxTR_HIDE_ROOT|wxTR_HAS_BUTTONS, wxDefaultValidator, wxT("listCtrl")) 
 {
 	SetIndent(10);
 	SetSpacing(10);
@@ -217,11 +246,16 @@ void BookTreeCtrl::SetupIcons()
 	int size = 16;
 	
 	wxImageList *images = new wxImageList(size, size, TRUE);
-	wxIcon icons[3];
-	icons[0] = wxIcon(book_xpm);
-	icons[1] = wxIcon(closedfolder_xpm);
-	icons[2] = wxIcon(openfolder_xpm);
-	
+	wxIcon icons[7];
+	icons[ID_BOOK_ICON] = wxIcon(book_xpm);
+	icons[ID_CLOSEDFOLDER_ICON] = wxIcon(closedfolder_xpm);
+	icons[ID_OPENFOLDER_ICON] = wxIcon(openfolder_xpm);
+	icons[ID_BIBLICAL_TEXT_ICON] = wxIcon(bible_xpm);
+	icons[ID_LEXICON_ICON] = wxIcon(lexicon_xpm);
+	icons[ID_COMMENTARY_ICON] = wxIcon(commentary_xpm);
+	icons[ID_DEVOTIONAL_ICON] = wxIcon(devotional_xpm);
+
+		
 	int sizeOrig = icons[0].GetWidth();
 	
 	for ( size_t i = 0; i < WXSIZEOF(icons); i++ ) {

@@ -10,9 +10,11 @@
 
 #include "BibleStudyMainFrame.h"
 
+#include "../icons/splitleftright.xpm"
+
 /** Register event handlers */
 BEGIN_EVENT_TABLE(BibleStudyMainFrame, wxFrame)
-	EVT_MENU(ID_MenuQuit, BibleStudyMainFrame::OnQuit)
+	EVT_MENU(ID_MenuExit, BibleStudyMainFrame::OnExit)
 	EVT_MENU(ID_MenuAbout, BibleStudyMainFrame::OnAbout)
 	
 	EVT_MENU(ID_MenuSplitVertically, BibleStudyMainFrame::OnSplitVertically)
@@ -23,6 +25,7 @@ BEGIN_EVENT_TABLE(BibleStudyMainFrame, wxFrame)
 	EVT_MENU(ID_MenuCloseTab, BibleStudyMainFrame::OnCloseTab)
 	EVT_MENU(ID_MenuShowHideBookTree, BibleStudyMainFrame::OnShowHideBookTree)
 	EVT_MENU(ID_MenuNewWindow, BibleStudyMainFrame::OnNewWindow)
+	EVT_MENU(ID_MenuCloseWindow, BibleStudyMainFrame::OnCloseWindow)
 	
 	EVT_MENU(ID_MenuCloseOtherTabs, BibleStudyMainFrame::OnCloseOtherTabs)
 	EVT_MENU(ID_MenuDetachTab, BibleStudyMainFrame::OnDetachTab)
@@ -50,7 +53,7 @@ BibleStudyMainFrame::~BibleStudyMainFrame()
 {
 }
 
-BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools, const wxString& title, const wxPoint& pos, const wxSize& size) : wxFrame((wxFrame *)NULL, -1, title, pos, size)
+BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools, const wxString& title, const wxPoint& pos, const wxSize& size) : wxFrame((wxFrame *)NULL, -1, title, pos, size, wxDEFAULT_FRAME_STYLE,wxT("BibleStudyWindow"))
 {
 
 	m_SwordTools = newSwordTools;
@@ -60,15 +63,22 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools, const wxStri
 	wxMenu *menuWindow = new wxMenu();
 	wxMenu *menuOptions = new wxMenu();
 		
-	menuFile->Append( ID_MenuNewWindow, wxT("&New Window"));
+	menuFile->Append( ID_MenuNewWindow, wxT("&New Window") );
+	menuFile->Append( ID_MenuCloseWindow, wxT("&Close Window") );
 	menuFile->AppendSeparator();
-	menuFile->Append( ID_MenuQuit, wxT("E&xit") );
+	menuFile->Append( ID_MenuExit, wxT("E&xit") );
 	
 	menuHelp->Append( ID_MenuAbout, wxT("&About BibleStudy") );
 		
 	menuWindow->Append( ID_MenuShowHideBookTree, wxT("Show/Hide Book List") );
 	menuWindow->AppendSeparator();
+	
+	//wxMenuItem *menuItemSplitLeftRight = new wxMenuItem(menuWindow, ID_MenuSplitVertically, wxT("Split View &Left/Right"));
+	//menuItemSplitLeftRight->SetBitmap(wxBitmap(splitleftright_xpm) );
+	//menuWindow->Append( menuItemSplitLeftRight );
+	
 	menuWindow->Append( ID_MenuSplitVertically, wxT("Split View &Left/Right") );
+	
 	menuWindow->Append( ID_MenuSplitHorizontally, wxT("Split View &Top/Bottom") );
 	menuWindow->Append( ID_MenuRemoveSplit, wxT("&Remove Active View") );
 	menuWindow->AppendSeparator();
@@ -98,7 +108,7 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools, const wxStri
 	
 	
 	
-	wxMenuBar *menuBar = new wxMenuBar(wxMB_DOCKABLE);
+	wxMenuBar *menuBar = new wxMenuBar();
 	menuBar->Append( menuFile, wxT("&File") );
 	menuBar->Append( menuOptions, wxT("&Options") );
 	menuBar->Append( menuWindow, wxT("&Window") );
@@ -111,7 +121,7 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools, const wxStri
 	CreateStatusBar();
 	SetStatusText( wxT("Welcome to BibleStudy!") );
 		
-	m_ToolBar = new BookViewToolBar(this, ID_BookViewToolBar, wxTB_HORIZONTAL|wxTB_DOCKABLE| wxNO_BORDER);
+	m_ToolBar = new BookViewToolBar(this, ID_BookViewToolBar, wxTB_HORIZONTAL|wxTB_FLAT);
 	SetToolBar(m_ToolBar);
 	
 	SetupSplitterWindows();
@@ -188,11 +198,25 @@ void BibleStudyMainFrame::OnBookTreeChange(wxCommandEvent& event)
 	GetToolBar()->ToggleTool(ID_ToolShowHideBookTree, event.GetInt());
 }
 
-void BibleStudyMainFrame::OnQuit(wxCommandEvent& event)
+void BibleStudyMainFrame::OnExit(wxCommandEvent& event)
 {
-	wxLogTrace(wxTRACE_Messages, wxT("BibleStudyMainFrame::OnQuit called"));
+	wxLogTrace(wxTRACE_Messages, wxT("BibleStudyMainFrame::OnExit called"));
+	wxWindow *window;
+		
+	window = FindWindowByName(wxT("BibleStudyWindow"));
+	
+	while (window) {
+		window->Close();
+		window = FindWindowByName(wxT("BibleStudyWindow"));
+	}
+}
+
+void BibleStudyMainFrame::OnCloseWindow(wxCommandEvent& event)
+{
+	wxLogTrace(wxTRACE_Messages, wxT("BibleStudyMainFrame::OnCloseWindow called"));
 	Close(TRUE);
 }
+
 
 void BibleStudyMainFrame::OnAbout(wxCommandEvent& event)
 {

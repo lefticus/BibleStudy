@@ -26,7 +26,7 @@
 	/** Menu Item IDs */
 	enum
 	{
-		ID_MenuQuit = 1,
+		ID_MenuExit = 1,
 		ID_MenuAbout,
 		ID_MenuSplitVertically,
 		ID_MenuSplitHorizontally,
@@ -38,6 +38,7 @@
 		ID_MenuDetachTab,
 		ID_MenuCloseOtherTabs,
 		ID_MenuDuplicateTab,
+		ID_MenuCloseWindow,
 		
 		/* Must remain last */
 		ID_MenuTopBookOption
@@ -49,6 +50,8 @@
 		ID_ToolShowHideBookTree = 100,
 		ID_ToolLookupKey,
 		ID_ToolTextKey,
+		ID_ToolSearchKey,
+		ID_ToolListKey,
 		ID_ToolNewTab,
 		ID_ToolRemoveTab,
 		ID_ToolDropDownKey,

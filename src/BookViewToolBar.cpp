@@ -14,6 +14,8 @@
 #include "../icons/removetab.xpm"
 #include "../icons/booktree.xpm"
 #include "../icons/lookup.xpm"
+#include "../icons/search.xpm"
+#include "../icons/list.xpm"
 
 DEFINE_EVENT_TYPE(bsEVT_LOAD_KEY)
 
@@ -21,31 +23,33 @@ DEFINE_EVENT_TYPE(bsEVT_LOAD_KEY)
 BEGIN_EVENT_TABLE(BookViewToolBar, wxToolBar)
 	EVT_BUTTON(ID_ToolDropDownBtn, BookViewToolBar::OnShowDropDown)
 	EVT_TOOL(ID_ToolLookupKey, BookViewToolBar::OnLookupKey)
-	
+	EVT_TOOL(ID_ToolListKey, BookViewToolBar::OnListKey)
 END_EVENT_TABLE()
 
 
 
 BookViewToolBar::BookViewToolBar(wxWindow *parent, wxWindowID id, long style) : wxToolBar(parent, id, wxDefaultPosition, wxDefaultSize, style, wxPanelNameStr)
 {
+	SetToolBitmapSize(wxSize(22,22));
+	SetToolSeparation(5);
+	
 	AddTool(ID_ToolShowHideBookTree, wxT("Book List"), wxBitmap(booktree_xpm), wxT("Show/Hide Book List"), wxITEM_CHECK);
 	AddSeparator();
 	AddTool(ID_ToolNewTab, wxT("Add Tab"), wxBitmap(addtab_xpm), wxT("Add a New Tab"), wxITEM_NORMAL);
 	AddTool(ID_ToolRemoveTab, wxT("Remove Tab"), wxBitmap(removetab_xpm), wxT("Removes the Active Tab"), wxITEM_NORMAL);
 	AddSeparator();
 	m_LookupKey = new wxTextCtrl(this, ID_ToolTextKey);
+	m_LookupKey->SetSize(m_LookupKey->GetSize().GetWidth()*2, m_LookupKey->GetSize().GetHeight());
 	AddControl(m_LookupKey);
+	AddTool(ID_ToolListKey, wxT("List"), wxBitmap(list_xpm), wxT("List Keys"), wxITEM_NORMAL);
 	AddTool(ID_ToolLookupKey, wxT("Lookup"), wxBitmap(lookup_xpm), wxT("Lookup Key"), wxITEM_NORMAL);
-	AddSeparator();
-	m_DropDownKey = new wxTextCtrl(this, ID_ToolDropDownKey, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_READONLY);
-	AddControl(m_DropDownKey);
-	m_DropDownBtn = new wxButton(this, ID_ToolDropDownBtn, wxT("..."), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
-	AddControl(m_DropDownBtn);
+	AddTool(ID_ToolSearchKey, wxT("Search"), wxBitmap(search_xpm), wxT("Search"), wxITEM_NORMAL);
 	
 	Realize();
 	
-	m_DropDownKey->Show(false);
-	m_DropDownBtn->Show(false);
+	EnableTool(ID_ToolListKey, false);
+//	m_DropDownKey->Enable(false);
+//	m_DropDownBtn->Enable(false);
 	
 	m_SubFrame = NULL;
 }
@@ -74,51 +78,47 @@ void BookViewToolBar::SetDropDownFrame(wxFrame *subframe)
 	
 	m_SubFrame = subframe;
 	if (m_SubFrame) {
-		m_DropDownKey->Show(true);
-		m_DropDownBtn->Show(true);
+		EnableTool(ID_ToolListKey, true);
+//		m_DropDownKey->Enable(true);
+//		m_DropDownBtn->Enable(true);
 		DropDownEventHandler *m_EventHandler = new DropDownEventHandler();
 		m_EventHandler->SetParent(this);
 		subframe->PushEventHandler(m_EventHandler);
 	} else {
-		m_DropDownKey->Show(false);
-		m_DropDownBtn->Show(false);
+		EnableTool(ID_ToolListKey, false);
+//		m_DropDownKey->Enable(false);
+//		m_DropDownBtn->Enable(false);
+	}
+}
+
+
+void BookViewToolBar::OnListKey(wxEvent &event)
+{
+	wxPoint pos;
+	
+	
+	pos = GetParent()->ClientToScreen(wxPoint(0,0));
+	pos.x = pos.x + GetToolSize().GetWidth() * 3 + GetToolSeparation() * 2 + GetMargins().GetWidth();
+	
+	
+	if (m_SubFrame) {
+		
+		m_SubFrame->Move(pos.x, pos.y);
+		m_SubFrame->Show(true);
 	}
 }
 
 void BookViewToolBar::OnShowDropDown(wxEvent &event)
 {
-	wxPoint toolbarpos, windowpos, pos, clientareapos;
-/*	wxSize toolsize, firsttextboxsize, secondtextboxsize;
-	int sepsize;
+	wxPoint pos;
 	
-	toolbarpos = this->GetPosition();
-	windowpos = this->GetParent()->GetPosition();
-	clientareapos = this->GetParent()->GetClientAreaOrigin();
 	
-	toolsize = this->GetToolSize();
-	firsttextboxsize = m_LookupKey->GetSize();
-	secondtextboxsize = m_DropDownKey->GetSize();
-	sepsize = GetToolSeparation();
+	pos = GetParent()->ClientToScreen(wxPoint(0,0));
+	pos.x = pos.x + GetToolSize().GetWidth() * 4 + GetToolSeparation() * 3 + m_LookupKey->GetSize().GetWidth() + GetMargins().GetWidth();
 	
-	int menubar, borderwidth, titlebar;
-	//borderwidth = wxSystemSettings::GetMetric(wxSYS_FRAMESIZE_X);
-	//menubar = wxSystemSettings::GetMetric(wxSYS_MENU_Y);
-	//titlebar = wxSystemSettings::GetMetric(wxSYS_CAPTION_Y);
-	
-	wxLogDebug(wxT("TextBox pos: %i, %i  size: %i, %i"), pos.x, pos.y, size.GetWidth(), size.GetHeight()), 
-	
-	//pos.x = windowpos.x + toolsize.GetWidth() * 3 + sepsize * 3 + firsttextboxsize.GetWidth() + secondtextboxsize.GetWidth();
-	toolbarpos.x = 0;
-	toolbarpos.y = 0;
-	toolbarpos = GetParent()->ClientToScreen(toolbarpos);
-	
-	pos.x = toolbarpos.x + toolsize.GetWidth() * 3 ; //+ sepsize * 3 ;
-	
-	pos.y = toolbarpos.y; //+ (toolsize.GetHeight()-secondtextboxsize.GetHeight())/2;
-	//pos.y = windowpos.y;*/
 	
 	if (m_SubFrame) {
-		pos = wxGetMousePosition();
+		
 		m_SubFrame->Move(pos.x, pos.y);
 		m_SubFrame->Show(true);
 	}
@@ -147,7 +147,7 @@ void BookViewToolBar::DropDownItemActivated(wxTreeEvent &event)
 	
 	m_SubFrame->Show(false);
 
-	m_DropDownKey->SetValue(tree->GetItemText(item));
+	
 	
 	key = wxT("/") + tree->GetItemText(item);
 	
@@ -168,6 +168,8 @@ void BookViewToolBar::DropDownItemActivated(wxTreeEvent &event)
 	eventCustom.SetEventObject(this);
 	eventCustom.SetString(key);
 	ProcessEvent(eventCustom);
+	
+	m_LookupKey->SetValue(key);
 }
 
 void BookViewToolBar::DropDownDateSelected(wxCalendarEvent &event)
@@ -181,7 +183,7 @@ void BookViewToolBar::DropDownDateSelected(wxCalendarEvent &event)
 	key = key.Format(wxT("%02i.%02i"), date.GetMonth()+1, date.GetDay());
 	wxLogDebug(wxT("Date Selected: ") + key);
 	
-	m_DropDownKey->SetValue(wxString::Format(wxT("%i "), date.GetDay()) + wxDateTime::GetMonthName(date.GetMonth()));
+	m_LookupKey->SetValue(key);
 	
 	wxCommandEvent eventCustom(bsEVT_LOAD_KEY);
 	eventCustom.SetEventObject(this);

@@ -37,9 +37,9 @@
 	{
 	private:
 		wxTextCtrl *m_LookupKey;
-		wxTextCtrl *m_DropDownKey;
+		//wxTextCtrl *m_DropDownKey;
 		
-		wxButton *m_DropDownBtn;
+		//wxButton *m_DropDownBtn;
 
 		wxFrame *m_SubFrame;
 		
@@ -60,7 +60,7 @@
 		void DropDownDateSelected(wxCalendarEvent &event);
 		
 		void OnLookupKey(wxEvent &event);
-
+		void OnListKey(wxEvent &event);
 		
 		DECLARE_EVENT_TABLE()
 	};

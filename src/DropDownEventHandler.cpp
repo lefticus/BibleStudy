@@ -15,6 +15,7 @@ BEGIN_EVENT_TABLE(DropDownEventHandler, wxEvtHandler)
 	EVT_KILL_FOCUS(DropDownEventHandler::OnKillFocus)
 	EVT_TREE_ITEM_ACTIVATED(-1, DropDownEventHandler::OnItemActivated)
 	EVT_CALENDAR(-1, DropDownEventHandler::OnDateSelected)
+	EVT_MOVE(DropDownEventHandler::OnMove)
 END_EVENT_TABLE()
 
 DropDownEventHandler::DropDownEventHandler()
@@ -51,4 +52,9 @@ void DropDownEventHandler::OnDateSelected(wxCalendarEvent &event)
 void DropDownEventHandler::SetParent(BookViewToolBar *nparent)
 {
 	m_parent = nparent;
+}
+
+void DropDownEventHandler::OnMove(wxMoveEvent &event)
+{
+	//event.Handled();
 }
