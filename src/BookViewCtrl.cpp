@@ -7,6 +7,10 @@
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  ***************************************************************************/
+#ifdef __GNUG__
+	#pragma implementation "BookViewCtrl.h"
+#endif
+
 
 #include "BookViewCtrl.h"
 
@@ -65,9 +69,6 @@ BookViewCtrl::BookViewCtrl(wxWindow *parent, int id, const wxPoint pos, const wx
 	
 	AssignImageList(images);
 
-
-
-	wxNotebookSizer *nbs = new wxNotebookSizer( this );
 	m_CustEventHandler = new BookViewEventHandler();
 	m_CustEventHandler->SetParent(this);
 }
@@ -141,12 +142,27 @@ void BookViewCtrl::OpenInCurrentTab(BookModule *bm)
 	LookupKey(bm->GetLastLookupKey());
 }
 
+void BookViewCtrl::AddToCurrentTab(SWModule *mod)
+{
+	GetActiveBookModule()->AddModule(mod);
+	SetPageText(GetSelection(), GetActiveBookModule()->GetName());
+	LookupKey(GetActiveBookModule()->GetLastLookupKey());
+	
+}
+
+void BookViewCtrl::AddToCurrentTab(BookModule *mod)
+{
+	AddToCurrentTab(mod->GetModule());
+}
+
+
 void BookViewCtrl::OpenInCurrentTab(SWModule *newModule)
 {
 	wxHtmlWindow *html;
 	BookModule *bookmod;
 	wxString key;
-	bool performsearch;
+	bool performsearch = false;
+	
 	html = (wxHtmlWindow *)GetPage(GetSelection())->GetChildren().GetFirst()->GetData();
 	SetPageText(GetSelection(), wxString(newModule->Name(), wxConvUTF8));
 	

@@ -7,6 +7,9 @@
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  ***************************************************************************/
+#ifdef __GNUG__
+	#pragma implementation "DropDownEventHandler.h"
+#endif
 
 #include "DropDownEventHandler.h"
 

@@ -7,7 +7,10 @@
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  ***************************************************************************/
-
+#if defined(__GNUG__) && !defined(__APPLE__)
+	#pragma interface "DropDownEventHandler.h"
+#endif
+ 
 #ifndef _DROPDOWNEVENTHANDLER_H_
 #define _DROPDOWNEVENTHANDLER_H_
 

@@ -7,6 +7,9 @@
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  ***************************************************************************/
+#if defined(__GNUG__) && !defined(__APPLE__)
+	#pragma interface "BookViewCtrl.h"
+#endif
 
 #ifndef _BOOKVIEWCTRL_H_
 	
@@ -59,6 +62,8 @@
 		void OpenInCurrentTab(BookModule *);
 		void OpenInNewTab(SWModule *);
 		void OpenInNewTab(BookModule *);
+		void AddToCurrentTab(SWModule *);
+		void AddToCurrentTab(BookModule *);
 		
 		void LookupKey(wxString key);
 		void ChildGotFocus();

@@ -7,16 +7,19 @@
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  ***************************************************************************/
+#if defined(__GNUG__) && !defined(__APPLE__)
+	#pragma interface "SwordTools.h"
+#endif
 
 #ifndef _SWORDTOOLS_H_
 	#define _SWORDTOOLS_H_
 
+	#include <markupfiltmgr.h>
 	#include <map>
 
 	#include "biblestudy.h"
 	#include <string>
 	#include <wx/treectrl.h>
-	#include <markupfiltmgr.h>
 
 	using namespace sword;
 	using namespace std;

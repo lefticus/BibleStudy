@@ -7,7 +7,11 @@
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  ***************************************************************************/
-
+#ifdef __GNUG__
+	#pragma implementation "BookTreeCtrl.h"
+#endif
+ 
+ 
 #include "BookTreeCtrl.h"
 
 #include "../icons/book.xpm"
@@ -38,13 +42,14 @@ BEGIN_EVENT_TABLE(BookTreeCtrl, wxTreeCtrl)
 	EVT_MENU(ID_BookTreePopupOpenInNewTab, BookTreeCtrl::OnOpenModule)
 	EVT_MENU(ID_BookTreePopupOpenInNewWindow, BookTreeCtrl::OnOpenModule)
 	EVT_MENU(ID_BookTreePopupOpen, BookTreeCtrl::OnOpenModule)
+	EVT_MENU(ID_BookTreePopupAddToCurrentTab, BookTreeCtrl::OnOpenModule)
 	EVT_TREE_ITEM_ACTIVATED(-1, BookTreeCtrl::OnItemActivated)
 END_EVENT_TABLE() 
 
 DEFINE_EVENT_TYPE(bsEVT_OPEN_IN_CURRENT_TAB)
 DEFINE_EVENT_TYPE(bsEVT_OPEN_IN_NEW_TAB)
 DEFINE_EVENT_TYPE(bsEVT_OPEN_IN_NEW_WINDOW)
-
+DEFINE_EVENT_TYPE(bsEVT_ADD_TO_CURRENT_TAB)
 
 
 BookTreeCtrl::~BookTreeCtrl()
@@ -93,6 +98,11 @@ void BookTreeCtrl::OnOpenModule(wxMenuEvent &event)
 	case ID_BookTreePopupOpen:
 		eventCustom = new wxCommandEvent(bsEVT_OPEN_IN_CURRENT_TAB);
 		break;
+	case ID_BookTreePopupAddToCurrentTab:
+		eventCustom = new wxCommandEvent(bsEVT_ADD_TO_CURRENT_TAB);
+		break;
+	default:
+		return;
 	}
 	
 	eventCustom->SetEventObject(this);
@@ -185,7 +195,6 @@ void BookTreeCtrl::RefreshBookList()
 		
 		langnode = treelangnodes[grouplang];
 		if (!langnode.IsOk()) {
-			SWLocale *locale;
 			wxString language;
 			wxLogDebug(wxT("appending language"));
 			
@@ -239,6 +248,7 @@ BookTreeCtrl::BookTreeCtrl(wxWindow *parent, wxWindowID id, const wxPoint &pos, 
 	m_PopupMenu->Append(ID_BookTreePopupOpen, wxT("Open"));
 	m_PopupMenu->Append(ID_BookTreePopupOpenInNewTab, wxT("Open In New Tab"));
 	m_PopupMenu->Append(ID_BookTreePopupOpenInNewWindow, wxT("Open In New Window"));
+	m_PopupMenu->Append(ID_BookTreePopupAddToCurrentTab, wxT("Add To Current Tab"));
 }
 
 void BookTreeCtrl::SetupIcons()

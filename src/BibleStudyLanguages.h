@@ -9,6 +9,9 @@
  *                                                                         *
  *   Part of BibleStudy: www.sf.net/projects/christiangame                 *
  ***************************************************************************/
+#if defined(__GNUG__) && !defined(__APPLE__)
+	#pragma interface "BibleStudyLanguages.h"
+#endif
 
 #ifndef _BIBLESTUDYLANGUAGES_H_
 	#define _BIBLESTUDYLANGUAGES_H_

@@ -7,10 +7,13 @@
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  ***************************************************************************/
+#ifdef __GNUG__
+	#pragma implementation "BibleStudyMainFrame.h"
+#endif
 
 #include "BibleStudyMainFrame.h"
 
-#include "../icons/splitleftright.xpm"
+//#include "../icons/splitleftright.xpm"
 
 /** Register event handlers */
 BEGIN_EVENT_TABLE(BibleStudyMainFrame, wxFrame)
@@ -46,6 +49,7 @@ BEGIN_EVENT_TABLE(BibleStudyMainFrame, wxFrame)
 	EVT_OPEN_IN_CURRENT_TAB(-1, BibleStudyMainFrame::OnOpenInCurrentTab)
 	EVT_OPEN_IN_NEW_TAB(-1, BibleStudyMainFrame::OnOpenInNewTab)
 	EVT_OPEN_IN_NEW_WINDOW(-1, BibleStudyMainFrame::OnOpenInNewWindow)
+	EVT_ADD_TO_CURRENT_TAB(-1, BibleStudyMainFrame::OnAddToCurrentTab)
 	
 	EVT_ACTIVE_MODULE_CHANGE(-1, BibleStudyMainFrame::OnActiveModuleChange)
 	EVT_BOOK_TREE_CHANGE(-1, BibleStudyMainFrame::OnBookTreeChange)
@@ -149,10 +153,6 @@ void BibleStudyMainFrame::OnShowWhyBecomeChristian()
 	wiz->AddPage(mod, wxT("John 3:20"), wxT("jn 3:20"));
 	wiz->AddPage(mod, wxT("John 3:22"), wxT("jn 3:22"));
 	
-//	BibleStudyWizardPage::Chain(p1, p2);
-//	BibleStudyWizardPage::Chain(p2, p3);
-	
-	//wiz->SetSize(p1->GetBestSize());
 	wiz->RunWizard();
 }
 
@@ -168,10 +168,6 @@ void BibleStudyMainFrame::OnShowHowBecomeChristian()
 	wiz->AddPage(mod, wxT("John 3:20"), wxT("jn 3:20"));
 	wiz->AddPage(mod, wxT("John 3:22"), wxT("jn 3:22"));
 	
-//	BibleStudyWizardPage::Chain(p1, p2);
-//	BibleStudyWizardPage::Chain(p2, p3);
-	
-	//wiz->SetSize(p1->GetBestSize());
 	wiz->RunWizard();
 }
 
@@ -187,10 +183,6 @@ void BibleStudyMainFrame::OnShowHowGrowSpiritually()
 	wiz->AddPage(mod, wxT("John 3:20"), wxT("jn 3:20"));
 	wiz->AddPage(mod, wxT("John 3:22"), wxT("jn 3:22"));
 	
-//	BibleStudyWizardPage::Chain(p1, p2);
-//	BibleStudyWizardPage::Chain(p2, p3);
-	
-	//wiz->SetSize(p1->GetBestSize());
 	wiz->RunWizard();
 }
 
@@ -324,6 +316,13 @@ void BibleStudyMainFrame::OnOpenInCurrentTab(wxCommandEvent &event)
 	wxLogTrace(wxTRACE_Messages, wxT("BibleStudyMainFrame::OnOpenInCurrentTab called"));
 	m_WindowSplit->OpenInCurrentTab((SWModule *)event.GetClientData());
 }
+
+void BibleStudyMainFrame::OnAddToCurrentTab(wxCommandEvent &event)
+{
+	wxLogTrace(wxTRACE_Messages, wxT("BibleStudyMainFrame::OnAddToCurrentTab called"));
+	m_WindowSplit->AddToCurrentTab((SWModule *)event.GetClientData());
+}
+
 
 void BibleStudyMainFrame::DisplayModule(SWModule *module)
 {

@@ -7,6 +7,9 @@
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  ***************************************************************************/
+#if defined(__GNUG__) && !defined(__APPLE__)
+	#pragma interface "BibleStudyMainFrame.h"
+#endif
 
 #ifndef _BIBLESTUDYMAINFRAME_H_
 #define _BIBLESTUDYMAINFRAME_H_
@@ -78,6 +81,7 @@
 		void OnOpenInNewTab(wxCommandEvent &event);
 		void OnOpenInNewWindow(wxCommandEvent &event);
 		void OnOpenInCurrentTab(wxCommandEvent &event);
+		void OnAddToCurrentTab(wxCommandEvent &event);
 		
 		void OnActiveModuleChange(wxCommandEvent &event);
 		void OnBookTreeChange(wxCommandEvent &event);

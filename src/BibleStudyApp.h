@@ -7,6 +7,9 @@
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  ***************************************************************************/
+#if defined(__GNUG__) && !defined(__APPLE__)
+	#pragma interface "BibleStudyApp.h"
+#endif
 
 #ifndef _BIBLESTUDYAPP_H_
 #define _BIBLESTUDYAPP_H_
@@ -14,6 +17,7 @@
 	#include "biblestudy.h"
 	#include "BibleStudyMainFrame.h"
 	#include "SwordTools.h"	
+	#include <wx/log.h>
 	
 	/**
 	* Main Class for BibleStudy.

@@ -9,6 +9,6 @@ biblestudy_LDFLAGS = $(all_libraries) `wx-config --libs`
 biblestudy_DEPENDENCIES = 
 biblestudy_LDADD = -lsword
 AM_CFLAGS = 
-AM_CXXFLAGS = `wx-config --cxxflags`
+AM_CXXFLAGS = `wx-config --cxxflags` -Wall
 AM_FFLAGS = 
 SUBDIRS = 

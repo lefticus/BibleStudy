@@ -7,6 +7,9 @@
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  ***************************************************************************/
+#if defined(__GNUG__) && !defined(__APPLE__)
+	#pragma interface "BibleStudyWizard.h"
+#endif
 
 #ifndef _BIBLESTUDYWIZARD_H_
 	#define _BIBLESTUDYWIZARD_H_

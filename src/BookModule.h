@@ -7,6 +7,9 @@
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  ***************************************************************************/
+#if defined(__GNUG__) && !defined(__APPLE__)
+	#pragma interface "BookModule.h"
+#endif
 
 #ifndef _BOOKMODULE_H_
 #define _BOOKMODULE_H_
@@ -31,12 +34,15 @@
 	private:
 		/** The SWModule being wrapped */
 		SWModule *m_Module;
+		SWModule *m_Second_Module;
 		
 		/** The last key looked up */
 		wxString m_LastLookupKey;
 		
 		/** */
 		wxMiniFrame *m_Frame;
+		
+		ModMap m_Modules;
 		
 		void AddTreeSiblings(wxTreeCtrl *tree, wxTreeItemId parentid, TreeKey *key);
 
@@ -55,6 +61,10 @@
 		
 		/** Returns a combobox for this book */
 		wxFrame *GetControl(wxWindow *parent);
+		
+		void AddModule(SWModule *mod);
+		
+		wxString GetName();
 	};
 
 #endif

@@ -7,7 +7,12 @@
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  ***************************************************************************/
+#ifdef __GNUG__
+	#pragma implementation "BookViewSplitterCtrl.h"
+#endif
 
+ 
+ 
 #include "BookViewSplitterCtrl.h"
 
 #if USE_GENERIC_SPLITTERWINDOW
@@ -103,6 +108,18 @@ void BookViewSplitterCtrl::OpenInCurrentTab(SWModule *mod)
 	eventCustom.SetClientData(GetActiveBookViewCtrl()->GetActiveBookModule());
 	ProcessEvent(eventCustom);
 }
+
+void BookViewSplitterCtrl::AddToCurrentTab(SWModule *mod)
+{
+	GetActiveBookViewCtrl()->AddToCurrentTab(mod);
+	
+}
+
+void BookViewSplitterCtrl::AddToCurrentTab(BookModule *mod)
+{
+	GetActiveBookViewCtrl()->AddToCurrentTab(mod);
+}
+
 
 void BookViewSplitterCtrl::OpenInNewTab(SWModule *mod)
 {

@@ -7,7 +7,10 @@
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  ***************************************************************************/
-
+#if defined(__GNUG__) && !defined(__APPLE__)
+	#pragma interface "BookViewToolBar.h"
+#endif
+ 
 #ifndef _BOOKVIEWTOOLBAR_H_
 	
 	#define _BOOKVIEWTOOLBAR_H_
