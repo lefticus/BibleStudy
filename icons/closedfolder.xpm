@@ -1,0 +1,22 @@
+/* XPM */
+static char *closedfolder[]={
+"16 16 3 1",
+". c None",
+"a c #efef85",
+"# c #fcfc8c",
+"................",
+"..#####.........",
+"..#aaa#.........",
+".##aaa#######...",
+"##aaaaaaaaaa##..",
+"#aaaaaaaaaaaa#..",
+"#aaaaaaaaaaaa#..",
+"#aaaaaaaaaaaa#..",
+"#aaaaaaaaaaaa#..",
+"#aaaaaaaaaaaa#..",
+"#aaaaaaaaaaaa#..",
+"#aaaaaaaaaaaa#..",
+"##aaaaaaaaaa##..",
+".############...",
+"................",
+"................"};
