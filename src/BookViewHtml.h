@@ -10,7 +10,7 @@
 
 #ifndef _BOOKVIEWHTML_H_
 #define _BOOKVIEWHTML_H_
-
+	#include <wx/wx.h>
 	#include <wx/html/htmlwin.h>
 	#include "HTMLToolTip.h"
 

@@ -13,7 +13,7 @@
 
 #ifndef _HTMLTOOLTIP_H_
 	#define _HTMLTOOLTIP_H_
-
+	#include <wx/wx.h>
 	#include <wx/frame.h>
 	#include <wx/html/htmlwin.h>
 

@@ -36,7 +36,7 @@ DropDownEventHandler::~DropDownEventHandler()
 
 void DropDownEventHandler::OnSetFocus(wxFocusEvent &event)
 {
-	wxLogTrace(wxTRACE_Messages, "DropDownEventHandler::OnSetFocus called");
+	wxLogTrace(wxTRACE_Messages, wxT("DropDownEventHandler::OnSetFocus called"));
 
 	m_parent->DropDownGotFocus();
 }

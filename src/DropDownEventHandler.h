@@ -15,7 +15,7 @@
 	#define _DROPDOWNEVENTHANDLER_H_
 
 	class DropDownEventHandler;
-
+	#include <wx/wx.h>
 	#include <wx/event.h>
 	#include "BookViewToolBar.h"
 

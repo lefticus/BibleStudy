@@ -14,9 +14,11 @@
 
 #ifndef DROPDOWNCTRL_H
 	#define DROPDOWNCTRL_H
+	#include <wx/wx.h>
+
 	#include <swmodule.h>
 
-	#include <wx/wx.h>
+
 	#include <wx/minifram.h>
 	#include <wx/treectrl.h>
 	#include <wx/calctrl.h>
@@ -61,7 +63,7 @@
 		wxTreeCtrl *GetTree();
 		wxCalendarCtrl *GetCalendar();
 
-		void UpdateCBs(wxEvent &event);
+		void UpdateCBs(wxCommandEvent &event);
 		void OnButtonPress(wxCommandEvent &event);
 		void OnKeyDown(wxKeyEvent &event);
 

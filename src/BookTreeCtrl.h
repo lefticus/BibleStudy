@@ -15,6 +15,7 @@
 #ifndef _BOOKTREECTRL_H_
 	#define _BOOKTREECTRL_H_
 
+	#include <wx/wx.h>
 
 	#include "SwordTools.h"
 	#include "BibleStudyLanguages.h"
@@ -77,7 +78,7 @@
 
 		BibleStudyLanguages m_Languages;
 
-		void OnOpenModule(wxMenuEvent &event);
+		void OnOpenModule(wxCommandEvent &event);
 		void SetupIcons();
 
 	public:
@@ -92,8 +93,8 @@
 
 		void OnRightUp(wxMouseEvent &event);
 		void OnRightDown(wxMouseEvent &event);
-		void OnItemActivated(wxEvent &event);
-		void OnInformation(wxMenuEvent &event);
+		void OnItemActivated(wxTreeEvent &event);
+		void OnInformation(wxCommandEvent &event);
 		
 		DECLARE_EVENT_TABLE()
 	};

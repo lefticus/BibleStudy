@@ -14,6 +14,7 @@
 #ifndef _SWORDTOOLS_H_
 	#define _SWORDTOOLS_H_
 
+	#include <wx/wx.h>
 	#include "BookModule.h"
 	#include <swmgr.h>
 

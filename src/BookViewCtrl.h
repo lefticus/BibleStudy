@@ -15,6 +15,7 @@
 
 	#define _BOOKVIEWCTRL_H_
 
+	#include <wx/wx.h>
 	#include "biblestudy.h"
 	#include <wx/notebook.h>
 	#include "BookModule.h"
@@ -74,8 +75,9 @@
 
 		void ChildGotFocus();
 		void PostChildSetFocus(BookModule *bm=NULL);
-		void OnSetFocus(wxEvent &event);
-		void OnNotebookPageChanged(wxEvent &event);
+		void OnSetFocus(wxFocusEvent &event);
+		void OnLeftUp(wxMouseEvent &event);
+		void OnNotebookPageChanged(wxNotebookEvent &event);
 
 		void SetIcon();
 

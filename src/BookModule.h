@@ -14,12 +14,14 @@
 #ifndef _BOOKMODULE_H_
 #define _BOOKMODULE_H_
 
+	#include <wx/wx.h>
+	
 	#include <swmgr.h>
 	#include <treekey.h>
 	#include <versekey.h>
 	#include <swmodule.h>
 
-	#include <wx/wx.h>
+
 	#include <wx/minifram.h>
 	#include <wx/treectrl.h>
 	#include <wx/string.h>

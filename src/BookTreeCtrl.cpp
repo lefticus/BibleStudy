@@ -67,9 +67,9 @@ BookTreeCtrl::~BookTreeCtrl()
 	}
 }
 
-void BookTreeCtrl::OnItemActivated(wxEvent &event)
+void BookTreeCtrl::OnItemActivated(wxTreeEvent &event)
 {
-	wxLogTrace(wxTRACE_Messages, "BookTreeCtrl::OnItemActivated called");
+	wxLogTrace(wxTRACE_Messages, wxT("BookTreeCtrl::OnItemActivated called"));
 	if (GetChildrenCount(GetSelection(), false)) {
 		wxLogDebug(wxT("BookTreeCtrl::OnItemActivated not a leaf"));
 
@@ -93,7 +93,7 @@ void BookTreeCtrl::OnItemActivated(wxEvent &event)
 	}
 }
 
-void BookTreeCtrl::OnOpenModule(wxMenuEvent &event)
+void BookTreeCtrl::OnOpenModule(wxCommandEvent &event)
 {
 	wxCommandEvent *eventCustom;
 	
@@ -244,7 +244,7 @@ void BookTreeCtrl::RefreshBookList(bool ShowLanguages)
 	SortChildren(rootnode);
 }
 
-void BookTreeCtrl::OnInformation(wxMenuEvent &event)
+void BookTreeCtrl::OnInformation(wxCommandEvent &event)
 {
 	BookModule bm(GetItemData(GetSelection())->GetModule());
 	wxMessageBox(bm.ModInfo(), wxT("Module Information"), wxOK|wxICON_INFORMATION, this->GetParent()->GetParent());

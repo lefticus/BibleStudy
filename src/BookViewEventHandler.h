@@ -15,7 +15,7 @@
 	#define _BOOKVIEWEVENTHANDLER_H_
 
 	class BookViewEventHandler;
-
+	#include <wx/wx.h>
 	#include <wx/event.h>
 	#include "BookViewCtrl.h"
 

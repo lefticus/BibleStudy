@@ -152,7 +152,7 @@ void BookViewToolBar::SetDropDownFrame(wxFrame *subframe)
 }
 
 
-void BookViewToolBar::OnListKey(wxEvent &event)
+void BookViewToolBar::OnListKey(wxCommandEvent &event)
 {
 	wxPoint pos;
 
@@ -168,7 +168,7 @@ void BookViewToolBar::OnListKey(wxEvent &event)
 	}
 }
 
-void BookViewToolBar::OnShowDropDown(wxEvent &event)
+void BookViewToolBar::OnShowDropDown(wxCommandEvent &event)
 {
 	wxPoint pos;
 
@@ -251,7 +251,7 @@ void BookViewToolBar::DropDownDateSelected(wxCalendarEvent &event)
 	ProcessEvent(eventCustom);
 }
 
-void BookViewToolBar::OnLookupKey(wxEvent &event)
+void BookViewToolBar::OnLookupKey(wxCommandEvent &event)
 {
 	wxLogTrace(wxTRACE_Messages, wxT("BookViewToolBar::OnLookupKey called"));
 
@@ -261,7 +261,7 @@ void BookViewToolBar::OnLookupKey(wxEvent &event)
 	ProcessEvent(eventCustom);
 }
 
-void BookViewToolBar::OnSearch(wxEvent &event)
+void BookViewToolBar::OnSearch(wxCommandEvent &event)
 {
 	wxLogTrace(wxTRACE_Messages, wxT("BookViewToolBar::OnSearch called"));
 
@@ -271,14 +271,14 @@ void BookViewToolBar::OnSearch(wxEvent &event)
 	ProcessEvent(eventCustom);
 }
 
-void BookViewToolBar::OnBrowseBackward(wxEvent &event)
+void BookViewToolBar::OnBrowseBackward(wxCommandEvent &event)
 {
 	wxCommandEvent eventCustom(bsEVT_BROWSE_BACKWARD);
 	eventCustom.SetEventObject(this);
 	ProcessEvent(eventCustom);
 }
 
-void BookViewToolBar::OnBrowseForward(wxEvent &event)
+void BookViewToolBar::OnBrowseForward(wxCommandEvent &event)
 {
 	wxCommandEvent eventCustom(bsEVT_BROWSE_FORWARD);
 	eventCustom.SetEventObject(this);

@@ -179,7 +179,7 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools, const wxStri
 
 /* note: this biblestudy is hardcoded into the .exe to make sure that it
    can never be seperated from the application */
-void BibleStudyMainFrame::OnShowWhyBecomeChristian()
+void BibleStudyMainFrame::OnShowWhyBecomeChristian(wxCommandEvent &)
 {
 	SWModule *mod = NULL;
 	mod = m_SwordTools->GetModule("WEB");
@@ -197,7 +197,7 @@ void BibleStudyMainFrame::OnShowWhyBecomeChristian()
 }
 
 
-void BibleStudyMainFrame::OnShowHowBecomeChristian()
+void BibleStudyMainFrame::OnShowHowBecomeChristian(wxCommandEvent &)
 {
 	SWModule *mod = NULL;
 	mod = m_SwordTools->GetModule("WEB");
@@ -216,7 +216,7 @@ void BibleStudyMainFrame::OnShowHowBecomeChristian()
 }
 
 
-void BibleStudyMainFrame::OnShowHowGrowSpiritually()
+void BibleStudyMainFrame::OnShowHowGrowSpiritually(wxCommandEvent &)
 {
 	SWModule *mod = NULL;
 	mod = m_SwordTools->GetModule("WEB");
@@ -238,7 +238,7 @@ void BibleStudyMainFrame::OnShowHowGrowSpiritually()
 /**
  * Called when an option menu item is changed
  */
-void BibleStudyMainFrame::OnOptionChange(wxMenuEvent& event)
+void BibleStudyMainFrame::OnOptionChange(wxCommandEvent& event)
 {
 	wxLogTrace(wxTRACE_Messages, wxT("BibleStudyMainFrame::OnOptionChange called"));
 	if (GetMenuBar()->IsChecked(event.GetId())) {
@@ -357,11 +357,11 @@ void BibleStudyMainFrame::OnShowBibleStudy(wxCommandEvent& event)
 	wxLogTrace(wxTRACE_Messages, wxT("BibleStudyMainFrame::OnShowBibleStudy called"));
 
 	if (event.GetString() == wxT("How_Can_I_Become_A_Christian")) {
-		OnShowHowBecomeChristian();
+		OnShowHowBecomeChristian(event);
 	}
 
 	if (event.GetString() == wxT("How_Can_I_Grow_As_A_Christian")) {
-		OnShowHowGrowSpiritually();
+		OnShowHowGrowSpiritually(event);
 	}
 
 
@@ -374,7 +374,7 @@ void BibleStudyMainFrame::OnAbout(wxCommandEvent& event)
 	wxMessageBox(wxT("This is BibleStudy bible software.\nMany thanks to the Sword project. (www.crosswire.org/sword)\n\nAlso Thanks to Timothy Butler for the use of the icons.\n\nLicensed under the GPL (http://www.gnu.org/licenses/gpl.html).\nPlease distribute freely."), wxT("About BibleStudy"), wxOK | wxICON_INFORMATION, this);
 }
 
-void BibleStudyMainFrame::OnNewWindow(wxMenuEvent& event)
+void BibleStudyMainFrame::OnNewWindow(wxCommandEvent& event)
 {
 	wxLogTrace(wxTRACE_Messages, wxT("BibleStudyMainFrame::OnNewWindow called"));
 	OpenNewWindow();
@@ -440,7 +440,7 @@ void BibleStudyMainFrame::OnRemoveActiveView(wxCommandEvent& event)
 	m_WindowSplit->RemoveActiveView();
 }
 
-void BibleStudyMainFrame::OnCloseOtherTabs(wxMenuEvent& event)
+void BibleStudyMainFrame::OnCloseOtherTabs(wxCommandEvent& event)
 {
 	wxLogTrace(wxTRACE_Messages, wxT("BibleStudyMainFrame::OnCloseOtherTabs called"));
 	m_WindowSplit->CloseOtherTabs();
@@ -451,7 +451,7 @@ void BibleStudyMainFrame::OnCloseOtherTabs(wxMenuEvent& event)
  * @todo Make this call request the split to detach a tab, which fires back an
  *       event with the BookModule in question
  */
-void BibleStudyMainFrame::OnDetachTab(wxMenuEvent& event)
+void BibleStudyMainFrame::OnDetachTab(wxCommandEvent& event)
 {
 	wxLogTrace(wxTRACE_Messages, wxT("BibleStudyMainFrame::OnDetachTab called"));
 	wxWindowDisabler disableAll;
@@ -460,13 +460,13 @@ void BibleStudyMainFrame::OnDetachTab(wxMenuEvent& event)
 }
 
 
-void BibleStudyMainFrame::OnDuplicateTab(wxMenuEvent& event)
+void BibleStudyMainFrame::OnDuplicateTab(wxCommandEvent& event)
 {
 	wxLogTrace(wxTRACE_Messages, wxT("BibleStudyMainFrame::OnDuplicateTab called"));
 	m_WindowSplit->DuplicateTab();
 }
 
-void BibleStudyMainFrame::OnShowStartPage(wxMenuEvent &event)
+void BibleStudyMainFrame::OnShowStartPage(wxCommandEvent &event)
 {
 	ShowStartPage();
 }

@@ -13,7 +13,7 @@
 #endif
 
 #ifndef _BIBLESTUDY_H_
-
+	#include <wx/wx.h>
 	#define _BIBLESTUDY_H_
 
 

@@ -16,7 +16,7 @@
 	#define _BOOKVIEWTOOLBAR_H_
 
 	class BookViewToolBar;
-
+	#include <wx/wx.h>
 
 	#include <wx/toolbar.h>
 	#include <wx/treectrl.h>
@@ -56,7 +56,7 @@
 		void SetLookupKey(wxString);
 
 		void SetDropDownFrame(wxFrame *subframe);
-		void OnShowDropDown(wxEvent &event);
+		void OnShowDropDown(wxCommandEvent &event);
 
 		void DropDownGotFocus();
 		void DropDownLostFocus();
@@ -64,11 +64,11 @@
 		void DropDownDateSelected(wxCalendarEvent &event);
 		void DropDownVerseSelected(wxCommandEvent &event);
 
-		void OnLookupKey(wxEvent &event);
-		void OnListKey(wxEvent &event);
-		void OnSearch(wxEvent &event);
-		void OnBrowseForward(wxEvent &event);
-		void OnBrowseBackward(wxEvent &event);
+		void OnLookupKey(wxCommandEvent &event);
+		void OnListKey(wxCommandEvent &event);
+		void OnSearch(wxCommandEvent &event);
+		void OnBrowseForward(wxCommandEvent &event);
+		void OnBrowseBackward(wxCommandEvent &event);
 
 		wxString *GetRange();
 

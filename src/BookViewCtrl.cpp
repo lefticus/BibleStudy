@@ -41,7 +41,7 @@ DEFINE_EVENT_TYPE(bsEVT_CHILD_SET_FOCUS)
 BEGIN_EVENT_TABLE(BookViewCtrl, wxNotebook)
 	EVT_SET_FOCUS(BookViewCtrl::OnSetFocus)
 	EVT_NOTEBOOK_PAGE_CHANGED(-1, BookViewCtrl::OnNotebookPageChanged)
-	EVT_LEFT_UP(BookViewCtrl::OnSetFocus)
+	EVT_LEFT_UP(BookViewCtrl::OnLeftUp)
 END_EVENT_TABLE()
 
 
@@ -376,14 +376,20 @@ void BookViewCtrl::PostChildSetFocus(BookModule *bookmod)
 	ProcessEvent(eventCustom);
 }
 
-void BookViewCtrl::OnNotebookPageChanged(wxEvent &event)
+void BookViewCtrl::OnNotebookPageChanged(wxNotebookEvent &event)
 {
 	event.Skip();
 	Refresh();
 	PostChildSetFocus();
 }
 
-void BookViewCtrl::OnSetFocus(wxEvent &event)
+void BookViewCtrl::OnSetFocus(wxFocusEvent &event)
+{
+	event.Skip();
+	PostChildSetFocus();
+}
+
+void BookViewCtrl::OnLeftUp(wxMouseEvent &event)
 {
 	event.Skip();
 	PostChildSetFocus();

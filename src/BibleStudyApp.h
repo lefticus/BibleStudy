@@ -14,7 +14,7 @@
 #ifndef _BIBLESTUDYAPP_H_
 #define _BIBLESTUDYAPP_H_
 	#include "SwordTools.h"
-
+	#include <wx/wx.h>
 	#include <wx/app.h>
 
 	/**

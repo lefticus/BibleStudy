@@ -15,6 +15,7 @@
 #ifndef _BOOKVIEWSPLITTERCTRL_H_
 	#define _BOOKVIEWSPLITTERCTRL_H_
 
+	#include <wx/wx.h>
 
 	#include "BookTreeCtrl.h"
 	#include "BookViewCtrl.h"

@@ -14,7 +14,7 @@
 #ifndef _BIBLESTUDYMAINFRAME_H_
 #define _BIBLESTUDYMAINFRAME_H_
 
-
+	#include <wx/wx.h>
 	#include "SwordTools.h"
 	#include "BookViewToolBar.h"
 	#include "BookViewSplitterCtrl.h"
@@ -69,13 +69,13 @@
 
 		void OnNewTab(wxCommandEvent& event);
 		void OnCloseTab(wxCommandEvent& event);
-		void OnDetachTab(wxMenuEvent& event);
-		void OnDuplicateTab(wxMenuEvent& event);
-		void OnCloseOtherTabs(wxMenuEvent& event);
+		void OnDetachTab(wxCommandEvent& event);
+		void OnDuplicateTab(wxCommandEvent& event);
+		void OnCloseOtherTabs(wxCommandEvent& event);
 		void OnShowHideBookTree(wxCommandEvent& event);
 		void OnTreeItemActivated(wxCommandEvent& event);
-		void OnOptionChange(wxMenuEvent& event);
-		void OnNewWindow(wxMenuEvent& event);
+		void OnOptionChange(wxCommandEvent& event);
+		void OnNewWindow(wxCommandEvent& event);
 
 		void OnLoadKey(wxCommandEvent& event);
 		void OnSearch(wxCommandEvent& event);
@@ -88,7 +88,7 @@
 		void OnOpenInCurrentTab(wxCommandEvent &event);
 		void OnAddToCurrentTab(wxCommandEvent &event);
 
-		void OnShowStartPage(wxMenuEvent& event);
+		void OnShowStartPage(wxCommandEvent& event);
 
 		void OnActiveModuleChange(wxCommandEvent &event);
 		void OnBookTreeChange(wxCommandEvent &event);
@@ -96,9 +96,9 @@
 		void DisplayModule(SWModule *module);
 		void DisplayModule(BookModule *module);
 
-		void OnShowHowBecomeChristian();
-		void OnShowWhyBecomeChristian();
-		void OnShowHowGrowSpiritually();
+		void OnShowHowBecomeChristian(wxCommandEvent &event);
+		void OnShowWhyBecomeChristian(wxCommandEvent &event);
+		void OnShowHowGrowSpiritually(wxCommandEvent &event);
 		void OnShowBibleStudy(wxCommandEvent &event);
 
 		void ShowStartPage();

@@ -142,7 +142,7 @@ void DropDownCtrl::UpdateVerseCB()
 	wxLogDebug(wxT("DropDownCtrl::UpdateVerseCB exiting"));
 }
 
-void DropDownCtrl::UpdateCBs(wxEvent &event)
+void DropDownCtrl::UpdateCBs(wxCommandEvent &event)
 {
 
 	wxLogDebug(wxT("DropDownCtrl::UpdateCBs called"));
