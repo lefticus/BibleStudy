@@ -250,7 +250,7 @@ void BookTreeCtrl::OnInformation(wxCommandEvent &event)
 	wxMessageBox(bm.ModInfo(), wxT("Module Information"), wxOK|wxICON_INFORMATION, this->GetParent()->GetParent());
 }
 
-BookTreeCtrl::BookTreeCtrl(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size) : wxTreeCtrl(parent, id, pos, size, wxTR_HIDE_ROOT|wxTR_DEFAULT_STYLE, wxDefaultValidator, wxT("listCtrl"))
+BookTreeCtrl::BookTreeCtrl(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size) : wxTreeCtrl(parent, id, pos, size, wxTR_HIDE_ROOT|wxTR_NO_BUTTONS|wxTR_LINES_AT_ROOT, wxDefaultValidator, wxT("listCtrl"))
 {
 	SetupIcons();
 
