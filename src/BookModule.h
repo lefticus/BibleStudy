@@ -14,10 +14,10 @@
 #ifndef _BOOKMODULE_H_
 #define _BOOKMODULE_H_
 
-	#include <sword/swmgr.h>
-	#include <sword/treekey.h>
-	#include <sword/versekey.h>
-	#include <sword/swmodule.h>
+	#include <swmgr.h>
+	#include <treekey.h>
+	#include <versekey.h>
+	#include <swmodule.h>
 
 	#include <wx/wx.h>
 	#include <wx/minifram.h>

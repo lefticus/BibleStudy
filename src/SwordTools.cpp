@@ -14,7 +14,7 @@
 
 #include "SwordTools.h"
 #include <wx/tokenzr.h>
-#include <sword/markupfiltmgr.h>
+#include <markupfiltmgr.h>
 
 
 

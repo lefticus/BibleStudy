@@ -15,7 +15,7 @@
 	#define _SWORDTOOLS_H_
 
 	#include "BookModule.h"
-	#include <sword/swmgr.h>
+	#include <swmgr.h>
 
 	using namespace sword;
 	using namespace std;
