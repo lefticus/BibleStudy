@@ -1,0 +1,8 @@
+//Microsoft Developer Studio generated resource script.
+//
+
+#include "resource.h"
+
+biblestudy ICON "biblestudy.ico"
+
+#include <wx/msw/wx.rc>
