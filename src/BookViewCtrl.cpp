@@ -16,9 +16,10 @@
 #include <wx/icon.h>
 #include <wx/sizer.h>
 #include <wx/log.h>
+#include <wx/image.h>
 
-#include <sword/swmodule.h>
-#include <sword/swmgr.h>
+#include <swmodule.h>
+#include <swmgr.h>
 
 using namespace sword;
 
@@ -53,7 +54,8 @@ BookViewCtrl::BookViewCtrl(wxWindow * parent, int id, const wxPoint pos,
 	                 wxT("notebook"))
 {
 
-  int imgsize = 16;
+  m_firstTabCreated = false;
+	int imgsize = 16;
 
   wxImageList *images = new wxImageList(imgsize, imgsize, TRUE);
   wxIcon icons[5];
@@ -116,7 +118,7 @@ int
   SetSelection(GetPageCount() - 1);
 
   OpenInCurrentTab(wxT("<html><head><title>*Empty*</title></head></html>"));
-
+	m_firstTabCreated = GetPageCount(); 
   return GetPageCount() - 1;
 }
 
@@ -459,4 +461,17 @@ void BookViewCtrl::DuplicateTab(BookModule * bm)
   OpenInNewTab(bm);
 
   SetSelection(selection);
+}
+
+
+void BookViewCtrl::RefreshStartPages(const wxString html)
+{
+	for(int i = 0; i < GetPageCount(); i++)
+	{
+		if(GetPageText(i).IsSameAs(wxT("Start Page")))
+		{
+			BookViewHtml *htmlBook  = (BookViewHtml *) GetPage(i)->GetChildren().GetFirst()->GetData();
+			htmlBook->SetPage(html);
+		}
+	}
 }

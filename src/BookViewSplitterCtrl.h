@@ -12,7 +12,7 @@
 #define _BOOKVIEWSPLITTERCTRL_H_
 
 #include <wx/splitter.h>
-#include <sword/swmodule.h>
+#include <swmodule.h>
 
 class BookTreeCtrl;
 class BookViewCtrl;
@@ -73,6 +73,7 @@ public:
   void BrowseBackward();
 
   void RemoveActiveView();
+	void RefreshStartPages(const wxString html);
  
   void OnNewActiveChild(wxCommandEvent &event);
   void OnFocusGot(wxEvent &event);

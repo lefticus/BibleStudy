@@ -4,7 +4,7 @@
 
 # TARGTYPE "Win32 (x86) Console Application" 0x0103
 
-CFG=biblestudy - Win32 Win32 Unicode Debug
+CFG=biblestudy - Win32 Unicode Debug
 !MESSAGE This is not a valid makefile. To build this project using NMAKE,
 !MESSAGE use the Export Makefile command and run
 !MESSAGE 
@@ -13,14 +13,14 @@ CFG=biblestudy - Win32 Win32 Unicode Debug
 !MESSAGE You can specify a configuration when running NMAKE
 !MESSAGE by defining the macro CFG on the command line. For example:
 !MESSAGE 
-!MESSAGE NMAKE /f "biblestudy.mak" CFG="biblestudy - Win32 Win32 Unicode Debug"
+!MESSAGE NMAKE /f "biblestudy.mak" CFG="biblestudy - Win32 Unicode Debug"
 !MESSAGE 
 !MESSAGE Possible choices for configuration are:
 !MESSAGE 
 !MESSAGE "biblestudy - Win32 Release" (based on "Win32 (x86) Console Application")
 !MESSAGE "biblestudy - Win32 Debug" (based on "Win32 (x86) Console Application")
-!MESSAGE "biblestudy - Win32 Win32 Unicode Release" (based on "Win32 (x86) Console Application")
-!MESSAGE "biblestudy - Win32 Win32 Unicode Debug" (based on "Win32 (x86) Console Application")
+!MESSAGE "biblestudy - Win32 Unicode Debug" (based on "Win32 (x86) Console Application")
+!MESSAGE "biblestudy - Win32 Unicode Release" (based on "Win32 (x86) Console Application")
 !MESSAGE 
 
 # Begin Project
@@ -44,15 +44,15 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c
-# ADD CPP /nologo /MD /W4 /GX /O2 /I "$(WXWIN)/lib/vc_lib/msw" /I "$(WXWIN)/lib/mswu" /I "$(WXWIN)/include" /I "$(WXWIN)/contrib/include" /I "../../sword/include" /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /D "_WINDOWS" /D WINVER=0x400 /D "_MT" /D wxUSE_GUI=1 /YX /FD /c
+# ADD CPP /nologo /MD /W2 /GR /GX /O2 /I "$(WXWIN)/lib/vc_lib/msw" /I "$(WXWIN)/lib/mswu" /I "$(WXWIN)/include" /I "$(WXWIN)/contrib/include" /I "c:/sword/include" /I "$(READINGPLANNER)/source" /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /D "_WINDOWS" /D WINVER=0x400 /D "_MT" /D wxUSE_GUI=1 /D "_WX_WIN" /YX /FD /c
 # ADD BASE RSC /l 0x809 /d "NDEBUG"
-# ADD RSC /l 0x809 /i "$(WXWIN)/include" /d "NDEBUG"
+# ADD RSC /l 0x809 /i "$(WXWIN)/include" /d "NDEBUG" /d "__WXMSW__" /d "_WINDOWS"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /machine:I386
-# ADD LINK32 user32.lib gdi32.lib comdlg32.lib shell32.lib advapi32.lib oleaut32.lib ole32.lib comctl32.lib rpcrt4.lib wxmsw25_core.lib wxbase25.lib wxmsw25_adv.lib wxmsw25_html.lib libswordvc6.lib /nologo /subsystem:windows /machine:I386 /libpath:"$(WXWIN)/lib" /libpath:"$(WXWIN)/contrib/lib" /libpath:"../../sword/lib" /libpath:"../../icu-sword/lib"
+# ADD LINK32 wxmsw25_core.lib wxbase25.lib wxmsw25_adv.lib wxmsw25_html.lib libswordvc6.lib ReadingPlanner.lib user32.lib gdi32.lib comdlg32.lib shell32.lib advapi32.lib oleaut32.lib ole32.lib comctl32.lib rpcrt4.lib InstAide.lib /nologo /subsystem:windows /incremental:yes /machine:I386 /libpath:"../../sword/lib" /libpath:"$(READINGPLANNER)/source/MSVC6/Release" /libpath:"$(WXWIN)/lib" /libpath:"$(WXWIN)/contrib/lib" /libpath:"c:/icu-sword/lib"
 # SUBTRACT LINK32 /pdb:none
 
 !ELSEIF  "$(CFG)" == "biblestudy - Win32 Debug"
@@ -69,7 +69,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /GZ /c
-# ADD CPP /nologo /MDd /Gm /GX /Zi /Od /I "$(WXWIN)/lib/vc_lib/mswd" /I "$(WXWIN)/lib/mswud" /I "$(WXWIN)/include" /I "$(WXWIN)/contrib/include" /I "../../sword/include" /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /D "_LIB" /D "REGEX_MALLOC" /D "_WINDOWS" /D WINVER=0x400 /D "_MT" /D "__WXMSW__" /D "__WXDEBUG__" /D "WINDOWS" /YX /FD /GZ /c
+# ADD CPP /nologo /MDd /Gm /GR /GX /Zi /Od /I "$(WXWIN)/lib/vc_lib/mswd" /I "$(WXWIN)/lib/mswud" /I "$(WXWIN)/include" /I "$(WXWIN)/contrib/include" /I "c:/sword/include" /I "$(READINGPLANNER)/source" /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /D "_LIB" /D "REGEX_MALLOC" /D "_WINDOWS" /D WINVER=0x400 /D "_MT" /D "__WXMSW__" /D "__WXDEBUG__" /D "WINDOWS" /D "_WX_WIN" /YX /FD /GZ /c
 # SUBTRACT CPP /Fr
 # ADD BASE RSC /l 0x809 /d "_DEBUG"
 # ADD RSC /l 0x809 /i "$(WXWIN)/include" /i ".\..\..\lib\vc_lib\mswd" /d "_DEBUG" /d "__WXMSW__" /d "__WXDEBUG__" /d "_WINDOWS"
@@ -78,64 +78,63 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 user32.lib gdi32.lib comdlg32.lib shell32.lib advapi32.lib oleaut32.lib ole32.lib comctl32.lib rpcrt4.lib wxmsw25d_core.lib wxbase25d.lib wxmsw25d_adv.lib wxmsw25d_html.lib libswordvc6d.lib /nologo /subsystem:windows /debug /machine:I386 /out:"./biblestudyd.exe" /pdbtype:sept /libpath:"$(WXWIN)/lib" /libpath:"$(WXWIN)/contrib/lib" /libpath:"../../sword/lib" /libpath:"../../icu-sword/lib" /verbose:lib
+# ADD LINK32 wxmsw25d_core.lib wxbase25d.lib wxmsw25d_adv.lib wxmsw25d_html.lib libswordvc6d.lib ReadingPlannerd.lib InstAide.lib user32.lib gdi32.lib comdlg32.lib shell32.lib advapi32.lib oleaut32.lib ole32.lib comctl32.lib rpcrt4.lib /nologo /subsystem:windows /debug /machine:I386 /out:"./biblestudyd.exe" /pdbtype:sept /libpath:"../../sword/lib" /libpath:"$(READINGPLANNER)/source/MSVC6/Debug" /libpath:"$(WXWIN)/lib" /libpath:"$(WXWIN)/contrib/lib" /libpath:"c:/icu-sword/lib" /verbose:lib
 # SUBTRACT LINK32 /pdb:none
 
-!ELSEIF  "$(CFG)" == "biblestudy - Win32 Win32 Unicode Release"
-
-# PROP BASE Use_MFC 0
-# PROP BASE Use_Debug_Libraries 0
-# PROP BASE Output_Dir "biblestudy___Win32_Win32_Unicode_Release"
-# PROP BASE Intermediate_Dir "biblestudy___Win32_Win32_Unicode_Release"
-# PROP BASE Ignore_Export_Lib 0
-# PROP BASE Target_Dir ""
-# PROP Use_MFC 0
-# PROP Use_Debug_Libraries 0
-# PROP Output_Dir "biblestudy___Win32_Win32_Unicode_Release"
-# PROP Intermediate_Dir "biblestudy___Win32_Win32_Unicode_Release"
-# PROP Ignore_Export_Lib 0
-# PROP Target_Dir ""
-# ADD BASE CPP /nologo /MD /W4 /GX /O2 /I "$(WXWIN)/lib/mswu" /I "$(WXWIN)/include" /I "$(WXWIN)/contrib/include" /I "../../sword/include" /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /D "_WINDOWS" /D WINVER=0x400 /D "_MT" /D wxUSE_GUI=1 /YX /FD /c
-# ADD CPP /nologo /MD /W4 /GX /O2 /I "$(WXWIN)/lib/vc_lib/mswu" /I "$(WXWIN)/lib/mswu" /I "$(WXWIN)/include" /I "$(WXWIN)/contrib/include" /I "../../sword/include" /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /D "_WINDOWS" /D WINVER=0x400 /D "_MT" /D wxUSE_GUI=1 /YX /FD /c
-# ADD BASE RSC /l 0x809 /i "$(WXWIN)/include" /d "NDEBUG"
-# ADD RSC /l 0x809 /i "$(WXWIN)/include" /d "NDEBUG"
-BSC32=bscmake.exe
-# ADD BASE BSC32 /nologo
-# ADD BSC32 /nologo
-LINK32=link.exe
-# ADD BASE LINK32 user32.lib gdi32.lib comdlg32.lib shell32.lib advapi32.lib oleaut32.lib ole32.lib comctl32.lib rpcrt4.lib wxmsw25u_core.lib wxbase25u.lib wxmsw25u_adv.lib wxmsw25u_html.lib libswordvc6.lib /nologo /subsystem:windows /machine:I386 /libpath:"$(WXWIN)/lib" /libpath:"$(WXWIN)/contrib/lib" /libpath:"../../sword/lib" /libpath:"../../icu-sword/lib"
-# SUBTRACT BASE LINK32 /pdb:none
-# ADD LINK32 user32.lib gdi32.lib comdlg32.lib shell32.lib advapi32.lib oleaut32.lib ole32.lib comctl32.lib rpcrt4.lib wxmsw25u_core.lib wxbase25u.lib wxmsw25u_adv.lib wxmsw25u_html.lib libswordvc6.lib /nologo /subsystem:windows /machine:I386 /libpath:"$(WXWIN)/lib" /libpath:"$(WXWIN)/contrib/lib" /libpath:"../../sword/lib" /libpath:"../../icu-sword/lib"
-# SUBTRACT LINK32 /pdb:none
-
-!ELSEIF  "$(CFG)" == "biblestudy - Win32 Win32 Unicode Debug"
+!ELSEIF  "$(CFG)" == "biblestudy - Win32 Unicode Debug"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 1
-# PROP BASE Output_Dir "biblestudy___Win32_Win32_Unicode_Debug"
-# PROP BASE Intermediate_Dir "biblestudy___Win32_Win32_Unicode_Debug"
+# PROP BASE Output_Dir "biblestudy___Win32_Unicode_Debug"
+# PROP BASE Intermediate_Dir "biblestudy___Win32_Unicode_Debug"
 # PROP BASE Ignore_Export_Lib 0
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 1
-# PROP Output_Dir "biblestudy___Win32_Win32_Unicode_Debug"
-# PROP Intermediate_Dir "biblestudy___Win32_Win32_Unicode_Debug"
+# PROP Output_Dir "Unicode_Debug"
+# PROP Intermediate_Dir "Unicode_Debug"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MDd /Gm /GX /Zi /Od /I "$(WXWIN)/lib/mswud" /I "$(WXWIN)/include" /I "$(WXWIN)/contrib/include" /I "../../sword/include" /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /D "_LIB" /D "REGEX_MALLOC" /D "_WINDOWS" /D WINVER=0x400 /D "_MT" /D "__WXMSW__" /D "__WXDEBUG__" /D "WINDOWS" /YX /FD /GZ /c
+# ADD BASE CPP /nologo /MDd /Gm /GX /Zi /Od /I "$(WXWIN)/lib/vc_lib/mswud" /I "$(WXWIN)/lib/mswud" /I "$(WXWIN)/include" /I "$(WXWIN)/contrib/include" /I "../../sword/include" /I "$(READINGPLANNER)/source" /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /D "_LIB" /D "REGEX_MALLOC" /D "_WINDOWS" /D WINVER=0x400 /D "_MT" /D "__WXMSW__" /D "__WXDEBUG__" /D "WINDOWS" /D "_WX_WIN" /YX /FD /GZ /c
 # SUBTRACT BASE CPP /Fr
-# ADD CPP /nologo /MDd /Gm /GX /Zi /Od /I "$(WXWIN)/lib/vc_lib/mswud" /I "$(WXWIN)/lib/mswud" /I "$(WXWIN)/include" /I "$(WXWIN)/contrib/include" /I "../../sword/include" /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /D "_LIB" /D "REGEX_MALLOC" /D "_WINDOWS" /D WINVER=0x400 /D "_MT" /D "__WXMSW__" /D "__WXDEBUG__" /D "WINDOWS" /YX /FD /GZ /c
-# SUBTRACT CPP /Fr
+# ADD CPP /nologo /MDd /Gm /GR /GX /Zi /Od /I "$(WXWIN)/lib/vc_lib/mswud" /I "$(WXWIN)/lib/mswud" /I "$(WXWIN)/include" /I "$(WXWIN)/contrib/include" /I "c:/sword/include" /I "$(READINGPLANNER)/source" /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /D "_LIB" /D "REGEX_MALLOC" /D "_WINDOWS" /D WINVER=0x400 /D "_MT" /D "__WXMSW__" /D "__WXDEBUG__" /D "WINDOWS" /D "_WX_WIN" /Fr /YX /FD /GZ /c
 # ADD BASE RSC /l 0x809 /i "$(WXWIN)/include" /i ".\..\..\lib\vc_lib\mswd" /d "_DEBUG" /d "__WXMSW__" /d "__WXDEBUG__" /d "_WINDOWS"
 # ADD RSC /l 0x809 /i "$(WXWIN)/include" /i ".\..\..\lib\vc_lib\mswd" /d "_DEBUG" /d "__WXMSW__" /d "__WXDEBUG__" /d "_WINDOWS"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LINK32=link.exe
-# ADD BASE LINK32 user32.lib gdi32.lib comdlg32.lib shell32.lib advapi32.lib oleaut32.lib ole32.lib comctl32.lib rpcrt4.lib wxmsw25ud_core.lib wxbase25ud.lib wxmsw25ud_adv.lib wxmsw25ud_html.lib libswordvc6d.lib /nologo /subsystem:windows /debug /machine:I386 /out:"./biblestudyd.exe" /pdbtype:sept /libpath:"$(WXWIN)/lib" /libpath:"$(WXWIN)/contrib/lib" /libpath:"../../sword/lib" /libpath:"../../icu-sword/lib" /verbose:lib
+# ADD BASE LINK32 user32.lib gdi32.lib comdlg32.lib shell32.lib advapi32.lib oleaut32.lib ole32.lib comctl32.lib rpcrt4.lib wxmsw25ud_core.lib wxbase25ud.lib wxmsw25ud_adv.lib wxmsw25ud_html.lib libswordvc6d.lib ReadingPlannerud.lib /nologo /subsystem:windows /debug /machine:I386 /out:"./biblestudyd.exe" /pdbtype:sept /libpath:"$(WXWIN)/lib" /libpath:"$(WXWIN)/contrib/lib" /libpath:"../../sword/lib" /libpath:"../../icu-sword/lib" /libpath:"$(READINGPLANNER)/source/MSVC6/Unicode_Debug" /verbose:lib
 # SUBTRACT BASE LINK32 /pdb:none
-# ADD LINK32 user32.lib gdi32.lib comdlg32.lib shell32.lib advapi32.lib oleaut32.lib ole32.lib comctl32.lib rpcrt4.lib wxmsw25ud_core.lib wxbase25ud.lib wxmsw25ud_adv.lib wxmsw25ud_html.lib libswordvc6d.lib /nologo /subsystem:windows /debug /machine:I386 /out:"./biblestudyd.exe" /pdbtype:sept /libpath:"$(WXWIN)/lib" /libpath:"$(WXWIN)/contrib/lib" /libpath:"../../sword/lib" /libpath:"../../icu-sword/lib" /verbose:lib
+# ADD LINK32 wxmsw25ud_core.lib wxbase25ud.lib wxmsw25ud_adv.lib wxmsw25ud_html.lib libswordvc6d.lib ReadingPlannerud.lib InstAide.lib user32.lib gdi32.lib comdlg32.lib shell32.lib advapi32.lib oleaut32.lib ole32.lib comctl32.lib rpcrt4.lib InstAide.lib /nologo /subsystem:windows /map /debug /machine:I386 /out:"./biblestudyd.exe" /pdbtype:sept /libpath:"c:/sword/lib" /libpath:"$(READINGPLANNER)/source/MSVC6/Unicode_Debug" /libpath:"$(WXWIN)/lib" /libpath:"$(WXWIN)/contrib/lib" /libpath:"c:/icu-sword/lib" /verbose:lib
 # SUBTRACT LINK32 /pdb:none
+
+!ELSEIF  "$(CFG)" == "biblestudy - Win32 Unicode Release"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 0
+# PROP BASE Output_Dir "biblestudy___Win32_Unicode_Release"
+# PROP BASE Intermediate_Dir "biblestudy___Win32_Unicode_Release"
+# PROP BASE Ignore_Export_Lib 0
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 0
+# PROP Output_Dir "Unicode_Release"
+# PROP Intermediate_Dir "Unicode_Release"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+# ADD BASE CPP /nologo /MD /W4 /GX /O2 /I "$(WXWIN)/lib/vc_lib/mswu" /I "$(WXWIN)/lib/mswu" /I "$(WXWIN)/include" /I "$(WXWIN)/contrib/include" /I "../../sword/include" /I "$(READINGPLANNER)/source" /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /D "_WINDOWS" /D WINVER=0x400 /D "_MT" /D wxUSE_GUI=1 /D "_WX_WIN" /YX /FD /c
+# ADD CPP /nologo /MD /W2 /GR /GX /O2 /I "$(WXWIN)/lib/vc_lib/mswu" /I "$(WXWIN)/contrib/include" /I "c:/sword/include" /I "$(READINGPLANNER)/source" /I "$(WXWIN)/include" /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /D "_WINDOWS" /D WINVER=0x400 /D "_MT" /D wxUSE_GUI=1 /D "_WX_WIN" /YX /FD /c
+# ADD BASE RSC /l 0x809 /i "$(WXWIN)/include" /d "NDEBUG"
+# ADD RSC /l 0x809 /i "$(WXWIN)/include" /d "NDEBUG"
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 user32.lib gdi32.lib comdlg32.lib shell32.lib advapi32.lib oleaut32.lib ole32.lib comctl32.lib rpcrt4.lib wxmsw25u_core.lib wxbase25u.lib wxmsw25u_adv.lib wxmsw25u_html.lib libswordvc6.lib ReadingPlanneru.lib /nologo /subsystem:windows /machine:I386 /libpath:"$(WXWIN)/lib" /libpath:"$(WXWIN)/contrib/lib" /libpath:"../../sword/lib" /libpath:"../../icu-sword/lib$(READINGPLANNER)/source/MSVC6/Unicode_Release"
+# SUBTRACT BASE LINK32 /pdb:none
+# ADD LINK32 InstAide.lib wxmsw25u_core.lib wxbase25u.lib wxmsw25u_adv.lib wxmsw25u_html.lib libswordvc6.lib ReadingPlanneru.lib user32.lib gdi32.lib comdlg32.lib shell32.lib advapi32.lib oleaut32.lib ole32.lib comctl32.lib rpcrt4.lib /nologo /subsystem:windows /incremental:yes /map /machine:I386 /libpath:"c:/sword/lib" /libpath:"$(READINGPLANNER)/source/MSVC6/Unicode_Release" /libpath:"$(WXWIN)/lib" /libpath:"$(WXWIN)/contrib/lib" /libpath:"c:/icu-sword/lib" /libpath:"C:/CDK403/C++/Lib"
+# SUBTRACT LINK32 /pdb:none /nodefaultlib
 
 !ENDIF 
 
@@ -143,8 +142,8 @@ LINK32=link.exe
 
 # Name "biblestudy - Win32 Release"
 # Name "biblestudy - Win32 Debug"
-# Name "biblestudy - Win32 Win32 Unicode Release"
-# Name "biblestudy - Win32 Win32 Unicode Debug"
+# Name "biblestudy - Win32 Unicode Debug"
+# Name "biblestudy - Win32 Unicode Release"
 # Begin Group "Source Files"
 
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
@@ -171,6 +170,10 @@ SOURCE=..\src\BibleStudyMainFrame.cpp
 # Begin Source File
 
 SOURCE=..\src\BibleStudyWizard.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\BookList.cpp
 # End Source File
 # Begin Source File
 
@@ -214,11 +217,19 @@ SOURCE=..\src\HTMLToolTip.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\SwordTools.cpp
+SOURCE=..\src\PrefsDialog.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\TestSword.cpp
+SOURCE=..\src\ReadingPlannerToolBar.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\ReadingPlanWizard.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\SwordTools.cpp
 # End Source File
 # End Group
 # Begin Group "Header Files"
@@ -243,6 +254,10 @@ SOURCE=..\src\BibleStudyMainFrame.h
 # Begin Source File
 
 SOURCE=..\src\BibleStudyWizard.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\BookList.h
 # End Source File
 # Begin Source File
 
@@ -286,11 +301,19 @@ SOURCE=..\src\HTMLToolTip.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\SwordTools.h
+SOURCE=..\src\PrefsDialog.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\TestSword.h
+SOURCE=..\src\ReadingPlannerToolBar.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\ReadingPlanWizard.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\SwordTools.h
 # End Source File
 # End Group
 # Begin Group "Resource Files"

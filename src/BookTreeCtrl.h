@@ -11,7 +11,7 @@
 #ifndef _BOOKTREECTRL_H_
 #define _BOOKTREECTRL_H_
 
-#include <sword/swmodule.h>
+#include <swmodule.h>
 #include <wx/event.h>
 #include <wx/icon.h>
 #include <wx/treectrl.h>

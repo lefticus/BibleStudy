@@ -17,7 +17,7 @@ class BookModule;
 
 #include <wx/notebook.h>
 
-#include <sword/swmgr.h>
+#include <swmgr.h>
 
 BEGIN_DECLARE_EVENT_TYPES()
   DECLARE_EVENT_TYPE(bsEVT_CHILD_SET_FOCUS, 1)
@@ -69,11 +69,16 @@ public:
   void OnSetFocus(wxFocusEvent &event);
   void OnLeftUp(wxMouseEvent &event);
   void OnNotebookPageChanged(wxNotebookEvent &event);
+	void RefreshStartPages(const wxString html);
 
   void SetIcon();
 
   BookModule *GetActiveBookModule();
-
+public:
+	// This may seem silly since we can call GetPageCount but the problem is when 
+	// we are in the midst of creating that first tab and the change page event 
+	// is called and I want to get info from a tab that is not complete.
+	bool m_firstTabCreated;
   DECLARE_EVENT_TABLE()
 };
 

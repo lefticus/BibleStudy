@@ -10,49 +10,49 @@
  ***************************************************************************/
 #ifndef _BOOKMODULE_H_
 #define _BOOKMODULE_H_
-#include <sword/swmodule.h>
-#include <sword/swmgr.h>
-#include <sword/treekey.h>
+#include <swmodule.h>
+#include <swmgr.h>
+#include <treekey.h>
 
 #include <wx/frame.h>
 #include <wx/treectrl.h>
 #include <wx/string.h>
 
 enum bsKeyType {
-  bsVerseKey = 1,
-  bsStringKey,
-  bsTreeKey
+		bsVerseKey = 1,
+		bsStringKey,
+		bsTreeKey
 };
 
 /**
- * Wraps a SWModule and contains data related to the module, i.e. last search
+	* Wraps a SWModule and contains data related to the module, i.e. last search
  * performed. Used for duplicating/detaching tabs as well as updating the 
  * toolbar
- **/
+	**/
 class BookModule {
 public:
   BookModule(sword::SWModule *);
-  ~BookModule();
+		~BookModule();
 
-  /** Returns underlying module */
+		/** Returns underlying module */
   sword::SWModule * GetModule();
   sword::ModMap * GetModules();
 
-  /** Lookups up a key, returning HTML representation */
+		/** Lookups up a key, returning HTML representation */
   wxString LookupKey(wxString key, wxString search = wxT(""), 
                      int searchtype = 0, bool tooltip = false, 
 		     bool browse = false);
 		     
-  wxString BrowseForward();
-  wxString BrowseBackward();
+		wxString BrowseForward();
+		wxString BrowseBackward();
 
-  /** Return the last lookup key */
+		/** Return the last lookup key */
   wxString GetLastLookupKey() const;
 
   wxString GetLastSearch() const;
   wxString ModInfo() const;
 
-  /** Returns a combobox for this book */
+		/** Returns a combobox for this book */
   wxFrame *GetControl(wxWindow * parent);
 
   void AddModule(sword::SWModule * mod);
@@ -62,7 +62,7 @@ public:
   bsKeyType GetKeyType(sword::SWModule * mod) const;
   bool IsBrowsing() const;
 
-  static void Percent(char, void *);
+		static void Percent(char, void *);
 
 private:
   /** The SWModule being wrapped */

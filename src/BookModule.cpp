@@ -16,8 +16,8 @@
 #include <wx/log.h>
 #include <wx/msgdlg.h>
 
-#include <sword/swmodule.h>
-#include <sword/versekey.h>
+#include <swmodule.h>
+#include <versekey.h>
 
 using namespace sword;
 

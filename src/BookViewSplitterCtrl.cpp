@@ -11,9 +11,10 @@
 #include <wx/log.h>
 #include <wx/event.h>
 
-#include <sword/swmodule.h>
+#include <swmodule.h>
 
 #include <BookViewSplitterCtrl.h>
+#include <BibleStudyMainFrame.h>
 #include <BookViewHtml.h>
 #include <BookViewCtrl.h>
 #include <BookTreeCtrl.h>
@@ -46,7 +47,8 @@ BookViewSplitterCtrl::BookViewSplitterCtrl(wxWindow * parent,
                                         wxT("splitterWindow")),
                        m_SwordTools(nswordtools)
 {
-  SetMinimumPaneSize(50);
+  m_LastFocus = NULL;
+	SetMinimumPaneSize(50);
 
   m_TopLevelSplit =
     new wxSplitterWindow(this, -1, wxDefaultPosition, wxDefaultSize,
@@ -121,11 +123,6 @@ void BookViewSplitterCtrl::AddTab()
 void BookViewSplitterCtrl::OpenInCurrentTab(SWModule * mod)
 {
   GetActiveBookViewCtrl()->OpenInCurrentTab(mod);
-
-  // wxCommandEvent eventCustom(bsEVT_ACTIVE_MODULE_CHANGE);
-  // eventCustom.SetEventObject(this);
-  // eventCustom.SetClientData(GetActiveBookViewCtrl()->GetActiveBookModule());
-  // ProcessEvent(eventCustom);
 }
 
 void BookViewSplitterCtrl::AddToCurrentTab(SWModule * mod)
@@ -189,7 +186,10 @@ void BookViewSplitterCtrl::OnNewActiveChild(wxCommandEvent & event)
       CompareTo(event.GetEventObject()->GetClassInfo()->GetClassName())) {
     m_LastFocus = (BookViewCtrl *) event.GetEventObject();
   }
-
+	if(m_LastFocus->m_firstTabCreated && m_LastFocus->GetPageText(m_LastFocus->GetSelection()).IsSameAs(wxT("Start Page")))
+		reinterpret_cast<BibleStudyMainFrame*>(GetParent())->ShowHidePlanBar(true);
+	else
+		reinterpret_cast<BibleStudyMainFrame*>(GetParent())->ShowHidePlanBar(false);
   event.Skip();
 
   wxCommandEvent eventCustom(bsEVT_ACTIVE_MODULE_CHANGE);
@@ -398,4 +398,22 @@ void BookViewSplitterCtrl::OnLinkHover(wxCommandEvent & event)
   } else {
     html->SetHTMLToolTip(wxT(""));
   }
+}
+
+void BookViewSplitterCtrl::RefreshStartPages(const wxString html)
+{
+	((BookViewCtrl*)m_FirstChildSplit->GetWindow1())->RefreshStartPages(html);
+	if(m_FirstChildSplit->IsSplit())
+	{
+		((BookViewCtrl*)m_FirstChildSplit->GetWindow2())->RefreshStartPages(html);
+	}
+	if (m_TopLevelSplit->IsSplit())
+	{
+		((BookViewCtrl*)m_SecondChildSplit->GetWindow1())->RefreshStartPages(html);
+		if(m_SecondChildSplit->IsSplit())
+		{
+			((BookViewCtrl*)m_SecondChildSplit->GetWindow2())->RefreshStartPages(html);
+		}
+	}
+
 }

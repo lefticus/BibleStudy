@@ -14,8 +14,8 @@
 #include <wx/tokenzr.h>
 #include <wx/log.h>
 
-#include <sword/markupfiltmgr.h>
-#include <sword/swmgr.h>
+#include <markupfiltmgr.h>
+#include <swmgr.h>
 
 #include <iostream>
 

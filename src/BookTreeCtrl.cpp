@@ -19,8 +19,10 @@
 #include <wx/log.h>
 #include <wx/msgdlg.h>
 #include <wx/artprov.h>
+#include <wx/imaglist.h>
+#include <wx/image.h>
 
-#include <sword/swmgr.h>
+#include <swmgr.h>
 
 #include "../icons/book.xpm"
 #include "../icons/bible.xpm"
