@@ -52,8 +52,6 @@ END_EVENT_TABLE()
 BibleStudyWizardPage::BibleStudyWizardPage(wxWizard *parent, SWModule *module, wxString text, wxString reference) : wxWizardPageSimple(parent)
 {
 	m_Module = module;
-	//SetSize(GetBestSize());
-	//Refresh();
 	wxSize size = GetClientSize();
 	wxLogDebug(wxT("BibleStudyWizardPage::BibleStudyWizardPage client area: %i, %i"), size.GetWidth(), size.GetHeight());
 

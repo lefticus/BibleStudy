@@ -35,6 +35,7 @@ BookModule::BookModule(SWModule *newModule)
 	m_Second_Module = NULL;
 	m_LastKey = NULL;
 	m_isbrowsing = false;
+	m_Description = wxT("");
 }
 
 bsKeyType BookModule::GetKeyType(SWModule *mod)
@@ -59,6 +60,11 @@ BookModule::~BookModule()
 SWModule *BookModule::GetModule()
 {
 	return m_Module;
+}
+
+ModMap *BookModule::GetModules()
+{
+	return &m_Modules;
 }
 
 bsKeyType BookModule::GetKeyType()
@@ -121,19 +127,24 @@ bool BookModule::IsBrowsing()
 wxString BookModule::BrowseForward()
 {
 	if (m_isbrowsing) {
-		m_Module->SetKey((const char *)m_LastLookupKey.mb_str());
+		m_Module->SetKey((const char *)m_LastLookupKey.mb_str(wxConvUTF8));
 		if (m_keytype == bsVerseKey) {
 
-			VerseKey vk((const char *)m_LastLookupKey.mb_str());
+			VerseKey vk((const char *)m_LastLookupKey.mb_str(wxConvUTF8));
 
 			vk.Chapter(vk.Chapter()+1);
 
+			if (vk.Error() != 0)
+				return wxT("");
 
 			return LookupKey(wxString(vk.getText(), wxConvUTF8), wxT(""), 0, false, true);
 		} else {
-			wxLogDebug(wxT("Last Key:") + m_LastLookupKey);
+			//wxLogDebug(wxT("Last Key:") + m_LastLookupKey);
 			(*m_Module)++;
-			wxLogDebug(wxT("Next Key:") + wxString(m_Module->KeyText(), wxConvUTF8));
+			//wxLogDebug(wxT("Next Key:") + wxString(m_Module->KeyText(), wxConvUTF8));
+
+			if (m_Module->Error() != 0)
+				return wxT("");
 
 			return LookupKey(wxString(m_Module->KeyText(), wxConvUTF8), wxT(""), 0, false, false);
 		}
@@ -145,17 +156,23 @@ wxString BookModule::BrowseForward()
 wxString BookModule::BrowseBackward()
 {
 	if (m_isbrowsing) {
-		m_Module->setKey((const char *)m_LastLookupKey.mb_str());
+		m_Module->setKey((const char *)m_LastLookupKey.mb_str(wxConvUTF8));
 		if (m_keytype == bsVerseKey) {
-			VerseKey vk((const char *)m_LastLookupKey.mb_str());
+			VerseKey vk((const char *)m_LastLookupKey.mb_str(wxConvUTF8));
 
 			vk.Chapter(vk.Chapter()-1);
 
+			if (vk.Error() != 0)
+				return wxT("");
+
 			return LookupKey(wxString(vk.getText(), wxConvUTF8), wxT(""), 0, false, true);
 		} else {
-			wxLogDebug(wxT("Last Key:") + m_LastLookupKey);
+			//wxLogDebug(wxT("Last Key:") + m_LastLookupKey);
 			(*m_Module)++;
-			wxLogDebug(wxT("Next Key:") + wxString(m_Module->KeyText(), wxConvUTF8));
+			//wxLogDebug(wxT("Next Key:") + wxString(m_Module->KeyText(), wxConvUTF8));
+
+			if (m_Module->Error() != 0)
+				return wxT("");
 
 			return LookupKey(wxString(m_Module->KeyText(), wxConvUTF8), wxT(""), 0, false, false);
 		}
@@ -184,8 +201,12 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype, bo
 	int versecount = 0;
 	bool cont = true;
 
-	wxBusyCursor busy;
 	wxWindowDisabler disableAll;
+
+	if (!tooltip) {
+
+		wxBusyCursor busy;
+	}
 
 	m_isbrowsing = browse;
 
@@ -201,14 +222,14 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype, bo
 	ListKey listkey;
 	ListKey searchresult;
 
+	//char keybuf[512];
+	//keybuf[wxConvUTF8.WC2MB(keybuf, key.c_str(), key.Length())]=0;
+
 	if (m_keytype == bsVerseKey)
-		listkey = vk.ParseVerseList(key.mb_str(), "Gen1:1", true);
+		listkey = vk.ParseVerseList(key.mb_str(wxConvUTF8), "Gen1:1", true);
 	else
 		listkey.ClearList();
 
-	//if (key == wxT("") && m_LastKey.Count() > 0) {
-	//	listkey = m_LastKey;
-	//}
 
 	if (search != wxT("")) {
 		wxLogDebug(wxT("Range: %s, Key: %s"), key.c_str(), search.c_str());
@@ -221,7 +242,7 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype, bo
 		} else {
 			searchresult = m_Module->Search(search.mb_str(), searchtype, 0, &listkey, 0, &Percent, (void *)&pd);
 		}
-//		pd.Hide();
+
 		listkey = searchresult;
 	}
 
@@ -252,6 +273,7 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype, bo
 
 
 	if (m_keytype == bsVerseKey) {
+		m_LastLookupKey = key;
 		for (i = 0; i < listkey.Count(); i++) {
 			VerseKey *element = SWDYNAMIC_CAST(VerseKey, listkey.GetElement(i));
 
@@ -264,9 +286,17 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype, bo
 					wxYield();
 					versecount++;
 					if (versecount == 300) {
-						wxMessageDialog msg(NULL, wxT("More than 300 verses found, continue?"), wxT("Too many verses found."), wxICON_QUESTION | wxYES_NO | wxNO_DEFAULT | wxCENTRE, wxDefaultPosition);
-						if (msg.ShowModal() != wxID_YES)
+						wxMessageDialog *msg;
+
+						if (m_Frame)
+							msg = new wxMessageDialog(m_Frame->GetParent(), wxT("More than 300 verses found, continue?"), wxT("Too many verses found."), wxICON_QUESTION | wxYES_NO | wxNO_DEFAULT | wxCENTRE, wxDefaultPosition);
+						else
+							msg = new wxMessageDialog(NULL, wxT("More than 300 verses found, continue?"), wxT("Too many verses found."), wxICON_QUESTION | wxYES_NO | wxNO_DEFAULT | wxCENTRE, wxDefaultPosition);
+
+						if (msg->ShowModal() != wxID_YES)
 							cont = false;
+
+						msg->Destroy();
 					}
 					wxLogDebug(wxT("BookModule::LookupKey m_Module->Key()<= vk"));
 					output.append(wxT("<tr align=left valign=top>"));
@@ -365,9 +395,17 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype, bo
 				wxYield();
 				versecount++;
 				if (versecount == 300) {
-					wxMessageDialog msg(NULL, wxT("More than 300 verses found, continue?"), wxT("Too many verses found."), wxICON_QUESTION | wxYES_NO | wxNO_DEFAULT | wxCENTRE, wxDefaultPosition);
-					if (msg.ShowModal() != wxID_YES)
+					wxMessageDialog *msg;
+
+					if (m_Frame)
+						msg = new wxMessageDialog(m_Frame->GetParent(), wxT("More than 300 verses found, continue?"), wxT("Too many verses found."), wxICON_QUESTION | wxYES_NO | wxNO_DEFAULT | wxCENTRE, wxDefaultPosition);
+					else
+						msg = new wxMessageDialog(NULL, wxT("More than 300 verses found, continue?"), wxT("Too many verses found."), wxICON_QUESTION | wxYES_NO | wxNO_DEFAULT | wxCENTRE, wxDefaultPosition);
+
+					if (msg->ShowModal() != wxID_YES)
 						cont = false;
+
+					msg->Destroy();
 				}
 
 				ModMap::iterator it;
@@ -390,8 +428,6 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype, bo
 
 				output.append(wxT("</tr>"));
 			}
-//			if (key == wxT(""))
-//				m_LastLookupKey.append(wxString(listkey.GetElement(i)->getText(), wxConvUTF8));
 
 		}
 
@@ -400,8 +436,10 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype, bo
 		m_isbrowsing = true;
 
 		if (listkey.Count() == 0) {
-			listkey << (const char *)key.mb_str();
+			listkey << (const char*)key.mb_str(wxConvUTF8);
 		}
+
+		//printf("%s", keybuf);
 
 		SWKey *element;
 		for (int i = 0; i<listkey.Count(); i++) {
@@ -429,7 +467,8 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype, bo
 			output.append(wxT("</tr>"));
 		}
 
-		m_LastLookupKey = key;
+		if (listkey.Count() == 1)
+			m_LastLookupKey = wxString(m_Module->KeyText(), wxConvUTF8);
 	}
 
 	output.append(wxT("</table>"));
@@ -439,13 +478,12 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype, bo
 	else
 		output.append(wxT("</html>"));
 
-	m_LastLookupKey = key;
 	m_LastSearch = search;
 
-	if (search != wxT("")) {
+//	if (search != wxT("")) {
 //		wxRegEx myregex(search, wxRE_ICASE);
 //		myregex.ReplaceAll(&output, wxT("<font color=#999900'>\\0</font>"));
-	}
+//	}
 
 
 	return output;
@@ -454,7 +492,6 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype, bo
 wxFrame *BookModule::GetControl(wxWindow *parent)
 {
 	if (m_Frame) return m_Frame;
-
 
 	if (!strcmp(m_Module->Type(), "Generic Books")) {
 		TreeKey *key;
@@ -473,6 +510,7 @@ wxFrame *BookModule::GetControl(wxWindow *parent)
 		m_Frame = new DropDownCtrl(parent, m_Module, bsBible);
 	}
 
+	wxLogDebug(wxT("BookModule::GetControl exiting"));
 	return m_Frame;
 }
 
@@ -480,19 +518,64 @@ wxFrame *BookModule::GetControl(wxWindow *parent)
 void BookModule::AddTreeSiblings(wxTreeCtrl *tree, wxTreeItemId parentid, TreeKey *key)
 {
 	wxTreeItemId itemadded;
-	wxLogDebug(wxT("BookModule::AddTreeSiblings called: %s"), (const wxChar*)wxString(key->getFullName(), wxConvUTF8));
-	bool cont;
-	cont = true;
+
+	wxString fullname = wxString(key->getFullName(), wxConvUTF8);
+
+	//wxLogDebug(wxT("BookModule::AddTreeSiblings called: %s"), (const wxChar*)wxString(key->getFullName(), wxConvUTF8));
+	//wxLogDebug(wxT("BookModule::AddTreeSiblings called: %s"), fullname.mb_str());
+
+	bool cont = true;
 
 	while (cont) {
+
+		wxLogDebug(wxT("BookModule::AddTreeSiblings starting next iteration of while loop"));
+		wxLogDebug(wxT("BookModule::AddTreeSiblings adding: %i"), key->Index());
+		wxString name;
+
+		//wxMessageBox(wxString(key->getLocalName(), wxConvUTF8), wxT("test"), wxOK| wxICON_INFORMATION, tree->GetParent());
 		itemadded = tree->AppendItem(parentid, wxString(key->getLocalName(), wxConvUTF8));
 
 		if (key->hasChildren()) {
+			wxLogDebug(wxT("BookModule::AddTreeSiblings item has children"));
+
 			key->firstChild();
+			wxLogDebug(wxT("BookModule::AddTreeSiblings adding children"));
 			AddTreeSiblings(tree, itemadded, key);
 			key->parent();
+		} else {
+			wxLogDebug(wxT("BookModule::AddTreeSiblings no children"));
 		}
 
+		wxLogDebug(wxT("BookModule::AddTreeSiblings moving to next sibling"));
 		cont = key->nextSibling();
+		if (key->Error() != 0) {
+			wxLogDebug(wxT("BookModule::AddTreeSiblings error occured"));
+			cont = false;
+		}
 	}
+
+	wxLogDebug(wxT("BookModule::AddTreeSiblings exiting"));
+}
+
+wxString BookModule::ModInfo()
+{
+	ConfigEntMap confmap;
+	ConfigEntMap::iterator cit;
+	wxString desc;
+
+	if (m_Description == wxT("")) {
+		desc = wxString(m_Module->Description(), wxConvUTF8) + wxT(":") + wxString(m_Module->Type(), wxConvUTF8) + wxT("\n\n");
+		confmap = m_Module->getConfig();
+		for (cit = confmap.begin(); cit != confmap.end(); cit++) {
+			if (!strcmp(cit->first.c_str(), "About") || !strcmp(cit->first.c_str(), "DistributionLicense")) {
+				desc += wxString(cit->first.c_str(), wxConvUTF8) + wxT(": ") + wxString(cit->second.c_str(), wxConvUTF8) + wxT("\n\n");
+			}
+		}
+
+		desc.Replace(wxT("\\par"), wxT("\n"), TRUE);
+
+		m_Description = desc;
+	}
+
+	return m_Description;
 }

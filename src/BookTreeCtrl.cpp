@@ -17,6 +17,7 @@
 #include <wx/artprov.h>
 #include <wx/menu.h>
 #include <wx/log.h>
+#include <wx/msgdlg.h>
 
 #include "../icons/book.xpm"
 #include "../icons/bible.xpm"
@@ -45,8 +46,9 @@ BEGIN_EVENT_TABLE(BookTreeCtrl, wxTreeCtrl)
 	EVT_MENU(ID_BookTreePopupOpenInNewWindow, BookTreeCtrl::OnOpenModule)
 	EVT_MENU(ID_BookTreePopupOpen, BookTreeCtrl::OnOpenModule)
 	EVT_MENU(ID_BookTreePopupAddToCurrentTab, BookTreeCtrl::OnOpenModule)
+	EVT_MENU(ID_BookTreePopupInformation, BookTreeCtrl::OnInformation)
 	EVT_TREE_ITEM_ACTIVATED(-1, BookTreeCtrl::OnItemActivated)
-END_EVENT_TABLE() 
+END_EVENT_TABLE()
 
 DEFINE_EVENT_TYPE(bsEVT_OPEN_IN_CURRENT_TAB)
 DEFINE_EVENT_TYPE(bsEVT_OPEN_IN_NEW_TAB)
@@ -66,8 +68,8 @@ void BookTreeCtrl::OnItemActivated(wxEvent &event)
 	wxLogTrace(wxTRACE_Messages, "BookTreeCtrl::OnItemActivated called");
 	if (GetChildrenCount(GetSelection(), false)) {
 		wxLogDebug(wxT("BookTreeCtrl::OnItemActivated not a leaf"));
-		
-		/* windows process the dblclick and collapses immediately after this expand */ 
+
+		/* windows process the dblclick and collapses immediately after this expand */
 		#ifndef __WINDOWS__
 		if (IsExpanded(GetSelection())) {
 			wxLogDebug(wxT("BookTreeCtrl::OnItemActivated Collapse"));
@@ -77,7 +79,7 @@ void BookTreeCtrl::OnItemActivated(wxEvent &event)
 			Expand(GetSelection());
 		}
 		#endif
-		
+
 	} else {
 		wxLogDebug(wxT("BookTreeCtrl::OnItemActivated is a leaf"));
 		wxCommandEvent eventCustom(bsEVT_OPEN_IN_CURRENT_TAB);
@@ -117,12 +119,12 @@ void BookTreeCtrl::OnOpenModule(wxMenuEvent &event)
 		wxLogDebug(wxT("BookTreeCtrl::OnOpenModule no item selected"));
 	}
 	ProcessEvent(*eventCustom);
-	
+
 	delete eventCustom;
 }
 
 
-void BookTreeCtrl::OnRightUp(wxMouseEvent &event) 
+void BookTreeCtrl::OnRightUp(wxMouseEvent &event)
 {
 	wxLogTrace(wxTRACE_Messages, wxT("BookTreeCtrl::OnRightUp called"));
 	if (!GetChildrenCount(GetSelection(), false)) {
@@ -238,7 +240,11 @@ void BookTreeCtrl::RefreshBookList(bool ShowLanguages)
 	SortChildren(rootnode);
 }
 
-
+void BookTreeCtrl::OnInformation(wxMenuEvent &event)
+{
+	BookModule bm(GetItemData(GetSelection())->GetModule());
+	wxMessageBox(bm.ModInfo(), wxT("Module Information"), wxOK|wxICON_INFORMATION, this->GetParent()->GetParent());
+}
 
 BookTreeCtrl::BookTreeCtrl(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size) : wxTreeCtrl(parent, id, pos, size, wxTR_HIDE_ROOT|wxTR_DEFAULT_STYLE, wxDefaultValidator, wxT("listCtrl"))
 {
@@ -249,7 +255,10 @@ BookTreeCtrl::BookTreeCtrl(wxWindow *parent, wxWindowID id, const wxPoint &pos, 
 	m_PopupMenu->Append(ID_BookTreePopupOpen, wxT("Open"));
 	m_PopupMenu->Append(ID_BookTreePopupOpenInNewTab, wxT("Open In New Tab"));
 	m_PopupMenu->Append(ID_BookTreePopupOpenInNewWindow, wxT("Open In New Window"));
+	m_PopupMenu->AppendSeparator();
 	m_PopupMenu->Append(ID_BookTreePopupAddToCurrentTab, wxT("Add To Current Tab"));
+	m_PopupMenu->AppendSeparator();
+	m_PopupMenu->Append(ID_BookTreePopupInformation, wxT("Module Information"));
 }
 
 void BookTreeCtrl::SetupIcons()

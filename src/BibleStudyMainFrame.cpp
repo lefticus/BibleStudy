@@ -50,7 +50,7 @@ BEGIN_EVENT_TABLE(BibleStudyMainFrame, wxFrame)
 	EVT_MENU(ID_MenuBibleStudyWhy, BibleStudyMainFrame::OnShowWhyBecomeChristian)
 	EVT_MENU(ID_MenuBibleStudyGrow, BibleStudyMainFrame::OnShowHowGrowSpiritually)
 
-	
+
 	EVT_MENU_RANGE(ID_MenuTopBookOption, ID_MenuTopBookOption+50, BibleStudyMainFrame::OnOptionChange)
 
 	EVT_TOOL(ID_ToolShowHideBookTree, BibleStudyMainFrame::OnShowHideBookTree)
@@ -83,6 +83,7 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools, const wxStri
 {
 
 	m_SwordTools = newSwordTools;
+	wxWindowDisabler disableAll;
 
 	wxMenu *menuFile = new wxMenu();
 	wxMenu *menuHelp = new wxMenu();
@@ -103,10 +104,6 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools, const wxStri
 	menuWindow->Append( ID_MenuShowHideBookTree, wxT("Show/Hide Book List") );
 	menuWindow->AppendSeparator();
 
-	//wxMenuItem *menuItemSplitLeftRight = new wxMenuItem(menuWindow, ID_MenuSplitVertically, wxT("Split View &Left/Right"));
-	//menuItemSplitLeftRight->SetBitmap(wxBitmap(splitleftright_xpm) );
-	//menuWindow->Append( menuItemSplitLeftRight );
-
 	menuWindow->Append( ID_MenuSplitVertically, wxT("Split View &Left/Right") );
 
 	menuWindow->Append( ID_MenuSplitHorizontally, wxT("Split View &Top/Bottom") );
@@ -120,6 +117,25 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools, const wxStri
 
 	OptionsList optlist;
 	optlist = m_SwordTools->GetSwordManager()->getGlobalOptions();
+
+// 	unsigned char mychars[13];
+// 	mychars[0] = 68;
+// 	mychars[1] = 69;
+// 	mychars[2] = 226;
+// 	mychars[3] = 128;
+// 	mychars[4] = 156;
+// 	mychars[5] = 67;
+// 	mychars[6] = 46;
+// 	mychars[7] = 46;
+// 	mychars[8] = 46;
+// 	mychars[9] = 226;
+// 	mychars[10] = 128;
+// 	mychars[11] = 157;
+// 	mychars[12] = 0;
+// 
+// 	wxString leftquote = wxString((const char *)mychars, wxConvUTF8);
+// 
+// 	wxMessageBox(leftquote, wxT("Quote Test"), wxOK | wxICON_INFORMATION, this);
 
 	/* Add global options reported by SwordManager */
 	OptionsList::iterator it;
@@ -157,10 +173,6 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools, const wxStri
 	m_ToolBar = new BookViewToolBar(this, ID_BookViewToolBar, wxTB_HORIZONTAL|wxTB_FLAT);
 	SetToolBar(m_ToolBar);
 
-
-//	m_LookupToolBar = new wxToolBar(this, -1);
-
-
 	SetupSplitterWindows();
 }
 
@@ -179,7 +191,7 @@ void BibleStudyMainFrame::OnShowWhyBecomeChristian()
 	wiz->AddPage(mod, wxT("Because of the sin of Adam, the first human, all now have the tendancy to sin. Thankfully, just as sin entered the world through one man, one Man can remove the sin of the world."), wxT("Ro 5:12"));
 	wiz->AddPage(mod, wxT("It is easy for us to be nice to someone who is nice to us, but God reached out to us while we weren't his friend and sent his son, Jesus to die for our sin."), wxT("Ro 5:8"));
 	wiz->AddPage(mod, wxT("If you accept the death of Jesus as the covering for your sin, you will not have to face eternal separation from God."), wxT("Ro 10:9-13"));
-	
+
 	wiz->RunWizard();
 }
 
@@ -252,8 +264,14 @@ void BibleStudyMainFrame::UpdateToolbars(BookModule *bm)
 		}
 
 		m_ToolBar->SetDropDownFrame(bm->GetControl(this));
+		GetMenuBar()->Enable(ID_MenuDetachTab, true);
+		GetMenuBar()->Enable(ID_MenuDuplicateTab, true);
+
 	} else {
+		GetMenuBar()->Enable(ID_MenuDetachTab, false);
+		GetMenuBar()->Enable(ID_MenuDuplicateTab, false);
 		m_ToolBar->SetLookupKey(wxT(""));
+		m_ToolBar->SetDropDownFrame(NULL);
 	}
 }
 
@@ -345,8 +363,8 @@ void BibleStudyMainFrame::OnShowBibleStudy(wxCommandEvent& event)
 		OnShowHowGrowSpiritually();
 	}
 
-	
-	
+
+
 }
 
 void BibleStudyMainFrame::OnAbout(wxCommandEvent& event)
@@ -435,6 +453,7 @@ void BibleStudyMainFrame::OnCloseOtherTabs(wxMenuEvent& event)
 void BibleStudyMainFrame::OnDetachTab(wxMenuEvent& event)
 {
 	wxLogTrace(wxTRACE_Messages, wxT("BibleStudyMainFrame::OnDetachTab called"));
+	wxWindowDisabler disableAll;
 	OpenNewWindow()->DisplayModule(m_WindowSplit->GetActiveBookModule());
 	m_WindowSplit->CloseTab();
 }

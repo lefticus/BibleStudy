@@ -41,7 +41,7 @@ DEFINE_EVENT_TYPE(bsEVT_CHILD_SET_FOCUS)
 BEGIN_EVENT_TABLE(BookViewCtrl, wxNotebook)
 	EVT_SET_FOCUS(BookViewCtrl::OnSetFocus)
 	EVT_NOTEBOOK_PAGE_CHANGED(-1, BookViewCtrl::OnNotebookPageChanged)
-	
+
 END_EVENT_TABLE()
 
 
@@ -118,7 +118,7 @@ void BookViewCtrl::CloseTab()
 
 	html = (BookViewHtml *)GetPage(GetSelection())->GetChildren().GetFirst()->GetData();
 	mod = (BookModule *)html->GetClientData();
-	
+
 	if (GetPageCount() > 1) {
 		if (mod)
 			delete mod;
@@ -199,14 +199,30 @@ void BookViewCtrl::Search(wxString range, wxString search, int searchtype)
 
 void BookViewCtrl::OpenInCurrentTab(BookModule *bm)
 {
-	OpenInCurrentTab(bm->GetModule());
+	if (bm) {
+		OpenInCurrentTab(bm->GetModule());
 
-	if (bm->GetLastSearch() != wxT(""))
-		Search(bm->GetLastLookupKey(), bm->GetLastSearch(), 0);
-	else if (bm->IsBrowsing())
-		BrowseKey(bm->GetLastLookupKey());
-	else
-		LookupKey(bm->GetLastLookupKey());
+		SWModule *curMod;
+		ModMap::iterator it;
+
+		for (it = bm->GetModules()->begin(); it != bm->GetModules()->end(); it++) {
+			curMod = (*it).second;
+			GetActiveBookModule()->AddModule(curMod);
+		}
+
+		SetPageText(GetSelection(), GetActiveBookModule()->GetName());
+
+		if (bm->GetLastSearch() != wxT(""))
+			Search(bm->GetLastLookupKey(), bm->GetLastSearch(), 0);
+		else if (bm->IsBrowsing())
+			BrowseKey(bm->GetLastLookupKey()+wxT(":"));
+		else
+			LookupKey(bm->GetLastLookupKey());
+	} else {
+		OpenInCurrentTab((SWModule *)NULL);
+	}
+
+	PostChildSetFocus();
 }
 
 void BookViewCtrl::OpenInCurrentTab(wxString html)
@@ -216,7 +232,8 @@ void BookViewCtrl::OpenInCurrentTab(wxString html)
 	htmlwindow = (BookViewHtml *)GetPage(GetSelection())->GetChildren().GetFirst()->GetData();
 	htmlwindow->SetPage( html );
 	SetPageText(GetSelection(), wxString(htmlwindow->GetOpenedPageTitle()));
-	//SetIcon();
+
+	PostChildSetFocus();
 }
 
 void BookViewCtrl::AddToCurrentTab(SWModule *mod)
@@ -244,40 +261,46 @@ void BookViewCtrl::OpenInCurrentTab(SWModule *newModule)
 	bool performsearch = false;
 
 	html = (BookViewHtml *)GetPage(GetSelection())->GetChildren().GetFirst()->GetData();
-	SetPageText(GetSelection(), wxString(newModule->Name(), wxConvUTF8));
-
 	prevbookmod = (BookModule *)html->GetClientData();
 
-	bookmod = new BookModule(newModule);
-	html->SetClientData(bookmod);
+	if (newModule) {
+		SetPageText(GetSelection(), wxString(newModule->Name(), wxConvUTF8));
 
-	if (prevbookmod) {
-		key = prevbookmod->GetLastLookupKey();
-		search = prevbookmod->GetLastSearch();
-		browse = prevbookmod->IsBrowsing();
-		performsearch = (prevbookmod->GetKeyType() == bookmod->GetKeyType());
-	}
 
-	if (!performsearch && !strcmp(newModule->Type(), "Daily Devotional")) {
-		key = wxString::Format(wxT("%02i.%02i"), wxDateTime::Today().GetMonth() + 1, wxDateTime::Today().GetDay());
-		performsearch = true;
-	}
+		bookmod = new BookModule(newModule);
+		html->SetClientData(bookmod);
 
-	if (performsearch) {
-		if (search != wxT(""))
-			Search(key, search, 0);
-		else if (browse)
-			BrowseKey(key+wxT(":"));
-		else
-			LookupKey(key);
+		if (prevbookmod) {
+			key = prevbookmod->GetLastLookupKey();
+			search = prevbookmod->GetLastSearch();
+			browse = prevbookmod->IsBrowsing();
+			performsearch = (prevbookmod->GetKeyType() == bookmod->GetKeyType());
+		}
+
+		if (!performsearch && !strcmp(newModule->Type(), "Daily Devotional")) {
+			key = wxString::Format(wxT("%02i.%02i"), wxDateTime::Today().GetMonth() + 1, wxDateTime::Today().GetDay());
+			performsearch = true;
+		}
+
+		if (performsearch) {
+			if (search != wxT(""))
+				Search(key, search, 0);
+			else if (browse)
+				BrowseKey(key+wxT(":"));
+			else
+				LookupKey(key);
+		} else {
+			LookupKey(wxT(""));
+		}
+
+		PostChildSetFocus(bookmod);
+		wxYield();
 	} else {
-		LookupKey(wxT(""));
+		PostChildSetFocus();
 	}
 
 	SetIcon();
 
-	PostChildSetFocus(bookmod);
-	wxYield();
 
 	if (prevbookmod)
 		delete prevbookmod;
@@ -286,20 +309,30 @@ void BookViewCtrl::OpenInCurrentTab(SWModule *newModule)
 void BookViewCtrl::SetIcon()
 {
 	BookModule *bookmod = GetActiveBookModule();
-	SWModule *module = bookmod->GetModule();
+	if (bookmod) {
+		SWModule *module = bookmod->GetModule();
 
-	if (!strcmp(module->Type(), "Biblical Texts")) {
-		SetPageImage(GetSelection(), ID_BIBLICAL_TEXT_ICON);
-	} else if (!strcmp(module->Type(), "Lexicons / Dictionaries") ||
-				!strcmp(module->Type(), "Glossaries")) {
-		SetPageImage(GetSelection(), ID_LEXICON_ICON);
-	} else if (!strcmp(module->Type(), "Commentaries")) {
-		SetPageImage(GetSelection(), ID_COMMENTARY_ICON);
-	} else if (!strcmp(module->Type(), "Daily Devotional")) {
-		SetPageImage(GetSelection(), ID_DEVOTIONAL_ICON);
+		if (!strcmp(module->Type(), "Biblical Texts")) {
+			SetPageImage(GetSelection(), ID_BIBLICAL_TEXT_ICON);
+		} else if (!strcmp(module->Type(), "Lexicons / Dictionaries") ||
+					!strcmp(module->Type(), "Glossaries")) {
+			SetPageImage(GetSelection(), ID_LEXICON_ICON);
+		} else if (!strcmp(module->Type(), "Commentaries")) {
+			SetPageImage(GetSelection(), ID_COMMENTARY_ICON);
+		} else if (!strcmp(module->Type(), "Daily Devotional")) {
+			SetPageImage(GetSelection(), ID_DEVOTIONAL_ICON);
+		} else {
+			SetPageImage(GetSelection(), ID_BOOK_ICON);
+		}
 	} else {
-		SetPageImage(GetSelection(), ID_BOOK_ICON);
+		SetPageImage(GetSelection(), -1);
 	}
+}
+
+void BookViewCtrl::OpenInNewTab(wxString html)
+{
+	SetSelection(AddTab());
+	OpenInCurrentTab(html);
 }
 
 void BookViewCtrl::OpenInNewTab(SWModule *newModule)
@@ -332,9 +365,9 @@ void BookViewCtrl::PostChildSetFocus(BookModule *bookmod)
 	wxCommandEvent eventCustom(bsEVT_CHILD_SET_FOCUS);
 	eventCustom.SetEventObject(this);
 	if (bookmod)
-		eventCustom.SetClientData(GetActiveBookModule());
-	else
 		eventCustom.SetClientData(bookmod);
+	else
+		eventCustom.SetClientData(GetActiveBookModule());
 
 	ProcessEvent(eventCustom);
 }
@@ -366,12 +399,12 @@ void BookViewCtrl::CloseOtherTabs()
 		SetSelection(0);
 		CloseTab();
 	}
-	
+
 	for (i = 0; i < numafter; i++) {
 		SetSelection(1);
 		CloseTab();
 	}
-	
+
 }
 
 void BookViewCtrl::DuplicateTab()

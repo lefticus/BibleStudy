@@ -20,10 +20,7 @@
 
 SwordTools::SwordTools()
 {
-	MarkupFilterMgr *myFilterMgr = new MarkupFilterMgr;
 	m_SwordManager = new SWMgr(0,0,TRUE,new MarkupFilterMgr(FMT_HTMLHREF, ENC_HTML));
-	//myFilterMgr->Markup(FMT_HTMLHREF);
-	//myFilterMgr->Encoding(ENC_HTML);
 }
 
 BookModule *SwordTools::GetModuleFromLink(wxString link)
@@ -130,9 +127,7 @@ void SwordTools::ModInfo()
 		printf("%s : %s\n", curMod->Description(), curMod->Type());
 		confmap = curMod->getConfig();
 		for (cit = confmap.begin(); cit != confmap.end(); cit++) {
-			//if (!strcmp(cit->first.c_str(), "GlobalOptionFilter")) {
-				printf("\t%s: %s\n", cit->first.c_str(),  cit->second.c_str());
-			//}
+			printf("\t%s: %s\n", cit->first.c_str(),  cit->second.c_str());
 		}
 
 		printf("\n");

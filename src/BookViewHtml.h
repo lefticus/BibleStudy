@@ -40,10 +40,7 @@
 		~BookViewHtml();
 		void SetHTMLToolTip(wxString html);
 		void OnMouseDown(wxMouseEvent &event);
-		void OnLeaveWindow(wxMouseEvent &event);
-		void OnKillFocus(wxFocusEvent &event);
-
-	DECLARE_EVENT_TABLE()
+		DECLARE_EVENT_TABLE()
 	};
 
 

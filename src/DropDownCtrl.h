@@ -31,7 +31,7 @@
 	};
 
 	/**
-	@author Jason Turner
+	* @author Jason Turner
 	*/
 	class DropDownCtrl : public wxMiniFrame{
 	private:
@@ -62,6 +62,7 @@
 
 		void UpdateCBs(wxEvent &event);
 		void OnButtonPress(wxCommandEvent &event);
+		void OnKeyDown(wxKeyEvent &event);
 
 		DECLARE_EVENT_TABLE()
 	};

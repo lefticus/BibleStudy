@@ -61,6 +61,8 @@
 
 		void OpenInNewTab(SWModule *);
 		void OpenInNewTab(BookModule *);
+		void OpenInNewTab(wxString html);
+
 		void AddToCurrentTab(SWModule *);
 		void AddToCurrentTab(BookModule *);
 

@@ -15,7 +15,7 @@
 #ifndef _BOOKTREECTRL_H_
 	#define _BOOKTREECTRL_H_
 
-	
+
 	#include "SwordTools.h"
 	#include "BibleStudyLanguages.h"
 	#include <wx/treectrl.h>
@@ -41,7 +41,8 @@
 		ID_BookTreePopupOpenInNewTab = 2000,
 		ID_BookTreePopupOpenInNewWindow,
 		ID_BookTreePopupOpen,
-		ID_BookTreePopupAddToCurrentTab
+		ID_BookTreePopupAddToCurrentTab,
+		ID_BookTreePopupInformation
 	};
 
 	/**
@@ -91,7 +92,8 @@
 
 		void OnRightUp(wxMouseEvent &event);
 		void OnRightDown(wxMouseEvent &event);
-		void OnItemActivated(wxEvent &event); 
+		void OnItemActivated(wxEvent &event);
+		void OnInformation(wxMenuEvent &event);
 		
 		DECLARE_EVENT_TABLE()
 	};

@@ -46,7 +46,8 @@
 		/** The last key looked up */
 		wxString m_LastLookupKey;
 		wxString m_LastSearch;
-		
+		wxString m_Description;
+
 		wxFrame *m_Frame;
 
 		ModMap m_Modules;
@@ -55,12 +56,15 @@
 
 		bool m_isbrowsing;
 		bsKeyType m_keytype;
+
+
 	public:
 		BookModule(SWModule *);
 		~BookModule();
 
 		/** Returns underlying module */
 		SWModule *GetModule();
+		ModMap *GetModules();
 
 		/** Lookups up a key, returning HTML representation */
 		wxString LookupKey(wxString key, wxString search=wxT(""), int searchtype=0, bool tooltip=false, bool browse=false);
@@ -71,7 +75,7 @@
 		wxString GetLastLookupKey();
 
 		wxString GetLastSearch();
-
+		wxString ModInfo();
 
 
 		/** Returns a combobox for this book */

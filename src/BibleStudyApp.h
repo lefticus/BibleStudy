@@ -40,7 +40,6 @@
 		 */
 		bool OnInit();
 		void OnExitApp(wxCommandEvent &event);
-		void OnFatalException();
 
 		DECLARE_EVENT_TABLE()
 	};

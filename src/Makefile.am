@@ -11,7 +11,7 @@ biblestudy_resource.o: biblestudy.rc
 
 
 bin_PROGRAMS = biblestudy
-biblestudy_SOURCES = biblestudy.cpp biblestudy.h BibleStudyApp.cpp BibleStudyApp.h BibleStudyMainFrame.cpp BibleStudyMainFrame.h BookModule.cpp BookModule.h BookTreeCtrl.cpp BookTreeCtrl.h BookViewCtrl.cpp BookViewCtrl.h BookViewSplitterCtrl.cpp BookViewSplitterCtrl.h SwordTools.cpp SwordTools.h TestSword.cpp TestSword.h BookViewToolBar.h BookViewToolBar.cpp BibleStudyLanguages.h BibleStudyLanguages.cpp BookViewEventHandler.h BookViewEventHandler.cpp DropDownEventHandler.h DropDownEventHandler.cpp BibleStudyWizard.h BibleStudyWizard.cpp BookViewHtml.h BookViewHtml.cpp HTMLToolTip.h HTMLToolTip.cpp DropDownCtrl.h DropDownCtrl.cpp
+biblestudy_SOURCES = biblestudy.cpp biblestudy.h BibleStudyApp.cpp BibleStudyApp.h BibleStudyMainFrame.cpp BibleStudyMainFrame.h BookModule.cpp BookModule.h BookTreeCtrl.cpp BookTreeCtrl.h BookViewCtrl.cpp BookViewCtrl.h BookViewSplitterCtrl.cpp BookViewSplitterCtrl.h SwordTools.cpp SwordTools.h BookViewToolBar.h BookViewToolBar.cpp BibleStudyLanguages.h BibleStudyLanguages.cpp BookViewEventHandler.h BookViewEventHandler.cpp DropDownEventHandler.h DropDownEventHandler.cpp BibleStudyWizard.h BibleStudyWizard.cpp BookViewHtml.h BookViewHtml.cpp HTMLToolTip.h HTMLToolTip.cpp DropDownCtrl.h DropDownCtrl.cpp
 
 
 

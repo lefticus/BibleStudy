@@ -54,9 +54,9 @@ bool BibleStudyApp::OnInit()
 	BibleStudyMainFrame *frame = new BibleStudyMainFrame(&m_SwordTools, APPTITLE, wxDefaultPosition, wxSize(640, 480));
 	frame->Show(TRUE);
 	wxYield();
-	frame->ShowStartPage();	
-	splash->Close();
-	
+	frame->ShowStartPage();
+	//splash->Close();
+
 	return TRUE;
 }
 
@@ -77,9 +77,4 @@ void BibleStudyApp::OnExitApp(wxCommandEvent &event)
 			window = wxWindow::FindWindowByName(wxT("BibleStudyWindow"));
 		}
 	}
-}
-
-void BibleStudyApp::OnFatalException()
-{
-
 }

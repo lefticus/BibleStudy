@@ -22,6 +22,7 @@
 BEGIN_EVENT_TABLE(DropDownCtrl, wxMiniFrame)
 	EVT_TEXT(-1, DropDownCtrl::UpdateCBs)
 	EVT_BUTTON(-1, DropDownCtrl::OnButtonPress)
+	EVT_KEY_DOWN(DropDownCtrl::OnKeyDown)
 END_EVENT_TABLE()
 
 
@@ -44,11 +45,13 @@ DropDownCtrl::DropDownCtrl(wxWindow *parent, SWModule *module, bsDropDownMode mo
 	switch(m_Mode) {
 	case bsCalendar:
 		m_Calendar = new wxCalendarCtrl(this, -1, wxDateTime::Now(), wxDefaultPosition, wxDefaultSize, wxCAL_SEQUENTIAL_MONTH_SELECTION|wxCAL_NO_YEAR_CHANGE|wxCAL_SHOW_SURROUNDING_WEEKS|wxCAL_SUNDAY_FIRST|wxCAL_SHOW_HOLIDAYS);
+		//m_Calendar->PushEventHandler(this);
 		SetClientSize(m_Calendar->GetSize());
 		m_Calendar->Move(GetClientAreaOrigin());
 		break;
 	case bsTree:
 		m_Tree = new wxTreeCtrl(this, -1, wxDefaultPosition, wxSize(200,100), wxTR_HIDE_ROOT|wxTR_HAS_BUTTONS);
+		//m_Tree->PushEventHandler(this);
 		SetClientSize(m_Tree->GetSize());
 		m_Tree->Move(GetClientAreaOrigin());
 		break;
@@ -59,6 +62,12 @@ DropDownCtrl::DropDownCtrl(wxWindow *parent, SWModule *module, bsDropDownMode mo
 		m_VerseCB = new wxComboBox(this, -1, wxT(""), wxPoint(m_ChapterCB->GetPosition().x+m_ChapterCB->GetSize().GetWidth()+2, m_ChapterCB->GetPosition().y), wxSize(wxDefaultSize.GetHeight(), 73), 0, NULL, wxCB_READONLY);
 		m_Button = new wxButton(this, -1, wxT("Select"), wxPoint(m_BookCB->GetPosition().x, m_VerseCB->GetPosition().y+m_VerseCB->GetSize().GetHeight()+2), wxDefaultSize, 0, wxDefaultValidator, wxT("Select"));
 
+		/*
+		m_BookCB->PushEventHandler(this);
+		m_ChapterCB->PushEventHandler(this);
+		m_VerseCB->PushEventHandler(this);
+		m_Button->PushEventHandler(this);
+		*/
 		SetClientSize(wxSize(m_VerseCB->GetPosition().x+m_VerseCB->GetSize().GetWidth()+4, m_Button->GetPosition().y+m_Button->GetSize().GetHeight()+4));
 
 		UpdateBookCB();
@@ -104,14 +113,12 @@ void DropDownCtrl::UpdateChapterCB()
 
 	book = vk.Book();
 
-//	if (book != m_LastBook) {
-		m_ChapterCB->Clear();
+	m_ChapterCB->Clear();
 
-		while (vk.Book() == book && !vk.Error()) {
-			m_ChapterCB->Append(wxString::Format(wxT("%i"), vk.Chapter()));
-			vk.Chapter(vk.Chapter()+1);
-		}
-//	}
+	while (vk.Book() == book && !vk.Error()) {
+		m_ChapterCB->Append(wxString::Format(wxT("%i"), vk.Chapter()));
+		vk.Chapter(vk.Chapter()+1);
+	}
 }
 
 void DropDownCtrl::UpdateVerseCB()
@@ -125,14 +132,13 @@ void DropDownCtrl::UpdateVerseCB()
 	chapter = vk.Chapter();
 	book = vk.Book();
 
-//	if (chapter != m_LastChapter) {
-		m_VerseCB->Clear();
+	m_VerseCB->Clear();
 
-		while (vk.Chapter() == chapter && vk.Book() == book && !vk.Error()) {
-			m_VerseCB->Append(wxString::Format(wxT("%i"), vk.Verse()));
-			vk.Verse(vk.Verse()+1);
-		}
-//	}
+	while (vk.Chapter() == chapter && vk.Book() == book && !vk.Error()) {
+		m_VerseCB->Append(wxString::Format(wxT("%i"), vk.Verse()));
+		vk.Verse(vk.Verse()+1);
+	}
+
 	wxLogDebug(wxT("DropDownCtrl::UpdateVerseCB exiting"));
 }
 
@@ -167,4 +173,14 @@ void DropDownCtrl::OnButtonPress(wxCommandEvent &event)
 
 	if (GetPreviousHandler())
 		GetPreviousHandler()->ProcessEvent(eventCustom);
+}
+
+void DropDownCtrl::OnKeyDown(wxKeyEvent &event)
+{
+	wxLogDebug(wxT("DropDownCtrl::OnKeyDown called"));
+	if (event.GetKeyCode() == WXK_ESCAPE) {
+		wxFrame::Show(false);
+	} else {
+		event.Skip();
+	}
 }

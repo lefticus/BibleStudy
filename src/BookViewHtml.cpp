@@ -13,8 +13,6 @@
 
 BEGIN_EVENT_TABLE(BookViewHtml, wxHtmlWindow)
 	EVT_LEFT_DOWN(BookViewHtml::OnMouseDown)
-	EVT_LEAVE_WINDOW(BookViewHtml::OnLeaveWindow)
-	EVT_KILL_FOCUS(BookViewHtml::OnKillFocus)
 END_EVENT_TABLE()
 
 
@@ -72,21 +70,4 @@ void BookViewHtml::OnMouseDown(wxMouseEvent &event)
 {
 	m_htmltooltip->Show(false);
 	event.Skip();
-}
-
-void BookViewHtml::OnKillFocus(wxFocusEvent &event)
-{
-	if (FindFocus()->GetParent() != m_htmltooltip) {
-//		m_htmltooltip->Show(false);
-	}
-
-}
-
-void BookViewHtml::OnLeaveWindow(wxMouseEvent &event)
-{
-	wxPoint pt;
-
-	if (wxFindWindowAtPointer(pt)->GetParent() != m_htmltooltip) {
-		//m_htmltooltip->Show(false);
-	}
 }
