@@ -12,18 +12,18 @@
 #endif
 
 #ifndef _BOOKVIEWEVENTHANDLER_H_
-#define _BOOKVIEWEVENTHANDLER_H_
+	#define _BOOKVIEWEVENTHANDLER_H_
 
-#include "biblestudy.h"
+	#include "biblestudy.h"
 
-class BookViewEventHandler;
+	class BookViewEventHandler;
 
-#include <wx/event.h>
-#include "BookViewCtrl.h"
+	#include <wx/event.h>
+	#include "BookViewCtrl.h"
 
 
 	/**
-	* 
+	*
 	* Custom event handler for wxHTMLWindow
 	**/
 	class BookViewEventHandler : public wxEvtHandler
@@ -38,7 +38,7 @@ class BookViewEventHandler;
 		void OnSetFocus(wxFocusEvent &event);
 		void SetParent(BookViewCtrl *parent);
 
-		DECLARE_EVENT_TABLE()  
+		DECLARE_EVENT_TABLE()
 	};
 
 #endif

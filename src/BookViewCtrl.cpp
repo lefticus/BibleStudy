@@ -13,6 +13,8 @@
 
 
 #include "BookViewCtrl.h"
+#include "BookViewHtml.h"
+#include <wx/image.h>
 
 
 #include "../icons/book.xpm"
@@ -58,7 +60,7 @@ BookViewCtrl::BookViewCtrl(wxWindow *parent, int id, const wxPoint pos, const wx
 	icons[ID_DEVOTIONAL_ICON] = wxIcon(devotional_xpm);
 	
 	int sizeOrig = icons[0].GetWidth();
-	
+
 	for ( size_t i = 0; i < WXSIZEOF(icons); i++ ) {
 		if (imgsize == sizeOrig ) {
 			images->Add(icons[i]);
@@ -76,11 +78,11 @@ BookViewCtrl::BookViewCtrl(wxWindow *parent, int id, const wxPoint pos, const wx
 int BookViewCtrl::AddTab()
 {
 	wxNotebookPage *page;
-	wxHtmlWindow *html;
+	BookViewHtml *html;
 	wxBoxSizer *panelsizer = new wxBoxSizer( wxVERTICAL );
 	
 	page = new wxPanel( this );
-	html = new wxHtmlWindow( page, -1, wxDefaultPosition, wxDefaultSize, wxVSCROLL, wxT("htmlwindow"));
+	html = new BookViewHtml( page, -1, wxDefaultPosition, wxDefaultSize, wxVSCROLL, wxT("htmlwindow"));
 	
 	BookViewEventHandler *neweventhandler;
 	neweventhandler = new BookViewEventHandler();
@@ -107,11 +109,11 @@ int BookViewCtrl::AddTab()
 
 void BookViewCtrl::CloseTab()
 {
-	wxHtmlWindow *html;
+	BookViewHtml *html;
 	BookModule *mod;
 	int page;
 
-	html = (wxHtmlWindow *)GetPage(GetSelection())->GetChildren().GetFirst()->GetData();
+	html = (BookViewHtml *)GetPage(GetSelection())->GetChildren().GetFirst()->GetData();
 	mod = (BookModule *)html->GetClientData();
 	
 	if (GetPageCount() > 1) {
@@ -131,14 +133,28 @@ void BookViewCtrl::CloseTab()
 
 void BookViewCtrl::LookupKey(wxString key)
 {
-	wxHtmlWindow *html;
+	BookViewHtml *html;
 	BookModule *mod;
-	
-	html = (wxHtmlWindow *)GetPage(GetSelection())->GetChildren().GetFirst()->GetData();
+
+	html = (BookViewHtml *)GetPage(GetSelection())->GetChildren().GetFirst()->GetData();
 	mod = (BookModule *)html->GetClientData();
-	
+
 	if (mod)
-		html->SetPage( mod->LookupKey( key ) );	
+		html->SetPage( mod->LookupKey( key ) );
+}
+
+void BookViewCtrl::Search(wxString range, wxString search, int searchtype)
+{
+	BookViewHtml *html;
+	BookModule *mod;
+
+	html = (BookViewHtml *)GetPage(GetSelection())->GetChildren().GetFirst()->GetData();
+	mod = (BookModule *)html->GetClientData();
+
+	if (mod) {
+		wxLogDebug(wxT("search: %s, range: %s"), search.c_str(), range.c_str());
+		html->SetPage( mod->LookupKey( range, search, searchtype ) );
+	}
 }
 
 void BookViewCtrl::OpenInCurrentTab(BookModule *bm)
@@ -149,9 +165,9 @@ void BookViewCtrl::OpenInCurrentTab(BookModule *bm)
 
 void BookViewCtrl::OpenInCurrentTab(wxString html)
 {
-	wxHtmlWindow *htmlwindow;
+	BookViewHtml *htmlwindow;
 	
-	htmlwindow = (wxHtmlWindow *)GetPage(GetSelection())->GetChildren().GetFirst()->GetData();
+	htmlwindow = (BookViewHtml *)GetPage(GetSelection())->GetChildren().GetFirst()->GetData();
 	htmlwindow->SetPage( html );
 	SetPageText(GetSelection(), wxString(htmlwindow->GetOpenedPageTitle()));
 	//SetIcon();
@@ -173,12 +189,12 @@ void BookViewCtrl::AddToCurrentTab(BookModule *mod)
 
 void BookViewCtrl::OpenInCurrentTab(SWModule *newModule)
 {
-	wxHtmlWindow *html;
+	BookViewHtml *html;
 	BookModule *bookmod;
 	wxString key;
 	bool performsearch = false;
 	
-	html = (wxHtmlWindow *)GetPage(GetSelection())->GetChildren().GetFirst()->GetData();
+	html = (BookViewHtml *)GetPage(GetSelection())->GetChildren().GetFirst()->GetData();
 	SetPageText(GetSelection(), wxString(newModule->Name(), wxConvUTF8));
 	
 	bookmod = (BookModule *)html->GetClientData();
@@ -242,9 +258,9 @@ void BookViewCtrl::OpenInNewTab(BookModule *bm)
 
 BookModule* BookViewCtrl::GetActiveBookModule()
 {
-	wxHtmlWindow *html;
+	BookViewHtml *html;
 	int page = (GetSelection() == -1) ? 0 : GetSelection();
-	html = (wxHtmlWindow *)GetPage(page)->GetChildren().GetFirst()->GetData();
+	html = (BookViewHtml *)GetPage(page)->GetChildren().GetFirst()->GetData();
 	return (BookModule *)html->GetClientData();
 }
 

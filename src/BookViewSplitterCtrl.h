@@ -10,7 +10,7 @@
 #if defined(__GNUG__) && !defined(__APPLE__)
 	#pragma interface "BookViewSplitterCtrl.h"
 #endif
- 
+
 
 #ifndef _BOOKVIEWSPLITTERCTRL_H_
 	#define _BOOKVIEWSPLITTERCTRL_H_
@@ -18,22 +18,24 @@
 	#include "biblestudy.h"
 	#include "BookTreeCtrl.h"
 	#include "BookViewCtrl.h"
+
 	#include "SwordTools.h"
-	#include <wx/notebook.h>
 	#include <wx/splitter.h>
 
 	
+
 	BEGIN_DECLARE_EVENT_TYPES()
 		DECLARE_EVENT_TYPE(bsEVT_ACTIVE_MODULE_CHANGE, 1)
 		DECLARE_EVENT_TYPE(bsEVT_BOOK_TREE_CHANGE, 1)
+		DECLARE_EVENT_TYPE(bsEVT_SHOW_BIBLESTUDY, 1)
 	END_DECLARE_EVENT_TYPES()
-	
+
 	#define EVT_ACTIVE_MODULE_CHANGE(id, fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_ACTIVE_MODULE_CHANGE, id, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
 	#define EVT_BOOK_TREE_CHANGE(id, fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_BOOK_TREE_CHANGE, id, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
-
+	#define EVT_SHOW_BIBLESTUDY(fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_SHOW_BIBLESTUDY, -1, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
 
 	/**
-	* 
+	*
 	* Jason Turner
 	**/
 	class BookViewSplitterCtrl : public wxSplitterWindow
@@ -50,7 +52,7 @@
 		
 		BookViewCtrl *GetActiveBookViewCtrl();
 		
-		
+
 	public:
 		BookViewSplitterCtrl();
 		~BookViewSplitterCtrl();
@@ -62,7 +64,7 @@
 		void AddTab();
 		void CloseOtherTabs();
 		void DuplicateTab();
-		
+
 		void OpenInCurrentTab(SWModule *);
 		void OpenInCurrentTab(wxString html);
 		void OpenInNewTab(SWModule *);
@@ -70,17 +72,20 @@
 		void OpenInCurrentTab(BookModule *);
 		void AddToCurrentTab(SWModule *);
 		void AddToCurrentTab(BookModule *);
-				
+
 		void LookupKey(wxString key);
-		
+		void Search(wxString range, wxString search, int searchtype);
+
 		void RemoveActiveView();
-		
+
 		void OnNewActiveChild(wxCommandEvent& event);
 		void OnFocusGot(wxEvent& event);
-		
+		void OnLinkClicked(wxCommandEvent& event);
+		void OnLinkHover(wxCommandEvent& event);
+
 		void SplitHorizontally();
 		void SplitVertically();
-		
+
 		void OnUnSplit(wxSplitterEvent &event);
 		
 		BookModule* GetActiveBookModule();

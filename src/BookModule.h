@@ -16,11 +16,9 @@
 
 	#include "biblestudy.h"
 	#include <sword/treekey.h>
-	#include <wx/combobox.h>
-	#include <wx/treectrl.h>
 	#include <wx/minifram.h>
-	#include <wx/calctrl.h>
-	
+	#include <wx/treectrl.h>
+
 	using namespace sword;
 
 	/**
@@ -43,7 +41,7 @@
 		wxMiniFrame *m_Frame;
 		
 		ModMap m_Modules;
-		
+		ListKey m_LastKey;
 		void AddTreeSiblings(wxTreeCtrl *tree, wxTreeItemId parentid, TreeKey *key);
 
 	public:
@@ -54,11 +52,11 @@
 		SWModule *GetModule();
 		
 		/** Lookups up a key, returning HTML representation */
-		wxString LookupKey(wxString key);
+		wxString LookupKey(wxString key, wxString search=wxT(""), int searchtype=0, bool tooltip=false);
 		
 		/** Return the last lookup key */
 		wxString GetLastLookupKey();
-		
+
 		/** Returns a combobox for this book */
 		wxFrame *GetControl(wxWindow *parent);
 		

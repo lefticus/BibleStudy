@@ -10,22 +10,20 @@
 #if defined(__GNUG__) && !defined(__APPLE__)
 	#pragma interface "DropDownEventHandler.h"
 #endif
- 
+
 #ifndef _DROPDOWNEVENTHANDLER_H_
-#define _DROPDOWNEVENTHANDLER_H_
+	#define _DROPDOWNEVENTHANDLER_H_
 
-#include "biblestudy.h"
+	#include "biblestudy.h"
 
-class DropDownEventHandler;
+	class DropDownEventHandler;
 
-#include <wx/event.h>
-#include <wx/calctrl.h>
-#include <wx/treectrl.h>
-#include "BookViewToolBar.h"
+	#include <wx/event.h>
+	#include "BookViewToolBar.h"
 
 
 	/**
-	* 
+	*
 	* Custom event handler
 	**/
 	class DropDownEventHandler : public wxEvtHandler
@@ -42,10 +40,10 @@ class DropDownEventHandler;
 		void OnItemActivated(wxTreeEvent &event);
 		void OnDateSelected(wxCalendarEvent &event);
 		void OnMove(wxMoveEvent &event);
-		
+
 		void SetParent(BookViewToolBar *parent);
 
-		DECLARE_EVENT_TABLE()  
+		DECLARE_EVENT_TABLE()
 	};
 
 #endif

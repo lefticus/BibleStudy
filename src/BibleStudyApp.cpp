@@ -12,6 +12,11 @@
 #endif
 
 #include "BibleStudyApp.h"
+#include "BibleStudyMainFrame.h"
+#include <wx/splash.h>
+#include <wx/bitmap.h>
+#include <wx/log.h>
+
 #include "../icons/splashscreen.xpm"
 
 BEGIN_EVENT_TABLE(BibleStudyApp, wxApp)
@@ -51,7 +56,7 @@ bool BibleStudyApp::OnInit()
 	frame->Show(TRUE);
 	wxYield();
 	frame->ShowStartPage();	
-	//splash->Destroy();
+	splash->Close();
 	
 	return TRUE;
 }

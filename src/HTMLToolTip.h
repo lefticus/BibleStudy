@@ -8,39 +8,35 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 #if defined(__GNUG__) && !defined(__APPLE__)
-	#pragma interface "BibleStudyApp.h"
+	#pragma interface "HTMLToolTip.h"
 #endif
 
-#ifndef _BIBLESTUDYAPP_H_
-#define _BIBLESTUDYAPP_H_
+#ifndef _HTMLTOOLTIP_H_
+	#define _HTMLTOOLTIP_H_
 
-	#include "SwordTools.h"
-	#include "biblestudy.h"
+	#include <wx/frame.h>
+	#include <wx/html/htmlwin.h>
 
 	/**
-	* Main Class for BibleStudy.
 	*
-	* Straight forward subclass of wxApp
+	* Jason Turner
 	**/
-	class BibleStudyApp: public wxApp
+	class HTMLToolTip : public wxFrame
 	{
 	private:
-		/**
-		 * Global reference to sword tools, so that sword
-		 * gets initialized only once.
-		 **/
-		SwordTools m_SwordTools;
+		wxHtmlWindow *htmlwin;
+		wxString m_html;
+		bool m_tooltipchanged;
 
 	public:
-		BibleStudyApp();
-		~BibleStudyApp();
+		HTMLToolTip(wxWindow *parent);
+		~HTMLToolTip();
 
-		/**
-		 * Automatically executed on application start
-		 */
-		bool OnInit();
-		void OnExitApp(wxCommandEvent &event);
-
+		void SetHTML(wxString);
+		bool Show(bool show=TRUE);
+		void OnLeftWindow(wxMouseEvent &event);
+		void OnKillFocus(wxFocusEvent &event);
+		void OnKeyDown(wxKeyEvent &event);
 		DECLARE_EVENT_TABLE()
 
 	};

@@ -12,21 +12,17 @@
 #endif
 
 #ifndef _BOOKVIEWCTRL_H_
-	
+
 	#define _BOOKVIEWCTRL_H_
 
 	#include "biblestudy.h"
 	#include <wx/notebook.h>
-	#include <wx/html/htmlwin.h>
-	#include <wx/fontdlg.h>
-	#include <wx/image.h>
-	#include <string>
 	#include "BookModule.h"
-	
+
 	class BookViewCtrl;
-	
+
 	#include "BookViewEventHandler.h"
-	
+
 	using namespace sword;
 	using namespace std;
 
@@ -35,27 +31,27 @@
 	END_DECLARE_EVENT_TYPES()
 
 	#define EVT_CHILD_SET_FOCUS(id, fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_CHILD_SET_FOCUS, id, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
-	
-	
+
+
 	/**
 	* Tabbed viewing of book modules
-	* 
+	*
 	**/
 	class BookViewCtrl : public wxNotebook
 	{
 	private:
 		BookViewEventHandler *m_CustEventHandler;
-	
+
 	public:
 		BookViewCtrl(wxWindow *parent, int id, const wxPoint pos, const wxSize size);
 		~BookViewCtrl();
-		
+
 		int AddTab();
 		void CloseTab();
 		void CloseOtherTabs();
 		void DuplicateTab();
 		void DuplicateTab(BookModule *);
-		
+
 		/**
 		 * Sets the module for the active tab
 		 */
@@ -67,17 +63,19 @@
 		void OpenInNewTab(BookModule *);
 		void AddToCurrentTab(SWModule *);
 		void AddToCurrentTab(BookModule *);
-		
+
 		void LookupKey(wxString key);
+		void Search(wxString range, wxString search, int searchtype);
+
 		void ChildGotFocus();
 		void PostChildSetFocus();
 		void OnSetFocus(wxEvent &event);
 		void OnNotebookPageChanged(wxEvent &event);
-		
+
 		void SetIcon();
-		
+
 		BookModule *GetActiveBookModule();
-		
+
 		DECLARE_EVENT_TABLE()
 	};
 

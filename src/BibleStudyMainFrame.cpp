@@ -11,6 +11,11 @@
 	#pragma implementation "BibleStudyMainFrame.h"
 #endif
 
+#include "BookTreeCtrl.h"
+#include "BookViewCtrl.h"
+#include "BibleStudyWizard.h"
+#include "BibleStudyWizardPage.h"
+
 #include "BibleStudyMainFrame.h"
 #include "../icons/biblestudy.xpm"
 
@@ -51,12 +56,13 @@ BEGIN_EVENT_TABLE(BibleStudyMainFrame, wxFrame)
 	EVT_OPEN_IN_NEW_TAB(-1, BibleStudyMainFrame::OnOpenInNewTab)
 	EVT_OPEN_IN_NEW_WINDOW(-1, BibleStudyMainFrame::OnOpenInNewWindow)
 	EVT_ADD_TO_CURRENT_TAB(-1, BibleStudyMainFrame::OnAddToCurrentTab)
-	
+
 	EVT_ACTIVE_MODULE_CHANGE(-1, BibleStudyMainFrame::OnActiveModuleChange)
 	EVT_BOOK_TREE_CHANGE(-1, BibleStudyMainFrame::OnBookTreeChange)
-	
+	EVT_SHOW_BIBLESTUDY(BibleStudyMainFrame::OnShowBibleStudy)
 	EVT_LOAD_KEY(BibleStudyMainFrame::OnLoadKey)
-END_EVENT_TABLE() 
+	EVT_SEARCH(BibleStudyMainFrame::OnSearch)
+END_EVENT_TABLE()
 
 DEFINE_EVENT_TYPE(bsEVT_EXIT_APP)
 
@@ -66,7 +72,7 @@ BibleStudyMainFrame::~BibleStudyMainFrame()
 
 BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools, const wxString& title, const wxPoint& pos, const wxSize& size) : wxFrame((wxFrame *)NULL, -1, title, pos, size, wxDEFAULT_FRAME_STYLE,wxT("BibleStudyWindow"))
 {
-	
+
 	m_SwordTools = newSwordTools;
 
 	wxMenu *menuFile = new wxMenu();
@@ -76,17 +82,17 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools, const wxStri
 	wxMenu *menuOptions = new wxMenu();
 
 	SetIcon(wxIcon(biblestudy_xpm));
-			
+
 	menuFile->Append( ID_MenuNewWindow, wxT("&New Window") );
 	menuFile->Append( ID_MenuCloseWindow, wxT("&Close Window") );
 	menuFile->AppendSeparator();
 	menuFile->Append( ID_MenuExit, wxT("E&xit") );
-	
+
 	menuHelp->Append( ID_MenuAbout, wxT("&About BibleStudy") );
-		
+
 	menuWindow->Append( ID_MenuShowHideBookTree, wxT("Show/Hide Book List") );
 	menuWindow->AppendSeparator();
-	
+
 	//wxMenuItem *menuItemSplitLeftRight = new wxMenuItem(menuWindow, ID_MenuSplitVertically, wxT("Split View &Left/Right"));
 	//menuItemSplitLeftRight->SetBitmap(wxBitmap(splitleftright_xpm) );
 	//menuWindow->Append( menuItemSplitLeftRight );
@@ -109,7 +115,7 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools, const wxStri
 	OptionsList::iterator it;
 	int id = ID_MenuTopBookOption;
 	for (it = optlist.begin(); it != optlist.end(); it++) {
-		menuOptions->AppendCheckItem(id, wxString(it->c_str(), wxConvUTF8), wxString(m_SwordTools->GetSwordManager()->getGlobalOptionTip(it->c_str()), wxConvUTF8)); 
+		menuOptions->AppendCheckItem(id, wxString(it->c_str(), wxConvUTF8), wxString(m_SwordTools->GetSwordManager()->getGlobalOptionTip(it->c_str()), wxConvUTF8));
 		/* If global option is on, check the menu item */
 		if (!strcmp(m_SwordTools->GetSwordManager()->getGlobalOption(it->c_str()), "On")) {
 			menuOptions->Check(id, true);
@@ -120,7 +126,7 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools, const wxStri
 		id++;
 	}
 
-	//menuBibleStudies->Append(ID_MenuBibleStudyWhy, wxT("Why Should I Become a Christian?"));	
+	//menuBibleStudies->Append(ID_MenuBibleStudyWhy, wxT("Why Should I Become a Christian?"));
 	menuBibleStudies->Append(ID_MenuBibleStudyHow, wxT("How Can I Become a Christian?"));
 	menuBibleStudies->Append(ID_MenuBibleStudyGrow, wxT("How Can I Grow as a Christian?"));
 	
@@ -130,17 +136,17 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools, const wxStri
 	menuBar->Append( menuOptions, wxT("&Options") );
 	menuBar->Append( menuWindow, wxT("&Window") );
 	menuBar->Append( menuHelp, wxT("&Help") );
-	
-	
+
+
 	
 	SetMenuBar( menuBar );
 
 	CreateStatusBar();
 	SetStatusText( wxT("Welcome to BibleStudy!") );
-		
+
 	m_ToolBar = new BookViewToolBar(this, ID_BookViewToolBar, wxTB_HORIZONTAL|wxTB_FLAT);
 	SetToolBar(m_ToolBar);
-	
+
 	SetupSplitterWindows();
 }
 
@@ -170,7 +176,7 @@ void BibleStudyMainFrame::OnShowHowBecomeChristian()
 	mod = m_SwordTools->GetModule("WEB");
 
 	BibleStudyWizard *wiz = new BibleStudyWizard(this, -1, wxT("How Can I Become a Christian?"));
-	wiz->AddPage(NULL, wxT("Becoming a Christian means loving Christ, serving His church, and adopting His cause of furthering love and justice in the world."), wxT(""));
+	wiz->AddPage(NULL, wxT("Becoming a Christian means loving Christ, serving His church, and wanting to spread His Love throughout the world."), wxT(""));
 	wiz->AddPage(mod, wxT("Recognize that God loves us but our sin has separated us from God, fram a live with eternal purpose, and from a healthy relationship with others."), wxT("ro 3:23"));
 	wiz->AddPage(mod, wxT("Realize you cannot do enough good to earn God's forgiveness from sin, nor can you find true fulfillment through your own efforts."), wxT("eph 2:8-9"));
 	wiz->AddPage(mod, wxT("Jesus Christ alone can provide forgiveness from eternal punishment for sin. He alone can free us from the present penalty of sin, our selfishness, which damages our relationships with others. He alone can take away the price of sin, our sense of emptiness, and give our lives meaning and purpose."), wxT("jn 14:6"));
@@ -179,6 +185,7 @@ void BibleStudyMainFrame::OnShowHowBecomeChristian()
 	wiz->AddPage(mod, wxT("If you have questions regarding the Christian Faith or if you are still investigating Christianity, please call 1-800-NEED-HIM"), wxT(""));
 	
 	wiz->RunWizard();
+	wiz->Destroy();
 }
 
 
@@ -188,7 +195,7 @@ void BibleStudyMainFrame::OnShowHowGrowSpiritually()
 	mod = m_SwordTools->GetModule("WEB");
 
 	BibleStudyWizard *wiz = new BibleStudyWizard(this, -1, wxT("How Can I Grow as a Christian?"));
-	
+
 	wiz->AddPage(mod, wxT("Now that you have started your new life, you are probably asking yourself \"What do I do now?\"\n\nThe old habits and character traits that marked your life before Christ are passing away."), wxT("II Cor 5:17"));
 	wiz->AddPage(mod, wxT("Allow the Holy Spirit (God's Spirit) to work in and through you."), wxT("John 16:13; John 14:16"));
 	wiz->AddPage(mod, wxT("Read God's Word.\n\nAs much as we need daily food to nourish our physical bodies, we need spiritual nourishment."), wxT("Mat 14:16"));
@@ -196,8 +203,9 @@ void BibleStudyMainFrame::OnShowHowGrowSpiritually()
 	wiz->AddPage(mod, wxT("Get involved with God's people.\n\nYou are special and unique, created with gifts and talents that are needed in God's kingdom."), wxT("I Cor 12:14"));
 	wiz->AddPage(mod, wxT("Guard yourself against temptation.\n\nWe do have an enemy. He is called the Devil, Satan. Now that you have given your life over to God, he will come tempt you to change your ming. Guard yourself!"), wxT("James 4:7-8; I Peter 5:8-9"));
 	wiz->AddPage(mod, wxT("Rejoice!\n\nYou belong to God. You are His child and in His family! You will always be in His presence. Jesus is ocming back for all His children!"), wxT("Jn 14:3"));
-	
+
 	wiz->RunWizard();
+	wiz->Destroy();
 }
 
 /**
@@ -229,7 +237,7 @@ void BibleStudyMainFrame::UpdateToolbars(BookModule *bm)
 		m_ToolBar->SetLookupKey(wxT(""));
 	}
 
-	
+
 }
 
 void BibleStudyMainFrame::OnLoadKey(wxCommandEvent& event)
@@ -238,8 +246,13 @@ void BibleStudyMainFrame::OnLoadKey(wxCommandEvent& event)
 	m_WindowSplit->LookupKey( event.GetString() );
 }
 
+void BibleStudyMainFrame::OnSearch(wxCommandEvent& event)
+{
+	m_WindowSplit->Search(*(m_ToolBar->GetRange()), event.GetString(), 2);
+}
+
 void BibleStudyMainFrame::SetupSplitterWindows()
-{	
+{
 	m_WindowSplit = new BookViewSplitterCtrl(this, m_SwordTools, wxDefaultPosition, wxDefaultSize);
 }
 
@@ -284,6 +297,21 @@ void BibleStudyMainFrame::OnCloseWindow(wxCommandEvent& event)
 	Close(TRUE);
 }
 
+void BibleStudyMainFrame::OnShowBibleStudy(wxCommandEvent& event)
+{
+	wxLogTrace(wxTRACE_Messages, wxT("BibleStudyMainFrame::OnShowBibleStudy called"));
+
+	if (event.GetString() == wxT("How_Can_I_Become_A_Christian")) {
+		OnShowHowBecomeChristian();
+	}
+
+	if (event.GetString() == wxT("How_Can_I_Grow_As_A_Christian")) {
+		OnShowHowGrowSpiritually();
+	}
+
+	
+	
+}
 
 void BibleStudyMainFrame::OnAbout(wxCommandEvent& event)
 {
@@ -385,25 +413,17 @@ void BibleStudyMainFrame::OnDuplicateTab(wxMenuEvent& event)
 void BibleStudyMainFrame::ShowStartPage()
 {
 	wxString page;
-	
+
 	page = wxT("<html><title>Start Page</title>");
 	page += wxT("<table>");
-	page += wxT("<tr><td colspan=2 align=center bgcolor=#aaaaFF border=1>") + Heading() + wxT("</td></tr>");
-	page += wxT("<tr><td>") + BibleStudies() + wxT("</td><td rowspan = 10 valign=top>") + ProverbOfTheDay() + wxT("</td>");
-	page += wxT("<tr><td>") + DevotionalOfTheDay() + wxT("</td></tr>");
-	page += wxT("<tr><td></td></tr>");
-	page += wxT("<tr><td></td></tr>");
-	page += wxT("<tr><td></td></tr>");
-	page += wxT("<tr><td></td></tr>");
-	page += wxT("<tr><td></td></tr>");
-	page += wxT("<tr><td></td></tr>");
-	page += wxT("<tr><td></td></tr>");
-	page += wxT("<tr><td></td></tr>");
+	page += wxT("<tr><td bgcolor=#000000 colspan=2><table cellpadding=1 cellspacing=0><tr><td align=center bgcolor=#000099 border=1><font color=#FFFFFF>") + Heading() + wxT("</font></td></tr></table></td></tr>");
+	page += wxT("<tr><td valign=top>") + BibleStudies() + wxT("</td><td valign=top rowspan=2>") + ProverbOfTheDay() + wxT("</td></tr>");
+	page += wxT("<tr><td valign=top>") + DevotionalOfTheDay() + wxT("</td></tr>");
 	page += wxT("</table>");
 	page += wxT("</html>");
-	
+
 	wxLogDebug(page);
-	
+
 	m_WindowSplit->OpenInCurrentTab(page);
 }
 
@@ -415,8 +435,8 @@ wxString BibleStudyMainFrame::ProverbOfTheDay()
 	BookModule web(m_SwordTools->GetModule("WEB"));
 	key = wxT("prov ");
 	key += wxString::Format(wxT("%i"), today.GetDay());
-	
-	output = wxT("<table><tr><td align=center bgcolor=#FFAAAA>Proverb Of The Day</td></tr>");
+
+	output = wxT("<table cellpadding=1 cellspacing=0><tr><td align=center bgcolor=#990000><font color=#FFFFFF>Proverb Of The Day</font></td></tr>");
 	output += wxT("<tr><td>");
 	output += web.LookupKey(key);
 	output += wxT("</td></tr></table>");
@@ -426,9 +446,18 @@ wxString BibleStudyMainFrame::ProverbOfTheDay()
 wxString BibleStudyMainFrame::BibleStudies()
 {
 	wxString output;
-	output = wxT("<table><tr><td align=center bgcolor=#AAFFAA>Bible Studies</td></tr>");
-	output += wxT("<tr><td>How Can I Become a Christian?</td></tr>");
-	output += wxT("<tr><td>How Can I Grow as a Christian?</td></tr>");
+	output = wxT("<table cellpadding=1 cellspacing=0><tr><td align=center bgcolor=#990099><font color=#FFFFFF>Bible Studies</font></td></tr>");
+	output += wxT("<tr><td><a href='biblestudy://How_Can_I_Become_A_Christian'>How Can I Become a Christian?</a></td></tr>");
+	output += wxT("<tr><td><a href='biblestudy://How_Can_I_Grow_As_A_Christian'>How Can I Grow as a Christian?</a></td></tr>");
+	output += wxT("</table>");
+	return output;
+}
+
+wxString BibleStudyMainFrame::SearchBox()
+{
+	wxString output;
+	output = wxT("<table cellpadding=1 cellspacing=0><tr><td align=center bgcolor=#FFAAFF>Search</td></tr>");
+	output += wxT("<tr><td><form><input type=text><input type=submit value=Search></form></td></tr>");
 	output += wxT("</table>");
 	return output;
 }
@@ -439,9 +468,9 @@ wxString BibleStudyMainFrame::DevotionalOfTheDay()
 	wxDateTime today = wxDateTime::Today();
 	BookModule sme(m_SwordTools->GetModule("SME"));
 	wxString key;
-	key = wxString::Format(wxT("%02i.%02i"), today.GetMonth(), today.GetDay());
-	
-	output = wxT("<table><tr><td align=center bgcolor=#AAAAAA>Daily Devotional</td></tr>");
+	key = wxString::Format(wxT("%02i.%02i"), today.GetMonth()+1, today.GetDay());
+
+	output = wxT("<table cellpadding=1 cellspacing=0><tr><td align=center bgcolor=#009900><font color=#FFFFFF>Daily Devotional</font></td></tr>");
 	output += wxT("<tr><td>");
 	output += sme.LookupKey(key);
 	output += wxT("</td></tr></table>");

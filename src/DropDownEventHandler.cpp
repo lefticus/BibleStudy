@@ -12,6 +12,8 @@
 #endif
 
 #include "DropDownEventHandler.h"
+#include <wx/calctrl.h>
+#include <wx/treectrl.h>
 
 BEGIN_EVENT_TABLE(DropDownEventHandler, wxEvtHandler)
 	EVT_SET_FOCUS(DropDownEventHandler::OnSetFocus)

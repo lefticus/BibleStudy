@@ -10,61 +10,59 @@
 #if defined(__GNUG__) && !defined(__APPLE__)
 	#pragma interface "BookViewToolBar.h"
 #endif
- 
+
 #ifndef _BOOKVIEWTOOLBAR_H_
-	
+
 	#define _BOOKVIEWTOOLBAR_H_
 
 	class BookViewToolBar;
-	
+
 	#include "biblestudy.h"
 	#include <wx/toolbar.h>
-	#include <wx/bitmap.h>
-	#include <wx/button.h>
-	#include <wx/utils.h>
-	#include "DropDownEventHandler.h"
-	
-	
+	#include <wx/treectrl.h>
+	#include <wx/calctrl.h>
+
 	BEGIN_DECLARE_EVENT_TYPES()
 		DECLARE_EVENT_TYPE(bsEVT_LOAD_KEY, 1)
+		DECLARE_EVENT_TYPE(bsEVT_SEARCH, 1)
 	END_DECLARE_EVENT_TYPES()
 
 	#define EVT_LOAD_KEY(fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_LOAD_KEY, -1, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
+	#define EVT_SEARCH(fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_SEARCH, -1, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
 
-	
 	/**
 	* Toolbar with inputs for searching in a Module.
-	* 
+	*
 	**/
 	class BookViewToolBar : public wxToolBar
 	{
 	private:
 		wxTextCtrl *m_LookupKey;
-		//wxTextCtrl *m_DropDownKey;
-		
-		//wxButton *m_DropDownBtn;
-
+		wxComboBox *m_DropDownRange;
 		wxFrame *m_SubFrame;
-		
-		
+		void AddRanges();
+
 	public:
 		BookViewToolBar(wxWindow *parent, wxWindowID id, long style);
 		~BookViewToolBar();
 
 		wxString GetLookupKey();
 		void SetLookupKey(wxString);
-		
+
 		void SetDropDownFrame(wxFrame *subframe);
 		void OnShowDropDown(wxEvent &event);
-		
+
 		void DropDownGotFocus();
 		void DropDownLostFocus();
 		void DropDownItemActivated(wxTreeEvent &event);
 		void DropDownDateSelected(wxCalendarEvent &event);
-		
+
 		void OnLookupKey(wxEvent &event);
 		void OnListKey(wxEvent &event);
-		
+		void OnSearch(wxEvent &event);
+
+		wxString *GetRange();
+
 		DECLARE_EVENT_TABLE()
 	};
 

@@ -11,9 +11,8 @@
 	#pragma implementation "BookViewSplitterCtrl.h"
 #endif
 
- 
- 
 #include "BookViewSplitterCtrl.h"
+#include "BookViewHtml.h"
 
 #if USE_GENERIC_SPLITTERWINDOW
 BEGIN_EVENT_TABLE(BookViewSplitterCtrl, wxGenericSplitterWindow)
@@ -22,36 +21,37 @@ BEGIN_EVENT_TABLE(BookViewSplitterCtrl, wxSplitterWindow)
 #endif
 	EVT_CHILD_SET_FOCUS(-1, BookViewSplitterCtrl::OnNewActiveChild)
 	EVT_SPLITTER_UNSPLIT(-1, BookViewSplitterCtrl::OnUnSplit)
-	
+	EVT_LINK_CLICKED(BookViewSplitterCtrl::OnLinkClicked)
+	EVT_LINK_HOVER(BookViewSplitterCtrl::OnLinkHover)
 END_EVENT_TABLE()
 
 DEFINE_EVENT_TYPE(bsEVT_ACTIVE_MODULE_CHANGE)
 DEFINE_EVENT_TYPE(bsEVT_BOOK_TREE_CHANGE)
-
+DEFINE_EVENT_TYPE(bsEVT_SHOW_BIBLESTUDY)
 
 
 BookViewSplitterCtrl::BookViewSplitterCtrl(wxWindow *parent, SwordTools *nswordtools, const wxPoint pos, const wxSize size) : wxSplitterWindow(parent, -1, pos, size, wxSP_3D|wxSP_LIVE_UPDATE, wxT("splitterWindow"))
 {
 	SetMinimumPaneSize(50);
-	
+
 	m_SwordTools = nswordtools;
 	m_TopLevelSplit = new wxSplitterWindow(this, -1, wxDefaultPosition, wxDefaultSize, wxSP_3DSASH|wxSP_PERMIT_UNSPLIT);
 	m_FirstChildSplit = new wxSplitterWindow(m_TopLevelSplit, -1, wxDefaultPosition, wxDefaultSize, wxSP_3DSASH|wxSP_PERMIT_UNSPLIT);
 	m_SecondChildSplit = new wxSplitterWindow(m_TopLevelSplit, -1, wxDefaultPosition, wxDefaultSize, wxSP_3DSASH|wxSP_PERMIT_UNSPLIT);
-	
-	
+
+
 	m_TopLevelSplit->SetMinimumPaneSize(50);
 	m_FirstChildSplit->SetMinimumPaneSize(50);
 	m_SecondChildSplit->SetMinimumPaneSize(50);
-	
+
 	m_SecondChildSplit->Show(false);
 	m_TopLevelSplit->Initialize(m_FirstChildSplit);
-	
-	
+
+
 	BookViewCtrl *bookview = new BookViewCtrl(m_FirstChildSplit, -1, wxDefaultPosition, wxDefaultSize);
 	m_LastFocus = bookview;
 	m_FirstChildSplit->Initialize(bookview);
-	
+
 	m_LastSashPosition = 100;
 	
 	m_BookTree = new BookTreeCtrl(this, ID_BookTree, wxDefaultPosition, wxDefaultSize);
@@ -61,6 +61,7 @@ BookViewSplitterCtrl::BookViewSplitterCtrl(wxWindow *parent, SwordTools *nswordt
 	
 	m_BookTree->RefreshBookList(false);
 
+	//SetToolTip(wxT("This is My ToolTip\n\n\nmy particularly long tool tip with long lines and really wierd things and stuff like that\n\nI'm not too sure what to do with it :(\n\n\nadggafs alkfjasvkjv v kj \n\n\n\n\n\n\n\nasdfasdfwefovkon  oj koj"));
 	ShowHideBookTree();
 }
 
@@ -162,19 +163,36 @@ void BookViewSplitterCtrl::LookupKey(wxString key)
 	GetActiveBookViewCtrl()->LookupKey(key);
 }
 
+void BookViewSplitterCtrl::Search(wxString range, wxString search, int searchtype)
+{
+	GetActiveBookViewCtrl()->Search(range, search, searchtype);
+}
+
 void BookViewSplitterCtrl::OnNewActiveChild(wxCommandEvent& event)
 {
 	wxLogTrace(wxTRACE_Messages, wxT("BookViewSplitterCtrl::OnNewActiveChild called"));
 	if (!wxString(wxT("wxNotebook")).CompareTo(event.GetEventObject()->GetClassInfo()->GetClassName())) {
 		m_LastFocus = (BookViewCtrl *)event.GetEventObject();
 	}
-	
+
 	event.Skip();
 
 	wxCommandEvent eventCustom(bsEVT_ACTIVE_MODULE_CHANGE);
 	eventCustom.SetEventObject(this);
 	eventCustom.SetClientData(((BookViewCtrl *)(event.GetEventObject()))->GetActiveBookModule());
 	ProcessEvent(eventCustom);
+}
+
+void BookViewSplitterCtrl::OnLinkClicked(wxCommandEvent& event)
+{
+	wxString target;
+	
+	if (event.GetString().StartsWith(wxT("biblestudy://"), &target)) {
+		wxCommandEvent eventCustom(bsEVT_SHOW_BIBLESTUDY);
+		eventCustom.SetEventObject(this);
+		eventCustom.SetString(target);
+		ProcessEvent(eventCustom);
+	}
 }
 
 BookViewCtrl *BookViewSplitterCtrl::GetActiveBookViewCtrl()
@@ -301,7 +319,7 @@ void BookViewSplitterCtrl::OnUnSplit(wxSplitterEvent &event)
 	wxSplitterWindow *splitBeingRemoved;
 
 	windowBeingRemoved = event.GetWindowBeingRemoved();
-	
+
 	if (windowBeingRemoved == m_FirstChildSplit 
 		|| windowBeingRemoved == m_SecondChildSplit) {
 		
@@ -318,7 +336,7 @@ void BookViewSplitterCtrl::OnUnSplit(wxSplitterEvent &event)
 	} else if (windowBeingRemoved != m_BookTree) {
 		windowBeingRemoved->Destroy();
 	}
-	
+
 	((wxSplitterWindow *)event.GetEventObject())->GetWindow1()->SetFocus();
 }
 
@@ -341,4 +359,26 @@ BookModule* BookViewSplitterCtrl::GetActiveBookModule()
 void BookViewSplitterCtrl::OpenInCurrentTab(wxString html)
 {
 	m_LastFocus->OpenInCurrentTab(html);
+}
+
+void BookViewSplitterCtrl::OnLinkHover(wxCommandEvent &event)
+{
+	BookViewHtml *html = (BookViewHtml *)event.GetEventObject();
+	wxString key;
+	BookModule *book = NULL;
+
+	if (!event.GetString().StartsWith(wxT("biblestudy://"))) {
+		book = m_SwordTools->GetModuleFromLink(event.GetString());
+		key = m_SwordTools->GetKeyFromLink(event.GetString());
+
+
+		if (book) {
+			html->SetHTMLToolTip(book->LookupKey(key, wxT(""), 0, true));
+			delete book;
+		} else {
+			html->SetHTMLToolTip(wxT(""));
+		}
+	} else {
+		html->SetHTMLToolTip(wxT(""));
+	}
 }

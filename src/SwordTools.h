@@ -14,19 +14,15 @@
 #ifndef _SWORDTOOLS_H_
 	#define _SWORDTOOLS_H_
 
-	#include <sword/markupfiltmgr.h>
-	#include <map>
-
 	#include "biblestudy.h"
-	#include <string>
-	#include <wx/treectrl.h>
+	#include "BookModule.h"
 
 	using namespace sword;
 	using namespace std;
-	
+
 	/**
 	* Wrapper for SWMgr, with utilities
-	* 
+	*
 	**/
 	class SwordTools
 	{
@@ -34,19 +30,22 @@
 	private:
 		/** testing function */
 		void ModInfo();
-		
+
 		/** testing function */
 		void OptionInfo();
 
 		SWMgr *m_SwordManager;
-		
+
 	public:
 		SwordTools();
 		~SwordTools();
-		
+
 		ModMap *GetModuleMap();
 		SWMgr *GetSwordManager();
 		SWModule *GetModule(const char *ModuleName);
+
+		BookModule *GetModuleFromLink(wxString link);
+		wxString GetKeyFromLink(wxString link);
 	};
 
 #endif

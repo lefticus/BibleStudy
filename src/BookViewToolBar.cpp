@@ -10,9 +10,13 @@
 #ifdef __GNUG__
 	#pragma implementation "BookViewToolBar.h"
 #endif
- 
- 
+
+
 #include "BookViewToolBar.h"
+#include "DropDownEventHandler.h"
+#include <wx/bitmap.h>
+#include <wx/utils.h>
+
 
 #include "../icons/addtab.xpm"
 #include "../icons/removetab.xpm"
@@ -22,12 +26,12 @@
 #include "../icons/list.xpm"
 
 DEFINE_EVENT_TYPE(bsEVT_LOAD_KEY)
-
+DEFINE_EVENT_TYPE(bsEVT_SEARCH)
 
 BEGIN_EVENT_TABLE(BookViewToolBar, wxToolBar)
-	EVT_BUTTON(ID_ToolDropDownBtn, BookViewToolBar::OnShowDropDown)
 	EVT_TOOL(ID_ToolLookupKey, BookViewToolBar::OnLookupKey)
 	EVT_TOOL(ID_ToolListKey, BookViewToolBar::OnListKey)
+	EVT_TOOL(ID_ToolSearchKey, BookViewToolBar::OnSearch)
 END_EVENT_TABLE()
 
 
@@ -36,29 +40,60 @@ BookViewToolBar::BookViewToolBar(wxWindow *parent, wxWindowID id, long style) : 
 {
 	SetToolBitmapSize(wxSize(22,22));
 	SetToolSeparation(5);
-	
+
 	AddTool(ID_ToolShowHideBookTree, wxT("Book List"), wxBitmap(booktree_xpm), wxT("Show/Hide Book List"), wxITEM_CHECK);
 	AddSeparator();
 	AddTool(ID_ToolNewTab, wxT("Add Tab"), wxBitmap(addtab_xpm), wxT("Add a New Tab"), wxITEM_NORMAL);
 	AddTool(ID_ToolRemoveTab, wxT("Remove Tab"), wxBitmap(removetab_xpm), wxT("Removes the Active Tab"), wxITEM_NORMAL);
 	AddSeparator();
 	m_LookupKey = new wxTextCtrl(this, ID_ToolTextKey);
-	m_LookupKey->SetSize(m_LookupKey->GetSize().GetWidth()*2, m_LookupKey->GetSize().GetHeight());
+	m_LookupKey->SetSize((int)(m_LookupKey->GetSize().GetWidth()*1.5), m_LookupKey->GetSize().GetHeight());
 	AddControl(m_LookupKey);
 	AddTool(ID_ToolListKey, wxT("List"), wxBitmap(list_xpm), wxT("List Keys"), wxITEM_NORMAL);
 	AddTool(ID_ToolLookupKey, wxT("Lookup"), wxBitmap(lookup_xpm), wxT("Lookup Key"), wxITEM_NORMAL);
+
+	m_DropDownRange = new wxComboBox(this, ID_ToolDropDownRange, wxT(""), wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
+	m_DropDownRange->SetSize((int)(m_DropDownRange->GetSize().GetWidth()*1.75), m_DropDownRange->GetSize().GetHeight());
+	AddRanges();
+
+	AddControl(m_DropDownRange);
 	AddTool(ID_ToolSearchKey, wxT("Search"), wxBitmap(search_xpm), wxT("Search"), wxITEM_NORMAL);
-	
+
 	Realize();
-	
+
 	EnableTool(ID_ToolListKey, false);
 //	m_DropDownKey->Enable(false);
 //	m_DropDownBtn->Enable(false);
-	
+
 	m_SubFrame = NULL;
 }
 
+wxString *BookViewToolBar::GetRange()
+{
+	return (wxString *)(m_DropDownRange->GetClientData(m_DropDownRange->GetSelection()));
+}
 
+void BookViewToolBar::AddRanges()
+{
+	m_DropDownRange->Append(wxT("Current Verses"), new wxString(wxT(""), wxConvUTF8));
+
+	m_DropDownRange->Append(wxT("Mosaic Law"), new wxString(wxT("Gen-Deut"), wxConvUTF8));
+	m_DropDownRange->Append(wxT("OT History"), new wxString(wxT("Josh-Esther"), wxConvUTF8));
+	m_DropDownRange->Append(wxT("Books of Wisdom"), new wxString(wxT("Job-Song"), wxConvUTF8));
+	m_DropDownRange->Append(wxT("Major Prophets"), new wxString(wxT("Is-Dan"), wxConvUTF8));
+	m_DropDownRange->Append(wxT("Minor Prophets"), new wxString(wxT("Hos-Mal"), wxConvUTF8));
+	m_DropDownRange->Append(wxT("Megillot"), new wxString(wxT("Ruth, Esther, Ecc, Song, Lam"), wxConvUTF8));
+
+	m_DropDownRange->Append(wxT("Gospels"), new wxString(wxT("Mat-John"), wxConvUTF8));
+	m_DropDownRange->Append(wxT("NT History"), new wxString(wxT("Mat-Acts"), wxConvUTF8));
+	m_DropDownRange->Append(wxT("Paul's Letters"), new wxString(wxT("Ro-Phil"), wxConvUTF8));
+	m_DropDownRange->Append(wxT("Other Letters"), new wxString(wxT("Heb-Rev"), wxConvUTF8));
+	m_DropDownRange->Append(wxT("All Letters"), new wxString(wxT("Ro-Rev"), wxConvUTF8));
+
+	m_DropDownRange->Append(wxT("No Restrictions"), new wxString(wxT("Gen-Rev"), wxConvUTF8));
+
+	m_DropDownRange->SetSelection(0);
+}
 
 BookViewToolBar::~BookViewToolBar()
 {
@@ -99,11 +134,11 @@ void BookViewToolBar::SetDropDownFrame(wxFrame *subframe)
 void BookViewToolBar::OnListKey(wxEvent &event)
 {
 	wxPoint pos;
-	
+
 	
 	pos = GetParent()->ClientToScreen(wxPoint(0,0));
 	pos.x = pos.x + GetToolSize().GetWidth() * 3 + GetToolSeparation() * 2 + GetMargins().GetWidth();
-	
+
 	
 	if (m_SubFrame) {
 		
@@ -152,11 +187,11 @@ void BookViewToolBar::DropDownItemActivated(wxTreeEvent &event)
 	m_SubFrame->Show(false);
 
 	
-	
+
 	key = wxT("/") + tree->GetItemText(item);
 	
 	cont = true;
-	
+
 	while (cont) {
 		item = tree->GetItemParent(item);
 		parent = tree->GetItemParent(item);
@@ -183,7 +218,7 @@ void BookViewToolBar::DropDownDateSelected(wxCalendarEvent &event)
 	
 	wxString key;
 	
-	
+
 	key = key.Format(wxT("%02i.%02i"), date.GetMonth()+1, date.GetDay());
 	wxLogDebug(wxT("Date Selected: ") + key);
 	
@@ -205,3 +240,12 @@ void BookViewToolBar::OnLookupKey(wxEvent &event)
 	ProcessEvent(eventCustom);
 }
 
+void BookViewToolBar::OnSearch(wxEvent &event)
+{
+	wxLogTrace(wxTRACE_Messages, wxT("BookViewToolBar::OnSearch called"));
+
+	wxCommandEvent eventCustom(bsEVT_SEARCH);
+	eventCustom.SetEventObject(this);
+	eventCustom.SetString(m_LookupKey->GetValue());
+	ProcessEvent(eventCustom);
+}

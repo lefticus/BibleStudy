@@ -1,10 +1,14 @@
+#if defined(__GNUG__) && !defined(__APPLE__)
+	#pragma interface "biblestudy.h"
+#endif
+
 #ifndef _BIBLESTUDY_H_
 
 	#define _BIBLESTUDY_H_
 
 
 	#ifdef HAVE_CONFIG_H
-	#include <config.h>
+		#include <config.h>
 	#endif
 
 	#include <stdio.h>
@@ -16,13 +20,13 @@
 	#include <sword/swmgr.h>
 	#include <sword/plainhtml.h>
 	#include <sword/versekey.h>
-	
-	
+
+
 	#define APPTITLE wxT("BibleStudy Software")
-	
-	
+
+
 	/* Resource IDs */
-	
+
 	/** Menu Item IDs */
 	enum
 	{
@@ -42,11 +46,11 @@
 		ID_MenuBibleStudyWhy,
 		ID_MenuBibleStudyHow,
 		ID_MenuBibleStudyGrow,
-		
+
 		/* Must remain last */
 		ID_MenuTopBookOption
 	};
-	
+
 	/** Tool bar button IDs */
 	enum
 	{
@@ -57,21 +61,20 @@
 		ID_ToolListKey,
 		ID_ToolNewTab,
 		ID_ToolRemoveTab,
-		ID_ToolDropDownKey,
-		ID_ToolDropDownBtn
+		ID_ToolDropDownRange
 	};
- 
+
 	/** General Controls */
 	enum
 	{
 		ID_BookTree = 200,
 		ID_BookViewer1
 	};
-	
+
 	/** Tool Bar IDs */
 	enum
 	{
 		ID_BookViewToolBar = 300
 	};
-	
+
 #endif

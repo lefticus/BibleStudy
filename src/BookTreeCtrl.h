@@ -10,21 +10,20 @@
 #if defined(__GNUG__) && !defined(__APPLE__)
 	#pragma interface "BookTreeCtrl.h"
 #endif
- 
- 
+
+
 #ifndef _BOOKTREECTRL_H_
 	#define _BOOKTREECTRL_H_
 
 	#include "biblestudy.h"
 	#include "SwordTools.h"
 	#include "BibleStudyLanguages.h"
-	#include <sword/swlocale.h>
-	#include <sword/localemgr.h>
 	#include <wx/treectrl.h>
+
 	#include <wx/bitmap.h>
-	#include <wx/imaglist.h>
 	#include <wx/image.h>
-	#include <wx/artprov.h>
+
+
 
 	BEGIN_DECLARE_EVENT_TYPES()
 		DECLARE_EVENT_TYPE(bsEVT_OPEN_IN_CURRENT_TAB, 1)
@@ -32,19 +31,19 @@
 		DECLARE_EVENT_TYPE(bsEVT_OPEN_IN_NEW_WINDOW, 3)
 		DECLARE_EVENT_TYPE(bsEVT_ADD_TO_CURRENT_TAB, 4)
 	END_DECLARE_EVENT_TYPES()
-	
+
 	#define EVT_OPEN_IN_CURRENT_TAB(id, fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_OPEN_IN_CURRENT_TAB, id, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
 	#define EVT_OPEN_IN_NEW_TAB(id, fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_OPEN_IN_NEW_TAB, id, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
 	#define EVT_OPEN_IN_NEW_WINDOW(id, fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_OPEN_IN_NEW_WINDOW, id, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
 	#define EVT_ADD_TO_CURRENT_TAB(id, fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_ADD_TO_CURRENT_TAB, id, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
-	
+
 	enum {
 		ID_BookTreePopupOpenInNewTab = 2000,
 		ID_BookTreePopupOpenInNewWindow,
 		ID_BookTreePopupOpen,
 		ID_BookTreePopupAddToCurrentTab
 	};
-	
+
 	/**
 	* Item data for one tree node.
 	**/
@@ -72,11 +71,11 @@
 		wxIcon m_BookBMP;
 
 		wxImageList *m_ImageList;
-		
+
 		wxMenu *m_PopupMenu;
-		
+
 		BibleStudyLanguages m_Languages;
-		
+
 		void OnOpenModule(wxMenuEvent &event);
 		void SetupIcons();
 
@@ -86,10 +85,10 @@
 
 		void RefreshBookList(bool = true);
 		void SetSwordTools(SwordTools *);
-		
+
 		BookTreeItemData *GetItemData(const wxTreeItemId&);
 		void SetItemData(const wxTreeItemId&, BookTreeItemData*);
-		
+
 		void OnRightUp(wxMouseEvent &event);
 		void OnRightDown(wxMouseEvent &event);
 		void OnItemActivated(wxEvent &event); 

@@ -17,19 +17,20 @@
 	#include "biblestudy.h"
 	#include <wx/wizard.h>
 	#include "BibleStudyWizardPage.h"
+	
 	/**
-	* 
+	*
 	* Jason Turner
 	**/
 	class BibleStudyWizard : public wxWizard
 	{
 	private:
 		BibleStudyWizardPage *m_prevpage, *m_firstpage;
-	
+
 	public:
 		BibleStudyWizard(wxWindow *parent, int id, wxString title);
 		~BibleStudyWizard();
-		
+
 		bool RunWizard();
 		void AddPage(SWModule *module, wxString text, wxString reference);
 	};

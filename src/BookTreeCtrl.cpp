@@ -10,17 +10,18 @@
 #ifdef __GNUG__
 	#pragma implementation "BookTreeCtrl.h"
 #endif
- 
- 
+
+
 #include "BookTreeCtrl.h"
+#include <wx/imaglist.h>
+#include <wx/artprov.h>
+
 
 #include "../icons/book.xpm"
 #include "../icons/bible.xpm"
 #include "../icons/lexicon.xpm"
 #include "../icons/commentary.xpm"
 #include "../icons/devotional.xpm"
-#include "../icons/closedfolder.xpm"
-#include "../icons/openfolder.xpm"
 
 enum {
 	ID_CLOSEDFOLDER_ICON = 0,
@@ -90,7 +91,7 @@ void BookTreeCtrl::OnOpenModule(wxMenuEvent &event)
 	wxCommandEvent *eventCustom;
 	
 	wxLogTrace(wxTRACE_Messages, wxT("BookTreeCtrl::OnOpenModule called"));
-	
+
 	switch (event.GetId()) {
 	case ID_BookTreePopupOpenInNewTab:
 		eventCustom = new wxCommandEvent(bsEVT_OPEN_IN_NEW_TAB);

@@ -15,27 +15,20 @@
 #define _BIBLESTUDYMAINFRAME_H_
 
 	#include "biblestudy.h"
-	#include <wx/splitter.h>
-	#include <wx/notebook.h>
-	#include <wx/treectrl.h>
 	#include "SwordTools.h"
-	#include "BookTreeCtrl.h"
-	#include "BookViewSplitterCtrl.h"
-	#include "BookViewCtrl.h"
 	#include "BookViewToolBar.h"
-	#include "BibleStudyWizard.h"
-	#include "BibleStudyWizardPage.h"
-	
+	#include "BookViewSplitterCtrl.h"
+
 	BEGIN_DECLARE_EVENT_TYPES()
 		DECLARE_EVENT_TYPE(bsEVT_EXIT_APP, 1)
 	END_DECLARE_EVENT_TYPES()
 
 	#define EVT_EXIT_APP(fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_EXIT_APP, -1, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
 
-	
+
 	/**
 	* Main window of BibleStudy
-	* 
+	*
 	**/
 	class BibleStudyMainFrame: public wxFrame
 	{
@@ -43,25 +36,25 @@
 	private:
 		/** Reference to the main split that seperates treeview from books */
 		BookViewSplitterCtrl *m_WindowSplit;
-		
+
 		/** Reference to globabl SwordTools */
 		SwordTools *m_SwordTools;
-		
+
 		/** Reference to MainFrame toolbar */
 		BookViewToolBar *m_ToolBar;
-		
+
 		/** Initial setup of splitters, called by constructor */
 		void SetupSplitterWindows();
-		
+
 		/** Update the toolbars to represent the currently viewed tab */
 		void UpdateToolbars(BookModule *);
-		
+
 		/** Create a new window */
 		BibleStudyMainFrame *OpenNewWindow();
 		
 	public:
 		~BibleStudyMainFrame(); 
-		
+
 		/** Default constructor */
 		BibleStudyMainFrame(SwordTools *, const wxString& title, const wxPoint& pos, const wxSize& size);
 		
@@ -82,31 +75,34 @@
 		void OnTreeItemActivated(wxCommandEvent& event);
 		void OnOptionChange(wxMenuEvent& event);
 		void OnNewWindow(wxMenuEvent& event);
-		
+
 		void OnLoadKey(wxCommandEvent& event);
-		
+		void OnSearch(wxCommandEvent& event);
+
 		void OnOpenInNewTab(wxCommandEvent &event);
 		void OnOpenInNewWindow(wxCommandEvent &event);
 		void OnOpenInCurrentTab(wxCommandEvent &event);
 		void OnAddToCurrentTab(wxCommandEvent &event);
-		
+
 		void OnActiveModuleChange(wxCommandEvent &event);
 		void OnBookTreeChange(wxCommandEvent &event);
-		
+
 		void DisplayModule(SWModule *module);
 		void DisplayModule(BookModule *module);
-		
+
 		void OnShowHowBecomeChristian();
 		void OnShowWhyBecomeChristian();
 		void OnShowHowGrowSpiritually();
-		
+		void OnShowBibleStudy(wxCommandEvent &event);
+
 		void ShowStartPage();
-		
+
 		wxString BibleStudies();
 		wxString Heading();
 		wxString DevotionalOfTheDay();
 		wxString ProverbOfTheDay();
-		
+		wxString SearchBox();
+
 		DECLARE_EVENT_TABLE()
 	};
 
