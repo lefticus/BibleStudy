@@ -96,6 +96,8 @@ BibleStudyLanguages::BibleStudyLanguages()
   AddLanguage("it", "Italian");
   AddLanguage("iu", "Inuktitut");
 
+  AddLanguage("i-klingon", "Klingon");
+
   AddLanguage("ja", "Japanese");
 
   AddLanguage("ka", "Georgian");
@@ -215,9 +217,9 @@ BibleStudyLanguages::BibleStudyLanguages()
   AddLanguage("x-E-BAR", "Bavarian");
   AddLanguage("x-E-GSW", "Alemannisch");
   AddLanguage("x-E-HAT", "Haitian Creole French");
-  AddLanguage("x-E-ITZ", "Itzá");
+  AddLanguage("x-E-ITZ", "Itza");
   AddLanguage("x-E-JIV", "Shuar");
-  AddLanguage("x-E-KEK", "Kekchí");
+  AddLanguage("x-E-KEK", "Kekchi");
   AddLanguage("x-E-LMO", "Lombard");
   AddLanguage("x-E-MKJ", "Macedonian");
   AddLanguage("x-E-PDG", "Tok Pisin");
