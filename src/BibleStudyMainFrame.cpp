@@ -484,7 +484,7 @@ void BibleStudyMainFrame::ShowStartPage()
 
 	page = wxT("<html><title>Start Page</title>");
 	page += wxT("<table>");
-	page += wxT("<tr><td bgcolor=#000000 colspan=2><table cellpadding=1 cellspacing=0><tr><td align=center bgcolor=#000099 border=1><font color=#FFFFFF>") + Heading() + wxT("</font></td></tr></table></td></tr>");
+	page += wxT("<tr><td bgcolor=#000000 colspan=2><table cellpadding=1 cellspacing=0 width='100%'><tr><td align=center bgcolor=#000099 border=1 width='100%'><font color=#FFFFFF>") + Heading() + wxT("</font></td></tr></table></td></tr>");
 	page += wxT("<tr><td valign=top>") + BibleStudies() + wxT("</td><td valign=top rowspan=2>") + ProverbOfTheDay() + wxT("</td></tr>");
 	page += wxT("<tr><td valign=top>") + DevotionalOfTheDay() + wxT("</td></tr>");
 	page += wxT("</table>");
@@ -514,7 +514,7 @@ wxString BibleStudyMainFrame::ProverbOfTheDay()
 wxString BibleStudyMainFrame::BibleStudies()
 {
 	wxString output;
-	output = wxT("<table cellpadding=1 cellspacing=0><tr><td align=center bgcolor=#990099><font color=#FFFFFF>Bible Studies</font></td></tr>");
+	output = wxT("<table cellpadding=1 cellspacing=0 width='100%'><tr><td align=center bgcolor=#990099><font color=#FFFFFF>Bible Studies</font></td></tr>");
 	output += wxT("<tr><td><a href='biblestudy://How_Can_I_Become_A_Christian'>How Can I Become a Christian?</a></td></tr>");
 	output += wxT("<tr><td><a href='biblestudy://How_Can_I_Grow_As_A_Christian'>How Can I Grow as a Christian?</a></td></tr>");
 	output += wxT("</table>");

@@ -30,6 +30,8 @@
 #include "../icons/lookup.xpm"
 #include "../icons/search.xpm"
 #include "../icons/list.xpm"
+#include "../icons/forward.xpm"
+#include "../icons/back.xpm"
 
 DEFINE_EVENT_TYPE(bsEVT_LOAD_KEY)
 DEFINE_EVENT_TYPE(bsEVT_BROWSE_KEY)
@@ -70,8 +72,8 @@ BookViewToolBar::BookViewToolBar(wxWindow *parent, wxWindowID id, long style) : 
 	AddControl(m_DropDownRange);
 	AddTool(ID_ToolSearchKey, wxT("Search"), wxBitmap(search_xpm), wxT("Search"), wxITEM_NORMAL);
 
-	AddTool(ID_ToolBackward, wxT("Backward"),wxArtProvider::GetIcon(wxART_GO_BACK, wxART_OTHER, wxSize(22,22)), wxT("Backward"), wxITEM_NORMAL);
-	AddTool(ID_ToolForward, wxT("Forward"),wxArtProvider::GetIcon(wxART_GO_FORWARD, wxART_OTHER, wxSize(22,22)), wxT("Forward"), wxITEM_NORMAL);
+	AddTool(ID_ToolBackward, wxT("Backward"), wxBitmap(back_xpm), wxT("Backward"), wxITEM_NORMAL);
+	AddTool(ID_ToolForward, wxT("Forward"), wxBitmap(forward_xpm), wxT("Forward"), wxITEM_NORMAL);
 
 	Realize();
 

@@ -168,7 +168,7 @@ wxString BookModule::BrowseBackward()
 			return LookupKey(wxString(vk.getText(), wxConvUTF8), wxT(""), 0, false, true);
 		} else {
 			//wxLogDebug(wxT("Last Key:") + m_LastLookupKey);
-			(*m_Module)++;
+			(*m_Module)--;
 			//wxLogDebug(wxT("Next Key:") + wxString(m_Module->KeyText(), wxConvUTF8));
 
 			if (m_Module->Error() != 0)
