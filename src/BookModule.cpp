@@ -113,7 +113,9 @@ wxString BookModule::LookupKey(wxString key)
 	ModMap::iterator it;
 	SWModule* curMod = 0;
 
-	output.append(wxT("<tr>"));	
+	output.append(wxT("<tr>"));
+	//These empty columns keep everything else in line
+	output.append(wxT("<th width='1'></th>"));
 	for (it = m_Modules.begin(); it != m_Modules.end();it++) {	
 		curMod = (*it).second;
 		output.append(wxT("<th><font color='#0000FF'>"));
@@ -141,7 +143,12 @@ wxString BookModule::LookupKey(wxString key)
 					wxLogDebug(wxT("BookModule::LookupKey m_Module->Key()<= vk"));
 					//curkey = (VerseKey *)&(m_Module->Key());
 					
+					
 					output.append(wxT("<tr align=left valign=top>"));
+					
+					//These empty columns keep everything else in line :)
+					output.append(wxT("<td width='1'></td>"));
+					
 					for (it = m_Modules.begin(); it != m_Modules.end(); it++) {
 						wxLogDebug(wxT("BookModule::LookupKey iterating through modules"));
 						curMod = (*it).second;
@@ -154,28 +161,11 @@ wxString BookModule::LookupKey(wxString key)
 						//if (curMod != m_Module)
 							curMod->Key((*element));
 						
-						output.append(wxT("<td align=left valign=top>"));
-						
-						output.append(wxT("<small><font color='#0000FF'>"));
-						if (element->Book() != book) {
-							wxLogDebug(wxT("BookModule::LookupKey new book"));
-							output.append(wxString(element->getText(), wxConvUTF8));
-						} else if (element->Chapter() != chapter) {
-							wxLogDebug(wxT("BookModule::LookupKey new chapter"));
-/*							if (chapter > 0)
-								output.append(wxT("<td><br></td>"));*/
-							output.append(wxString::Format(wxT("%i"), element->Chapter()));
-							output.append(wxT(":"));
-						} 
-
-						if (element->Book() == book) {
-							output.append(wxString::Format(wxT("%i"), element->Verse()));
-						}
-						
-						wxLogDebug(wxT("BookModule::LookupKey updating last chaper, book, verse"));
-						output.append(wxT("</font></small> "));
 						wxLogDebug(wxT("BookModule::LookupKey writing verse to output"));
 						
+						wxString verseout = wxT("");
+						bool outputcell = true;
+						int rowspan = 1;
 						wxString thisverse = wxString((const char *)(*curMod), wxConvUTF8);
 						if ((*element) > element->LowerBound()) {
 						
@@ -190,16 +180,55 @@ wxString BookModule::LookupKey(wxString key)
 							wxLogDebug(wxT("BookModule:LookupKey: Current:"));
 							wxLogDebug(thisverse);
 							
-							if (thisverse.Cmp(prevverse)) {	
-								output.append(thisverse);
+							if (thisverse.Cmp(prevverse)) {
+								verseout = thisverse;
+								outputcell = true;
+							} else {
+								outputcell = false;
 							}
 						} else {
-							output.append(thisverse);
+							outputcell = true;
+							verseout = thisverse;
+						}
+
+						VerseKey elemcopy(element);
+						elemcopy++;
+						curMod->Key(elemcopy);
+						wxString nextverse = wxString((const char *)(*curMod), wxConvUTF8);
+						while (elemcopy <= vk && !nextverse.Cmp(verseout) && outputcell) {
+							rowspan++;
+							elemcopy++;
+							curMod->Key(elemcopy);
+							nextverse = wxString((const char *)(*curMod), wxConvUTF8);
+							
 						}
 						
-						//output.append(wxT("<br />"));
-						
-						output.append(wxT("</td>"));
+						if (outputcell) {
+							output.append(wxString::Format(wxT("<td align=left valign=top rowspan=%i>"), rowspan));
+
+							output.append(wxT("<small><font color='#0000FF'>"));
+							if (element->Book() != book) {
+								wxLogDebug(wxT("BookModule::LookupKey new book"));
+								output.append(wxString(element->getText(), wxConvUTF8));
+							} else if (element->Chapter() != chapter) {
+								wxLogDebug(wxT("BookModule::LookupKey new chapter"));
+	/*							if (chapter > 0)
+									output.append(wxT("<td><br></td>"));*/
+								output.append(wxString::Format(wxT("%i"), element->Chapter()));
+								output.append(wxT(":"));
+							} 
+
+							if (element->Book() == book) {
+								output.append(wxString::Format(wxT("%i"), element->Verse()));
+							}
+
+							wxLogDebug(wxT("BookModule::LookupKey updating last chaper, book, verse"));
+							output.append(wxT("</font></small> "));
+							output.append(verseout);
+							//output.append(wxT("<br />"));
+
+							output.append(wxT("</td>"));
+						}
 					}
 
 					book = element->Book();
@@ -214,6 +243,7 @@ wxString BookModule::LookupKey(wxString key)
 				}
 			} else {
 				output.append(wxT("<tr align=left valign=top>"));
+				output.append(wxT("<td width='1'></td>"));
 				
 				ModMap::iterator it;
 				SWModule* curMod = 0;
@@ -241,7 +271,7 @@ wxString BookModule::LookupKey(wxString key)
 		}
 	} else {
 		output.append(wxT("<tr align=left valign=top>"));
-		
+		output.append(wxT("<td width='1'></td>"));
 		const char *moduleoutput;
 		for (it = m_Modules.begin(); it != m_Modules.end(); it++) {
 			output.append(wxT("<td align=left valign=top>"));
