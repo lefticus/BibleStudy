@@ -173,7 +173,7 @@ void BookTreeCtrl::RefreshBookList()
 			childnode = treenodes[curMod->Type()];
 			if (!childnode.IsOk()) {
 				wxLogDebug(wxT("appending type"));
-				childnode = AppendItem(rootnode, wxString(curMod->Type(), wxConvUTF8), ID_CLOSEDFOLDER_ICON);
+				childnode = AppendItem(rootnode, wxString(curMod->Type(), wxConvUTF8), ID_CLOSEDFOLDER_ICON, ID_CLOSEDFOLDER_ICON);
 				SetItemImage(childnode, ID_CLOSEDFOLDER_ICON, wxTreeItemIcon_Normal);
 				SetItemImage(childnode, ID_OPENFOLDER_ICON, wxTreeItemIcon_Expanded);
 				SetItemImage(childnode, ID_CLOSEDFOLDER_ICON, wxTreeItemIcon_Selected);
@@ -185,7 +185,7 @@ void BookTreeCtrl::RefreshBookList()
 		} else {
 			childnode = treenodes[(const char *)configEntry.mb_str()];
 			if (!childnode.IsOk()) {
-				childnode = AppendItem(rootnode, configEntry, ID_CLOSEDFOLDER_ICON);
+				childnode = AppendItem(rootnode, configEntry, ID_CLOSEDFOLDER_ICON, ID_CLOSEDFOLDER_ICON);
 				SetItemImage(childnode, ID_CLOSEDFOLDER_ICON, wxTreeItemIcon_Normal);
 				SetItemImage(childnode, ID_OPENFOLDER_ICON, wxTreeItemIcon_Expanded);
 				SetItemImage(childnode, ID_CLOSEDFOLDER_ICON, wxTreeItemIcon_Selected);
@@ -209,7 +209,7 @@ void BookTreeCtrl::RefreshBookList()
 			
 			language = m_Languages.GetLanguage(wxString(curMod->Lang(), wxConvUTF8));
 
-			langnode = AppendItem(childnode, language);
+			langnode = AppendItem(childnode, language, ID_CLOSEDFOLDER_ICON, ID_CLOSEDFOLDER_ICON);
 			SetItemImage(langnode, ID_CLOSEDFOLDER_ICON, wxTreeItemIcon_Normal);
 			SetItemImage(langnode, ID_OPENFOLDER_ICON, wxTreeItemIcon_Expanded);
 			SetItemImage(langnode, ID_CLOSEDFOLDER_ICON, wxTreeItemIcon_Selected);
@@ -220,31 +220,35 @@ void BookTreeCtrl::RefreshBookList()
 		modname += wxT(" - ");
 		modname += wxString(curMod->Description(), wxConvUTF8);
 		wxLogDebug(wxT("appending module %s"), (const wxChar *)modname);
-		curNode = AppendItem(langnode, wxString(curMod->Name(), wxConvUTF8) + wxT(" - ") + wxString(curMod->Description(), wxConvUTF8));
-
+		
 		/** SET ICON **/
 		if (!strcmp(curMod->Type(), "Biblical Texts")) {
+			curNode = AppendItem(langnode, wxString(curMod->Name(), wxConvUTF8) + wxT(" - ") + wxString(curMod->Description(), wxConvUTF8), ID_BIBLICAL_TEXT_ICON, ID_BIBLICAL_TEXT_ICON);
 			SetItemImage(curNode, ID_BIBLICAL_TEXT_ICON, wxTreeItemIcon_Normal);
 			SetItemImage(curNode, ID_BIBLICAL_TEXT_ICON, wxTreeItemIcon_Expanded);
 			SetItemImage(curNode, ID_BIBLICAL_TEXT_ICON, wxTreeItemIcon_Selected);
 			SetItemImage(curNode, ID_BIBLICAL_TEXT_ICON, wxTreeItemIcon_SelectedExpanded);
 		} else if (!strcmp(curMod->Type(), "Lexicons / Dictionaries") ||
 					!strcmp(curMod->Type(), "Glossaries")) {
+			curNode = AppendItem(langnode, wxString(curMod->Name(), wxConvUTF8) + wxT(" - ") + wxString(curMod->Description(), wxConvUTF8), ID_LEXICON_ICON, ID_LEXICON_ICON);
 			SetItemImage(curNode, ID_LEXICON_ICON, wxTreeItemIcon_Normal);
 			SetItemImage(curNode, ID_LEXICON_ICON, wxTreeItemIcon_Expanded);
 			SetItemImage(curNode, ID_LEXICON_ICON, wxTreeItemIcon_Selected);
 			SetItemImage(curNode, ID_LEXICON_ICON, wxTreeItemIcon_SelectedExpanded);
 		} else if (!strcmp(curMod->Type(), "Commentaries")) {
+			curNode = AppendItem(langnode, wxString(curMod->Name(), wxConvUTF8) + wxT(" - ") + wxString(curMod->Description(), wxConvUTF8), ID_COMMENTARY_ICON, ID_COMMENTARY_ICON);
 			SetItemImage(curNode, ID_COMMENTARY_ICON, wxTreeItemIcon_Normal);
 			SetItemImage(curNode, ID_COMMENTARY_ICON, wxTreeItemIcon_Expanded);
 			SetItemImage(curNode, ID_COMMENTARY_ICON, wxTreeItemIcon_Selected);
 			SetItemImage(curNode, ID_COMMENTARY_ICON, wxTreeItemIcon_SelectedExpanded);
 		} else if (!strcmp(curMod->Type(), "Daily Devotional")) {
+			curNode = AppendItem(langnode, wxString(curMod->Name(), wxConvUTF8) + wxT(" - ") + wxString(curMod->Description(), wxConvUTF8), ID_DEVOTIONAL_ICON, ID_DEVOTIONAL_ICON);
 			SetItemImage(curNode, ID_DEVOTIONAL_ICON, wxTreeItemIcon_Normal);
 			SetItemImage(curNode, ID_DEVOTIONAL_ICON, wxTreeItemIcon_Expanded);
 			SetItemImage(curNode, ID_DEVOTIONAL_ICON, wxTreeItemIcon_Selected);
 			SetItemImage(curNode, ID_DEVOTIONAL_ICON, wxTreeItemIcon_SelectedExpanded);
 		} else {
+			curNode = AppendItem(langnode, wxString(curMod->Name(), wxConvUTF8) + wxT(" - ") + wxString(curMod->Description(), wxConvUTF8), ID_BOOK_ICON, ID_BOOK_ICON);
 			SetItemImage(curNode, ID_BOOK_ICON, wxTreeItemIcon_Normal);
 			SetItemImage(curNode, ID_BOOK_ICON, wxTreeItemIcon_Expanded);
 			SetItemImage(curNode, ID_BOOK_ICON, wxTreeItemIcon_Selected);

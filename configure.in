@@ -1,10 +1,38 @@
-AC_INIT(configure.in)
-
+dnl AC_INIT(configure.in)
+AC_INIT(aclocal.m4)
+AC_CANONICAL_SYSTEM
 AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE(biblestudy, 0.1)
 
 AC_LANG_CPLUSPLUS
 AC_PROG_CXX
 AM_PROG_LIBTOOL
+AM_OPTIONS_WXCONFIG
 
+AM_PATH_WXCONFIG(2.4.0, WXFOUND=1)
+
+if test "$WXFOUND" != 1; then
+	AC_MSG_ERROR([
+		Please check that wx-config is in the path, the directory
+		where wxWindows libraries are installed (returned by
+		'wx-config --libs' command) is in LD_LIBRARY_PATH or
+		equivalent variable ans wxWindows is version 2.4.0 or above.
+	])
+fi
+
+
+if $WX_CONFIG_NAME --cxxflags | grep -q WXMSW; then
+	use_windows=yes
+	
+	changequote(<<,>>)	
+	RC_WX_INCLUDES=`echo " $WX_CPPFLAGS" | sed -e 's/ -[^I][^ ]*//g' | sed -e 's/ -I\([^ ]*\)/ --include-dir \1/g'`
+	changequote([,])
+else
+	use_windows=no
+fi
+AM_CONDITIONAL(USE_WINDOWS, test $use_windows = yes)
+dnl AC_SUBST(RESCOMP)
+RESCOMP=windres.exe
+AC_SUBST(RESCOMP)
+AC_SUBST(RC_WX_INCLUDES)
 AC_OUTPUT(Makefile src/Makefile)

@@ -18,8 +18,8 @@
 	#include "biblestudy.h"
 	#include "SwordTools.h"
 	#include "BibleStudyLanguages.h"
-	#include <swlocale.h>
-	#include <localemgr.h>
+	#include <sword/swlocale.h>
+	#include <sword/localemgr.h>
 	#include <wx/treectrl.h>
 	#include <wx/bitmap.h>
 	#include <wx/imaglist.h>

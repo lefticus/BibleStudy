@@ -14,7 +14,7 @@
 #ifndef _SWORDTOOLS_H_
 	#define _SWORDTOOLS_H_
 
-	#include <markupfiltmgr.h>
+	#include <sword/markupfiltmgr.h>
 	#include <map>
 
 	#include "biblestudy.h"

@@ -12,10 +12,10 @@
 
 	#include <wx/wx.h>
 
-	#include <swmodule.h>
-	#include <swmgr.h>
-	#include <plainhtml.h>
-	#include <versekey.h>
+	#include <sword/swmodule.h>
+	#include <sword/swmgr.h>
+	#include <sword/plainhtml.h>
+	#include <sword/versekey.h>
 	
 	
 	#define APPTITLE wxT("BibleStudy Software")
