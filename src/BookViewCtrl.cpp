@@ -71,7 +71,7 @@ BookViewCtrl::BookViewCtrl(wxWindow *parent, int id, const wxPoint pos, const wx
 			images->Add(wxBitmap(wxBitmap(icons[i]).ConvertToImage().Rescale(imgsize,imgsize)));
 		}
 	}
-	
+
 	AssignImageList(images);
 
 	m_CustEventHandler = new BookViewEventHandler();
@@ -83,10 +83,10 @@ int BookViewCtrl::AddTab()
 	wxNotebookPage *page;
 	BookViewHtml *html;
 	wxBoxSizer *panelsizer = new wxBoxSizer( wxVERTICAL );
-	
+
 	page = new wxPanel( this );
 	html = new BookViewHtml( page, -1, wxDefaultPosition, wxDefaultSize, wxVSCROLL, wxT("htmlwindow"));
-	
+
 	BookViewEventHandler *neweventhandler;
 	neweventhandler = new BookViewEventHandler();
 	neweventhandler->SetParent(this);
@@ -94,12 +94,12 @@ int BookViewCtrl::AddTab()
 
 	#ifdef _WIN32
 		// Choose appropriate font sizes for windows
-		const int sizes[7] = {7, 8, 10, 12, 16, 22, 30};
+//		const int sizes[7] = {7, 8, 10, 12, 16, 22, 30};
 	#else
 		// Choose approriate font sizes for GTK
-		const int sizes[7] = {10, 12, 14, 16, 19, 24, 32};
+//		const int sizes[7] = {10, 12, 14, 16, 19, 24, 32};
 	#endif
-	html->SetFonts(wxT("Arial"), wxT("Courier New"), sizes);
+	//html->SetFonts(wxT("Arial"), wxT("Courier New"), sizes);
 
 	panelsizer->Add(html, 1, wxEXPAND);
 	page->SetSizer(panelsizer);
@@ -124,12 +124,12 @@ void BookViewCtrl::CloseTab()
 			delete mod;
 		page = GetSelection();
 		RemovePage(page);
-		if (GetPageCount() > page) 
+		if (GetPageCount() > page)
 			SetSelection(page);
 		else
 			SetSelection(page-1);
 	}
-	
+
 	PostChildSetFocus();
 }
 
@@ -200,13 +200,19 @@ void BookViewCtrl::Search(wxString range, wxString search, int searchtype)
 void BookViewCtrl::OpenInCurrentTab(BookModule *bm)
 {
 	OpenInCurrentTab(bm->GetModule());
-	LookupKey(bm->GetLastLookupKey());
+
+	if (bm->GetLastSearch() != wxT(""))
+		Search(bm->GetLastLookupKey(), bm->GetLastSearch(), 0);
+	else if (bm->IsBrowsing())
+		BrowseKey(bm->GetLastLookupKey());
+	else
+		LookupKey(bm->GetLastLookupKey());
 }
 
 void BookViewCtrl::OpenInCurrentTab(wxString html)
 {
 	BookViewHtml *htmlwindow;
-	
+
 	htmlwindow = (BookViewHtml *)GetPage(GetSelection())->GetChildren().GetFirst()->GetData();
 	htmlwindow->SetPage( html );
 	SetPageText(GetSelection(), wxString(htmlwindow->GetOpenedPageTitle()));
@@ -218,55 +224,70 @@ void BookViewCtrl::AddToCurrentTab(SWModule *mod)
 	GetActiveBookModule()->AddModule(mod);
 	SetPageText(GetSelection(), GetActiveBookModule()->GetName());
 	LookupKey(GetActiveBookModule()->GetLastLookupKey());
-	
+
 }
 
 void BookViewCtrl::AddToCurrentTab(BookModule *mod)
 {
 	AddToCurrentTab(mod->GetModule());
+	PostChildSetFocus();
 }
 
 
 void BookViewCtrl::OpenInCurrentTab(SWModule *newModule)
 {
 	BookViewHtml *html;
-	BookModule *bookmod;
+	BookModule *bookmod, *prevbookmod;
 	wxString key;
+	wxString search;
+	bool browse = false;
 	bool performsearch = false;
-	
+
 	html = (BookViewHtml *)GetPage(GetSelection())->GetChildren().GetFirst()->GetData();
 	SetPageText(GetSelection(), wxString(newModule->Name(), wxConvUTF8));
-	
-	bookmod = (BookModule *)html->GetClientData();
-	if (bookmod) {
-		key = bookmod->GetLastLookupKey();
-		
-		performsearch = !strcmp(bookmod->GetModule()->Type(), newModule->Type());
-	
-		delete bookmod;
-	}
-	
+
+	prevbookmod = (BookModule *)html->GetClientData();
+
 	bookmod = new BookModule(newModule);
 	html->SetClientData(bookmod);
-	
+
+	if (prevbookmod) {
+		key = prevbookmod->GetLastLookupKey();
+		search = prevbookmod->GetLastSearch();
+		browse = prevbookmod->IsBrowsing();
+		performsearch = (prevbookmod->GetKeyType() == bookmod->GetKeyType());
+	}
+
 	if (!performsearch && !strcmp(newModule->Type(), "Daily Devotional")) {
 		key = wxString::Format(wxT("%02i.%02i"), wxDateTime::Today().GetMonth() + 1, wxDateTime::Today().GetDay());
 		performsearch = true;
 	}
-	
-	if (performsearch)
-		LookupKey(key);
-	else
+
+	if (performsearch) {
+		if (search != wxT(""))
+			Search(key, search, 0);
+		else if (browse)
+			BrowseKey(key+wxT(":"));
+		else
+			LookupKey(key);
+	} else {
 		LookupKey(wxT(""));
-		
+	}
+
 	SetIcon();
+
+	PostChildSetFocus(bookmod);
+	wxYield();
+
+	if (prevbookmod)
+		delete prevbookmod;
 }
 
 void BookViewCtrl::SetIcon()
 {
 	BookModule *bookmod = GetActiveBookModule();
 	SWModule *module = bookmod->GetModule();
-	
+
 	if (!strcmp(module->Type(), "Biblical Texts")) {
 		SetPageImage(GetSelection(), ID_BIBLICAL_TEXT_ICON);
 	} else if (!strcmp(module->Type(), "Lexicons / Dictionaries") ||
@@ -279,10 +300,7 @@ void BookViewCtrl::SetIcon()
 	} else {
 		SetPageImage(GetSelection(), ID_BOOK_ICON);
 	}
-	
-
 }
-
 
 void BookViewCtrl::OpenInNewTab(SWModule *newModule)
 {
@@ -305,17 +323,20 @@ BookModule* BookViewCtrl::GetActiveBookModule()
 }
 
 void BookViewCtrl::ChildGotFocus()
-{	
+{
 	PostChildSetFocus();
 }
 
-void BookViewCtrl::PostChildSetFocus()
+void BookViewCtrl::PostChildSetFocus(BookModule *bookmod)
 {
 	wxCommandEvent eventCustom(bsEVT_CHILD_SET_FOCUS);
 	eventCustom.SetEventObject(this);
-	eventCustom.SetClientData(GetActiveBookModule());
-	ProcessEvent(eventCustom);
+	if (bookmod)
+		eventCustom.SetClientData(GetActiveBookModule());
+	else
+		eventCustom.SetClientData(bookmod);
 
+	ProcessEvent(eventCustom);
 }
 
 void BookViewCtrl::OnNotebookPageChanged(wxEvent &event)
@@ -337,7 +358,7 @@ void BookViewCtrl::CloseOtherTabs()
 	int numbefore;
 	int numafter;
 	int i;
-	
+
 	numbefore = curtab;
 	numafter = GetPageCount() - (curtab + 1);
 	
@@ -361,8 +382,8 @@ void BookViewCtrl::DuplicateTab()
 void BookViewCtrl::DuplicateTab(BookModule *bm)
 {
 	int selection = GetSelection();
-	
+
 	OpenInNewTab(bm);
-	
+
 	SetSelection(selection);
 }

@@ -35,15 +35,13 @@ BibleStudyApp::~BibleStudyApp()
 
 bool BibleStudyApp::OnInit()
 {
-	//wxLogWindow *mylogwindow;
-	//mylogwindow = new wxLogWindow(NULL, wxT("Log Output"));
-	//mylogwindow->Show();
-
 	#ifdef __WXDEBUG__
 	wxLogStderr *log = new wxLogStderr();
 	wxLog::SetActiveTarget(log);
 	#endif
-	
+
+	//wxHandleFatalExceptions(TRUE)
+
 	/*Show Splash Screen First */
 	wxSplashScreen* splash = new wxSplashScreen(wxBitmap(splashscreen_xpm),
 		wxSPLASH_CENTRE_ON_SCREEN|wxSPLASH_TIMEOUT,
@@ -51,7 +49,7 @@ bool BibleStudyApp::OnInit()
 		wxSIMPLE_BORDER|wxSTAY_ON_TOP);
 
 	wxYield();
-	
+
 	/* create a default frame and display it */
 	BibleStudyMainFrame *frame = new BibleStudyMainFrame(&m_SwordTools, APPTITLE, wxDefaultPosition, wxSize(640, 480));
 	frame->Show(TRUE);
@@ -65,7 +63,7 @@ bool BibleStudyApp::OnInit()
 void BibleStudyApp::OnExitApp(wxCommandEvent &event)
 {
 	wxMessageDialog dialog((wxWindow *)event.GetEventObject(), wxT("Close all windows and exit BibleStudy?"), wxT("Exit Bible Study?"), wxYES_NO | wxICON_QUESTION);
-	
+
 	if (dialog.ShowModal() == wxID_YES) {
 		wxYield();
 		wxLogDebug(wxT("Exiting Application"));
@@ -79,4 +77,9 @@ void BibleStudyApp::OnExitApp(wxCommandEvent &event)
 			window = wxWindow::FindWindowByName(wxT("BibleStudyWindow"));
 		}
 	}
+}
+
+void BibleStudyApp::OnFatalException()
+{
+
 }

@@ -11,7 +11,6 @@
 #ifndef _BOOKVIEWHTML_H_
 #define _BOOKVIEWHTML_H_
 
-
 	#include <wx/html/htmlwin.h>
 	#include "HTMLToolTip.h"
 
@@ -26,7 +25,7 @@
 
 
 	/**
-	* 
+	*
 	* Jason Turner
 	**/
 	class BookViewHtml : public wxHtmlWindow

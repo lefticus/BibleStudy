@@ -21,9 +21,9 @@
 SwordTools::SwordTools()
 {
 	MarkupFilterMgr *myFilterMgr = new MarkupFilterMgr;
-	m_SwordManager = new SWMgr(myFilterMgr);
-	myFilterMgr->Markup(FMT_HTMLHREF);
-	myFilterMgr->Encoding(ENC_HTML);
+	m_SwordManager = new SWMgr(0,0,TRUE,new MarkupFilterMgr(FMT_HTMLHREF, ENC_HTML));
+	//myFilterMgr->Markup(FMT_HTMLHREF);
+	//myFilterMgr->Encoding(ENC_HTML);
 }
 
 BookModule *SwordTools::GetModuleFromLink(wxString link)
@@ -78,12 +78,7 @@ wxString SwordTools::GetKeyFromLink(wxString link)
 	} else if (link.Find(wxT("value=")) > -1) {
 		wxStringTokenizer tokenizer(link, wxT(" ="));
 
-//		while (tokenizer.HasMoreTokens()) {
-//			if (tokenizer.GetNextToken() == wxT("value")) {
-				key = link.Mid(link.Find(wxT("value="))+6);
-//				break;
-//			}
-//		}
+		key = link.Mid(link.Find(wxT("value="))+6);
 
 		if (link.Find(wxT("type=Strongs")) > -1) {
 			key.StartsWith(wxT("G"), &key);
@@ -103,7 +98,7 @@ SWMgr *SwordTools::GetSwordManager()
 	return m_SwordManager;
 }
 
-ModMap *SwordTools::GetModuleMap() 
+ModMap *SwordTools::GetModuleMap()
 {
 	return &m_SwordManager->Modules;
 }

@@ -33,13 +33,15 @@ BEGIN_EVENT_TABLE(BibleStudyMainFrame, wxFrame)
 	EVT_MENU(ID_MenuSplitVertically, BibleStudyMainFrame::OnSplitVertically)
 	EVT_MENU(ID_MenuSplitHorizontally, BibleStudyMainFrame::OnSplitHorizontally)
 	EVT_MENU(ID_MenuRemoveSplit, BibleStudyMainFrame::OnRemoveActiveView)
-	
+
+	EVT_MENU(ID_MenuShowStartPage, BibleStudyMainFrame::OnShowStartPage)
+
 	EVT_MENU(ID_MenuNewTab, BibleStudyMainFrame::OnNewTab)
 	EVT_MENU(ID_MenuCloseTab, BibleStudyMainFrame::OnCloseTab)
 	EVT_MENU(ID_MenuShowHideBookTree, BibleStudyMainFrame::OnShowHideBookTree)
 	EVT_MENU(ID_MenuNewWindow, BibleStudyMainFrame::OnNewWindow)
 	EVT_MENU(ID_MenuCloseWindow, BibleStudyMainFrame::OnCloseWindow)
-	
+
 	EVT_MENU(ID_MenuCloseOtherTabs, BibleStudyMainFrame::OnCloseOtherTabs)
 	EVT_MENU(ID_MenuDetachTab, BibleStudyMainFrame::OnDetachTab)
 	EVT_MENU(ID_MenuDuplicateTab, BibleStudyMainFrame::OnDuplicateTab)
@@ -97,6 +99,7 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools, const wxStri
 
 	menuHelp->Append( ID_MenuAbout, wxT("&About BibleStudy") );
 
+	menuWindow->Append( ID_MenuShowStartPage, wxT("Show Start Page") );
 	menuWindow->Append( ID_MenuShowHideBookTree, wxT("Show/Hide Book List") );
 	menuWindow->AppendSeparator();
 
@@ -242,13 +245,16 @@ void BibleStudyMainFrame::OnActiveModuleChange(wxCommandEvent& event)
 void BibleStudyMainFrame::UpdateToolbars(BookModule *bm)
 {
 	if (bm) {
-		m_ToolBar->SetLookupKey(bm->GetLastLookupKey());
+		if (bm->GetLastSearch() == wxT("")) {
+			m_ToolBar->SetLookupKey(bm->GetLastLookupKey());
+		} else {
+			m_ToolBar->SetLookupKey(bm->GetLastSearch());
+		}
+
 		m_ToolBar->SetDropDownFrame(bm->GetControl(this));
 	} else {
 		m_ToolBar->SetLookupKey(wxT(""));
 	}
-
-
 }
 
 void BibleStudyMainFrame::OnLoadKey(wxCommandEvent& event)
@@ -261,22 +267,24 @@ void BibleStudyMainFrame::OnBrowseKey(wxCommandEvent& event)
 {
 	wxLogTrace(wxTRACE_Messages, wxT("BibleStudyMainFrame::OnLookupKey called"));
 	m_WindowSplit->BrowseKey( event.GetString() );
+	UpdateToolbars(m_WindowSplit->GetActiveBookModule());
 }
 
 void BibleStudyMainFrame::OnBrowseForward(wxCommandEvent& event)
 {
 	m_WindowSplit->BrowseForward();
+	UpdateToolbars(m_WindowSplit->GetActiveBookModule());
 }
 
 void BibleStudyMainFrame::OnBrowseBackward(wxCommandEvent& event)
 {
 	m_WindowSplit->BrowseBackward();
+	UpdateToolbars(m_WindowSplit->GetActiveBookModule());
 }
-
 
 void BibleStudyMainFrame::OnSearch(wxCommandEvent& event)
 {
-	m_WindowSplit->Search(*(m_ToolBar->GetRange()), event.GetString(), 2);
+	m_WindowSplit->Search(*(m_ToolBar->GetRange()), event.GetString(), 0);
 }
 
 void BibleStudyMainFrame::SetupSplitterWindows()
@@ -436,6 +444,11 @@ void BibleStudyMainFrame::OnDuplicateTab(wxMenuEvent& event)
 {
 	wxLogTrace(wxTRACE_Messages, wxT("BibleStudyMainFrame::OnDuplicateTab called"));
 	m_WindowSplit->DuplicateTab();
+}
+
+void BibleStudyMainFrame::OnShowStartPage(wxMenuEvent &event)
+{
+	ShowStartPage();
 }
 
 void BibleStudyMainFrame::ShowStartPage()

@@ -42,22 +42,21 @@
 	{
 
 	private:
-//		BookViewCtrl *m_BookViewer1, *m_BookViewer2, *m_BookViewer3, *m_BookViewer4;
 		BookTreeCtrl *m_BookTree;
 		int m_LastSashPosition;
 		SwordTools *m_SwordTools;
 		BookViewCtrl *m_LastFocus;
-		
+
 		wxSplitterWindow *m_TopLevelSplit, *m_FirstChildSplit, *m_SecondChildSplit;
-		
+
 		BookViewCtrl *GetActiveBookViewCtrl();
-		
+
 
 	public:
 		BookViewSplitterCtrl();
 		~BookViewSplitterCtrl();
 		BookViewSplitterCtrl(wxWindow *parent, SwordTools *, const wxPoint pos, const wxSize size);
-		//void SetChildren(BookTreeCtrl *, BookViewCtrl *);
+
 		bool ShowHideBookTree();
 
 		void CloseTab();

@@ -76,8 +76,6 @@ BookViewToolBar::BookViewToolBar(wxWindow *parent, wxWindowID id, long style) : 
 	Realize();
 
 	EnableTool(ID_ToolListKey, false);
-//	m_DropDownKey->Enable(false);
-//	m_DropDownBtn->Enable(false);
 
 	m_SubFrame = NULL;
 }
@@ -89,7 +87,7 @@ wxString *BookViewToolBar::GetRange()
 
 void BookViewToolBar::AddRanges()
 {
-	m_DropDownRange->Append(wxT("Current Verses"), new wxString(wxT(""), wxConvUTF8));
+	//m_DropDownRange->Append(wxT("Current Verses"), new wxString(wxT(""), wxConvUTF8));
 
 	m_DropDownRange->Append(wxT("Old Testament"), new wxString(wxT("Gen-Mal"), wxConvUTF8));
 	m_DropDownRange->Append(wxT("Mosaic Law"), new wxString(wxT("Gen-Deut"), wxConvUTF8));
@@ -106,9 +104,9 @@ void BookViewToolBar::AddRanges()
 	m_DropDownRange->Append(wxT("Other Letters"), new wxString(wxT("Heb-Rev"), wxConvUTF8));
 	m_DropDownRange->Append(wxT("All Letters"), new wxString(wxT("Ro-Rev"), wxConvUTF8));
 
-	m_DropDownRange->Append(wxT("No Restrictions"), new wxString(wxT("Gen-Rev"), wxConvUTF8));
+	m_DropDownRange->Append(wxT("No Restrictions"), new wxString(wxT(""), wxConvUTF8));
 
-	m_DropDownRange->SetSelection(0);
+	m_DropDownRange->SetSelection(13);
 }
 
 BookViewToolBar::~BookViewToolBar()
@@ -127,22 +125,40 @@ void BookViewToolBar::SetLookupKey(wxString newKey)
 
 void BookViewToolBar::SetDropDownFrame(wxFrame *subframe)
 {
-	if (m_SubFrame) {
-		m_SubFrame->PopEventHandler();
-	}
+	if (m_SubFrame != subframe) {
+		if (m_SubFrame) {
+			wxEvtHandler *handler;
+			//wxLogDebug(wxT("BookViewToolBar::SetDropDownFrame Popping Event Handler"));
+//			if (m_SubFrame->GetEventHandler() != m_SubFrame)
+//				handler = m_SubFrame->PopEventHandler(FALSE);
+			//wxLogDebug(wxT("BookViewToolBar::SetDropDownFrame Event Handler Popped"));
+	//		if (handler == m_SubFrame || handler == NULL) {
+	//			m_SubFrame->PushEventHandler(m_SubFrame);
+	//		}
 
-	m_SubFrame = subframe;
-	if (m_SubFrame) {
-		EnableTool(ID_ToolListKey, true);
-//		m_DropDownKey->Enable(true);
-//		m_DropDownBtn->Enable(true);
-		DropDownEventHandler *m_EventHandler = new DropDownEventHandler();
-		m_EventHandler->SetParent(this);
-		subframe->PushEventHandler(m_EventHandler);
-	} else {
-		EnableTool(ID_ToolListKey, false);
-//		m_DropDownKey->Enable(false);
-//		m_DropDownBtn->Enable(false);
+			if (m_SubFrame->GetPreviousHandler() != NULL) {
+				wxLogDebug(wxT("BookViewToolBar::SetDropDownFrame Popping Event Handler"));
+				handler = m_SubFrame->PopEventHandler(FALSE);
+				wxLogDebug(wxT("BookViewToolBar::SetDropDownFrame Event Handler Popped"));
+			}
+
+		}
+
+
+		if (subframe) {
+			EnableTool(ID_ToolListKey, true);
+			DropDownEventHandler *m_EventHandler = new DropDownEventHandler();
+			m_EventHandler->SetParent(this);
+			//if (subframe->GetPreviousHandler() == subframe) {
+				wxLogDebug(wxT("BookViewToolBar::SetDropDownFrame Adding event Handler"));
+				subframe->PushEventHandler(m_EventHandler);
+			//}
+
+		} else {
+			EnableTool(ID_ToolListKey, false);
+		}
+
+		m_SubFrame = subframe;
 	}
 }
 
@@ -167,13 +183,13 @@ void BookViewToolBar::OnShowDropDown(wxEvent &event)
 {
 	wxPoint pos;
 
-	
+
 	pos = GetParent()->ClientToScreen(wxPoint(0,0));
 	pos.x = pos.x + GetToolSize().GetWidth() * 4 + GetToolSeparation() * 3 + m_LookupKey->GetSize().GetWidth() + GetMargins().GetWidth();
 
 
 	if (m_SubFrame) {
-		
+
 		m_SubFrame->Move(pos.x, pos.y);
 		m_SubFrame->Show(true);
 	}
@@ -211,7 +227,7 @@ void BookViewToolBar::DropDownItemActivated(wxTreeEvent &event)
 	while (cont) {
 		item = tree->GetItemParent(item);
 		parent = tree->GetItemParent(item);
-		
+
 		if (parent) {
 			key = wxT("/") + tree->GetItemText(item) + key;
 		} else {

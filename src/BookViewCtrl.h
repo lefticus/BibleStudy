@@ -70,9 +70,8 @@
 		void BrowseForward();
 		void BrowseBackward();
 
-
 		void ChildGotFocus();
-		void PostChildSetFocus();
+		void PostChildSetFocus(BookModule *bm=NULL);
 		void OnSetFocus(wxEvent &event);
 		void OnNotebookPageChanged(wxEvent &event);
 

@@ -14,8 +14,6 @@
 #ifndef _BOOKVIEWEVENTHANDLER_H_
 	#define _BOOKVIEWEVENTHANDLER_H_
 
-
-
 	class BookViewEventHandler;
 
 	#include <wx/event.h>

@@ -33,7 +33,6 @@ BookViewHtml::~BookViewHtml()
 
 void BookViewHtml::OnLinkClicked(const wxHtmlLinkInfo& info)
 {
-	//wxLogTrace(wxTRACE_Messages, "Link Clicked");
 	wxLogDebug(wxT("Link Clicked: %s"), info.GetHref().c_str());
 	wxCommandEvent eventCustom(bsEVT_LINK_CLICKED);
 	eventCustom.SetEventObject(this);
@@ -50,7 +49,6 @@ void BookViewHtml::OnCellMouseHover(wxHtmlCell *cell, wxCoord x, wxCoord y)
 	link = cell->GetLink();
 
 	if (link) {
-		//m_htmltooltip->SetHTML(link->GetHref());
 		wxCommandEvent eventCustom(bsEVT_LINK_HOVER);
 		eventCustom.SetEventObject(this);
 		eventCustom.SetString(link->GetHref());

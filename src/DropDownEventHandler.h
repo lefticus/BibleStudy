@@ -14,8 +14,6 @@
 #ifndef _DROPDOWNEVENTHANDLER_H_
 	#define _DROPDOWNEVENTHANDLER_H_
 
-
-
 	class DropDownEventHandler;
 
 	#include <wx/event.h>

@@ -148,27 +148,26 @@ void BookTreeCtrl::SetSwordTools(SwordTools *newSwordTools)
 }
 
 void BookTreeCtrl::RefreshBookList(bool ShowLanguages)
-{	
+{
 	using namespace sword;
 	ModMap::iterator it;
 	SWModule* curMod = 0;
 	ModMap* Modules;
 	Modules = m_SwordTools->GetModuleMap();
 	wxTreeItemId rootnode, childnode, langnode, curNode;
-	
+
 	std::map< string, wxTreeItemId > treenodes;
 	std::map< string, wxTreeItemId > treelangnodes;
-	
+
 	string group, grouplang;
-	
+
 	wxString configEntry;
-	
+
 	rootnode = AddRoot(wxT("books"));
 	for (it = Modules->begin(); it != Modules->end(); it++) {
 		curMod = (*it).second;
 		wxLogDebug(wxT("type %s"), (const wxChar *)wxString(curMod->Type(), wxConvUTF8));
-		//childnode = 0;
-		
+
 		configEntry = wxT("");
 		configEntry = wxString(curMod->getConfigEntry("Category"), wxConvUTF8);
 		if (!configEntry.CompareTo(wxT(""))) {
@@ -176,34 +175,25 @@ void BookTreeCtrl::RefreshBookList(bool ShowLanguages)
 			if (!childnode.IsOk()) {
 				wxLogDebug(wxT("appending type"));
 				childnode = AppendItem(rootnode, wxString(curMod->Type(), wxConvUTF8), ID_CLOSEDFOLDER_ICON, ID_CLOSEDFOLDER_ICON);
-				#ifndef __WINDOWS__
-				SetItemImage(childnode, ID_OPENFOLDER_ICON, wxTreeItemIcon_Expanded);
-				SetItemImage(childnode, ID_OPENFOLDER_ICON, wxTreeItemIcon_SelectedExpanded);
-				#endif
 				treenodes[curMod->Type()] = childnode;
 			}
-			
+
 			group = curMod->Type();
 		} else {
 			childnode = treenodes[(const char *)configEntry.mb_str()];
 			if (!childnode.IsOk()) {
 				childnode = AppendItem(rootnode, configEntry, ID_CLOSEDFOLDER_ICON, ID_CLOSEDFOLDER_ICON);
-				#ifndef __WINDOWS__
-				SetItemImage(childnode, ID_OPENFOLDER_ICON, wxTreeItemIcon_Expanded);
-				SetItemImage(childnode, ID_OPENFOLDER_ICON, wxTreeItemIcon_SelectedExpanded);
-				#endif
 				treenodes[(const char *)configEntry.mb_str()] = childnode;
 			}
-			
+
 			curMod->Type((const char *)configEntry.mb_str());
 			group = (const char *)configEntry.mb_str();
 		}
-		
-		//group = curMod->Type();
+
 		grouplang = group;
 		wxLogDebug(wxT("language %s"), (const wxChar *)wxString(curMod->Lang(), wxConvUTF8));
 		grouplang.append( curMod->Lang() );
-		
+
 		if (ShowLanguages) {
 			langnode = treelangnodes[grouplang];
 			if (!langnode.IsOk()) {
@@ -214,22 +204,17 @@ void BookTreeCtrl::RefreshBookList(bool ShowLanguages)
 
 				langnode = AppendItem(childnode, language, ID_CLOSEDFOLDER_ICON, ID_CLOSEDFOLDER_ICON);
 
-				#ifndef __WINDOWS__
-				SetItemImage(langnode, ID_OPENFOLDER_ICON, wxTreeItemIcon_Expanded);
-				SetItemImage(langnode, ID_OPENFOLDER_ICON, wxTreeItemIcon_SelectedExpanded);
-				#endif
-
 				treelangnodes[grouplang] = langnode;
 			}
 		} else {
 			langnode = childnode;
 		}
-			
+
 		wxString modname = wxString(curMod->Name(), wxConvUTF8);
 		modname += wxT(" - ");
 		modname += wxString(curMod->Description(), wxConvUTF8);
 		wxLogDebug(wxT("appending module %s"), (const wxChar *)modname);
-		
+
 		/** SET ICON **/
 		if (!strcmp(curMod->Type(), "Biblical Texts")) {
 			curNode = AppendItem(langnode, wxString(curMod->Name(), wxConvUTF8) + wxT(" - ") + wxString(curMod->Description(), wxConvUTF8), ID_BIBLICAL_TEXT_ICON, ID_BIBLICAL_TEXT_ICON);
@@ -244,25 +229,21 @@ void BookTreeCtrl::RefreshBookList(bool ShowLanguages)
 			curNode = AppendItem(langnode, wxString(curMod->Name(), wxConvUTF8) + wxT(" - ") + wxString(curMod->Description(), wxConvUTF8), ID_BOOK_ICON, ID_BOOK_ICON);
 		}
 		/** END SET ICON **/
-		
+
 		SetItemData(curNode, new BookTreeItemData(curMod));
-		//curMod->AddRenderFilter(new PLAINHTML());
 		SortChildren(childnode);
 		SortChildren(langnode);
 	}
-	
+
 	SortChildren(rootnode);
 }
 
 
 
-BookTreeCtrl::BookTreeCtrl(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size) : wxTreeCtrl(parent, id, pos, size, wxTR_HIDE_ROOT|wxTR_DEFAULT_STYLE, wxDefaultValidator, wxT("listCtrl")) 
+BookTreeCtrl::BookTreeCtrl(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size) : wxTreeCtrl(parent, id, pos, size, wxTR_HIDE_ROOT|wxTR_DEFAULT_STYLE, wxDefaultValidator, wxT("listCtrl"))
 {
-//	SetIndent(10);
-//	SetSpacing(10);
-		
 	SetupIcons();
-	
+
 	/* Build Popup Menu */
 	m_PopupMenu = new wxMenu();
 	m_PopupMenu->Append(ID_BookTreePopupOpen, wxT("Open"));
@@ -287,7 +268,7 @@ void BookTreeCtrl::SetupIcons()
 
 		
 	int sizeOrig = icons[0].GetWidth();
-	
+
 	for ( size_t i = 0; i < WXSIZEOF(icons); i++ ) {
 		if (size == sizeOrig ) {
 			images->Add(icons[i]);
@@ -323,4 +304,3 @@ SWModule *BookTreeItemData::GetModule()
 {
 	return m_Module;
 }
-

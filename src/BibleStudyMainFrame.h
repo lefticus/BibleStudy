@@ -58,7 +58,7 @@
 
 		/** Default constructor */
 		BibleStudyMainFrame(SwordTools *, const wxString& title, const wxPoint& pos, const wxSize& size);
-		
+
 		void OnExit(wxCommandEvent& event);
 		void OnAbout(wxCommandEvent& event);
 		void OnCloseWindow(wxCommandEvent& event);
@@ -87,6 +87,8 @@
 		void OnOpenInNewWindow(wxCommandEvent &event);
 		void OnOpenInCurrentTab(wxCommandEvent &event);
 		void OnAddToCurrentTab(wxCommandEvent &event);
+
+		void OnShowStartPage(wxMenuEvent& event);
 
 		void OnActiveModuleChange(wxCommandEvent &event);
 		void OnBookTreeChange(wxCommandEvent &event);

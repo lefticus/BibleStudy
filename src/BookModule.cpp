@@ -17,12 +17,16 @@
 #include <wx/combobox.h>
 #include <wx/regex.h>
 #include <wx/log.h>
+#include <wx/progdlg.h>
+#include <wx/utils.h>
+#include <wx/msgdlg.h>
 
 BookModule::BookModule(SWModule *newModule)
 {
 	if (newModule) {
 		m_Module = newModule;
 		m_Modules[newModule->Name()] = newModule;
+		m_keytype = GetKeyType(newModule);
 	}  else {
 		m_Module = NULL;
 	}
@@ -33,6 +37,18 @@ BookModule::BookModule(SWModule *newModule)
 	m_isbrowsing = false;
 }
 
+bsKeyType BookModule::GetKeyType(SWModule *mod)
+{
+	if (mod->Key().getClass()->isAssignableFrom("StrKey")) {
+		return bsStringKey;
+	} else if (mod->Key().getClass()->isAssignableFrom("TreeKeyIdx") || mod->Key().getClass()->isAssignableFrom("TreeKey")) {
+		return bsTreeKey;
+	} else if (mod->Key().getClass()->isAssignableFrom("VerseKey")) {
+		return bsVerseKey;
+	} else {
+		return bsStringKey;
+	}
+}
 
 BookModule::~BookModule()
 {
@@ -43,6 +59,11 @@ BookModule::~BookModule()
 SWModule *BookModule::GetModule()
 {
 	return m_Module;
+}
+
+bsKeyType BookModule::GetKeyType()
+{
+	return m_keytype;
 }
 
 wxString BookModule::GetName()
@@ -73,12 +94,15 @@ wxString BookModule::GetLastLookupKey()
 	return m_LastLookupKey;
 }
 
+wxString BookModule::GetLastSearch()
+{
+	return m_LastSearch;
+}
+
 void BookModule::AddModule(SWModule *mod)
 {
 	if (m_Module) {
-		if (!strcmp(m_Module->Type(), mod->Type()) ||
-			(!strcmp(m_Module->Type(), "Commentaries") && !strcmp(mod->Type(), "Biblical Texts")) ||
-			(!strcmp(mod->Type(), "Commentaries") && !strcmp(m_Module->Type(), "Biblical Texts"))) {
+		if (m_keytype == GetKeyType(mod)) {
 			m_Second_Module = mod;
 			m_Modules[mod->Name()] = mod;
 		}
@@ -98,7 +122,7 @@ wxString BookModule::BrowseForward()
 {
 	if (m_isbrowsing) {
 		m_Module->SetKey((const char *)m_LastLookupKey.mb_str());
-		if (!strcmp(m_Module->Type(), "Biblical Texts") || !strcmp(m_Module->Type(), "Commentaries")) {
+		if (m_keytype == bsVerseKey) {
 
 			VerseKey vk((const char *)m_LastLookupKey.mb_str());
 
@@ -121,13 +145,11 @@ wxString BookModule::BrowseForward()
 wxString BookModule::BrowseBackward()
 {
 	if (m_isbrowsing) {
-		wxLogDebug(wxT("BookModule::BrowseBackward() is browsing"));
 		m_Module->setKey((const char *)m_LastLookupKey.mb_str());
-		if (!strcmp(m_Module->Type(), "Biblical Texts") || !strcmp(m_Module->Type(), "Commentaries")) {
+		if (m_keytype == bsVerseKey) {
 			VerseKey vk((const char *)m_LastLookupKey.mb_str());
 
 			vk.Chapter(vk.Chapter()-1);
-
 
 			return LookupKey(wxString(vk.getText(), wxConvUTF8), wxT(""), 0, false, true);
 		} else {
@@ -142,6 +164,14 @@ wxString BookModule::BrowseBackward()
 	}
 }
 
+void BookModule::Percent(char percent, void *pd)
+{
+	if (!((wxProgressDialog *)pd)->Update((int)percent))
+		((SWModule *)((wxProgressDialog *)pd)->GetClientData())->terminateSearch = true;
+	wxLogDebug(wxT("BookModule::Percent called")+wxString::Format(wxT("%i"),percent));
+	wxYield();
+}
+
 /**
  * @todo handle non-unicode case
  */
@@ -151,38 +181,47 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype, bo
 	wxString output;
 	char book = 0;
 	int chapter = 0, verse = 0;
+	int versecount = 0;
+	bool cont = true;
 
-
+	wxBusyCursor busy;
+	wxWindowDisabler disableAll;
 
 	m_isbrowsing = browse;
 
 	if (m_isbrowsing)
 		key = key.BeforeLast(wxT(':'));
 
-
 	#ifdef wxUSE_UNICODE
 		output = wxT("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>");
 	#else
 		//Do Something Else!
 	#endif
+
 	ListKey listkey;
 	ListKey searchresult;
 
-	listkey = vk.ParseVerseList(key.mb_str(), "Gen1:1", true);
+	if (m_keytype == bsVerseKey)
+		listkey = vk.ParseVerseList(key.mb_str(), "Gen1:1", true);
+	else
+		listkey.ClearList();
 
-	if (key == wxT("") && m_LastKey.Count() > 0) {
-		listkey = m_LastKey;
-	}
+	//if (key == wxT("") && m_LastKey.Count() > 0) {
+	//	listkey = m_LastKey;
+	//}
 
 	if (search != wxT("")) {
 		wxLogDebug(wxT("Range: %s, Key: %s"), key.c_str(), search.c_str());
+		wxProgressDialog pd(wxT("Searching..."), wxT("Searching for \"")+search+wxT("\""), 100, NULL, wxPD_APP_MODAL|wxPD_AUTO_HIDE|wxPD_CAN_ABORT|wxPD_ELAPSED_TIME|wxPD_ESTIMATED_TIME|wxPD_REMAINING_TIME);
+		pd.SetClientData(m_Module);
+		pd.Show();
 
-		if (listkey.Count() == 0) {
-			searchresult = m_Module->Search(search.mb_str(), searchtype, 0, NULL);
+		if (listkey.Count() == 0 || m_keytype != bsVerseKey) {
+			searchresult = m_Module->Search(search.mb_str(), searchtype, 0, NULL, 0, &Percent, (void *)&pd);
 		} else {
-			searchresult = m_Module->Search(search.mb_str(), searchtype, 0, &listkey);
+			searchresult = m_Module->Search(search.mb_str(), searchtype, 0, &listkey, 0, &Percent, (void *)&pd);
 		}
-
+//		pd.Hide();
 		listkey = searchresult;
 	}
 
@@ -212,25 +251,24 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype, bo
 	output.append(wxT("</tr>"));
 
 
-	if (!strcmp(m_Module->Type(), "Biblical Texts") || !strcmp(m_Module->Type(), "Commentaries")) {
+	if (m_keytype == bsVerseKey) {
 		for (i = 0; i < listkey.Count(); i++) {
 			VerseKey *element = SWDYNAMIC_CAST(VerseKey, listkey.GetElement(i));
-			//VerseKey *curkey;
 
-
-
+			if (!cont) break;
 			if (element) {
 				wxLogDebug(wxT("BookModule::LookupKey valid element"));
-				//m_Module->Key(element->LowerBound());
-
 				vk = element->UpperBound();
-				//while (m_Module->Key() <= vk) {
-				while ((*element) <= vk) {
-				//while (!element->Error()) {
+
+				while ((*element) <= vk && cont) {
+					wxYield();
+					versecount++;
+					if (versecount == 300) {
+						wxMessageDialog msg(NULL, wxT("More than 300 verses found, continue?"), wxT("Too many verses found."), wxICON_QUESTION | wxYES_NO | wxNO_DEFAULT | wxCENTRE, wxDefaultPosition);
+						if (msg.ShowModal() != wxID_YES)
+							cont = false;
+					}
 					wxLogDebug(wxT("BookModule::LookupKey m_Module->Key()<= vk"));
-					//curkey = (VerseKey *)&(m_Module->Key());
-
-
 					output.append(wxT("<tr align=left valign=top>"));
 
 					//These empty columns keep everything else in line :)
@@ -240,13 +278,8 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype, bo
 						wxLogDebug(wxT("BookModule::LookupKey iterating through modules"));
 						curMod = (*it).second;
 						wxLogDebug(wxT("BookModule::LookupKey Setting Key"));
-						/*
-						if (curMod != m_Module)
-							curMod->Key(m_Module->Key());
-						*/
 
-						//if (curMod != m_Module)
-							curMod->Key((*element));
+						curMod->Key((*element));
 
 						wxLogDebug(wxT("BookModule::LookupKey writing verse to output"));
 
@@ -299,8 +332,7 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype, bo
 								output.append(wxString(element->getText(), wxConvUTF8));
 							} else if (element->Chapter() != chapter) {
 								wxLogDebug(wxT("BookModule::LookupKey new chapter"));
-	/*							if (chapter > 0)
-									output.append(wxT("<td><br></td>"));*/
+
 								output.append(wxString::Format(wxT("%i"), element->Chapter()));
 								output.append(wxT(":"));
 							}
@@ -312,7 +344,6 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype, bo
 							wxLogDebug(wxT("BookModule::LookupKey updating last chaper, book, verse"));
 							output.append(wxT("</font></small> "));
 							output.append(verseout);
-							//output.append(wxT("<br />"));
 
 							output.append(wxT("</td>"));
 						}
@@ -331,6 +362,13 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype, bo
 			} else {
 				output.append(wxT("<tr align=left valign=top>"));
 				output.append(wxT("<td width='1'></td>"));
+				wxYield();
+				versecount++;
+				if (versecount == 300) {
+					wxMessageDialog msg(NULL, wxT("More than 300 verses found, continue?"), wxT("Too many verses found."), wxICON_QUESTION | wxYES_NO | wxNO_DEFAULT | wxCENTRE, wxDefaultPosition);
+					if (msg.ShowModal() != wxID_YES)
+						cont = false;
+				}
 
 				ModMap::iterator it;
 				SWModule* curMod = 0;
@@ -346,23 +384,25 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype, bo
 					output.append(wxString(m_Module->KeyText(), wxConvUTF8));
 					output.append(wxT("</font></small> "));
 					output.append(wxString((const char *)(*curMod), wxConvUTF8));
-					//output.append(wxT("<br />"));
 
 					output.append(wxT("</td>"));
 				}
 
 				output.append(wxT("</tr>"));
 			}
-
+//			if (key == wxT(""))
+//				m_LastLookupKey.append(wxString(listkey.GetElement(i)->getText(), wxConvUTF8));
 
 		}
+
+
 	} else {
 		m_isbrowsing = true;
 
 		if (listkey.Count() == 0) {
-			//m_Module.SetKey((const char *)key.mb_str());
 			listkey << (const char *)key.mb_str();
 		}
+
 		SWKey *element;
 		for (int i = 0; i<listkey.Count(); i++) {
 			element = listkey.GetElement(i);
@@ -388,6 +428,8 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype, bo
 
 			output.append(wxT("</tr>"));
 		}
+
+		m_LastLookupKey = key;
 	}
 
 	output.append(wxT("</table>"));
@@ -398,11 +440,11 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype, bo
 		output.append(wxT("</html>"));
 
 	m_LastLookupKey = key;
+	m_LastSearch = search;
 
 	if (search != wxT("")) {
-		wxRegEx myregex(search, wxRE_ICASE);
-
-		myregex.ReplaceAll(&output, wxT("<font color=#999900'>\\0</font>"));
+//		wxRegEx myregex(search, wxRE_ICASE);
+//		myregex.ReplaceAll(&output, wxT("<font color=#999900'>\\0</font>"));
 	}
 
 

@@ -14,8 +14,6 @@
 #ifndef _BOOKMODULE_H_
 #define _BOOKMODULE_H_
 
-
-
 	#include <sword/swmgr.h>
 	#include <sword/treekey.h>
 	#include <sword/versekey.h>
@@ -27,10 +25,15 @@
 
 	using namespace sword;
 
+	enum bsKeyType {
+		bsVerseKey = 1,
+		bsStringKey,
+		bsTreeKey
+	};
+
 	/**
 	* Wraps a SWModule and contains data related to the module, i.e. last search
 	* performed. Used for duplicating/detaching tabs as well as updating the toolbar
-	*
 	**/
 	class BookModule
 	{
@@ -42,8 +45,8 @@
 
 		/** The last key looked up */
 		wxString m_LastLookupKey;
-
-		/** */
+		wxString m_LastSearch;
+		
 		wxFrame *m_Frame;
 
 		ModMap m_Modules;
@@ -51,7 +54,7 @@
 		void AddTreeSiblings(wxTreeCtrl *tree, wxTreeItemId parentid, TreeKey *key);
 
 		bool m_isbrowsing;
-
+		bsKeyType m_keytype;
 	public:
 		BookModule(SWModule *);
 		~BookModule();
@@ -67,15 +70,22 @@
 		/** Return the last lookup key */
 		wxString GetLastLookupKey();
 
+		wxString GetLastSearch();
+
+
+
 		/** Returns a combobox for this book */
 		wxFrame *GetControl(wxWindow *parent);
 
 		void AddModule(SWModule *mod);
 
 		wxString GetName();
-
+		bsKeyType GetKeyType();
+		bsKeyType GetKeyType(SWModule *mod);
 		bool IsBrowsing();
 
+
+		static void Percent(char, void *);
 	};
 
 #endif

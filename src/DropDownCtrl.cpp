@@ -81,9 +81,7 @@ wxTreeCtrl *DropDownCtrl::GetTree()
 
 void DropDownCtrl::UpdateBookCB()
 {
-	//VerseKey vk;
-	//VerseKey *vk = (VerseKey *)m_Module->CreateKey();
-	//vk->
+	wxBusyCursor busy;
 	wxLogDebug(wxT("DropDownCtrl::UpdateBookCB called"));
 	VerseKey vk("gen 1:1");
 	m_BookCB->Clear();
@@ -97,6 +95,8 @@ void DropDownCtrl::UpdateBookCB()
 void DropDownCtrl::UpdateChapterCB()
 {
 	char book;
+	wxBusyCursor busy;
+
 	wxLogDebug(wxT("DropDownCtrl::UpdateChapterCB called"));
 	VerseKey vk(m_BookCB->GetStringSelection().mb_str());
 
@@ -118,6 +118,7 @@ void DropDownCtrl::UpdateVerseCB()
 {
 	int chapter;
 	char book;
+	wxBusyCursor busy;
 
 	wxLogDebug(wxT("DropDownCtrl::UpdateVerseCB called"));
 	VerseKey vk(m_BookCB->GetStringSelection().Append(wxT(" ") + m_ChapterCB->GetStringSelection()).mb_str());
@@ -132,10 +133,12 @@ void DropDownCtrl::UpdateVerseCB()
 			vk.Verse(vk.Verse()+1);
 		}
 //	}
+	wxLogDebug(wxT("DropDownCtrl::UpdateVerseCB exiting"));
 }
 
 void DropDownCtrl::UpdateCBs(wxEvent &event)
 {
+
 	wxLogDebug(wxT("DropDownCtrl::UpdateCBs called"));
 	if (event.GetEventObject() == m_BookCB) {
 		if (m_BookCB->GetSelection() != m_LastBook) {
@@ -156,14 +159,12 @@ void DropDownCtrl::UpdateCBs(wxEvent &event)
 
 void DropDownCtrl::OnButtonPress(wxCommandEvent &event)
 {
-	//event.Handled();
 	wxCommandEvent eventCustom(wxEVT_COMMAND_TOOL_CLICKED);
 	eventCustom.SetEventObject(event.GetEventObject());
 	eventCustom.SetString(m_BookCB->GetStringSelection() + wxT(" ") + m_ChapterCB->GetStringSelection() + wxT(":") + m_VerseCB->GetStringSelection());
 
 	wxLogDebug(wxT("Event String: ") + eventCustom.GetString());
-	//eventCustom.Skip();
-	GetPreviousHandler()->ProcessEvent(eventCustom);
 
-
+	if (GetPreviousHandler())
+		GetPreviousHandler()->ProcessEvent(eventCustom);
 }

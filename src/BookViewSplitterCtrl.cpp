@@ -53,16 +53,14 @@ BookViewSplitterCtrl::BookViewSplitterCtrl(wxWindow *parent, SwordTools *nswordt
 	m_LastFocus = bookview;
 	m_FirstChildSplit->Initialize(bookview);
 
-	m_LastSashPosition = 100;
-	
+	m_LastSashPosition = 150;
+
 	m_BookTree = new BookTreeCtrl(this, ID_BookTree, wxDefaultPosition, wxDefaultSize);
 	m_BookTree->SetSwordTools(m_SwordTools);
-	//m_BookViewer1 = new BookViewCtrl(this, ID_BookViewer1, wxDefaultPosition, wxDefaultSize);
 	bookview->AddTab();
-	
-	m_BookTree->RefreshBookList(false);
 
-	//SetToolTip(wxT("This is My ToolTip\n\n\nmy particularly long tool tip with long lines and really wierd things and stuff like that\n\nI'm not too sure what to do with it :(\n\n\nadggafs alkfjasvkjv v kj \n\n\n\n\n\n\n\nasdfasdfwefovkon  oj koj"));
+	m_BookTree->RefreshBookList(true);
+
 	ShowHideBookTree();
 }
 
@@ -104,17 +102,17 @@ void BookViewSplitterCtrl::AddTab()
 void BookViewSplitterCtrl::OpenInCurrentTab(SWModule *mod)
 {
 	GetActiveBookViewCtrl()->OpenInCurrentTab(mod);
-	
-	wxCommandEvent eventCustom(bsEVT_ACTIVE_MODULE_CHANGE);
-	eventCustom.SetEventObject(this);
-	eventCustom.SetClientData(GetActiveBookViewCtrl()->GetActiveBookModule());
-	ProcessEvent(eventCustom);
+
+//	wxCommandEvent eventCustom(bsEVT_ACTIVE_MODULE_CHANGE);
+//	eventCustom.SetEventObject(this);
+//	eventCustom.SetClientData(GetActiveBookViewCtrl()->GetActiveBookModule());
+//	ProcessEvent(eventCustom);
 }
 
 void BookViewSplitterCtrl::AddToCurrentTab(SWModule *mod)
 {
 	GetActiveBookViewCtrl()->AddToCurrentTab(mod);
-	
+
 }
 
 void BookViewSplitterCtrl::AddToCurrentTab(BookModule *mod)
@@ -125,38 +123,19 @@ void BookViewSplitterCtrl::AddToCurrentTab(BookModule *mod)
 
 void BookViewSplitterCtrl::OpenInNewTab(SWModule *mod)
 {
-	
+
 
 	GetActiveBookViewCtrl()->OpenInNewTab(mod);
-
-	/*
-	wxCommandEvent eventCustom(bsEVT_ACTIVE_MODULE_CHANGE);
-	eventCustom.SetEventObject(this);
-	eventCustom.SetClientData(GetActiveBookViewCtrl()->GetActiveBookModule());
-	ProcessEvent(eventCustom);
-	*/
 }
 
 void BookViewSplitterCtrl::OpenInCurrentTab(BookModule *mod)
 {
 	GetActiveBookViewCtrl()->OpenInCurrentTab(mod);
-	
-	wxCommandEvent eventCustom(bsEVT_ACTIVE_MODULE_CHANGE);
-	eventCustom.SetEventObject(this);
-	eventCustom.SetClientData(GetActiveBookViewCtrl()->GetActiveBookModule());
-	ProcessEvent(eventCustom);
 }
 
 void BookViewSplitterCtrl::OpenInNewTab(BookModule *mod)
 {
 	GetActiveBookViewCtrl()->OpenInNewTab(mod);
-
-	/*
-	wxCommandEvent eventCustom(bsEVT_ACTIVE_MODULE_CHANGE);
-	eventCustom.SetEventObject(this);
-	eventCustom.SetClientData(GetActiveBookViewCtrl()->GetActiveBookModule());
-	ProcessEvent(eventCustom);
-	*/
 }
 
 void BookViewSplitterCtrl::LookupKey(wxString key)
@@ -215,26 +194,13 @@ void BookViewSplitterCtrl::OnLinkClicked(wxCommandEvent& event)
 BookViewCtrl *BookViewSplitterCtrl::GetActiveBookViewCtrl()
 {
 	return m_LastFocus;
-/*
-	printf("Current Focus Class Name: %s\n", (const char *)wxString(FindFocus()->GetClassInfo()->GetClassName(), wxConvUTF8).mb_str());
-	if (FindFocus()) {
-		if (!wxString(wxT("wxNotebook")).CompareTo(FindFocus()->GetClassInfo()->GetClassName())) {
-			m_LastFocus = (BookViewCtrl *)FindFocus();
-			return (BookViewCtrl *)FindFocus();
-		} else {
-			return m_LastFocus;
-		}
-	} else {
-		return m_LastFocus;
-	}
-*/
 }
 
 
 void BookViewSplitterCtrl::SplitHorizontally()
 {
 	wxSplitterWindow *nparent;
-		
+
 	if (m_TopLevelSplit->IsSplit()) {
 		nparent = (wxSplitterWindow *)GetActiveBookViewCtrl()->GetParent();
 		if (nparent->IsSplit()) {
@@ -248,8 +214,8 @@ void BookViewSplitterCtrl::SplitHorizontally()
 	} else {
 		BookViewCtrl *bookview;
 		if (m_FirstChildSplit->IsShown()) {
-			
-			
+
+
 			bookview = new BookViewCtrl(m_SecondChildSplit, -1, wxDefaultPosition, wxDefaultSize);
 			bookview->AddTab();
 			m_SecondChildSplit->Initialize(bookview);
@@ -263,9 +229,9 @@ void BookViewSplitterCtrl::SplitHorizontally()
 			m_FirstChildSplit->Initialize(bookview);
 			m_FirstChildSplit->Show(true);
 			m_TopLevelSplit->SplitHorizontally(m_SecondChildSplit, m_FirstChildSplit);
-			
+
 		}
-		
+
 		m_LastFocus = bookview;
 	}
 }
@@ -274,7 +240,7 @@ void BookViewSplitterCtrl::SplitHorizontally()
 void BookViewSplitterCtrl::SplitVertically()
 {
 	wxSplitterWindow *nparent;
-		
+
 	if (m_TopLevelSplit->IsSplit()) {
 		nparent = (wxSplitterWindow *)GetActiveBookViewCtrl()->GetParent();
 		if (nparent->IsSplit()) {
@@ -288,8 +254,8 @@ void BookViewSplitterCtrl::SplitVertically()
 	} else {
 		BookViewCtrl *bookview;
 		if (m_FirstChildSplit->IsShown()) {
-			
-			
+
+
 			bookview = new BookViewCtrl(m_SecondChildSplit, -1, wxDefaultPosition, wxDefaultSize);
 			bookview->AddTab();
 			m_SecondChildSplit->Initialize(bookview);
@@ -303,7 +269,7 @@ void BookViewSplitterCtrl::SplitVertically()
 			m_FirstChildSplit->Initialize(bookview);
 			m_FirstChildSplit->Show(true);
 			m_TopLevelSplit->SplitVertically(m_SecondChildSplit, m_FirstChildSplit);
-			
+
 		}
 		
 		m_LastFocus = bookview;
@@ -345,7 +311,7 @@ void BookViewSplitterCtrl::OnUnSplit(wxSplitterEvent &event)
 		bookViewBeingRemoved = (BookViewCtrl *)splitBeingRemoved->GetWindow1();
 		if (bookViewBeingRemoved)
 			bookViewBeingRemoved->Destroy();
-		
+
 		bookViewBeingRemoved = (BookViewCtrl *)splitBeingRemoved->GetWindow2();
 		if (bookViewBeingRemoved)
 			bookViewBeingRemoved->Destroy();

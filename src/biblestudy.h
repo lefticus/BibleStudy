@@ -11,17 +11,6 @@
 		#include <config.h>
 	#endif
 
-// 	#include <stdio.h>
-// 	#include <stdlib.h>
-// 
-// 	#include <wx/wx.h>
-// 
-// 	#include <sword/swmodule.h>
-// 	#include <sword/swmgr.h>
-// 	#include <sword/plainhtml.h>
-// 	#include <sword/versekey.h>
-
-
 	#define APPTITLE wxT("BibleStudy Software")
 
 
@@ -46,6 +35,7 @@
 		ID_MenuBibleStudyWhy,
 		ID_MenuBibleStudyHow,
 		ID_MenuBibleStudyGrow,
+		ID_MenuShowStartPage,
 
 		/* Must remain last */
 		ID_MenuTopBookOption
