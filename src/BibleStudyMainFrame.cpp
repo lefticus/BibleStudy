@@ -115,7 +115,7 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools, const wxStri
 	menuWindow->Append( ID_MenuDetachTab, wxT("Detach Tab") );
 	menuWindow->Append( ID_MenuDuplicateTab, wxT("Duplicate Tab") );
 
-	OptionsList optlist;
+	StringList optlist;
 	optlist = m_SwordTools->GetSwordManager()->getGlobalOptions();
 
 // 	unsigned char mychars[13];
@@ -138,7 +138,7 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools, const wxStri
 // 	wxMessageBox(leftquote, wxT("Quote Test"), wxOK | wxICON_INFORMATION, this);
 
 	/* Add global options reported by SwordManager */
-	OptionsList::iterator it;
+	StringList::iterator it;
 	int id = ID_MenuTopBookOption;
 	for (it = optlist.begin(); it != optlist.end(); it++) {
 		menuOptions->AppendCheckItem(id, wxString(it->c_str(), wxConvUTF8), wxString(m_SwordTools->GetSwordManager()->getGlobalOptionTip(it->c_str()), wxConvUTF8));

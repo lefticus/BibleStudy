@@ -19,11 +19,15 @@
 #include <wx/log.h>
 #include <wx/msgdlg.h>
 
+#include <string>
+
 #include "../icons/book.xpm"
 #include "../icons/bible.xpm"
 #include "../icons/lexicon.xpm"
 #include "../icons/commentary.xpm"
 #include "../icons/devotional.xpm"
+
+using namespace std;
 
 enum {
 	ID_CLOSEDFOLDER_ICON = 0,

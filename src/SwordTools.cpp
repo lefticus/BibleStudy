@@ -137,14 +137,14 @@ void SwordTools::ModInfo()
 void SwordTools::OptionInfo()
 {
 	using namespace sword;
-	OptionsList optlist;
+	StringList optlist;
 	
 	optlist = m_SwordManager->getGlobalOptions();
-	
-	OptionsList::iterator it;
-	
+
+	StringList::iterator it;
+
 	for (it = optlist.begin(); it != optlist.end(); it++) {
 		printf("%s\n", it->c_str());
 	}
-		
+
 }
