@@ -9,6 +9,7 @@
  ***************************************************************************/
 
 #include "BookViewHtml.h"
+#include <wx/log.h>
 
 BEGIN_EVENT_TABLE(BookViewHtml, wxHtmlWindow)
 	EVT_LEFT_DOWN(BookViewHtml::OnMouseDown)

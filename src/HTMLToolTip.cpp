@@ -21,7 +21,7 @@ END_EVENT_TABLE()
 
 HTMLToolTip::HTMLToolTip(wxWindow *parent) : wxFrame(parent, -1, wxT(""), wxDefaultPosition, wxSize(200,200), wxSIMPLE_BORDER|wxFRAME_NO_TASKBAR|wxFRAME_FLOAT_ON_PARENT, wxT("ToolTip"))
 {
-	htmlwin = new wxHtmlWindow(this, -1, wxDefaultPosition, wxDefaultSize, wxHW_SCROLLBAR_AUTO, wxT("HTML"));
+	htmlwin = new wxHtmlWindow(this, -1, GetClientAreaOrigin(), GetClientSize(), wxHW_SCROLLBAR_AUTO, wxT("HTML"));
 	m_html = wxT("");
 	htmlwin->SetPage(m_html);
 	m_tooltipchanged = false;

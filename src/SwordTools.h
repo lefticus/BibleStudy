@@ -14,8 +14,8 @@
 #ifndef _SWORDTOOLS_H_
 	#define _SWORDTOOLS_H_
 
-	#include "biblestudy.h"
 	#include "BookModule.h"
+	#include <sword/swmgr.h>
 
 	using namespace sword;
 	using namespace std;

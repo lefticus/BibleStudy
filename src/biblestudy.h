@@ -11,15 +11,15 @@
 		#include <config.h>
 	#endif
 
-	#include <stdio.h>
-	#include <stdlib.h>
-
-	#include <wx/wx.h>
-
-	#include <sword/swmodule.h>
-	#include <sword/swmgr.h>
-	#include <sword/plainhtml.h>
-	#include <sword/versekey.h>
+// 	#include <stdio.h>
+// 	#include <stdlib.h>
+// 
+// 	#include <wx/wx.h>
+// 
+// 	#include <sword/swmodule.h>
+// 	#include <sword/swmgr.h>
+// 	#include <sword/plainhtml.h>
+// 	#include <sword/versekey.h>
 
 
 	#define APPTITLE wxT("BibleStudy Software")
@@ -61,6 +61,8 @@
 		ID_ToolListKey,
 		ID_ToolNewTab,
 		ID_ToolRemoveTab,
+		ID_ToolForward,
+		ID_ToolBackward,
 		ID_ToolDropDownRange
 	};
 

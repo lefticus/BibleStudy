@@ -14,6 +14,7 @@
 #include "DropDownEventHandler.h"
 #include <wx/calctrl.h>
 #include <wx/treectrl.h>
+#include <wx/log.h>
 
 BEGIN_EVENT_TABLE(DropDownEventHandler, wxEvtHandler)
 	EVT_SET_FOCUS(DropDownEventHandler::OnSetFocus)
@@ -21,6 +22,7 @@ BEGIN_EVENT_TABLE(DropDownEventHandler, wxEvtHandler)
 	EVT_TREE_ITEM_ACTIVATED(-1, DropDownEventHandler::OnItemActivated)
 	EVT_CALENDAR(-1, DropDownEventHandler::OnDateSelected)
 	EVT_MOVE(DropDownEventHandler::OnMove)
+	EVT_TOOL(-1, DropDownEventHandler::OnVerseSelected)
 END_EVENT_TABLE()
 
 DropDownEventHandler::DropDownEventHandler()
@@ -41,7 +43,7 @@ void DropDownEventHandler::OnSetFocus(wxFocusEvent &event)
 
 void DropDownEventHandler::OnKillFocus(wxFocusEvent &event)
 {
-	m_parent->DropDownLostFocus();
+	//m_parent->DropDownLostFocus();
 }
 
 void DropDownEventHandler::OnItemActivated(wxTreeEvent &event)
@@ -62,4 +64,9 @@ void DropDownEventHandler::SetParent(BookViewToolBar *nparent)
 void DropDownEventHandler::OnMove(wxMoveEvent &event)
 {
 	//event.Handled();
+}
+
+void DropDownEventHandler::OnVerseSelected(wxCommandEvent &event)
+{
+	m_parent->DropDownVerseSelected(event);
 }

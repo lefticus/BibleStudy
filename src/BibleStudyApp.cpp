@@ -16,6 +16,7 @@
 #include <wx/splash.h>
 #include <wx/bitmap.h>
 #include <wx/log.h>
+#include <wx/msgdlg.h>
 
 #include "../icons/splashscreen.xpm"
 
@@ -37,7 +38,7 @@ bool BibleStudyApp::OnInit()
 	//wxLogWindow *mylogwindow;
 	//mylogwindow = new wxLogWindow(NULL, wxT("Log Output"));
 	//mylogwindow->Show();
-	
+
 	#ifdef __WXDEBUG__
 	wxLogStderr *log = new wxLogStderr();
 	wxLog::SetActiveTarget(log);

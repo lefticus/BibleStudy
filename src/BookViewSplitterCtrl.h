@@ -15,14 +15,14 @@
 #ifndef _BOOKVIEWSPLITTERCTRL_H_
 	#define _BOOKVIEWSPLITTERCTRL_H_
 
-	#include "biblestudy.h"
+
 	#include "BookTreeCtrl.h"
 	#include "BookViewCtrl.h"
 
 	#include "SwordTools.h"
 	#include <wx/splitter.h>
 
-	
+
 
 	BEGIN_DECLARE_EVENT_TYPES()
 		DECLARE_EVENT_TYPE(bsEVT_ACTIVE_MODULE_CHANGE, 1)
@@ -75,6 +75,9 @@
 
 		void LookupKey(wxString key);
 		void Search(wxString range, wxString search, int searchtype);
+		void BrowseKey(wxString key);
+		void BrowseForward();
+		void BrowseBackward();
 
 		void RemoveActiveView();
 
@@ -87,10 +90,10 @@
 		void SplitVertically();
 
 		void OnUnSplit(wxSplitterEvent &event);
-		
+
 		BookModule* GetActiveBookModule();
 		DECLARE_EVENT_TABLE()
 	};
-	
+
 
 #endif

@@ -41,7 +41,11 @@ BookModule *SwordTools::GetModuleFromLink(wxString link)
 			bm = new BookModule(GetModule("StrongsHebrew"));
 		}
 	} else if (link.Find(wxT("type=morph")) > -1) {
-		bm = new BookModule(GetModule("Robinson"));
+		if (link.Find(wxT("class=Robinson")) > -1) {
+			bm = new BookModule(GetModule("Robinson"));
+		} else {
+			bm = new BookModule(GetModule("Packard"));
+		}
 	} else {
 		wxStringTokenizer tokenizer(link, wxT(" ="));
 
@@ -74,12 +78,12 @@ wxString SwordTools::GetKeyFromLink(wxString link)
 	} else if (link.Find(wxT("value=")) > -1) {
 		wxStringTokenizer tokenizer(link, wxT(" ="));
 
-		while (tokenizer.HasMoreTokens()) {
-			if (tokenizer.GetNextToken() == wxT("value")) {
-				key = tokenizer.GetNextToken();
-				break;
-			}
-		}
+//		while (tokenizer.HasMoreTokens()) {
+//			if (tokenizer.GetNextToken() == wxT("value")) {
+				key = link.Mid(link.Find(wxT("value="))+6);
+//				break;
+//			}
+//		}
 
 		if (link.Find(wxT("type=Strongs")) > -1) {
 			key.StartsWith(wxT("G"), &key);

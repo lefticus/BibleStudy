@@ -14,7 +14,7 @@
 #ifndef _BIBLESTUDYMAINFRAME_H_
 #define _BIBLESTUDYMAINFRAME_H_
 
-	#include "biblestudy.h"
+
 	#include "SwordTools.h"
 	#include "BookViewToolBar.h"
 	#include "BookViewSplitterCtrl.h"
@@ -42,7 +42,8 @@
 
 		/** Reference to MainFrame toolbar */
 		BookViewToolBar *m_ToolBar;
-
+		wxToolBar *m_LookupToolBar;
+		
 		/** Initial setup of splitters, called by constructor */
 		void SetupSplitterWindows();
 
@@ -65,7 +66,7 @@
 		void OnSplitHorizontally(wxCommandEvent& event);
 		void OnSplitVertically(wxCommandEvent& event);
 		void OnRemoveActiveView(wxCommandEvent& event);
-		
+
 		void OnNewTab(wxCommandEvent& event);
 		void OnCloseTab(wxCommandEvent& event);
 		void OnDetachTab(wxMenuEvent& event);
@@ -78,6 +79,9 @@
 
 		void OnLoadKey(wxCommandEvent& event);
 		void OnSearch(wxCommandEvent& event);
+		void OnBrowseKey(wxCommandEvent& event);
+		void OnBrowseBackward(wxCommandEvent& event);
+		void OnBrowseForward(wxCommandEvent& event);
 
 		void OnOpenInNewTab(wxCommandEvent &event);
 		void OnOpenInNewWindow(wxCommandEvent &event);

@@ -11,7 +11,7 @@
 #ifndef _BOOKVIEWHTML_H_
 #define _BOOKVIEWHTML_H_
 
-	#include "biblestudy.h"
+
 	#include <wx/html/htmlwin.h>
 	#include "HTMLToolTip.h"
 

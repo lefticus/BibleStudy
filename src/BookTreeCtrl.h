@@ -15,14 +15,14 @@
 #ifndef _BOOKTREECTRL_H_
 	#define _BOOKTREECTRL_H_
 
-	#include "biblestudy.h"
+	
 	#include "SwordTools.h"
 	#include "BibleStudyLanguages.h"
 	#include <wx/treectrl.h>
 
 	#include <wx/bitmap.h>
 	#include <wx/image.h>
-
+	#include <wx/icon.h>
 
 
 	BEGIN_DECLARE_EVENT_TYPES()

@@ -14,17 +14,23 @@
 #ifndef _BOOKMODULE_H_
 #define _BOOKMODULE_H_
 
-	#include "biblestudy.h"
+
+
+	#include <sword/swmgr.h>
 	#include <sword/treekey.h>
+	#include <sword/versekey.h>
+	#include <sword/swmodule.h>
+
 	#include <wx/minifram.h>
 	#include <wx/treectrl.h>
+
 
 	using namespace sword;
 
 	/**
 	* Wraps a SWModule and contains data related to the module, i.e. last search
 	* performed. Used for duplicating/detaching tabs as well as updating the toolbar
-	* 
+	*
 	**/
 	class BookModule
 	{
@@ -33,16 +39,18 @@
 		/** The SWModule being wrapped */
 		SWModule *m_Module;
 		SWModule *m_Second_Module;
-		
+
 		/** The last key looked up */
 		wxString m_LastLookupKey;
-		
+
 		/** */
-		wxMiniFrame *m_Frame;
-		
+		wxFrame *m_Frame;
+
 		ModMap m_Modules;
 		ListKey m_LastKey;
 		void AddTreeSiblings(wxTreeCtrl *tree, wxTreeItemId parentid, TreeKey *key);
+
+		bool m_isbrowsing;
 
 	public:
 		BookModule(SWModule *);
@@ -50,19 +58,24 @@
 
 		/** Returns underlying module */
 		SWModule *GetModule();
-		
+
 		/** Lookups up a key, returning HTML representation */
-		wxString LookupKey(wxString key, wxString search=wxT(""), int searchtype=0, bool tooltip=false);
-		
+		wxString LookupKey(wxString key, wxString search=wxT(""), int searchtype=0, bool tooltip=false, bool browse=false);
+		wxString BrowseForward();
+		wxString BrowseBackward();
+
 		/** Return the last lookup key */
 		wxString GetLastLookupKey();
 
 		/** Returns a combobox for this book */
 		wxFrame *GetControl(wxWindow *parent);
-		
+
 		void AddModule(SWModule *mod);
-		
+
 		wxString GetName();
+
+		bool IsBrowsing();
+
 	};
 
 #endif

@@ -14,8 +14,11 @@
 
 #include "BookViewCtrl.h"
 #include "BookViewHtml.h"
-#include <wx/image.h>
 
+#include <wx/image.h>
+#include <wx/icon.h>
+#include <wx/sizer.h>
+#include <wx/log.h>
 
 #include "../icons/book.xpm"
 #include "../icons/bible.xpm"
@@ -58,7 +61,7 @@ BookViewCtrl::BookViewCtrl(wxWindow *parent, int id, const wxPoint pos, const wx
 	icons[ID_COMMENTARY_ICON] = wxIcon(commentary_xpm);
 	icons[ID_BOOK_ICON] = wxIcon(book_xpm);
 	icons[ID_DEVOTIONAL_ICON] = wxIcon(devotional_xpm);
-	
+
 	int sizeOrig = icons[0].GetWidth();
 
 	for ( size_t i = 0; i < WXSIZEOF(icons); i++ ) {
@@ -103,7 +106,7 @@ int BookViewCtrl::AddTab()
 	AddPage(page, wxT("*Empty*"));
 	
 	SetSelection(GetPageCount() - 1);
-	
+
 	return GetPageCount() - 1;
 }
 
@@ -142,6 +145,43 @@ void BookViewCtrl::LookupKey(wxString key)
 	if (mod)
 		html->SetPage( mod->LookupKey( key ) );
 }
+
+void BookViewCtrl::BrowseKey(wxString key)
+{
+	BookViewHtml *html;
+	BookModule *mod;
+
+	html = (BookViewHtml *)GetPage(GetSelection())->GetChildren().GetFirst()->GetData();
+	mod = (BookModule *)html->GetClientData();
+
+	if (mod)
+		html->SetPage( mod->LookupKey( key, wxT(""), 0, false, true ) );
+}
+
+void BookViewCtrl::BrowseForward()
+{
+	BookViewHtml *html;
+	BookModule *mod;
+
+	html = (BookViewHtml *)GetPage(GetSelection())->GetChildren().GetFirst()->GetData();
+	mod = (BookModule *)html->GetClientData();
+
+	if (mod)
+		html->SetPage( mod->BrowseForward( ) );
+}
+
+void BookViewCtrl::BrowseBackward()
+{
+	BookViewHtml *html;
+	BookModule *mod;
+
+	html = (BookViewHtml *)GetPage(GetSelection())->GetChildren().GetFirst()->GetData();
+	mod = (BookModule *)html->GetClientData();
+
+	if (mod)
+		html->SetPage( mod->BrowseBackward( ) );
+}
+
 
 void BookViewCtrl::Search(wxString range, wxString search, int searchtype)
 {

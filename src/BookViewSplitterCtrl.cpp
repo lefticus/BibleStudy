@@ -11,6 +11,7 @@
 	#pragma implementation "BookViewSplitterCtrl.h"
 #endif
 
+#include <wx/log.h>
 #include "BookViewSplitterCtrl.h"
 #include "BookViewHtml.h"
 
@@ -162,6 +163,22 @@ void BookViewSplitterCtrl::LookupKey(wxString key)
 {
 	GetActiveBookViewCtrl()->LookupKey(key);
 }
+
+void BookViewSplitterCtrl::BrowseKey(wxString key)
+{
+	GetActiveBookViewCtrl()->BrowseKey(key);
+}
+
+void BookViewSplitterCtrl::BrowseForward()
+{
+	GetActiveBookViewCtrl()->BrowseForward();
+}
+
+void BookViewSplitterCtrl::BrowseBackward()
+{
+	GetActiveBookViewCtrl()->BrowseBackward();
+}
+
 
 void BookViewSplitterCtrl::Search(wxString range, wxString search, int searchtype)
 {

@@ -11,13 +11,39 @@
 	#pragma interface "BibleStudyWizard.h"
 #endif
 
+
 #ifndef _BIBLESTUDYWIZARD_H_
 	#define _BIBLESTUDYWIZARD_H_
 
-	#include "biblestudy.h"
+	#include <wx/wx.h>
 	#include <wx/wizard.h>
-	#include "BibleStudyWizardPage.h"
-	
+	#include <swmodule.h>
+	#include "BookViewCtrl.h"
+
+	using namespace sword;
+
+	/**
+	*
+	* Jason Turner
+	**/
+	class BibleStudyWizardPage : public wxWizardPageSimple
+	{
+
+	public:
+		BibleStudyWizardPage(wxWizard *parent, SWModule *module, wxString text, wxString reference);
+		~BibleStudyWizardPage();
+
+		void OnResize(wxSizeEvent &event);
+
+	private:
+		BookViewCtrl *m_BookViewCtrl;
+		wxTextCtrl *m_TextCtrl;
+		SWModule *m_Module;
+
+
+		DECLARE_EVENT_TABLE()
+	};
+
 	/**
 	*
 	* Jason Turner
@@ -36,3 +62,4 @@
 	};
 
 #endif
+

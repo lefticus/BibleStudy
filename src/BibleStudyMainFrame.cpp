@@ -10,11 +10,15 @@
 #ifdef __GNUG__
 	#pragma implementation "BibleStudyMainFrame.h"
 #endif
+#include <wx/icon.h>
+#include <wx/menu.h>
+#include <wx/log.h>
+#include <wx/msgdlg.h>
 
 #include "BookTreeCtrl.h"
 #include "BookViewCtrl.h"
 #include "BibleStudyWizard.h"
-#include "BibleStudyWizardPage.h"
+
 
 #include "BibleStudyMainFrame.h"
 #include "../icons/biblestudy.xpm"
@@ -25,7 +29,7 @@
 BEGIN_EVENT_TABLE(BibleStudyMainFrame, wxFrame)
 	EVT_MENU(ID_MenuExit, BibleStudyMainFrame::OnExit)
 	EVT_MENU(ID_MenuAbout, BibleStudyMainFrame::OnAbout)
-	
+
 	EVT_MENU(ID_MenuSplitVertically, BibleStudyMainFrame::OnSplitVertically)
 	EVT_MENU(ID_MenuSplitHorizontally, BibleStudyMainFrame::OnSplitHorizontally)
 	EVT_MENU(ID_MenuRemoveSplit, BibleStudyMainFrame::OnRemoveActiveView)
@@ -51,7 +55,7 @@ BEGIN_EVENT_TABLE(BibleStudyMainFrame, wxFrame)
 	//EVT_TOOL(ID_ToolLookupKey, BibleStudyMainFrame::OnLookupKey)
 	EVT_TOOL(ID_ToolNewTab, BibleStudyMainFrame::OnNewTab)
 	EVT_TOOL(ID_ToolRemoveTab, BibleStudyMainFrame::OnCloseTab)
-		
+
 	EVT_OPEN_IN_CURRENT_TAB(-1, BibleStudyMainFrame::OnOpenInCurrentTab)
 	EVT_OPEN_IN_NEW_TAB(-1, BibleStudyMainFrame::OnOpenInNewTab)
 	EVT_OPEN_IN_NEW_WINDOW(-1, BibleStudyMainFrame::OnOpenInNewWindow)
@@ -61,6 +65,9 @@ BEGIN_EVENT_TABLE(BibleStudyMainFrame, wxFrame)
 	EVT_BOOK_TREE_CHANGE(-1, BibleStudyMainFrame::OnBookTreeChange)
 	EVT_SHOW_BIBLESTUDY(BibleStudyMainFrame::OnShowBibleStudy)
 	EVT_LOAD_KEY(BibleStudyMainFrame::OnLoadKey)
+	EVT_BROWSE_KEY(BibleStudyMainFrame::OnBrowseKey)
+	EVT_BROWSE_BACKWARD(BibleStudyMainFrame::OnBrowseBackward)
+	EVT_BROWSE_FORWARD(BibleStudyMainFrame::OnBrowseForward)
 	EVT_SEARCH(BibleStudyMainFrame::OnSearch)
 END_EVENT_TABLE()
 
@@ -96,9 +103,9 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools, const wxStri
 	//wxMenuItem *menuItemSplitLeftRight = new wxMenuItem(menuWindow, ID_MenuSplitVertically, wxT("Split View &Left/Right"));
 	//menuItemSplitLeftRight->SetBitmap(wxBitmap(splitleftright_xpm) );
 	//menuWindow->Append( menuItemSplitLeftRight );
-	
+
 	menuWindow->Append( ID_MenuSplitVertically, wxT("Split View &Left/Right") );
-	
+
 	menuWindow->Append( ID_MenuSplitHorizontally, wxT("Split View &Top/Bottom") );
 	menuWindow->Append( ID_MenuRemoveSplit, wxT("&Remove Active View") );
 	menuWindow->AppendSeparator();
@@ -107,10 +114,10 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools, const wxStri
 	menuWindow->Append( ID_MenuCloseOtherTabs, wxT("Close Other Tabs") );
 	menuWindow->Append( ID_MenuDetachTab, wxT("Detach Tab") );
 	menuWindow->Append( ID_MenuDuplicateTab, wxT("Duplicate Tab") );
-	
+
 	OptionsList optlist;
 	optlist = m_SwordTools->GetSwordManager()->getGlobalOptions();
-	
+
 	/* Add global options reported by SwordManager */
 	OptionsList::iterator it;
 	int id = ID_MenuTopBookOption;
@@ -122,14 +129,14 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools, const wxStri
 		} else {
 			menuOptions->Check(id, false);
 		}
-		
+
 		id++;
 	}
 
 	//menuBibleStudies->Append(ID_MenuBibleStudyWhy, wxT("Why Should I Become a Christian?"));
 	menuBibleStudies->Append(ID_MenuBibleStudyHow, wxT("How Can I Become a Christian?"));
 	menuBibleStudies->Append(ID_MenuBibleStudyGrow, wxT("How Can I Grow as a Christian?"));
-	
+
 	wxMenuBar *menuBar = new wxMenuBar();
 	menuBar->Append( menuFile, wxT("&File") );
 	menuBar->Append( menuBibleStudies, wxT("&Bible Studies") );
@@ -138,7 +145,7 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools, const wxStri
 	menuBar->Append( menuHelp, wxT("&Help") );
 
 
-	
+
 	SetMenuBar( menuBar );
 
 	CreateStatusBar();
@@ -146,6 +153,10 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools, const wxStri
 
 	m_ToolBar = new BookViewToolBar(this, ID_BookViewToolBar, wxTB_HORIZONTAL|wxTB_FLAT);
 	SetToolBar(m_ToolBar);
+
+
+//	m_LookupToolBar = new wxToolBar(this, -1);
+
 
 	SetupSplitterWindows();
 }
@@ -158,7 +169,7 @@ void BibleStudyMainFrame::OnShowWhyBecomeChristian()
 	mod = m_SwordTools->GetModule("WEB");
 
 	BibleStudyWizard *wiz = new BibleStudyWizard(this, -1, wxT("Why Should I Become a Christian?"));
-	
+
 	wiz->AddPage(NULL, wxT("You are probably wondering why you are reading this right now.\n\nYou received this software because someone cares about you and what happens to you when you die.\n\nThe following pages will discuss where you stand with a Holy and Loving God. \n\nThe information contained here is based on the Christian Bible. If you have questions about the bible, and wonder why it should have any authority in your life I suggest that you look at this website:\nhttp://www.answersingenesis.org/home/area/faq/bible.asp"), wxT(""));
 	wiz->AddPage(mod, wxT("The bible teaches that everyone has sinned. What is sin? Sin is any thought or action that is not perfect. Have you ever done anything that you knew was wrong? Like being mean? Then you have sinned."), wxT("Ro 3:23"));
 	wiz->AddPage(mod, wxT("Because God is perfect, he can not live with sin, so, the \"wage of sin is death.\" Everyone dies someday, we all know that. Here the Bible is talking about eternal death, or eternal seperation from God."), wxT("Ro 6:23"));
@@ -245,6 +256,23 @@ void BibleStudyMainFrame::OnLoadKey(wxCommandEvent& event)
 	wxLogTrace(wxTRACE_Messages, wxT("BibleStudyMainFrame::OnLookupKey called"));
 	m_WindowSplit->LookupKey( event.GetString() );
 }
+
+void BibleStudyMainFrame::OnBrowseKey(wxCommandEvent& event)
+{
+	wxLogTrace(wxTRACE_Messages, wxT("BibleStudyMainFrame::OnLookupKey called"));
+	m_WindowSplit->BrowseKey( event.GetString() );
+}
+
+void BibleStudyMainFrame::OnBrowseForward(wxCommandEvent& event)
+{
+	m_WindowSplit->BrowseForward();
+}
+
+void BibleStudyMainFrame::OnBrowseBackward(wxCommandEvent& event)
+{
+	m_WindowSplit->BrowseBackward();
+}
+
 
 void BibleStudyMainFrame::OnSearch(wxCommandEvent& event)
 {

@@ -65,7 +65,11 @@
 		void AddToCurrentTab(BookModule *);
 
 		void LookupKey(wxString key);
+		void BrowseKey(wxString key);
 		void Search(wxString range, wxString search, int searchtype);
+		void BrowseForward();
+		void BrowseBackward();
+
 
 		void ChildGotFocus();
 		void PostChildSetFocus();

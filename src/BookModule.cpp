@@ -12,10 +12,11 @@
 #endif
 
 #include "BookModule.h"
+#include "DropDownCtrl.h"
 #include <wx/calctrl.h>
 #include <wx/combobox.h>
-
-
+#include <wx/regex.h>
+#include <wx/log.h>
 
 BookModule::BookModule(SWModule *newModule)
 {
@@ -29,7 +30,7 @@ BookModule::BookModule(SWModule *newModule)
 	m_Frame = NULL;
 	m_Second_Module = NULL;
 	m_LastKey = NULL;
-
+	m_isbrowsing = false;
 }
 
 
@@ -47,12 +48,12 @@ SWModule *BookModule::GetModule()
 wxString BookModule::GetName()
 {
 	wxString name;
-	
+
 	ModMap::iterator it;
 	SWModule* curMod = 0;
 
-	
-	for (it = m_Modules.begin(); it != m_Modules.end();) {	
+
+	for (it = m_Modules.begin(); it != m_Modules.end();) {
 		curMod = (*it).second;
 		name += wxString(curMod->Name(), wxConvUTF8);
 
@@ -62,8 +63,8 @@ wxString BookModule::GetName()
 			name += wxT(" - ");
 		}
 	}
-	
-	
+
+
 	return name;
 }
 
@@ -75,7 +76,7 @@ wxString BookModule::GetLastLookupKey()
 void BookModule::AddModule(SWModule *mod)
 {
 	if (m_Module) {
-		if (!strcmp(m_Module->Type(), mod->Type()) || 
+		if (!strcmp(m_Module->Type(), mod->Type()) ||
 			(!strcmp(m_Module->Type(), "Commentaries") && !strcmp(mod->Type(), "Biblical Texts")) ||
 			(!strcmp(mod->Type(), "Commentaries") && !strcmp(m_Module->Type(), "Biblical Texts"))) {
 			m_Second_Module = mod;
@@ -88,19 +89,76 @@ void BookModule::AddModule(SWModule *mod)
 }
 
 
+bool BookModule::IsBrowsing()
+{
+	return m_isbrowsing;
+}
+
+wxString BookModule::BrowseForward()
+{
+	if (m_isbrowsing) {
+		m_Module->SetKey((const char *)m_LastLookupKey.mb_str());
+		if (!strcmp(m_Module->Type(), "Biblical Texts") || !strcmp(m_Module->Type(), "Commentaries")) {
+
+			VerseKey vk((const char *)m_LastLookupKey.mb_str());
+
+			vk.Chapter(vk.Chapter()+1);
 
 
+			return LookupKey(wxString(vk.getText(), wxConvUTF8), wxT(""), 0, false, true);
+		} else {
+			wxLogDebug(wxT("Last Key:") + m_LastLookupKey);
+			(*m_Module)++;
+			wxLogDebug(wxT("Next Key:") + wxString(m_Module->KeyText(), wxConvUTF8));
 
+			return LookupKey(wxString(m_Module->KeyText(), wxConvUTF8), wxT(""), 0, false, false);
+		}
+	} else {
+		return wxT("");
+	}
+}
+
+wxString BookModule::BrowseBackward()
+{
+	if (m_isbrowsing) {
+		wxLogDebug(wxT("BookModule::BrowseBackward() is browsing"));
+		m_Module->setKey((const char *)m_LastLookupKey.mb_str());
+		if (!strcmp(m_Module->Type(), "Biblical Texts") || !strcmp(m_Module->Type(), "Commentaries")) {
+			VerseKey vk((const char *)m_LastLookupKey.mb_str());
+
+			vk.Chapter(vk.Chapter()-1);
+
+
+			return LookupKey(wxString(vk.getText(), wxConvUTF8), wxT(""), 0, false, true);
+		} else {
+			wxLogDebug(wxT("Last Key:") + m_LastLookupKey);
+			(*m_Module)++;
+			wxLogDebug(wxT("Next Key:") + wxString(m_Module->KeyText(), wxConvUTF8));
+
+			return LookupKey(wxString(m_Module->KeyText(), wxConvUTF8), wxT(""), 0, false, false);
+		}
+	} else {
+		return wxT("");
+	}
+}
 
 /**
  * @todo handle non-unicode case
  */
-wxString BookModule::LookupKey(wxString key, wxString search, int searchtype, bool tooltip)
+wxString BookModule::LookupKey(wxString key, wxString search, int searchtype, bool tooltip, bool browse)
 {
 	VerseKey vk;
 	wxString output;
 	char book = 0;
 	int chapter = 0, verse = 0;
+
+
+
+	m_isbrowsing = browse;
+
+	if (m_isbrowsing)
+		key = key.BeforeLast(wxT(':'));
+
 
 	#ifdef wxUSE_UNICODE
 		output = wxT("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>");
@@ -110,18 +168,21 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype, bo
 	ListKey listkey;
 	ListKey searchresult;
 
-	if (key != wxT("")) {
-		 listkey = vk.ParseVerseList(key.mb_str(), "Gen1:1", true);
+	listkey = vk.ParseVerseList(key.mb_str(), "Gen1:1", true);
 
-	} else {
-		if (m_LastKey)
-			listkey = m_LastKey;
-		else
-			listkey = vk.ParseVerseList("", "Gen1:1", true);
+	if (key == wxT("") && m_LastKey.Count() > 0) {
+		listkey = m_LastKey;
 	}
+
 	if (search != wxT("")) {
 		wxLogDebug(wxT("Range: %s, Key: %s"), key.c_str(), search.c_str());
-		searchresult = m_Module->Search(search.mb_str(), searchtype, 0, &listkey);
+
+		if (listkey.Count() == 0) {
+			searchresult = m_Module->Search(search.mb_str(), searchtype, 0, NULL);
+		} else {
+			searchresult = m_Module->Search(search.mb_str(), searchtype, 0, &listkey);
+		}
+
 		listkey = searchresult;
 	}
 
@@ -296,26 +357,37 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype, bo
 
 		}
 	} else {
-		output.append(wxT("<tr align=left valign=top>"));
-		output.append(wxT("<td width='1'></td>"));
-		const char *moduleoutput;
-		for (it = m_Modules.begin(); it != m_Modules.end(); it++) {
-			output.append(wxT("<td align=left valign=top>"));
+		m_isbrowsing = true;
 
-			wxLogDebug(wxT("BookModule::LookupKey iterating through modules"));
-			curMod = (*it).second;
-
-			curMod->SetKey((const char *)key.mb_str());
-			moduleoutput = (const char *)(*curMod);
-			output.append(wxT("<font color='#0000FF'>"));
-			output.append(wxString(curMod->KeyText(), wxConvUTF8));
-			output.append(wxT("</font><hr />"));
-			output.append(wxString(moduleoutput, wxConvUTF8));
-
-			output.append(wxT("</td>"));
+		if (listkey.Count() == 0) {
+			//m_Module.SetKey((const char *)key.mb_str());
+			listkey << (const char *)key.mb_str();
 		}
+		SWKey *element;
+		for (int i = 0; i<listkey.Count(); i++) {
+			element = listkey.GetElement(i);
 
-		output.append(wxT("</tr>"));
+			output.append(wxT("<tr align=left valign=top>"));
+			output.append(wxT("<td width='1'></td>"));
+			const char *moduleoutput;
+			for (it = m_Modules.begin(); it != m_Modules.end(); it++) {
+				output.append(wxT("<td align=left valign=top>"));
+
+				wxLogDebug(wxT("BookModule::LookupKey iterating through modules"));
+				curMod = (*it).second;
+
+				curMod->SetKey(element);
+				moduleoutput = (const char *)(*curMod);
+				output.append(wxT("<font color='#0000FF'>"));
+				output.append(wxString(curMod->KeyText(), wxConvUTF8));
+				output.append(wxT("</font><hr />"));
+				output.append(wxString(moduleoutput, wxConvUTF8));
+
+				output.append(wxT("</td>"));
+			}
+
+			output.append(wxT("</tr>"));
+		}
 	}
 
 	output.append(wxT("</table>"));
@@ -326,6 +398,14 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype, bo
 		output.append(wxT("</html>"));
 
 	m_LastLookupKey = key;
+
+	if (search != wxT("")) {
+		wxRegEx myregex(search, wxRE_ICASE);
+
+		myregex.ReplaceAll(&output, wxT("<font color=#999900'>\\0</font>"));
+	}
+
+
 	return output;
 }
 
@@ -336,25 +416,21 @@ wxFrame *BookModule::GetControl(wxWindow *parent)
 
 	if (!strcmp(m_Module->Type(), "Generic Books")) {
 		TreeKey *key;
-		wxTreeCtrl *tree;
+		m_Frame = new DropDownCtrl(parent, m_Module, bsTree);
 
-		m_Frame = new wxMiniFrame(parent, -1, wxT("Select A Section"));
-		tree = new wxTreeCtrl(m_Frame, -1, wxDefaultPosition, wxDefaultSize, wxTR_HIDE_ROOT|wxTR_HAS_BUTTONS);
-		
+		wxTreeCtrl *tree = ((DropDownCtrl *)m_Frame)->GetTree();
+
+
 		key = (TreeKey *)m_Module->CreateKey();
 		key->firstChild();
 
 		AddTreeSiblings(tree, tree->AddRoot(wxT("Root")), key);
 	} else if (!strcmp(m_Module->Type(), "Daily Devotional")) {
-		wxCalendarCtrl *cal;
-		
-		m_Frame = new wxMiniFrame(parent, -1, wxT("Select A Date"));
-		
-		cal = new wxCalendarCtrl(m_Frame, -1, wxDateTime::Now(), wxDefaultPosition, wxDefaultSize, wxCAL_SEQUENTIAL_MONTH_SELECTION|wxCAL_NO_YEAR_CHANGE|wxCAL_SHOW_SURROUNDING_WEEKS|wxCAL_SUNDAY_FIRST|wxCAL_SHOW_HOLIDAYS);
-		m_Frame->SetClientSize(cal->GetSize());
-		cal->Move(0,0);
+		m_Frame = new DropDownCtrl(parent, m_Module, bsCalendar);
+	} else if (!strcmp(m_Module->Type(), "Biblical Texts") || !strcmp(m_Module->Type(), "Commentaries")) {
+		m_Frame = new DropDownCtrl(parent, m_Module, bsBible);
 	}
-	
+
 	return m_Frame;
 }
 
@@ -365,16 +441,16 @@ void BookModule::AddTreeSiblings(wxTreeCtrl *tree, wxTreeItemId parentid, TreeKe
 	wxLogDebug(wxT("BookModule::AddTreeSiblings called: %s"), (const wxChar*)wxString(key->getFullName(), wxConvUTF8));
 	bool cont;
 	cont = true;
-	
+
 	while (cont) {
 		itemadded = tree->AppendItem(parentid, wxString(key->getLocalName(), wxConvUTF8));
-		
+
 		if (key->hasChildren()) {
 			key->firstChild();
 			AddTreeSiblings(tree, itemadded, key);
 			key->parent();
 		}
-		
+
 		cont = key->nextSibling();
 	}
 }

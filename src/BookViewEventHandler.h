@@ -14,7 +14,7 @@
 #ifndef _BOOKVIEWEVENTHANDLER_H_
 	#define _BOOKVIEWEVENTHANDLER_H_
 
-	#include "biblestudy.h"
+
 
 	class BookViewEventHandler;
 

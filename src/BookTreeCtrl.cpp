@@ -15,7 +15,8 @@
 #include "BookTreeCtrl.h"
 #include <wx/imaglist.h>
 #include <wx/artprov.h>
-
+#include <wx/menu.h>
+#include <wx/log.h>
 
 #include "../icons/book.xpm"
 #include "../icons/bible.xpm"

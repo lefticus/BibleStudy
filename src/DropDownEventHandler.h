@@ -14,7 +14,7 @@
 #ifndef _DROPDOWNEVENTHANDLER_H_
 	#define _DROPDOWNEVENTHANDLER_H_
 
-	#include "biblestudy.h"
+
 
 	class DropDownEventHandler;
 
@@ -40,6 +40,7 @@
 		void OnItemActivated(wxTreeEvent &event);
 		void OnDateSelected(wxCalendarEvent &event);
 		void OnMove(wxMoveEvent &event);
+		void OnVerseSelected(wxCommandEvent &event);
 
 		void SetParent(BookViewToolBar *parent);
 

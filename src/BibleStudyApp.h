@@ -13,9 +13,9 @@
 
 #ifndef _BIBLESTUDYAPP_H_
 #define _BIBLESTUDYAPP_H_
-
 	#include "SwordTools.h"
-	#include "biblestudy.h"
+
+	#include <wx/app.h>
 
 	/**
 	* Main Class for BibleStudy.

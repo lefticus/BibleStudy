@@ -12,7 +12,8 @@
 #endif
 
 #include "TestSword.h"
-
+#include <sword/swmgr.h>
+#include <sword/swmodule.h>
 
 TestSword::TestSword()
 

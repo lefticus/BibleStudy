@@ -13,7 +13,7 @@
 
 #ifndef _TESTSWORD_H_
 	#define _TESTSWORD_H_
-	#include "biblestudy.h"
+	
 	
 	/**
 	* 

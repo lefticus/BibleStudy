@@ -12,6 +12,7 @@
 #endif
 
 #include "BookViewEventHandler.h"
+#include <wx/log.h>
 
 BEGIN_EVENT_TABLE(BookViewEventHandler, wxEvtHandler)
 	EVT_SET_FOCUS(BookViewEventHandler::OnSetFocus)
