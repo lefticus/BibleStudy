@@ -24,9 +24,7 @@ BEGIN_EVENT_TABLE(DropDownCtrl, wxMiniFrame)
 	EVT_BUTTON(-1, DropDownCtrl::OnButtonPress)
 	EVT_KEY_DOWN(DropDownCtrl::OnKeyDown)
 END_EVENT_TABLE()
-
-
-DropDownCtrl::DropDownCtrl(wxWindow *parent, SWModule *module, bsDropDownMode mode) : wxMiniFrame(parent, -1, wxT("Select An Option"))
+DropDownCtrl::DropDownCtrl(wxWindow *parent, SWModule *module, bsDropDownMode mode) : wxMiniFrame(parent, -1, wxT("Select An Option"), wxDefaultPosition, wxDefaultSize, wxCLOSE_BOX|wxSTAY_ON_TOP)
 {
 	m_Mode = mode;
 
