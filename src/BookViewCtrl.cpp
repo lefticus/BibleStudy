@@ -87,10 +87,15 @@ int BookViewCtrl::AddTab()
 	neweventhandler->SetParent(this);
 	html->PushEventHandler(neweventhandler);
 
-	#if wxMAJOR_VERSION == 2 && wxMINOR_VERSION > 4
-		html->SetFonts(wxT("Arial"), wxT("Courier New"), 0); // crashes wx2.4
+	#ifdef _WIN32
+		// Choose appropriate font sizes for windows
+		const int sizes[7] = {7, 8, 10, 12, 16, 22, 30};
+	#else
+		// Choose approriate font sizes for GTK
+		const int sizes[7] = {10, 12, 14, 16, 19, 24, 32};
 	#endif
-	
+	html->SetFonts(wxT("Arial"), wxT("Courier New"), sizes);
+
 	panelsizer->Add(html, 1, wxEXPAND);
 	page->SetSizer(panelsizer);
 	AddPage(page, wxT("*Empty*"));
