@@ -534,7 +534,7 @@ void BookModule::AddTreeSiblings(wxTreeCtrl *tree, wxTreeItemId parentid, TreeKe
 
 		//wxMessageBox(wxString(key->getLocalName(), wxConvUTF8), wxT("test"), wxOK| wxICON_INFORMATION, tree->GetParent());
 		itemadded = tree->AppendItem(parentid, wxString(key->getLocalName(), wxConvUTF8));
-
+		
 		if (key->hasChildren()) {
 			wxLogDebug(wxT("BookModule::AddTreeSiblings item has children"));
 
@@ -552,6 +552,7 @@ void BookModule::AddTreeSiblings(wxTreeCtrl *tree, wxTreeItemId parentid, TreeKe
 			wxLogDebug(wxT("BookModule::AddTreeSiblings error occured"));
 			cont = false;
 		}
+		tree->Expand(itemadded);	
 	}
 
 	wxLogDebug(wxT("BookModule::AddTreeSiblings exiting"));

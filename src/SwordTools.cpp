@@ -15,7 +15,7 @@
 #include "SwordTools.h"
 #include <wx/tokenzr.h>
 #include <markupfiltmgr.h>
-
+#include <iostream>
 
 
 SwordTools::SwordTools()
@@ -25,8 +25,8 @@ SwordTools::SwordTools()
 
 BookModule *SwordTools::GetModuleFromLink(wxString link)
 {
+	wxLogDebug(wxT("GetModuleFromLink called with link: ") + link);
 	BookModule *bm = NULL;
-
 	if (link.StartsWith(wxT("#G"))) {
 		bm = new BookModule(GetModule("StrongsGreek"));
 	} else if (link.StartsWith(wxT("#H"))) {
@@ -38,12 +38,12 @@ BookModule *SwordTools::GetModuleFromLink(wxString link)
 			bm = new BookModule(GetModule("StrongsHebrew"));
 		}
 	} else if (link.Find(wxT("type=morph")) > -1) {
-		if (link.Find(wxT("class=Robinson")) > -1) {
+		if (link.Find(wxT("Robinson")) > -1) {
 			bm = new BookModule(GetModule("Robinson"));
-		} else {
+		} else if (link.Find(wxT("Packard")) > -1) {
 			bm = new BookModule(GetModule("Packard"));
 		}
-	} else {
+	} else if (link.Find(wxT("passage=")) > -1) {
 		wxStringTokenizer tokenizer(link, wxT(" ="));
 
 		while (tokenizer.HasMoreTokens()) {
@@ -54,11 +54,12 @@ BookModule *SwordTools::GetModuleFromLink(wxString link)
 				break;
 			}
 		}
+
+		if (!bm) {
+			bm = new BookModule(GetModule("WEB"));
+		}
 	}
 
-	if (!bm) {
-		bm = new BookModule(GetModule("WEB"));
-	}
 
 	return bm;
 }
