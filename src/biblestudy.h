@@ -31,10 +31,15 @@
 		ID_MenuSplitHorizontally,
 		ID_MenuRemoveSplit,
 		ID_MenuNewTab,
-		ID_MenuRemoveTab,
+		ID_MenuCloseTab,
 		ID_MenuShowHideBookTree,
-		ID_MenuTopBookOption,
-		ID_MenuNewWindow
+		ID_MenuNewWindow,
+		ID_MenuDetachTab,
+		ID_MenuCloseOtherTabs,
+		ID_MenuDuplicateTab,
+		
+		/* Must remain last */
+		ID_MenuTopBookOption
 	};
 	
 	/** Tool bar button IDs */

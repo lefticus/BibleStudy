@@ -14,7 +14,8 @@
 
 	#include "biblestudy.h"
 	#include <wx/toolbar.h>
-	
+	#include <wx/bitmap.h>
+
 	
 	/**
 	* Toolbar with inputs for searching in a Module.
@@ -24,6 +25,7 @@
 	{
 	private:
 		wxTextCtrl *m_LookupKey;
+		void SetupIcons();
 
 	public:
 		BookViewToolBar(wxWindow *parent, wxWindowID id, long style);

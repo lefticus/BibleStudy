@@ -51,10 +51,13 @@
 		
 		void OnSplitHorizontally(wxCommandEvent& event);
 		void OnSplitVertically(wxCommandEvent& event);
-		void OnRemoveSplit(wxCommandEvent& event);
+		void OnRemoveActiveView(wxCommandEvent& event);
 		
 		void OnNewTab(wxCommandEvent& event);
-		void OnRemoveTab(wxCommandEvent& event);
+		void OnCloseTab(wxCommandEvent& event);
+		void OnDetachTab(wxMenuEvent& event);
+		void OnDuplicateTab(wxMenuEvent& event);
+		void OnCloseOtherTabs(wxMenuEvent& event);
 		void OnShowHideBookTree(wxCommandEvent& event);
 		void OnTreeItemActivated(wxCommandEvent& event);
 		void OnLookupKey(wxCommandEvent& event);
@@ -69,6 +72,7 @@
 		void OnBookTreeChange(wxCommandEvent &event);
 		
 		void DisplayModule(SWModule *module);
+		void DisplayModule(BookModule *module);
 		
 		DECLARE_EVENT_TABLE()
 		

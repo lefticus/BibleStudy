@@ -16,7 +16,8 @@ BEGIN_EVENT_TABLE(BookViewSplitterCtrl, wxGenericSplitterWindow)
 BEGIN_EVENT_TABLE(BookViewSplitterCtrl, wxSplitterWindow)
 #endif
 	EVT_CHILD_SET_FOCUS(-1, BookViewSplitterCtrl::OnNewActiveChild)
-
+	EVT_SPLITTER_UNSPLIT(-1, BookViewSplitterCtrl::OnUnSplit)
+	
 END_EVENT_TABLE()
 
 DEFINE_EVENT_TYPE(bsEVT_ACTIVE_MODULE_CHANGE)
@@ -96,9 +97,9 @@ bool BookViewSplitterCtrl::ShowHideBookTree()
 }
 
 
-void BookViewSplitterCtrl::RemoveTab()
+void BookViewSplitterCtrl::CloseTab()
 {
-	GetActiveBookViewCtrl()->RemoveTab();
+	GetActiveBookViewCtrl()->CloseTab();
 }
 
 void BookViewSplitterCtrl::AddTab()
@@ -108,7 +109,6 @@ void BookViewSplitterCtrl::AddTab()
 
 void BookViewSplitterCtrl::OpenInCurrentTab(SWModule *mod)
 {
-	printf("Splitter:Got Open in current tab event\n");
 	GetActiveBookViewCtrl()->OpenInCurrentTab(mod);
 	
 	wxCommandEvent eventCustom(bsEVT_ACTIVE_MODULE_CHANGE);
@@ -119,18 +119,36 @@ void BookViewSplitterCtrl::OpenInCurrentTab(SWModule *mod)
 
 void BookViewSplitterCtrl::OpenInNewTab(SWModule *mod)
 {
-	printf("Splitter:Got Open in new tab event\n");
-	if (GetActiveBookViewCtrl()) {
-		printf("Splitter:Valid ActiveBookView\n");
-		GetActiveBookViewCtrl()->OpenInNewTab(mod);
+	GetActiveBookViewCtrl()->OpenInNewTab(mod);
 
-		/*
-		wxCommandEvent eventCustom(bsEVT_ACTIVE_MODULE_CHANGE);
-		eventCustom.SetEventObject(this);
-		eventCustom.SetClientData(GetActiveBookViewCtrl()->GetActiveBookModule());
-		ProcessEvent(eventCustom);
-		*/
-	}	
+	/*
+	wxCommandEvent eventCustom(bsEVT_ACTIVE_MODULE_CHANGE);
+	eventCustom.SetEventObject(this);
+	eventCustom.SetClientData(GetActiveBookViewCtrl()->GetActiveBookModule());
+	ProcessEvent(eventCustom);
+	*/
+}
+
+void BookViewSplitterCtrl::OpenInCurrentTab(BookModule *mod)
+{
+	GetActiveBookViewCtrl()->OpenInCurrentTab(mod);
+	
+	wxCommandEvent eventCustom(bsEVT_ACTIVE_MODULE_CHANGE);
+	eventCustom.SetEventObject(this);
+	eventCustom.SetClientData(GetActiveBookViewCtrl()->GetActiveBookModule());
+	ProcessEvent(eventCustom);
+}
+
+void BookViewSplitterCtrl::OpenInNewTab(BookModule *mod)
+{
+	GetActiveBookViewCtrl()->OpenInNewTab(mod);
+
+	/*
+	wxCommandEvent eventCustom(bsEVT_ACTIVE_MODULE_CHANGE);
+	eventCustom.SetEventObject(this);
+	eventCustom.SetClientData(GetActiveBookViewCtrl()->GetActiveBookModule());
+	ProcessEvent(eventCustom);
+	*/
 }
 
 void BookViewSplitterCtrl::LookupKey(wxString key)
@@ -260,4 +278,66 @@ void BookViewSplitterCtrl::SplitVertically()
 		
 		m_LastFocus = bookview;
 	}
+}
+
+void BookViewSplitterCtrl::RemoveActiveView()
+{
+	wxSplitterWindow *parent;
+	wxWindow *childToRemove;
+	
+	parent = (wxSplitterWindow *)m_LastFocus->GetParent();
+	
+	if (parent->IsSplit()) {
+		childToRemove = m_LastFocus;
+	} else {
+		childToRemove = parent;
+		parent = (wxSplitterWindow *)parent->GetParent();
+	}
+	
+	if (parent->IsSplit()) {
+		parent->Unsplit(childToRemove);
+	}
+}
+
+void BookViewSplitterCtrl::OnUnSplit(wxSplitterEvent &event)
+{
+	wxWindow *windowBeingRemoved;
+	BookViewCtrl *bookViewBeingRemoved;
+	wxSplitterWindow *splitBeingRemoved;
+
+	windowBeingRemoved = event.GetWindowBeingRemoved();
+	
+	if (windowBeingRemoved == m_FirstChildSplit 
+		|| windowBeingRemoved == m_SecondChildSplit) {
+		
+		splitBeingRemoved = (wxSplitterWindow *)windowBeingRemoved;
+		
+		bookViewBeingRemoved = (BookViewCtrl *)splitBeingRemoved->GetWindow1();
+		if (bookViewBeingRemoved)
+			bookViewBeingRemoved->Destroy();
+		
+		bookViewBeingRemoved = (BookViewCtrl *)splitBeingRemoved->GetWindow2();
+		if (bookViewBeingRemoved)
+			bookViewBeingRemoved->Destroy();
+			
+	} else if (windowBeingRemoved != m_BookTree) {
+		windowBeingRemoved->Destroy();
+	}
+	
+	((wxSplitterWindow *)event.GetEventObject())->GetWindow1()->SetFocus();
+}
+
+void BookViewSplitterCtrl::CloseOtherTabs()
+{
+	m_LastFocus->CloseOtherTabs();
+}
+
+void BookViewSplitterCtrl::DuplicateTab()
+{
+	m_LastFocus->DuplicateTab();
+}
+
+BookModule* BookViewSplitterCtrl::GetActiveBookModule()
+{
+	return m_LastFocus->GetActiveBookModule();
 }

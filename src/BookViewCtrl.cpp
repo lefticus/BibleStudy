@@ -56,10 +56,11 @@ int BookViewCtrl::AddTab()
 	return GetPageCount() - 1;
 }
 
-void BookViewCtrl::RemoveTab()
+void BookViewCtrl::CloseTab()
 {
 	wxHtmlWindow *html;
 	BookModule *mod;
+	int page;
 
 	html = (wxHtmlWindow *)GetPage(GetSelection())->GetChildren().GetFirst()->GetData();
 	mod = (BookModule *)html->GetClientData();
@@ -67,9 +68,15 @@ void BookViewCtrl::RemoveTab()
 	if (GetPageCount() > 1) {
 		if (mod)
 			delete mod;
-		
-		RemovePage(GetSelection());
+		page = GetSelection();
+		RemovePage(page);
+		if (GetPageCount() > page) 
+			SetSelection(page);
+		else
+			SetSelection(page-1);
 	}
+	
+	PostChildSetFocus();
 }
 
 
@@ -86,7 +93,15 @@ void BookViewCtrl::LookupKey(wxString key)
 	output = wxT("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><body dir='rtl' lang='he'>");
 	html = (wxHtmlWindow *)GetPage(GetSelection())->GetChildren().GetFirst()->GetData();
 	mod = (BookModule *)html->GetClientData();
-	html->SetPage( mod->LookupKey( key ) );	
+	
+	if (mod)
+		html->SetPage( mod->LookupKey( key ) );	
+}
+
+void BookViewCtrl::OpenInCurrentTab(BookModule *bm)
+{
+	OpenInCurrentTab(bm->GetModule());
+	LookupKey(bm->GetLastLookupKey());
 }
 
 void BookViewCtrl::OpenInCurrentTab(SWModule *newModule)
@@ -127,6 +142,11 @@ void BookViewCtrl::OpenInNewTab(SWModule *newModule)
 	OpenInCurrentTab(newModule);
 }
 
+void BookViewCtrl::OpenInNewTab(BookModule *bm)
+{
+	SetSelection(AddTab());
+	OpenInCurrentTab(bm);
+}
 
 BookModule* BookViewCtrl::GetActiveBookModule()
 {
@@ -161,3 +181,39 @@ void BookViewCtrl::OnSetFocus(wxEvent &event)
 	event.Skip();
 	PostChildSetFocus();
 }
+
+void BookViewCtrl::CloseOtherTabs()
+{
+	int curtab = GetSelection();
+	int numbefore;
+	int numafter;
+	
+	numbefore = curtab;
+	numafter = GetPageCount() - (curtab + 1);
+	
+	for (int i = 0; i < numbefore; i++) {
+		SetSelection(0);
+		CloseTab();
+	}
+	
+	for (int i = 0; i < numafter; i++) {
+		SetSelection(1);
+		CloseTab();
+	}
+	
+}
+
+void BookViewCtrl::DuplicateTab()
+{
+	DuplicateTab(GetActiveBookModule());
+}
+
+void BookViewCtrl::DuplicateTab(BookModule *bm)
+{
+	int selection = GetSelection();
+	
+	OpenInNewTab(bm);
+	
+	SetSelection(selection);
+}
+

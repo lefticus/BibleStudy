@@ -54,11 +54,19 @@
 		//void SetChildren(BookTreeCtrl *, BookViewCtrl *);
 		bool ShowHideBookTree();
 
-		void RemoveTab();
+		void CloseTab();
 		void AddTab();
+		void CloseOtherTabs();
+		void DuplicateTab();
+		
 		void OpenInCurrentTab(SWModule *);
 		void OpenInNewTab(SWModule *);
+		void OpenInNewTab(BookModule *);
+		void OpenInCurrentTab(BookModule *);
+		
 		void LookupKey(wxString key);
+		
+		void RemoveActiveView();
 		
 		void OnNewActiveChild(wxCommandEvent& event);
 		void OnFocusGot(wxEvent& event);
@@ -66,6 +74,9 @@
 		void SplitHorizontally();
 		void SplitVertically();
 		
+		void OnUnSplit(wxSplitterEvent &event);
+		
+		BookModule* GetActiveBookModule();
 		DECLARE_EVENT_TABLE()
 	};
 

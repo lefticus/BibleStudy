@@ -70,6 +70,7 @@
 		BibleStudyLanguages m_Languages;
 		
 		void OnOpenModule(wxMenuEvent &event);
+		void SetupIcons();
 
 	public:
 		BookTreeCtrl();

@@ -10,6 +10,11 @@
 
 #include "BookTreeCtrl.h"
 
+#include "../icons/book.xpm"
+#include "../icons/closedfolder.xpm"
+#include "../icons/openfolder.xpm"
+
+
 #if USE_GENERIC_TREECTRL
 BEGIN_EVENT_TABLE(BookTreeCtrl, wxGenericTreeCtrl)
 #else
@@ -139,7 +144,8 @@ void BookTreeCtrl::RefreshBookList()
 		if (!configEntry.CompareTo(wxT(""))) {
 			childnode = treenodes[curMod->Type()];
 			if (!childnode.IsOk()) {
-				childnode = AppendItem(rootnode, wxString(curMod->Type(), wxConvUTF8), 1, 2);
+				childnode = AppendItem(rootnode, wxString(curMod->Type(), wxConvUTF8), 1);
+				SetItemImage(childnode, 2, wxTreeItemIcon_Expanded);
 				treenodes[curMod->Type()] = childnode;
 			}
 			
@@ -147,7 +153,8 @@ void BookTreeCtrl::RefreshBookList()
 		} else {
 			childnode = treenodes[(const char *)configEntry.mb_str()];
 			if (!childnode.IsOk()) {
-				childnode = AppendItem(rootnode, configEntry, 1, 2);
+				childnode = AppendItem(rootnode, configEntry, 1);
+				SetItemImage(childnode, 2, wxTreeItemIcon_Expanded);
 				treenodes[(const char *)configEntry.mb_str()] = childnode;
 			}
 			
@@ -164,29 +171,13 @@ void BookTreeCtrl::RefreshBookList()
 			wxString language;
 			
 			language = m_Languages.GetLanguage(wxString(curMod->Lang(), wxConvUTF8));
-			
-/*			locale = LocaleMgr::systemLocaleMgr.getLocale(curMod->Lang());
-			if (locale) {
-				language = wxString(locale->getDescription(), wxConvUTF8);
-			}
-			if (language == wxT("")) {
-				if (!strcmp(curMod->Lang(), "he")) {
-					language = wxT("Hebrew");
-				} else if (!strcmp(curMod->Lang(), "grc")) {
-					language = wxT("Ancient Greek");
-				} else if (!strcmp(curMod->Lang(), "en")) {
-					language = wxT("English");
-				} else {
-					language = wxString(curMod->Lang(), wxConvUTF8);
-				}
-			}*/
-			
-			//langnode = AppendItem(childnode, wxString(LocaleMgr::systemLocaleMgr.getLocale(curMod->Lang())->getDescription(), wxConvUTF8),1, 2);
-			langnode = AppendItem(childnode, language,1, 2);
+
+			langnode = AppendItem(childnode, language, 1);
+			SetItemImage(langnode, 2, wxTreeItemIcon_Expanded);
 			treelangnodes[grouplang] = langnode;
 		}
 			
-		curNode = AppendItem(langnode, wxString(curMod->Description(), wxConvUTF8), 3 );
+		curNode = AppendItem(langnode, wxString(curMod->Name(), wxConvUTF8) + wxT(" - ") + wxString(curMod->Description(), wxConvUTF8), 0);
 		SetItemData(curNode, new BookTreeItemData(curMod));
 		//curMod->AddRenderFilter(new PLAINHTML());
 		SortChildren(childnode);
@@ -196,28 +187,43 @@ void BookTreeCtrl::RefreshBookList()
 	SortChildren(rootnode);
 }
 
-BookTreeCtrl::BookTreeCtrl(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size) : wxTreeCtrl(parent, id, pos, size, wxTR_HAS_BUTTONS|wxTR_HIDE_ROOT, wxDefaultValidator, wxT("listCtrl")) 
+
+
+BookTreeCtrl::BookTreeCtrl(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size) : wxTreeCtrl(parent, id, pos, size, wxTR_HIDE_ROOT|wxTR_LINES_AT_ROOT, wxDefaultValidator, wxT("listCtrl")) 
 {
-	//SetIndent(10);
-	//SetSpacing(10);
-	
-	m_ImageList = new wxImageList(16,16,true);
-	
-	m_ClosedFolderBMP.LoadFile(wxT("..\\icons\\closedfolder.bmp"), wxBITMAP_TYPE_BMP);
-	m_OpenFolderBMP.LoadFile(wxT("..\\icons\\openfolder.bmp"), wxBITMAP_TYPE_BMP);
-	m_BookBMP.LoadFile(wxT("..\\icons\\book.bmp"), wxBITMAP_TYPE_BMP);
-	
-	m_ImageList->Add(m_ClosedFolderBMP);
-	m_ImageList->Add(m_OpenFolderBMP);
-	m_ImageList->Add(m_BookBMP);
-	SetImageList(m_ImageList);
-	
+	SetIndent(10);
+	SetSpacing(10);
+		
+	SetupIcons();
 	
 	/* Build Popup Menu */
 	m_PopupMenu = new wxMenu();
 	m_PopupMenu->Append(ID_BookTreePopupOpen, wxT("Open"));
 	m_PopupMenu->Append(ID_BookTreePopupOpenInNewTab, wxT("Open In New Tab"));
 	m_PopupMenu->Append(ID_BookTreePopupOpenInNewWindow, wxT("Open In New Window"));
+}
+
+void BookTreeCtrl::SetupIcons()
+{
+	int size = 16;
+	
+	wxImageList *images = new wxImageList(size, size, TRUE);
+	wxIcon icons[3];
+	icons[0] = wxIcon(book_xpm);
+	icons[1] = wxIcon(closedfolder_xpm);
+	icons[2] = wxIcon(openfolder_xpm);
+	
+	int sizeOrig = icons[0].GetWidth();
+	
+	for ( size_t i = 0; i < WXSIZEOF(icons); i++ ) {
+		if (size == sizeOrig ) {
+			images->Add(icons[i]);
+		} else {
+			images->Add(wxBitmap(wxBitmap(icons[i]).ConvertToImage().Rescale(size,size)));
+		}
+	}
+	
+	AssignImageList(images);
 }
 
 BookTreeItemData *BookTreeCtrl::GetItemData(const wxTreeItemId& item)

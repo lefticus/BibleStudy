@@ -47,13 +47,19 @@
 		~BookViewCtrl();
 		
 		int AddTab();
-		void RemoveTab();
+		void CloseTab();
+		void CloseOtherTabs();
+		void DuplicateTab();
+		void DuplicateTab(BookModule *);
 		
 		/**
 		 * Sets the module for the active tab
 		 */
 		void OpenInCurrentTab(SWModule *);
+		void OpenInCurrentTab(BookModule *);
 		void OpenInNewTab(SWModule *);
+		void OpenInNewTab(BookModule *);
+		
 		void LookupKey(wxString key);
 		void ChildGotFocus();
 		void PostChildSetFocus();

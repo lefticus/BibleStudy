@@ -17,19 +17,23 @@ BEGIN_EVENT_TABLE(BibleStudyMainFrame, wxFrame)
 	
 	EVT_MENU(ID_MenuSplitVertically, BibleStudyMainFrame::OnSplitVertically)
 	EVT_MENU(ID_MenuSplitHorizontally, BibleStudyMainFrame::OnSplitHorizontally)
-	EVT_MENU(ID_MenuRemoveSplit, BibleStudyMainFrame::OnRemoveSplit)
+	EVT_MENU(ID_MenuRemoveSplit, BibleStudyMainFrame::OnRemoveActiveView)
 	
 	EVT_MENU(ID_MenuNewTab, BibleStudyMainFrame::OnNewTab)
-	EVT_MENU(ID_MenuRemoveTab, BibleStudyMainFrame::OnRemoveTab)
+	EVT_MENU(ID_MenuCloseTab, BibleStudyMainFrame::OnCloseTab)
 	EVT_MENU(ID_MenuShowHideBookTree, BibleStudyMainFrame::OnShowHideBookTree)
 	EVT_MENU(ID_MenuNewWindow, BibleStudyMainFrame::OnNewWindow)
+	
+	EVT_MENU(ID_MenuCloseOtherTabs, BibleStudyMainFrame::OnCloseOtherTabs)
+	EVT_MENU(ID_MenuDetachTab, BibleStudyMainFrame::OnDetachTab)
+	EVT_MENU(ID_MenuDuplicateTab, BibleStudyMainFrame::OnDuplicateTab)
 
 	EVT_MENU_RANGE(ID_MenuTopBookOption, ID_MenuTopBookOption+50, BibleStudyMainFrame::OnOptionChange)
 
 	EVT_TOOL(ID_ToolShowHideBookTree, BibleStudyMainFrame::OnShowHideBookTree)
 	EVT_TOOL(ID_ToolLookupKey, BibleStudyMainFrame::OnLookupKey)
 	EVT_TOOL(ID_ToolNewTab, BibleStudyMainFrame::OnNewTab)
-	EVT_TOOL(ID_ToolRemoveTab, BibleStudyMainFrame::OnRemoveTab)
+	EVT_TOOL(ID_ToolRemoveTab, BibleStudyMainFrame::OnCloseTab)
 		
 	EVT_OPEN_IN_CURRENT_TAB(-1, BibleStudyMainFrame::OnOpenInCurrentTab)
 	EVT_OPEN_IN_NEW_TAB(-1, BibleStudyMainFrame::OnOpenInNewTab)
@@ -69,8 +73,11 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools, const wxStri
 	menuWindow->Append( ID_MenuSplitHorizontally, wxT("Split View &Top/Bottom") );
 	menuWindow->Append( ID_MenuRemoveSplit, wxT("&Remove Active View") );
 	menuWindow->AppendSeparator();
-	menuWindow->Append( ID_MenuNewTab, wxT("&New Tab"));
-	menuWindow->Append( ID_MenuRemoveTab, wxT("Close Current Tab"));
+	menuWindow->Append( ID_MenuNewTab, wxT("&New Tab") );
+	menuWindow->Append( ID_MenuCloseTab, wxT("Close Tab") );
+	menuWindow->Append( ID_MenuCloseOtherTabs, wxT("Close Other Tabs") );
+	menuWindow->Append( ID_MenuDetachTab, wxT("Detach Tab") );
+	menuWindow->Append( ID_MenuDuplicateTab, wxT("Duplicate Tab") );
 	
 	OptionsList optlist;
 	optlist = m_SwordTools->GetSwordManager()->getGlobalOptions();
@@ -109,7 +116,7 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools, const wxStri
 	//toolbar->ToggleTool(ID_ToolShowHideBookTree, true);
 	//SetToolBar(toolbar);
 	
-	m_ToolBar = new BookViewToolBar(this, ID_BookViewToolBar, wxTB_HORIZONTAL|wxTB_TEXT|wxTB_NOICONS|wxTB_DOCKABLE| wxNO_BORDER);
+	m_ToolBar = new BookViewToolBar(this, ID_BookViewToolBar, wxTB_HORIZONTAL|wxTB_DOCKABLE| wxNO_BORDER);
 	//AddChild(lookup);
 	SetToolBar(m_ToolBar);
 	
@@ -161,9 +168,9 @@ void BibleStudyMainFrame::OnNewTab(wxCommandEvent& event)
 	m_WindowSplit->AddTab();
 }
 
-void BibleStudyMainFrame::OnRemoveTab(wxCommandEvent& event)
+void BibleStudyMainFrame::OnCloseTab(wxCommandEvent& event)
 {
-	m_WindowSplit->RemoveTab();
+	m_WindowSplit->CloseTab();
 }
 
 
@@ -224,6 +231,10 @@ void BibleStudyMainFrame::DisplayModule(SWModule *module)
 	m_WindowSplit->OpenInCurrentTab(module);
 }
 
+void BibleStudyMainFrame::DisplayModule(BookModule *module)
+{
+	m_WindowSplit->OpenInCurrentTab(module);
+}
 
 void BibleStudyMainFrame::OnSplitVertically(wxCommandEvent& event)
 {
@@ -235,6 +246,23 @@ void BibleStudyMainFrame::OnSplitHorizontally(wxCommandEvent& event)
 	m_WindowSplit->SplitHorizontally();
 }
 
-void BibleStudyMainFrame::OnRemoveSplit(wxCommandEvent& event)
+void BibleStudyMainFrame::OnRemoveActiveView(wxCommandEvent& event)
 {
+	m_WindowSplit->RemoveActiveView();
+}
+
+void BibleStudyMainFrame::OnCloseOtherTabs(wxMenuEvent& event)
+{
+	m_WindowSplit->CloseOtherTabs();
+}
+
+void BibleStudyMainFrame::OnDetachTab(wxMenuEvent& event)
+{
+	OpenNewWindow()->DisplayModule(m_WindowSplit->GetActiveBookModule());
+	m_WindowSplit->CloseTab();
+}
+
+void BibleStudyMainFrame::OnDuplicateTab(wxMenuEvent& event)
+{
+	m_WindowSplit->DuplicateTab();
 }
