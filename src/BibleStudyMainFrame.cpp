@@ -283,7 +283,7 @@ void BibleStudyMainFrame::OnCloseWindow(wxCommandEvent& event)
 void BibleStudyMainFrame::OnAbout(wxCommandEvent& event)
 {
 	wxLogTrace(wxTRACE_Messages, wxT("BibleStudyMainFrame::OnAbout called"));
-	wxMessageBox(wxT("This is BibleStudy bible software.\nMany thanks to the Sword project.\n\nLicensed under the GPL."), wxT("About BibleStudy"), wxOK | wxICON_INFORMATION, this);
+	wxMessageBox(wxT("This is BibleStudy bible software.\nMany thanks to the Sword project. (www.crosswire.org/sword)\n\nAlso Thanks to Timothy Butler for the use of the icons.\n\nLicensed under the GPL (http://www.gnu.org/licenses/gpl.html).\nPlease distribute freely."), wxT("About BibleStudy"), wxOK | wxICON_INFORMATION, this);
 }
 
 void BibleStudyMainFrame::OnNewWindow(wxMenuEvent& event)

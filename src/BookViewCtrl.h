@@ -19,6 +19,7 @@
 	#include <wx/notebook.h>
 	#include <wx/html/htmlwin.h>
 	#include <wx/fontdlg.h>
+	#include <wx/image.h>
 	#include <string>
 	#include "BookModule.h"
 	

@@ -65,6 +65,8 @@ void BookTreeCtrl::OnItemActivated(wxEvent &event)
 	if (GetChildrenCount(GetSelection(), false)) {
 		wxLogDebug(wxT("BookTreeCtrl::OnItemActivated not a leaf"));
 		
+		/* windows process the dblclick and collapses immediately after this expand */ 
+		#ifndef __WINDOWS__
 		if (IsExpanded(GetSelection())) {
 			wxLogDebug(wxT("BookTreeCtrl::OnItemActivated Collapse"));
 			Collapse(GetSelection());
@@ -72,6 +74,7 @@ void BookTreeCtrl::OnItemActivated(wxEvent &event)
 			wxLogDebug(wxT("BookTreeCtrl::OnItemActivated Expand"));
 			Expand(GetSelection());
 		}
+		#endif
 		
 	} else {
 		wxLogDebug(wxT("BookTreeCtrl::OnItemActivated is a leaf"));

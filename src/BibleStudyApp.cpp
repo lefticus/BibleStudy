@@ -28,8 +28,10 @@ bool BibleStudyApp::OnInit()
 	//mylogwindow = new wxLogWindow(NULL, wxT("Log Output"));
 	//mylogwindow->Show();
 	
+	#ifdef __WXDEBUG__
 	wxLogStderr *log = new wxLogStderr();
 	wxLog::SetActiveTarget(log);
+	#endif
 	
 	/* create a default frame and display it */
 	BibleStudyMainFrame *frame = new BibleStudyMainFrame(&m_SwordTools, APPTITLE, wxPoint(50,50), wxSize(450,340));
