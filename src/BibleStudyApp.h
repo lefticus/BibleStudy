@@ -16,7 +16,9 @@
 
 	#include "biblestudy.h"
 	#include "BibleStudyMainFrame.h"
-	#include "SwordTools.h"	
+	#include "SwordTools.h"
+	#include <wx/splash.h>
+	#include <wx/bitmap.h>
 	#include <wx/log.h>
 	
 	/**
@@ -41,6 +43,10 @@
 		 * Automatically executed on application start
 		 */
 		bool OnInit();
+		void OnExitApp(wxCommandEvent &event);
+		
+		DECLARE_EVENT_TABLE()
+
 	};
 
 #endif

@@ -12,9 +12,9 @@
 #endif
 
 #include "BibleStudyWizard.h"
+#include "../icons/biblestudywiz.xpm"
 
-
-BibleStudyWizard::BibleStudyWizard(wxWindow *parent, int id, wxString title) : wxWizard(parent, id, title, wxNullBitmap, wxDefaultPosition)
+BibleStudyWizard::BibleStudyWizard(wxWindow *parent, int id, wxString title) : wxWizard(parent, id, title, wxBitmap(biblestudywiz_xpm), wxDefaultPosition)
 {
 	m_prevpage = NULL;
 }

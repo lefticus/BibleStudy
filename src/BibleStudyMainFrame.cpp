@@ -12,6 +12,7 @@
 #endif
 
 #include "BibleStudyMainFrame.h"
+#include "../icons/biblestudy.xpm"
 
 //#include "../icons/splitleftright.xpm"
 
@@ -57,6 +58,7 @@ BEGIN_EVENT_TABLE(BibleStudyMainFrame, wxFrame)
 	EVT_LOAD_KEY(BibleStudyMainFrame::OnLoadKey)
 END_EVENT_TABLE() 
 
+DEFINE_EVENT_TYPE(bsEVT_EXIT_APP)
 
 BibleStudyMainFrame::~BibleStudyMainFrame()
 {
@@ -64,7 +66,7 @@ BibleStudyMainFrame::~BibleStudyMainFrame()
 
 BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools, const wxString& title, const wxPoint& pos, const wxSize& size) : wxFrame((wxFrame *)NULL, -1, title, pos, size, wxDEFAULT_FRAME_STYLE,wxT("BibleStudyWindow"))
 {
-
+	
 	m_SwordTools = newSwordTools;
 
 	wxMenu *menuFile = new wxMenu();
@@ -72,7 +74,9 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools, const wxStri
 	wxMenu *menuBibleStudies = new wxMenu();
 	wxMenu *menuWindow = new wxMenu();
 	wxMenu *menuOptions = new wxMenu();
-		
+
+	SetIcon(wxIcon(biblestudy_xpm));
+			
 	menuFile->Append( ID_MenuNewWindow, wxT("&New Window") );
 	menuFile->Append( ID_MenuCloseWindow, wxT("&Close Window") );
 	menuFile->AppendSeparator();
@@ -259,18 +263,9 @@ void BibleStudyMainFrame::OnBookTreeChange(wxCommandEvent& event)
 
 void BibleStudyMainFrame::OnExit(wxCommandEvent& event)
 {
-//	ShowSampleWizard();
-/*	
-	wxLogTrace(wxTRACE_Messages, wxT("BibleStudyMainFrame::OnExit called"));
-	wxWindow *window;
-		
-	window = FindWindowByName(wxT("BibleStudyWindow"));
-	
-	while (window) {
-		window->Close();
-		window = FindWindowByName(wxT("BibleStudyWindow"));
-	}
-*/
+	wxCommandEvent eventCustom(bsEVT_EXIT_APP);
+	eventCustom.SetEventObject(this);
+	ProcessEvent(eventCustom);
 }
 
 void BibleStudyMainFrame::OnCloseWindow(wxCommandEvent& event)

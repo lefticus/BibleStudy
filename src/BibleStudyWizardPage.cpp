@@ -27,6 +27,7 @@ BibleStudyWizardPage::BibleStudyWizardPage(wxWizard *parent, SWModule *module, w
 	wxLogDebug(wxT("BibleStudyWizardPage::BibleStudyWizardPage client area: %i, %i"), size.GetWidth(), size.GetHeight());
 	
 	if (reference != wxT("")) {
+		
 		m_StaticText = new wxStaticText(this, -1, text, wxPoint(0,0),wxSize(size.GetWidth(), size.GetHeight()*1/3), 0);
 		m_BookViewCtrl = new BookViewCtrl(this, -1, wxPoint(0,size.GetHeight()*1/3+1), wxSize(size.GetWidth(), size.GetHeight()*2/3-1));
 		m_BookViewCtrl->OpenInNewTab(module);

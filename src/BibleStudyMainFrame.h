@@ -26,6 +26,13 @@
 	#include "BibleStudyWizard.h"
 	#include "BibleStudyWizardPage.h"
 	
+	BEGIN_DECLARE_EVENT_TYPES()
+		DECLARE_EVENT_TYPE(bsEVT_EXIT_APP, 1)
+	END_DECLARE_EVENT_TYPES()
+
+	#define EVT_EXIT_APP(fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_EXIT_APP, -1, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
+
+	
 	/**
 	* Main window of BibleStudy
 	* 

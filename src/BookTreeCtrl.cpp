@@ -174,7 +174,10 @@ void BookTreeCtrl::RefreshBookList()
 			if (!childnode.IsOk()) {
 				wxLogDebug(wxT("appending type"));
 				childnode = AppendItem(rootnode, wxString(curMod->Type(), wxConvUTF8), ID_CLOSEDFOLDER_ICON);
+				SetItemImage(childnode, ID_CLOSEDFOLDER_ICON, wxTreeItemIcon_Normal);
 				SetItemImage(childnode, ID_OPENFOLDER_ICON, wxTreeItemIcon_Expanded);
+				SetItemImage(childnode, ID_CLOSEDFOLDER_ICON, wxTreeItemIcon_Selected);
+				SetItemImage(childnode, ID_OPENFOLDER_ICON, wxTreeItemIcon_SelectedExpanded);
 				treenodes[curMod->Type()] = childnode;
 			}
 			
@@ -183,7 +186,10 @@ void BookTreeCtrl::RefreshBookList()
 			childnode = treenodes[(const char *)configEntry.mb_str()];
 			if (!childnode.IsOk()) {
 				childnode = AppendItem(rootnode, configEntry, ID_CLOSEDFOLDER_ICON);
+				SetItemImage(childnode, ID_CLOSEDFOLDER_ICON, wxTreeItemIcon_Normal);
 				SetItemImage(childnode, ID_OPENFOLDER_ICON, wxTreeItemIcon_Expanded);
+				SetItemImage(childnode, ID_CLOSEDFOLDER_ICON, wxTreeItemIcon_Selected);
+				SetItemImage(childnode, ID_OPENFOLDER_ICON, wxTreeItemIcon_SelectedExpanded);
 				treenodes[(const char *)configEntry.mb_str()] = childnode;
 			}
 			
@@ -203,8 +209,11 @@ void BookTreeCtrl::RefreshBookList()
 			
 			language = m_Languages.GetLanguage(wxString(curMod->Lang(), wxConvUTF8));
 
-			langnode = AppendItem(childnode, language, ID_CLOSEDFOLDER_ICON);
+			langnode = AppendItem(childnode, language);
+			SetItemImage(langnode, ID_CLOSEDFOLDER_ICON, wxTreeItemIcon_Normal);
 			SetItemImage(langnode, ID_OPENFOLDER_ICON, wxTreeItemIcon_Expanded);
+			SetItemImage(langnode, ID_CLOSEDFOLDER_ICON, wxTreeItemIcon_Selected);
+			SetItemImage(langnode, ID_OPENFOLDER_ICON, wxTreeItemIcon_SelectedExpanded);
 			treelangnodes[grouplang] = langnode;
 		}
 		wxString modname = wxString(curMod->Name(), wxConvUTF8);
@@ -215,16 +224,31 @@ void BookTreeCtrl::RefreshBookList()
 
 		/** SET ICON **/
 		if (!strcmp(curMod->Type(), "Biblical Texts")) {
-			SetItemImage(curNode, ID_BIBLICAL_TEXT_ICON);
+			SetItemImage(curNode, ID_BIBLICAL_TEXT_ICON, wxTreeItemIcon_Normal);
+			SetItemImage(curNode, ID_BIBLICAL_TEXT_ICON, wxTreeItemIcon_Expanded);
+			SetItemImage(curNode, ID_BIBLICAL_TEXT_ICON, wxTreeItemIcon_Selected);
+			SetItemImage(curNode, ID_BIBLICAL_TEXT_ICON, wxTreeItemIcon_SelectedExpanded);
 		} else if (!strcmp(curMod->Type(), "Lexicons / Dictionaries") ||
 					!strcmp(curMod->Type(), "Glossaries")) {
-			SetItemImage(curNode, ID_LEXICON_ICON);
+			SetItemImage(curNode, ID_LEXICON_ICON, wxTreeItemIcon_Normal);
+			SetItemImage(curNode, ID_LEXICON_ICON, wxTreeItemIcon_Expanded);
+			SetItemImage(curNode, ID_LEXICON_ICON, wxTreeItemIcon_Selected);
+			SetItemImage(curNode, ID_LEXICON_ICON, wxTreeItemIcon_SelectedExpanded);
 		} else if (!strcmp(curMod->Type(), "Commentaries")) {
-			SetItemImage(curNode, ID_COMMENTARY_ICON);
+			SetItemImage(curNode, ID_COMMENTARY_ICON, wxTreeItemIcon_Normal);
+			SetItemImage(curNode, ID_COMMENTARY_ICON, wxTreeItemIcon_Expanded);
+			SetItemImage(curNode, ID_COMMENTARY_ICON, wxTreeItemIcon_Selected);
+			SetItemImage(curNode, ID_COMMENTARY_ICON, wxTreeItemIcon_SelectedExpanded);
 		} else if (!strcmp(curMod->Type(), "Daily Devotional")) {
-			SetItemImage(curNode, ID_DEVOTIONAL_ICON);
+			SetItemImage(curNode, ID_DEVOTIONAL_ICON, wxTreeItemIcon_Normal);
+			SetItemImage(curNode, ID_DEVOTIONAL_ICON, wxTreeItemIcon_Expanded);
+			SetItemImage(curNode, ID_DEVOTIONAL_ICON, wxTreeItemIcon_Selected);
+			SetItemImage(curNode, ID_DEVOTIONAL_ICON, wxTreeItemIcon_SelectedExpanded);
 		} else {
-			SetItemImage(curNode, ID_BOOK_ICON);
+			SetItemImage(curNode, ID_BOOK_ICON, wxTreeItemIcon_Normal);
+			SetItemImage(curNode, ID_BOOK_ICON, wxTreeItemIcon_Expanded);
+			SetItemImage(curNode, ID_BOOK_ICON, wxTreeItemIcon_Selected);
+			SetItemImage(curNode, ID_BOOK_ICON, wxTreeItemIcon_SelectedExpanded);
 		}
 		/** END SET ICON **/
 		
@@ -239,10 +263,10 @@ void BookTreeCtrl::RefreshBookList()
 
 
 
-BookTreeCtrl::BookTreeCtrl(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size) : wxTreeCtrl(parent, id, pos, size, wxTR_HIDE_ROOT|wxTR_HAS_BUTTONS, wxDefaultValidator, wxT("listCtrl")) 
+BookTreeCtrl::BookTreeCtrl(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size) : wxTreeCtrl(parent, id, pos, size, wxTR_HIDE_ROOT|wxTR_DEFAULT_STYLE, wxDefaultValidator, wxT("listCtrl")) 
 {
-	SetIndent(10);
-	SetSpacing(10);
+//	SetIndent(10);
+//	SetSpacing(10);
 		
 	SetupIcons();
 	
