@@ -14,11 +14,12 @@
 	#include "biblestudy.h"
 	#include "SwordTools.h"
 	#include "BibleStudyLanguages.h"
-	#include <sword/swlocale.h>
-	#include <sword/localemgr.h>
+	#include <swlocale.h>
+	#include <localemgr.h>
 	#include <wx/treectrl.h>
 	#include <wx/bitmap.h>
 	#include <wx/imaglist.h>
+	#include <wx/image.h>
 
 
 	BEGIN_DECLARE_EVENT_TYPES()

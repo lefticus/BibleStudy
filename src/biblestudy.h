@@ -2,6 +2,7 @@
 
 	#define _BIBLESTUDY_H_
 
+
 	#ifdef HAVE_CONFIG_H
 	#include <config.h>
 	#endif
@@ -11,9 +12,9 @@
 
 	#include <wx/wx.h>
 
-	#include <sword/swmodule.h>
-	#include <sword/swmgr.h>
-	#include <sword/plainhtml.h>
+	#include <swmodule.h>
+	#include <swmgr.h>
+	#include <plainhtml.h>
 	#include <versekey.h>
 	
 	

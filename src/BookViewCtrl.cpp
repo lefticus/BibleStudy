@@ -48,7 +48,7 @@ int BookViewCtrl::AddTab()
 	neweventhandler = new BookViewEventHandler();
 	neweventhandler->SetParent(this);
 	html->PushEventHandler(neweventhandler);
-	html->SetFonts(wxT("Arial"), wxT("Courier New"), 0);
+	//html->SetFonts(wxT("Arial"), wxT("Courier New"), 0); // crashes MSW wx2.4
 	panelsizer->Add(html, 1, wxEXPAND);
 	page->SetSizer(panelsizer);
 	AddPage(page, wxT("*Empty*"));
@@ -151,7 +151,8 @@ void BookViewCtrl::OpenInNewTab(BookModule *bm)
 BookModule* BookViewCtrl::GetActiveBookModule()
 {
 	wxHtmlWindow *html;
-	html = (wxHtmlWindow *)GetPage(GetSelection())->GetChildren().GetFirst()->GetData();
+	int page = (GetSelection() == -1) ? 0 : GetSelection();
+	html = (wxHtmlWindow *)GetPage(page)->GetChildren().GetFirst()->GetData();
 	return (BookModule *)html->GetClientData();
 }
 
@@ -196,7 +197,7 @@ void BookViewCtrl::CloseOtherTabs()
 		CloseTab();
 	}
 	
-	for (int i = 0; i < numafter; i++) {
+	for (i = 0; i < numafter; i++) {
 		SetSelection(1);
 		CloseTab();
 	}
