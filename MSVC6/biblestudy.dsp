@@ -78,7 +78,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 wxmsw25d_core.lib wxbase25d.lib wxmsw25d_adv.lib wxmsw25d_html.lib libswordvc6d.lib ReadingPlannerd.lib InstAide.lib user32.lib gdi32.lib comdlg32.lib shell32.lib advapi32.lib oleaut32.lib ole32.lib comctl32.lib rpcrt4.lib /nologo /subsystem:windows /debug /machine:I386 /out:"./biblestudyd.exe" /pdbtype:sept /libpath:"../../sword/lib" /libpath:"$(READINGPLANNER)/source/MSVC6/Debug" /libpath:"$(WXWIN)/lib" /libpath:"$(WXWIN)/contrib/lib" /libpath:"c:/icu-sword/lib" /verbose:lib
+# ADD LINK32 wxmsw25d_core.lib wxbase25d.lib wxmsw25d_adv.lib wxmsw25d_html.lib libswordvc6d.lib ReadingPlannerd.lib InstAide.lib user32.lib gdi32.lib comdlg32.lib shell32.lib advapi32.lib oleaut32.lib ole32.lib comctl32.lib rpcrt4.lib /nologo /subsystem:windows /debug /machine:I386 /out:"Debug/biblestudyd.exe" /pdbtype:sept /libpath:"../../sword/lib" /libpath:"$(READINGPLANNER)/source/MSVC6/Debug" /libpath:"$(WXWIN)/lib" /libpath:"$(WXWIN)/contrib/lib" /libpath:"c:/icu-sword/lib" /verbose:lib
 # SUBTRACT LINK32 /pdb:none
 
 !ELSEIF  "$(CFG)" == "biblestudy - Win32 Unicode Debug"
@@ -106,7 +106,7 @@ BSC32=bscmake.exe
 LINK32=link.exe
 # ADD BASE LINK32 user32.lib gdi32.lib comdlg32.lib shell32.lib advapi32.lib oleaut32.lib ole32.lib comctl32.lib rpcrt4.lib wxmsw25ud_core.lib wxbase25ud.lib wxmsw25ud_adv.lib wxmsw25ud_html.lib libswordvc6d.lib ReadingPlannerud.lib /nologo /subsystem:windows /debug /machine:I386 /out:"./biblestudyd.exe" /pdbtype:sept /libpath:"$(WXWIN)/lib" /libpath:"$(WXWIN)/contrib/lib" /libpath:"../../sword/lib" /libpath:"../../icu-sword/lib" /libpath:"$(READINGPLANNER)/source/MSVC6/Unicode_Debug" /verbose:lib
 # SUBTRACT BASE LINK32 /pdb:none
-# ADD LINK32 wxmsw25ud_core.lib wxbase25ud.lib wxmsw25ud_adv.lib wxmsw25ud_html.lib libswordvc6d.lib ReadingPlannerud.lib InstAide.lib user32.lib gdi32.lib comdlg32.lib shell32.lib advapi32.lib oleaut32.lib ole32.lib comctl32.lib rpcrt4.lib InstAide.lib /nologo /subsystem:windows /map /debug /machine:I386 /out:"./biblestudyd.exe" /pdbtype:sept /libpath:"c:/sword/lib" /libpath:"$(READINGPLANNER)/source/MSVC6/Unicode_Debug" /libpath:"$(WXWIN)/lib" /libpath:"$(WXWIN)/contrib/lib" /libpath:"c:/icu-sword/lib" /verbose:lib
+# ADD LINK32 wxmsw25ud_core.lib wxbase25ud.lib wxmsw25ud_adv.lib wxmsw25ud_html.lib libswordvc6d.lib ReadingPlannerud.lib InstAide.lib user32.lib gdi32.lib comdlg32.lib shell32.lib advapi32.lib oleaut32.lib ole32.lib comctl32.lib rpcrt4.lib InstAide.lib /nologo /subsystem:windows /map /debug /machine:I386 /out:"Unicode_Debug/biblestudyd.exe" /pdbtype:sept /libpath:"c:/sword/lib" /libpath:"$(READINGPLANNER)/source/MSVC6/Unicode_Debug" /libpath:"$(WXWIN)/lib" /libpath:"$(WXWIN)/contrib/lib" /libpath:"c:/icu-sword/lib" /verbose:lib
 # SUBTRACT LINK32 /pdb:none
 
 !ELSEIF  "$(CFG)" == "biblestudy - Win32 Unicode Release"
