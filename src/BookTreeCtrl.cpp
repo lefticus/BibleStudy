@@ -22,9 +22,9 @@ BEGIN_EVENT_TABLE(BookTreeCtrl, wxTreeCtrl)
 #endif
 	EVT_RIGHT_UP(BookTreeCtrl::OnRightUp)
 	EVT_RIGHT_DOWN(BookTreeCtrl::OnRightDown)
-	//EVT_MENU(ID_BookTreePopupOpenInNewTab, BookTreeCtrl::OnOpenModule)
-	//EVT_MENU(ID_BookTreePopupOpenInNewWindow, BookTreeCtrl::OnOpenModule)
-	//EVT_MENU(ID_BookTreePopupOpen, BookTreeCtrl::OnOpenModule)
+	EVT_MENU(ID_BookTreePopupOpenInNewTab, BookTreeCtrl::OnOpenModule)
+	EVT_MENU(ID_BookTreePopupOpenInNewWindow, BookTreeCtrl::OnOpenModule)
+	EVT_MENU(ID_BookTreePopupOpen, BookTreeCtrl::OnOpenModule)
 	EVT_TREE_ITEM_ACTIVATED(-1, BookTreeCtrl::OnItemActivated)
 END_EVENT_TABLE() 
 
@@ -52,7 +52,7 @@ void BookTreeCtrl::OnItemActivated(wxEvent &event)
 	wxLogDebug(wxT("BookTreeCtrl::OnItemActivated"));
 	if (GetChildrenCount(GetSelection(), false)) {
 		wxLogDebug(wxT("BookTreeCtrl::OnItemActivated not a leaf"));
-		/*
+		
 		if (IsExpanded(GetSelection())) {
 			wxLogDebug(wxT("BookTreeCtrl::OnItemActivated Collapse"));
 			Collapse(GetSelection());
@@ -60,7 +60,7 @@ void BookTreeCtrl::OnItemActivated(wxEvent &event)
 			wxLogDebug(wxT("BookTreeCtrl::OnItemActivated Expand"));
 			Expand(GetSelection());
 		}
-		*/
+		
 	} else {
 		wxLogDebug(wxT("BookTreeCtrl::OnItemActivated is a leaf"));
 		wxCommandEvent eventCustom(bsEVT_OPEN_IN_CURRENT_TAB);
@@ -144,7 +144,7 @@ void BookTreeCtrl::RefreshBookList()
 	rootnode = AddRoot(wxT("books"));
 	for (it = Modules->begin(); it != Modules->end(); it++) {
 		curMod = (*it).second;
-		wxLogDebug(wxT("type %s"), wxString(curMod->Type(), wxConvUTF8));
+		wxLogDebug(wxT("type %s"), (const wxChar *)wxString(curMod->Type(), wxConvUTF8));
 		//childnode = 0;
 		
 		configEntry = wxT("");
@@ -172,7 +172,7 @@ void BookTreeCtrl::RefreshBookList()
 		
 		//group = curMod->Type();
 		grouplang = group;
-		wxLogDebug(wxT("language %s"), wxString(curMod->Lang(), wxConvUTF8));
+		wxLogDebug(wxT("language %s"), (const wxChar *)wxString(curMod->Lang(), wxConvUTF8));
 		grouplang.append( curMod->Lang() );
 		
 		langnode = treelangnodes[grouplang];
@@ -190,7 +190,7 @@ void BookTreeCtrl::RefreshBookList()
 		wxString modname = wxString(curMod->Name(), wxConvUTF8);
 		modname += wxT(" - ");
 		modname += wxString(curMod->Description(), wxConvUTF8);
-		wxLogDebug(wxT("appending module %s"), modname);	
+		wxLogDebug(wxT("appending module %s"), (const wxChar *)modname);	
 		curNode = AppendItem(langnode, wxString(curMod->Name(), wxConvUTF8) + wxT(" - ") + wxString(curMod->Description(), wxConvUTF8), 0);
 		SetItemData(curNode, new BookTreeItemData(curMod));
 		//curMod->AddRenderFilter(new PLAINHTML());

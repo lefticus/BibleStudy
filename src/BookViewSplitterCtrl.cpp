@@ -341,3 +341,4 @@ BookModule* BookViewSplitterCtrl::GetActiveBookModule()
 {
 	return m_LastFocus->GetActiveBookModule();
 }
+

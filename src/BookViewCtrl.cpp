@@ -48,10 +48,16 @@ int BookViewCtrl::AddTab()
 	neweventhandler = new BookViewEventHandler();
 	neweventhandler->SetParent(this);
 	html->PushEventHandler(neweventhandler);
-	//html->SetFonts(wxT("Arial"), wxT("Courier New"), 0); // crashes MSW wx2.4
+	
+	#if !__WXMSW__
+		html->SetFonts(wxT("Arial"), wxT("Courier New"), 0); // crashes MSW wx2.4
+	#endif
+	
 	panelsizer->Add(html, 1, wxEXPAND);
 	page->SetSizer(panelsizer);
 	AddPage(page, wxT("*Empty*"));
+	
+	SetSelection(GetPageCount() - 1);
 	
 	return GetPageCount() - 1;
 }
@@ -188,11 +194,12 @@ void BookViewCtrl::CloseOtherTabs()
 	int curtab = GetSelection();
 	int numbefore;
 	int numafter;
+	int i;
 	
 	numbefore = curtab;
 	numafter = GetPageCount() - (curtab + 1);
 	
-	for (int i = 0; i < numbefore; i++) {
+	for (i = 0; i < numbefore; i++) {
 		SetSelection(0);
 		CloseTab();
 	}
