@@ -182,7 +182,7 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools, const wxStri
 void BibleStudyMainFrame::OnShowWhyBecomeChristian(wxCommandEvent &)
 {
 	SWModule *mod = NULL;
-	mod = m_SwordTools->GetModule("WEB");
+	mod = m_SwordTools->GetModule("KJV");
 	wxWindowDisabler *disableAll = new wxWindowDisabler();	
 
 	BibleStudyWizard *wiz = new BibleStudyWizard(this, -1, wxT("Why Should I Become a Christian?"));
@@ -203,7 +203,7 @@ void BibleStudyMainFrame::OnShowWhyBecomeChristian(wxCommandEvent &)
 void BibleStudyMainFrame::OnShowHowBecomeChristian(wxCommandEvent &)
 {
 	SWModule *mod = NULL;
-	mod = m_SwordTools->GetModule("WEB");
+	mod = m_SwordTools->GetModule("KJV");
 
 	wxWindowDisabler *disableAll = new wxWindowDisabler();	
 
@@ -225,7 +225,7 @@ void BibleStudyMainFrame::OnShowHowBecomeChristian(wxCommandEvent &)
 void BibleStudyMainFrame::OnShowHowGrowSpiritually(wxCommandEvent &)
 {
 	SWModule *mod = NULL;
-	mod = m_SwordTools->GetModule("WEB");
+	mod = m_SwordTools->GetModule("KJV");
 	wxWindowDisabler *disableAll = new wxWindowDisabler();	
 
 	BibleStudyWizard *wiz = new BibleStudyWizard(this, -1, wxT("How Can I Grow as a Christian?"));
@@ -500,7 +500,7 @@ wxString BibleStudyMainFrame::ProverbOfTheDay()
 	wxString output;
 	wxString key;
 	wxDateTime today = wxDateTime::Today();
-	BookModule web(m_SwordTools->GetModule("WEB"));
+	BookModule web(m_SwordTools->GetModule("KJV"));
 	key = wxT("prov ");
 	key += wxString::Format(wxT("%i"), today.GetDay());
 

@@ -58,7 +58,7 @@ BookModule *SwordTools::GetModuleFromLink(wxString link, BookModule *oldbm)
 		}
 
 		if (!bm) {
-			bm = new BookModule(GetModule("WEB"));
+			bm = new BookModule(GetModule("KJV"));
 		}
 	} else if (link.Find(wxT("noteID=")) > -1) {
 		bm = new BookModule(GetModule(oldbm->GetName().mb_str()));
