@@ -310,7 +310,7 @@ void BibleStudyMainFrame::OnBrowseBackward(wxCommandEvent& event)
 
 void BibleStudyMainFrame::OnSearch(wxCommandEvent& event)
 {
-	m_WindowSplit->Search(*(m_ToolBar->GetRange()), event.GetString(), 0);
+	m_WindowSplit->Search(*(m_ToolBar->GetRange()), event.GetString(), -2);
 }
 
 void BibleStudyMainFrame::SetupSplitterWindows()

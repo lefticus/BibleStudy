@@ -20,6 +20,7 @@
 #include <wx/icon.h>
 #include <wx/sizer.h>
 #include <wx/log.h>
+#include <wx/imaglist.h>
 
 #include "../icons/book.xpm"
 #include "../icons/bible.xpm"

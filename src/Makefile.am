@@ -22,7 +22,7 @@ INCLUDES = -I/usr/local/include/sword -I/usr/include/sword $(all_includes)
 
 # the library search path.
 biblestudy_LDFLAGS = $(all_libraries) $(WINDOWS_LINKFLAGS) `wx-config --libs`
-biblestudy_LDADD = $(RESOURCE_FILES) -lsword -lz
+biblestudy_LDADD = $(RESOURCE_FILES) -lsword 
 
 
 AM_CFLAGS =

@@ -42,6 +42,8 @@ BookModule *SwordTools::GetModuleFromLink(wxString link, BookModule *oldbm)
 			bm = new BookModule(GetModule("Robinson"));
 		} else if (link.Find(wxT("Packard")) > -1) {
 			bm = new BookModule(GetModule("Packard"));
+		} else if (link.Find(wxT("class=none")) == -1) {
+			bm = new BookModule(GetModule("Robinson"));
 		}
 	} else if (link.Find(wxT("passage=")) > -1) {
 		wxStringTokenizer tokenizer(link, wxT(" ="));
