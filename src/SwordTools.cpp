@@ -23,7 +23,7 @@ SwordTools::SwordTools()
 	m_SwordManager = new SWMgr(0,0,TRUE,new MarkupFilterMgr(FMT_HTMLHREF, ENC_HTML));
 }
 
-BookModule *SwordTools::GetModuleFromLink(wxString link)
+BookModule *SwordTools::GetModuleFromLink(wxString link, BookModule *oldbm)
 {
 	wxLogDebug(wxT("GetModuleFromLink called with link: ") + link);
 	BookModule *bm = NULL;
@@ -58,6 +58,8 @@ BookModule *SwordTools::GetModuleFromLink(wxString link)
 		if (!bm) {
 			bm = new BookModule(GetModule("WEB"));
 		}
+	} else if (link.Find(wxT("noteID=")) > -1) {
+		bm = new BookModule(GetModule(oldbm->GetName().mb_str()));
 	}
 
 
@@ -84,6 +86,8 @@ wxString SwordTools::GetKeyFromLink(wxString link)
 		}
 	} else if (link.Find(wxT("passage=")) > -1) {
 		key = link.Mid(link.Find(wxT("passage="))+8);
+	} else if (link.Find(wxT("noteID=")) > -1) {
+		key = link.Mid(link.Find(wxT("noteID="))+7);
 	} else {
 		key = link;
 	}

@@ -45,7 +45,7 @@
 		SWMgr *GetSwordManager();
 		SWModule *GetModule(const char *ModuleName);
 
-		BookModule *GetModuleFromLink(wxString link);
+		BookModule *GetModuleFromLink(wxString link, BookModule*);
 		wxString GetKeyFromLink(wxString link);
 	};
 

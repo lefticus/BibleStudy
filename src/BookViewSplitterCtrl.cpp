@@ -351,7 +351,8 @@ void BookViewSplitterCtrl::OnLinkHover(wxCommandEvent &event)
 	BookModule *book = NULL;
 
 	if (!event.GetString().StartsWith(wxT("biblestudy://"))) {
-		book = m_SwordTools->GetModuleFromLink(event.GetString());
+		book = m_SwordTools->GetModuleFromLink(event.GetString(), 
+			GetActiveBookViewCtrl()->GetActiveBookModule());
 		key = m_SwordTools->GetKeyFromLink(event.GetString());
 
 

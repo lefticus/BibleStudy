@@ -200,12 +200,22 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype, bo
 	int chapter = 0, verse = 0;
 	int versecount = 0;
 	bool cont = true;
+	bool isfootnote = false;
 
 	wxWindowDisabler disableAll;
 
 	if (!tooltip) {
 
 		wxBusyCursor busy;
+	}
+
+	int footnoteindex = key.Find(wxT(".n."));
+	if (footnoteindex > -1) {
+		if (key.Mid(footnoteindex+3).IsNumber()) {
+			isfootnote = true;
+			wxLogDebug(wxT("BookModule::LookupKey key isfootnote"));
+			key = key.Left(footnoteindex);
+		}
 	}
 
 	m_isbrowsing = browse;
@@ -373,7 +383,14 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype, bo
 
 							wxLogDebug(wxT("BookModule::LookupKey updating last chaper, book, verse"));
 							output.append(wxT("</font></small> "));
-							output.append(verseout);
+							if (!isfootnote) {
+								output.append(verseout);
+							} else {
+								wxString body;
+								body = wxString((const char *)(curMod->getEntryAttributes()["Footnote"]["1"]["body"].c_str()), wxConvUTF8);
+								wxLogDebug(wxT("BookModule::LookupKey adding footnote ") + body);
+								output.append(body);
+							}
 
 							output.append(wxT("</td>"));
 						}
@@ -421,7 +438,20 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype, bo
 					m_Module->Key(*listkey.GetElement(i));
 					output.append(wxString(m_Module->KeyText(), wxConvUTF8));
 					output.append(wxT("</font></small> "));
-					output.append(wxString((const char *)(*curMod), wxConvUTF8));
+
+					if (!isfootnote) {
+						output.append(wxString((const char *)(*curMod), wxConvUTF8));
+					} else {
+						SWBuf body;
+						wxString wxBody;
+						//curMod->SetKey("jn3:3");
+						curMod->RenderText();
+						body = curMod->getEntryAttributes()["Footnote"]["1"]["body"].c_str();
+						curMod->RenderText(body);
+						wxBody = wxString((const char *)body.c_str(), wxConvUTF8);
+						//wxLogDebug(wxT("BookModule::LookupKey adding footnote ") + wxBody);
+						output.append(wxBody);
+					}
 
 					output.append(wxT("</td>"));
 				}
