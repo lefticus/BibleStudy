@@ -1,0 +1,63 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<!DOCTYPE KDevPrjSession>
+<KDevPrjSession>
+ <DocsAndViews NumberOfDocuments="6" >
+  <Doc0 NumberOfViews="1" URL="file:/home/dtrotzjr/sources/biblestudy-current/configure.in" >
+   <View0 line="2" Type="???" >
+    <AdditionalSettings Top="2" Width="725" Attach="1" Height="371" Left="2" MinMaxMode="0" />
+   </View0>
+  </Doc0>
+  <Doc1 NumberOfViews="1" URL="file:/home/dtrotzjr/sources/biblestudy-current/src/TestSword.h" >
+   <View0 line="0" Type="???" >
+    <AdditionalSettings Top="2" Width="725" Attach="1" Height="349" Left="2" MinMaxMode="0" />
+   </View0>
+  </Doc1>
+  <Doc2 NumberOfViews="1" URL="file:/home/dtrotzjr/sources/biblestudy-current/src/BookList.h" >
+   <View0 line="7" Type="???" >
+    <AdditionalSettings Top="2" Width="725" Attach="1" Height="349" Left="2" MinMaxMode="0" />
+   </View0>
+  </Doc2>
+  <Doc3 NumberOfViews="1" URL="file:/usr/local/include/wx-2.5/wx/event.h" >
+   <View0 line="2173" Type="???" >
+    <AdditionalSettings Top="2" Width="725" Attach="1" Height="349" Left="2" MinMaxMode="0" />
+   </View0>
+  </Doc3>
+  <Doc4 NumberOfViews="1" URL="file:/home/dtrotzjr/sources/biblestudy-current/src/ReadingPlanWizard.h" >
+   <View0 line="99" Type="???" >
+    <AdditionalSettings Top="2" Width="725" Attach="1" Height="349" Left="2" MinMaxMode="0" />
+   </View0>
+  </Doc4>
+  <Doc5 NumberOfViews="1" URL="file:/home/dtrotzjr/sources/biblestudy-current/src/ReadingPlanWizard.cpp" >
+   <View0 line="3" Type="???" >
+    <AdditionalSettings Top="2" Width="725" Attach="1" Height="349" Left="2" MinMaxMode="0" />
+   </View0>
+  </Doc5>
+ </DocsAndViews>
+ <pluginList>
+  <kdevbookmarks>
+   <bookmarks>
+    <bookmark url="/home/dtrotzjr/sources/biblestudy/src/ReadingPlanWizard.cpp" >
+     <mark line="135" />
+    </bookmark>
+   </bookmarks>
+  </kdevbookmarks>
+  <kdevsubversion>
+   <subversion recurseresolve="1" recurserelocate="1" recursemerge="1" recursecommit="1" base="" recursepropget="1" recurseswitch="1" recurseupdate="1" recursepropset="1" recursediff="1" recurserevert="1" forcemove="1" recursecheckout="1" forceremove="1" recurseadd="1" recurseproplist="1" forcemerge="1" />
+  </kdevsubversion>
+  <kdevvalgrind>
+   <executable path="" params="" />
+   <valgrind path="" params="" />
+  </kdevvalgrind>
+  <kdevdebugger>
+   <breakpointList>
+    <breakpoint0 location="/home/dtrotzjr/sources/biblestudy/src/BookList.cpp:33" type="1" condition="" enabled="1" />
+    <breakpoint1 location="/home/dtrotzjr/sources/biblestudy/src/BookList.cpp:34" type="1" condition="" enabled="1" />
+    <breakpoint2 location="/home/dtrotzjr/sources/biblestudy/src/BookList.cpp:56" type="1" condition="" enabled="1" />
+    <breakpoint3 location="/home/dtrotzjr/sources/biblestudy/src/BookList.cpp:40" type="1" condition="" enabled="1" />
+    <breakpoint4 location="/home/dtrotzjr/sources/biblestudy/src/ReadingPlanWizard.cpp:7" type="1" condition="" enabled="1" />
+    <breakpoint5 location="/home/dtrotzjr/sources/biblestudy/src/ReadingPlannerToolBar.cpp:59" type="1" condition="" enabled="1" />
+    <breakpoint6 location="/home/dtrotzjr/sources/biblestudy/src/ReadingPlannerToolBar.cpp:111" type="1" condition="" enabled="1" />
+   </breakpointList>
+  </kdevdebugger>
+ </pluginList>
+</KDevPrjSession>

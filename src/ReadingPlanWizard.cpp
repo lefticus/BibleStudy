@@ -1,6 +1,7 @@
 #include "ReadingPlanWizard.h"
 #include <wx/combobox.h>
 #include <wx/panel.h>
+#include <typeinfo>
 
 BEGIN_EVENT_TABLE(ReadingPlanWizard, wxWizard)
 	EVT_WIZARD_PAGE_CHANGED(ID_RPWizard, ReadingPlanWizard::OnShowingBooksPage)

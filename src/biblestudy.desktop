@@ -1,0 +1,25 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=biblestudy
+Name[xx]=xxbiblestudyxx
+Exec=biblestudy
+Icon=biblestudy
+Type=Application
+Comment=A simple wxWindows Application
+Comment[ca]=Una simple aplicació wxWindows
+Comment[da]=Et simpelt wxWindows program
+Comment[de]=Eine einfache wxWindows-Anwendung
+Comment[es]=Una aplicación wxWindows sencilla
+Comment[et]=Lihtne wxWindows rakendus
+Comment[fr]=Une application wxWindows simple.
+Comment[hu]=Egyszerű wxWindows-alkalmazás
+Comment[it]=Una semplice applicazione wxWindows
+Comment[nl]=Een eenvoudige wxWindows-toepassing
+Comment[pt]=Uma aplicação wxWindows
+Comment[pt_BR]=Um simples Aplicativo wxWindows
+Comment[ru]=Простое приложение wxWindows
+Comment[sr]=Једноставан wxWindows програм
+Comment[sv]=Ett enkelt wxWindows-program
+Comment[ta]=சாதாரண wxWindows பயன்பாடு
+Comment[xx]=xxA simple wxWindows Applicationxx
+Comment[zh_CN]=一个简单的wxWindows应用程序
