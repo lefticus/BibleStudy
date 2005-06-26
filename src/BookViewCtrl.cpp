@@ -303,7 +303,9 @@ void BookViewCtrl::OpenInCurrentTab(SWModule * newModule)
       key = prevbookmod->GetLastLookupKey();
       search = prevbookmod->GetLastSearch();
       browse = prevbookmod->IsBrowsing();
-      performsearch = (prevbookmod->GetKeyType() == bookmod->GetKeyType());
+      performsearch = true;
+//      performsearch = (prevbookmod->GetKeyType() == bookmod->GetKeyType() 
+//		      && bookmod->GetKeyType() != TreeKey);
     }
 
     if (!performsearch && !strcmp(newModule->Type(), "Daily Devotional")) {

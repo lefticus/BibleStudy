@@ -265,7 +265,7 @@ void BibleStudyMainFrame::UpdatePlanToolBar()
 		if(index >= 0)
 		{
 			percent = m_pdbFile->PercentDone();
-			done =  m_pdbFile->PDBGetRecord(index)->bnDone;
+			done =  m_pdbFile->PDBGetRecord(index)->pSel->m_bnDone;
 			m_PlanToolBar->SetControlStates(percent,done, true);
 		}
 		else m_PlanToolBar->SetControlStates(m_pdbFile->PercentDone(), false, false);
@@ -880,7 +880,13 @@ void BibleStudyMainFrame::OnReadingPlannerWiz(wxCommandEvent& event)
 		buildKJVSEL(&rpBible,SEL_List);
 		readingDays.reInitialize(dateBegin, dateEnd, dayFlags);
 		calcReadingDays(SEL_List, readingDays);
-		pdbFile.NewReadingPlan(newPlanName.mb_str(), readingDays, getPalmDateType(dateBegin), getPalmDateType(dateEnd), dayFlags);
+		__u8 bookNames[MAX_BOOKS][MAX_BOOK_NAME];
+		for (int i=0; i<MAX_BOOKS; i++) {
+			strcpy((char *)bookNames[i], rpBible.getName(i).c_str());
+		}
+		char name[newPlanName.size()];
+		strcpy(name, newPlanName.mb_str());
+		pdbFile.NewReadingPlan(name, readingDays, getPalmDateType(dateBegin), getPalmDateType(dateEnd), dayFlags, 0, bookNames);
 		m_pdbFile->Refresh();
 		// Now we prepare the plan for install on the next HotSync.
 		char	userName[256],

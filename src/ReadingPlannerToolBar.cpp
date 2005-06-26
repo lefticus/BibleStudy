@@ -59,7 +59,7 @@ ReadingPlannerToolBar::ReadingPlannerToolBar(wxWindow * parent, wxWindowID id, l
 	wxArrayString planNames = ((BibleStudyMainFrame*) GetParent())->GetPlanNames();
 	if(!planNames.Count())
 		planNames.Insert(wxT("No Plans Found"),0);
-	m_DropDownPlans = new wxComboBox(this, ID_ComboPlans,planNames[0], wxDefaultPosition, wxSize(200,-1),planNames, wxCB_READONLY);	
+	m_DropDownPlans = new wxComboBox((wxWindow *)this, (wxWindowID)ID_ComboPlans, planNames[0], wxDefaultPosition, wxSize(200,-1),planNames, wxCB_READONLY);	
 	AddSeparator();
 	AddControl(new wxStaticText(this,-1,wxT("Reading Plan")));
 	AddSeparator();

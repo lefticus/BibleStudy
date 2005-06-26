@@ -184,7 +184,9 @@ void PrefsDialog::OnDetectPalmConfig(wxCommandEvent &event)
 	wxMessageDialog* errorMsg = new wxMessageDialog(this, wxT("Error locating KPilot's directories, if you know you have KPilot installed then locate and browse the directory manually"),wxT("Cannot find KPilot Directories"),wxOK );
 	wxString basePath = ::wxGetHomeDir();
 	wxString installPath, backupPath;
-	installPath = backupPath = basePath += wxT("/.kde/share/apps/kpilot/");
+	basePath += wxT("/.kde/share/apps/kpilot/");
+	installPath = backupPath = basePath;
+	
 	installPath += wxT("pending_install");
 	backupPath += wxT("DBBackup/");
 	if(!wxFileName::DirExists(basePath) || !wxFileName::DirExists(installPath))
