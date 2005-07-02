@@ -1,6 +1,6 @@
 #include "BookList.h"
-#include <KJVResource.h>
-#include <RPUtils.h>
+#include <libreadingplanner/KJVResource.h>
+#include <libreadingplanner/RPUtils.h>
 
 BEGIN_EVENT_TABLE(BookListBox, wxCheckListBox)
 #ifdef __WXMSW__

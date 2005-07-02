@@ -11,8 +11,8 @@
 
 #include "../icons/readingplannerwiz.xpm"
 #include "BookList.h"
-#include "RPDate.h"
-#include "RPUtils.h"
+#include <libreadingplanner/RPDate.h>
+#include <libreadingplanner/RPUtils.h>
 
 class ReadingPlanWizardOptsPage : public wxWizardPageSimple
 {

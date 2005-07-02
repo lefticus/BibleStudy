@@ -15,13 +15,11 @@ bin_PROGRAMS = biblestudy
 biblestudy_SOURCES = biblestudy.cpp biblestudy.h dirtraversersimple.cpp BibleStudyApp.cpp BibleStudyApp.h BibleStudyMainFrame.cpp BibleStudyMainFrame.h BookModule.cpp BookModule.h BookTreeCtrl.cpp BookTreeCtrl.h BookViewCtrl.cpp BookViewCtrl.h BookViewSplitterCtrl.cpp BookViewSplitterCtrl.h SwordTools.cpp SwordTools.h BookViewToolBar.h BookViewToolBar.cpp BibleStudyLanguages.h BibleStudyLanguages.cpp BookViewEventHandler.h BookViewEventHandler.cpp DropDownEventHandler.h DropDownEventHandler.cpp BibleStudyWizard.h BibleStudyWizard.cpp BookViewHtml.h BookViewHtml.cpp HTMLToolTip.h HTMLToolTip.cpp DropDownCtrl.h DropDownCtrl.cpp BookList.cpp BookList.h PrefsDialog.cpp PrefsDialog.h ReadingPlannerToolBar.cpp ReadingPlannerToolBar.h ReadingPlanWizard.cpp ReadingPlanWizard.h
 
 
-
-
 # set the include path found by configure
-INCLUDES = $(all_includes) -I/usr/include/sword -I../../ReadingPlanner/source
+INCLUDES = $(all_includes) -I/usr/include/sword 
 
 # the library search path.
-biblestudy_LDFLAGS = $(all_libraries) $(WINDOWS_LINKFLAGS) `wx-config-2.6 --libs` -L../../ReadingPlanner/source/ -D_WX_WIN -lreadingplanner -lsword -lboost_filesystem
+biblestudy_LDFLAGS = $(all_libraries) $(WINDOWS_LINKFLAGS) `wx-config-2.6 --libs` -D_WX_WIN -lReadingPlanner -lsword -lboost_filesystem
 
 
 AM_CFLAGS =

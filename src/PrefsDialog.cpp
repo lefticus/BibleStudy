@@ -22,7 +22,7 @@
 #include <BibleStudyMainFrame.h>
 #include <biblestudy.h>
 #include "dirtraversersimple.h"
-#include "pdbResource.h"
+#include <libreadingplanner/pdbResource.h>
 #include "BookList.h"
 
 // If Windows build we want to include a PalmDesktop helper file

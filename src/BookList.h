@@ -5,7 +5,7 @@
 #include <wx/checklst.h>
 #include <wx/string.h>
 	
-#include "KJVBible.h"
+#include <libreadingplanner/KJVBible.h>
 #include "biblestudy.h"
 
 extern KJVBible rpBible;

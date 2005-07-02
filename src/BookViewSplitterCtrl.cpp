@@ -417,3 +417,4 @@ void BookViewSplitterCtrl::RefreshStartPages(const wxString html)
 	}
 
 }
+

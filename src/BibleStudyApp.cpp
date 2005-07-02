@@ -14,7 +14,8 @@
 #include <wx/splash.h>
 #include <wx/msgdlg.h>
 #include <biblestudy.h>
-#include <KJVBible.h>
+#include <libreadingplanner/KJVBible.h>
+
 KJVBible rpBible;
 
 #include "../icons/splashscreen.xpm"

@@ -22,9 +22,9 @@
 #include <wx/menu.h>
 #include <wx/msgdlg.h>
 #include <wx/filename.h>
-#include "SELStack.h"
-#include "MultDays.h"
-#include "RPpdb.h"
+#include <libreadingplanner/SELStack.h>
+#include <libreadingplanner/MultDays.h>
+#include <libreadingplanner/RPpdb.h>
 
 #include "../icons/biblestudy.xpm"
 
