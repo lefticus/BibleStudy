@@ -123,7 +123,7 @@ void ReadingPlannerToolBar::SetComboPlanNames()
 	if(!planNames.Count())
 		planNames.Insert(wxT("No Plans Found"),0);
 	m_DropDownPlans->Clear();
-	for(int i = 0; i < planNames.Count(); i++)
+	for(unsigned int i = 0; i < planNames.Count(); i++)
 		m_DropDownPlans->Insert(planNames[i], i);
 	m_DropDownPlans->SetSelection(0);
 	m_DropDownPlans->SetValue(m_DropDownPlans->GetStringSelection());

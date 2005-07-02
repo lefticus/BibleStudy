@@ -468,7 +468,7 @@ void BookViewCtrl::DuplicateTab(BookModule * bm)
 
 void BookViewCtrl::RefreshStartPages(const wxString html)
 {
-	for(int i = 0; i < GetPageCount(); i++)
+	for(unsigned int i = 0; i < GetPageCount(); i++)
 	{
 		if(GetPageText(i).IsSameAs(wxT("Start Page")))
 		{

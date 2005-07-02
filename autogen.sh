@@ -1,4 +1,8 @@
 #!/bin/sh
+
+echo "*** Running libtoolize"
+	libtoolize --copy --force
+
 ACLOCAL="$AUTODIR""aclocal"
 echo "*** Recreating aclocal.m4"
 echo "$ACLOCAL"

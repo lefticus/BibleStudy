@@ -19,10 +19,10 @@ biblestudy_SOURCES = biblestudy.cpp biblestudy.h dirtraversersimple.cpp BibleStu
 INCLUDES = $(all_includes) -I/usr/include/sword 
 
 # the library search path.
-biblestudy_LDFLAGS = $(all_libraries) $(WINDOWS_LINKFLAGS) `wx-config-2.6 --libs` -D_WX_WIN -lReadingPlanner -lsword -lboost_filesystem
+biblestudy_LDFLAGS = $(all_libraries) $(WINDOWS_LINKFLAGS) `wx-config --libs` -D_WX_WIN -lReadingPlanner -lsword -lboost_filesystem
 
 
 AM_CFLAGS =
-AM_CXXFLAGS = `wx-config-2.6 --cxxflags ` -Wall -D_WX_WIN
+AM_CXXFLAGS = `wx-config --cxxflags ` -Wall -D_WX_WIN
 AM_FFLAGS =
 

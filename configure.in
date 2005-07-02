@@ -16,7 +16,7 @@ if test "$WXFOUND" != 1; then
 		Please check that wx-config is in the path, the directory
 		where wxWindows libraries are installed (returned by
 		'wx-config --libs' command) is in LD_LIBRARY_PATH or
-		equivalent variable ans wxWindows is version 2.4.0 or above.
+		equivalent variable ans wxWindows is version 2.6.0 or above.
 	])
 fi
 

@@ -77,8 +77,8 @@ PrefsDialog::PrefsDialog(wxWindow* parent, wxWindowID id, BibleStudyConfig* gCon
 	wxStaticText* txtInstall = new wxStaticText(this, wxID_ANY,wxT("Palm User Install Path"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
 	wxStaticText* txtBackup = new wxStaticText(this, wxID_ANY,wxT("Palm User Backup Path"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
 	
-	m_InstallPathCtl = new wxTextCtrl(this, wxID_ANY,wxT(""), wxDefaultPosition, wxSize(490,-1), NULL, wxTextValidator(wxFILTER_NONE, &m_gConfig->m_PalmUserInstallPath));
-	m_BackupPathCtl = new wxTextCtrl(this, wxID_ANY,wxT(""), wxDefaultPosition, wxSize(490,-1), NULL, wxTextValidator(wxFILTER_NONE, &m_gConfig->m_PalmUserBackupPath));
+	m_InstallPathCtl = new wxTextCtrl(this, wxID_ANY,wxT(""), wxDefaultPosition, wxSize(490,-1), 0, wxTextValidator(wxFILTER_NONE, &m_gConfig->m_PalmUserInstallPath));
+	m_BackupPathCtl = new wxTextCtrl(this, wxID_ANY,wxT(""), wxDefaultPosition, wxSize(490,-1), 0, wxTextValidator(wxFILTER_NONE, &m_gConfig->m_PalmUserBackupPath));
 
 
 	rowOneSizer->Add(m_radConfig, 2, wxALIGN_LEFT | wxALIGN_TOP | wxALL,7);
@@ -201,7 +201,7 @@ void PrefsDialog::OnDetectPalmConfig(wxCommandEvent &event)
 	DirTraverserSimple traverser(paths);
 	wxDir dir(backupPath);
 	dir.Traverse(traverser);
-	for(int i = 0; i < paths.GetCount(); i++)
+	for(unsigned int i = 0; i < paths.GetCount(); i++)
 	{
 		leafIndex = paths[i].Find('/',true);
 		users.Add(paths[i].SubString(++leafIndex, paths[i].Length()));
