@@ -8,7 +8,6 @@
 #include <libreadingplanner/KJVBible.h>
 #include "biblestudy.h"
 
-extern KJVBible rpBible;
 
 enum testamentType
 {
@@ -20,7 +19,7 @@ enum testamentType
 class BookListBox : public wxCheckListBox
 {
 public:
-		BookListBox(testamentType testament, wxWindow* parent, wxWindowID id, 
+		BookListBox(testamentType testament, KJVBible* bible, wxWindow* parent, wxWindowID id, 
 				const wxPoint& pos = wxDefaultPosition, 
 				const wxSize& size = wxDefaultSize, 
 				long style = 0, const wxValidator& validator = wxDefaultValidator,
@@ -47,6 +46,7 @@ protected:
 private:
 		void ShowContextMenu(const wxPoint& pos);
 		testamentType m_testament;
+		KJVBible *m_rpBible;
 		DECLARE_EVENT_TABLE()
 };
 

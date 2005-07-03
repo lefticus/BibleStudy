@@ -7,7 +7,8 @@
 BEGIN_EVENT_TABLE(ReadingPlanWizard, wxWizard)
 	EVT_WIZARD_PAGE_CHANGED(ID_RPWizard, ReadingPlanWizard::OnShowingBooksPage)
 END_EVENT_TABLE()
-ReadingPlanWizard::ReadingPlanWizard(wxWindow* parent, int id) : wxWizard(parent, id, wxT("ReadingPlanner Wizard"), wxBitmap(readingplannerwiz_xpm))
+
+ReadingPlanWizard::ReadingPlanWizard(wxWindow* parent, KJVBible *bible, int id) : wxWizard(parent, id, wxT("ReadingPlanner Wizard"), wxBitmap(readingplannerwiz_xpm))
 {
 	
 	m_page1 = new wxWizardPageSimple(this);
@@ -17,7 +18,7 @@ ReadingPlanWizard::ReadingPlanWizard(wxWindow* parent, int id) : wxWizard(parent
              _T("Follow the instructions on the following pages.")
         );
 	SetPageSize(wxSize(400,250));
-	m_page2 = new ReadingPlanWizardBooksPage(this);
+	m_page2 = new ReadingPlanWizardBooksPage(this, bible);
 	m_page3 = new ReadingPlanWizardDatesPage(this);
 	m_page4 = new ReadingPlanWizardOptsPage(this);
 	wxWizardPageSimple::Chain(m_page1, m_page2);
@@ -49,13 +50,13 @@ void ReadingPlanWizard::OnShowingBooksPage(wxWizardEvent& event)
 	
 }
 
-ReadingPlanWizardBooksPage::ReadingPlanWizardBooksPage(wxWizard *parent) : wxWizardPageSimple(parent)
+ReadingPlanWizardBooksPage::ReadingPlanWizardBooksPage(wxWizard *parent, KJVBible *bible) : wxWizardPageSimple(parent)
 {
 	wxBoxSizer *topsizer = new wxBoxSizer( wxHORIZONTAL );
 	wxBoxSizer *OTsizer = new wxBoxSizer( wxVERTICAL );
 	wxBoxSizer *NTsizer = new wxBoxSizer( wxVERTICAL );
-	m_listOT = new BookListBox(tstOT, this, ID_BookList_OT, wxDefaultPosition, wxSize(170, 145), wxLB_MULTIPLE );
-	m_listNT = new BookListBox(tstNT, this, ID_BookList_NT, wxDefaultPosition, wxSize(170, 145), wxLB_MULTIPLE );
+	m_listOT = new BookListBox(tstOT, bible, this, ID_BookList_OT, wxDefaultPosition, wxSize(170, 145), wxLB_MULTIPLE);
+	m_listNT = new BookListBox(tstNT, bible, this, ID_BookList_NT, wxDefaultPosition, wxSize(170, 145), wxLB_MULTIPLE);
 	m_strOT = new wxStaticText(this, -1,wxT("Old Testament Books:"), wxDefaultPosition);
 	m_strNT = new wxStaticText(this, -1,wxT("New Testament Books:"), wxDefaultPosition);
 	OTsizer->Add(m_strOT, 0, wxALIGN_LEFT, 2);

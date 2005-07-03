@@ -18,7 +18,6 @@
 
 
 #include "ReadingPlanWizard.h"
-extern KJVBible rpBible;
 
 BEGIN_DECLARE_EVENT_TYPES()
 		DECLARE_EVENT_TYPE(bsEVT_EXIT_APP, 1)
@@ -134,6 +133,7 @@ public:
   wxString SearchBox() const;
 
 private:
+	KJVBible rpBible;
 	void OnSize(wxSizeEvent& event);
 
 	/** Cross-platform config storage, uses native storage, either .conf or registry, etc. */

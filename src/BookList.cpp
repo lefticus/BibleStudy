@@ -23,19 +23,19 @@ BEGIN_EVENT_TABLE(BookListBox, wxCheckListBox)
 END_EVENT_TABLE()
 
 
-BookListBox::BookListBox(testamentType testament, wxWindow* parent, wxWindowID id, 
+BookListBox::BookListBox(testamentType testament, KJVBible *bible, wxWindow* parent, wxWindowID id, 
 				const wxPoint& pos, const wxSize& size, long style, 
 				const wxValidator& validator, const wxString& name)
-				:wxCheckListBox(parent,id,pos,size,0,NULL,style ,validator , name)
+				:wxCheckListBox(parent,id,pos,size,0,NULL,style ,validator , name), m_rpBible(bible)
 {
-	rpBible.selectRange(GENESIS, REVELATION, false); // Reset the selected books
+	m_rpBible->selectRange(GENESIS, REVELATION, false); // Reset the selected book
 
 	m_testament = testament;
 	if(m_testament == tstOT)
 	{
 		wxString otChoices[39];
 		for(int i = GENESIS; i <= MALACHI; i++)
-			otChoices[i] = wxString(rpBible.getName(i).c_str(), wxConvUTF8);
+			otChoices[i] = wxString(m_rpBible->getName(i).c_str(), wxConvUTF8);
 			this->InsertItems(39,otChoices,0);
 		this->Refresh(true);
 			
@@ -43,7 +43,7 @@ BookListBox::BookListBox(testamentType testament, wxWindow* parent, wxWindowID i
 	{
 		wxString ntChoices[27];
 		for(int i = MATTHEW; i <= REVELATION; i++)
-			ntChoices[i - MATTHEW] = wxString(rpBible.getName(i).c_str(), wxConvUTF8);
+			ntChoices[i - MATTHEW] = wxString(m_rpBible->getName(i).c_str(), wxConvUTF8);
 			this->InsertItems(27,ntChoices,0);
 	}
 	
@@ -85,9 +85,9 @@ void BookListBox::OnSelectAll(wxCommandEvent &event)
 	for(int i = 0; i < GetCount(); i++)
 		Check(i, true);
 	if(m_testament == tstOT)
-		rpBible.selectRange(GENESIS,MALACHI, true);
+		m_rpBible->selectRange(GENESIS,MALACHI, true);
 	else
-		rpBible.selectRange(MATTHEW,REVELATION, true);
+		m_rpBible->selectRange(MATTHEW,REVELATION, true);
 }
 
 void BookListBox::OnDeselectAll(wxCommandEvent &event)
@@ -95,9 +95,9 @@ void BookListBox::OnDeselectAll(wxCommandEvent &event)
 	for(int i = 0; i < GetCount(); i++)
 		Check(i, false);
 	if(m_testament == tstOT)
-		rpBible.selectRange(GENESIS,MALACHI, false);
+		m_rpBible->selectRange(GENESIS,MALACHI, false);
 	else
-		rpBible.selectRange(MATTHEW,REVELATION, false);
+		m_rpBible->selectRange(MATTHEW,REVELATION, false);
 }
 
 void BookListBox::OnInvertSelection(wxCommandEvent &event)
@@ -111,10 +111,10 @@ void BookListBox::OnInvertSelection(wxCommandEvent &event)
 
 	if(m_testament == tstOT)
 		for(i = GENESIS; i <= MALACHI; i++)
-				rpBible.select(i, !rpBible.isSelected(i));
+				m_rpBible->select(i, !m_rpBible->isSelected(i));
 	else
 		for(i = MATTHEW; i <= REVELATION; i++)
-				rpBible.select(i, !rpBible.isSelected(i));		
+				m_rpBible->select(i, !m_rpBible->isSelected(i));		
 
 }
  
@@ -129,9 +129,9 @@ void BookListBox::OnCheckboxToggle(wxCommandEvent &event)
 	for(int i = 0; i < GetCount(); i++, book++)
 	{
 		if(IsChecked(i))
-			rpBible.select(book,true);
+			m_rpBible->select(book,true);
 		else
-			rpBible.select(book,false);
+			m_rpBible->select(book,false);
 	}
 
 }
@@ -141,7 +141,7 @@ void BookListBox::OnSelectOTLaw(wxCommandEvent &event)
 	for(int i = GENESIS; i <= DEUTERONOMY; i++)
 	{
 		Check(i, true);
-		rpBible.select(i, true);
+		m_rpBible->select(i, true);
 	}
 
  }
@@ -151,7 +151,7 @@ void BookListBox::OnSelectOTHistory(wxCommandEvent &event)
 	for(int i = JOSHUA; i <= JOB; i++)
 	{
 		Check(i, true);
-		rpBible.select(i, true);
+		m_rpBible->select(i, true);
 	}
 
  }
@@ -161,7 +161,7 @@ void BookListBox::OnSelectOTPsalms(wxCommandEvent &event)
 	for(int i = PSALMS; i <= SONG_OF_SONGS; i++)
 	{
 		Check(i, true);
-		rpBible.select(i, true);
+		m_rpBible->select(i, true);
 	}
 
  }
@@ -171,7 +171,7 @@ void BookListBox::OnSelectOTProphets(wxCommandEvent &event)
 	for(int i = ISAIAH; i <= MALACHI; i++)
 	{
 		Check(i, true);
-		rpBible.select(i, true);
+		m_rpBible->select(i, true);
 	}
 
  }
@@ -181,7 +181,7 @@ void BookListBox::OnSelectNTGospels(wxCommandEvent &event)
 	for(int i = MATTHEW; i <= JOHN; i++)
 	{
 		Check(i - MATTHEW, true);
-		rpBible.select(i, true);
+		m_rpBible->select(i, true);
 	}
 
  }
@@ -189,7 +189,7 @@ void BookListBox::OnSelectNTGospels(wxCommandEvent &event)
 void BookListBox::OnSelectNTHistory(wxCommandEvent &event)
  {
 	Check(4, true);
-	rpBible.select(ACTS, true);
+	m_rpBible->select(ACTS, true);
  }
 
 void BookListBox::OnSelectNTEpistles(wxCommandEvent &event)
@@ -197,7 +197,7 @@ void BookListBox::OnSelectNTEpistles(wxCommandEvent &event)
 	for(int i = ROMANS; i <= REVELATION; i++)
 	{
 		Check(i - MATTHEW, true);
-		rpBible.select(i, true);
+		m_rpBible->select(i, true);
 	}
 
  }

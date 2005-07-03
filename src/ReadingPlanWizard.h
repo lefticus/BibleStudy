@@ -29,7 +29,7 @@ private:
 class ReadingPlanWizardBooksPage : public wxWizardPageSimple
 {
 public:
-	ReadingPlanWizardBooksPage(wxWizard *parent);
+	ReadingPlanWizardBooksPage(wxWizard *parent, KJVBible *bible);
 	~ReadingPlanWizardBooksPage(){};
 private:
 	BookListBox* m_listOT;
@@ -85,7 +85,7 @@ private:
 class ReadingPlanWizard : public wxWizard
 {
 public:
-	ReadingPlanWizard(wxWindow* parent, int id = ID_RPWizard);
+	ReadingPlanWizard(wxWindow* parent, KJVBible*, int id = ID_RPWizard);
 	bool Run() {return (wxWizard*)this->RunWizard((wxWizardPage*)m_page1);}
 	RPDate getBeginDate(){return m_page3->getBeginDate();}
 	RPDate getEndDate(){return m_page3->getEndDate();}

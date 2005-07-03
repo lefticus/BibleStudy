@@ -16,8 +16,6 @@
 #include <biblestudy.h>
 #include <libreadingplanner/KJVBible.h>
 
-KJVBible rpBible;
-
 #include "../icons/splashscreen.xpm"
 
 BEGIN_EVENT_TABLE(BibleStudyApp, wxApp)

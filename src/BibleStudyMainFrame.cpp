@@ -867,7 +867,7 @@ void BibleStudyMainFrame::OnReadingPlannerWiz(wxCommandEvent& event)
 	}
 	RPpdb pdbFile(pathName);
 
-	ReadingPlanWizard *wizard = new ReadingPlanWizard(this);
+	ReadingPlanWizard *wizard = new ReadingPlanWizard(this, &rpBible);
 
 	if(wizard->Run())
 	{
