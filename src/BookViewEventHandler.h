@@ -20,7 +20,8 @@ class BookViewCtrl;
  *
  * Custom event handler for wxHTMLWindow
  **/
-class BookViewEventHandler:public wxEvtHandler {
+class BookViewEventHandler:public wxEvtHandler
+{
 private:
   BookViewCtrl *m_parent;
 

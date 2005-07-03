@@ -31,7 +31,7 @@
       <autocompile>true</autocompile>
       <envvars/>
       <runarguments>
-        <biblestudy></biblestudy>
+        <biblestudy/>
       </runarguments>
     </run>
     <configurations>

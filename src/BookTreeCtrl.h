@@ -20,9 +20,9 @@
 class SwordTools;
 
 BEGIN_DECLARE_EVENT_TYPES()DECLARE_EVENT_TYPE(bsEVT_OPEN_IN_CURRENT_TAB, 1)
-  DECLARE_EVENT_TYPE(bsEVT_OPEN_IN_NEW_TAB, 2)
-  DECLARE_EVENT_TYPE(bsEVT_OPEN_IN_NEW_WINDOW, 3)
-  DECLARE_EVENT_TYPE(bsEVT_ADD_TO_CURRENT_TAB, 4) 
+DECLARE_EVENT_TYPE(bsEVT_OPEN_IN_NEW_TAB, 2)
+DECLARE_EVENT_TYPE(bsEVT_OPEN_IN_NEW_WINDOW, 3)
+DECLARE_EVENT_TYPE(bsEVT_ADD_TO_CURRENT_TAB, 4)
 END_DECLARE_EVENT_TYPES()
 
 #define EVT_OPEN_IN_CURRENT_TAB(id, fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_OPEN_IN_CURRENT_TAB, id, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
@@ -44,7 +44,8 @@ enum {
 /**
  * Item data for one tree node.
  **/
-class BookTreeItemData:public wxTreeItemData {
+class BookTreeItemData:public wxTreeItemData
+{
 private:
   sword::SWModule * m_Module;
 
@@ -57,7 +58,8 @@ public:
 /**
  * Treeview of BookModules installed
  */
-class BookTreeCtrl: public wxTreeCtrl {
+class BookTreeCtrl: public wxTreeCtrl
+{
 private:
   SwordTools * m_SwordTools;
 

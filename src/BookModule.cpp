@@ -22,31 +22,41 @@
 using namespace sword;
 
 BookModule::BookModule(SWModule *newModule)
-          : m_Second_Module(NULL),
-            m_Description(wxT("")), 
-            m_Frame(NULL), 
-            m_LastKey(NULL),
-            m_isbrowsing(false)
+    : m_Second_Module(NULL),
+    m_Description(wxT("")),
+    m_Frame(NULL),
+    m_LastKey(NULL),
+    m_isbrowsing(false)
 {
-  if (newModule) {
+  if (newModule)
+  {
     m_Module = newModule;
     m_Modules[newModule->Name()] = newModule;
     m_keytype = GetKeyType(newModule);
-  } else {
+  }
+  else
+  {
     m_Module = NULL;
   }
 }
 
 bsKeyType BookModule::GetKeyType(SWModule * mod) const
 {
-  if (mod->Key().getClass()->isAssignableFrom("StrKey")) {
+  if (mod->Key().getClass()->isAssignableFrom("StrKey"))
+  {
     return bsStringKey;
-  } else if (mod->Key().getClass()->isAssignableFrom("TreeKeyIdx")
-             || mod->Key().getClass()->isAssignableFrom("TreeKey")) {
+  }
+  else if (mod->Key().getClass()->isAssignableFrom("TreeKeyIdx")
+           || mod->Key().getClass()->isAssignableFrom("TreeKey"))
+  {
     return bsTreeKey;
-  } else if (mod->Key().getClass()->isAssignableFrom("VerseKey")) {
+  }
+  else if (mod->Key().getClass()->isAssignableFrom("VerseKey"))
+  {
     return bsVerseKey;
-  } else {
+  }
+  else
+  {
     return bsStringKey;
   }
 }
@@ -57,12 +67,12 @@ BookModule::~BookModule()
     m_Frame->Destroy();
 }
 
-SWModule *BookModule::GetModule() 
+SWModule *BookModule::GetModule()
 {
   return m_Module;
 }
 
-ModMap *BookModule::GetModules() 
+ModMap *BookModule::GetModules()
 {
   return &m_Modules;
 }
@@ -79,13 +89,15 @@ wxString BookModule::GetName() const
   ModMap::const_iterator it;
   SWModule *curMod = 0;
 
-  for (it = m_Modules.begin(); it != m_Modules.end();) {
+  for (it = m_Modules.begin(); it != m_Modules.end();)
+  {
     curMod = (*it).second;
     name += wxString(curMod->Name(), wxConvUTF8);
 
     it++;
 
-    if (it != m_Modules.end()) {
+    if (it != m_Modules.end())
+    {
       name += wxT(" - ");
     }
   }
@@ -105,12 +117,16 @@ wxString BookModule::GetLastSearch() const
 
 void BookModule::AddModule(SWModule * mod)
 {
-  if (m_Module) {
-    if (m_keytype == GetKeyType(mod)) {
+  if (m_Module)
+  {
+    if (m_keytype == GetKeyType(mod))
+    {
       m_Second_Module = mod;
       m_Modules[mod->Name()] = mod;
     }
-  } else {
+  }
+  else
+  {
     m_Module = mod;
     m_Modules[mod->Name()] = mod;
   }
@@ -123,9 +139,11 @@ bool BookModule::IsBrowsing() const
 
 wxString BookModule::BrowseForward()
 {
-  if (m_isbrowsing) {
+  if (m_isbrowsing)
+  {
     m_Module->SetKey((const char *) m_LastLookupKey.mb_str(wxConvUTF8));
-    if (m_keytype == bsVerseKey) {
+    if (m_keytype == bsVerseKey)
+    {
 
       VerseKey vk((const char *) m_LastLookupKey.mb_str(wxConvUTF8));
 
@@ -136,10 +154,12 @@ wxString BookModule::BrowseForward()
 
       return LookupKey(wxString(vk.getText(), wxConvUTF8), wxT(""), 0, false,
                        true);
-    } else {
+    }
+    else
+    {
       // wxLogDebug(wxT("Last Key:") + m_LastLookupKey);
       (*m_Module)++;
-      // wxLogDebug(wxT("Next Key:") + wxString(m_Module->KeyText(), 
+      // wxLogDebug(wxT("Next Key:") + wxString(m_Module->KeyText(),
       // wxConvUTF8));
 
       if (m_Module->Error() != 0)
@@ -148,16 +168,20 @@ wxString BookModule::BrowseForward()
       return LookupKey(wxString(m_Module->KeyText(), wxConvUTF8), wxT(""), 0,
                        false, false);
     }
-  } else {
+  }
+  else
+  {
     return wxT("");
   }
 }
 
 wxString BookModule::BrowseBackward()
 {
-  if (m_isbrowsing) {
+  if (m_isbrowsing)
+  {
     m_Module->setKey((const char *) m_LastLookupKey.mb_str(wxConvUTF8));
-    if (m_keytype == bsVerseKey) {
+    if (m_keytype == bsVerseKey)
+    {
       VerseKey vk((const char *) m_LastLookupKey.mb_str(wxConvUTF8));
 
       vk.Chapter(vk.Chapter() - 1);
@@ -167,10 +191,12 @@ wxString BookModule::BrowseBackward()
 
       return LookupKey(wxString(vk.getText(), wxConvUTF8), wxT(""), 0, false,
                        true);
-    } else {
+    }
+    else
+    {
       // wxLogDebug(wxT("Last Key:") + m_LastLookupKey);
       (*m_Module)--;
-      // wxLogDebug(wxT("Next Key:") + wxString(m_Module->KeyText(), 
+      // wxLogDebug(wxT("Next Key:") + wxString(m_Module->KeyText(),
       // wxConvUTF8));
 
       if (m_Module->Error() != 0)
@@ -179,7 +205,9 @@ wxString BookModule::BrowseBackward()
       return LookupKey(wxString(m_Module->KeyText(), wxConvUTF8), wxT(""), 0,
                        false, false);
     }
-  } else {
+  }
+  else
+  {
     return wxT("");
   }
 }
@@ -204,22 +232,25 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
   wxString output;
   char book = 0;
   int chapter = 0,
-    verse = 0;
+                verse = 0;
   int versecount = 0;
   bool cont = true;
   bool isfootnote = false;
 
   wxWindowDisabler disableAll;
 
-  if (!tooltip) {
+  if (!tooltip)
+  {
 
     wxBusyCursor busy;
   }
 
   int footnoteindex = key.Find(wxT(".n."));
 
-  if (footnoteindex > -1) {
-    if (key.Mid(footnoteindex + 3).IsNumber()) {
+  if (footnoteindex > -1)
+  {
+    if (key.Mid(footnoteindex + 3).IsNumber())
+    {
       isfootnote = true;
       wxLogDebug(wxT("BookModule::LookupKey key isfootnote"));
       key = key.Left(footnoteindex);
@@ -235,7 +266,7 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
   output =
     wxT("<meta http-equiv='Content-Type' content='text/html; charset=UTF8'>");
 #else
-  output = 
+  output =
     wxT("<meta http-equiv='Content-Type' content='text/html; charset=ISO-8859-1'>");
 #endif
 
@@ -250,7 +281,8 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
   else
     listkey.ClearList();
 
-  if (search != wxT("")) {
+  if (search != wxT(""))
+  {
     wxLogDebug(wxT("Range: %s, Key: %s"), key.c_str(), search.c_str());
     wxProgressDialog pd(wxT("Searching..."),
                         wxT("Searching for \"") + search + wxT("\""), 100, NULL,
@@ -260,11 +292,14 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
     pd.SetClientData(m_Module);
     pd.Show();
 
-    if (listkey.Count() == 0 || m_keytype != bsVerseKey) {
+    if (listkey.Count() == 0 || m_keytype != bsVerseKey)
+    {
       searchresult =
         m_Module->Search(search.mb_str(), searchtype, 0, NULL, 0, &Percent,
                          (void *) &pd);
-    } else {
+    }
+    else
+    {
       searchresult =
         m_Module->Search(search.mb_str(), searchtype, 0, &listkey, 0, &Percent,
                          (void *) &pd);
@@ -290,7 +325,8 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
   output.append(wxT("<tr>"));
   // These empty columns keep everything else in line
   output.append(wxT("<th width='1'></th>"));
-  for (it = m_Modules.begin(); it != m_Modules.end(); it++) {
+  for (it = m_Modules.begin(); it != m_Modules.end(); it++)
+  {
     curMod = (*it).second;
     output.append(wxT("<th><font color='#0000FF'>"));
     output.append(wxString(curMod->Description(), wxConvUTF8));
@@ -298,21 +334,26 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
   }
   output.append(wxT("</tr>"));
 
-  if (m_keytype == bsVerseKey) {
+  if (m_keytype == bsVerseKey)
+  {
     m_LastLookupKey = key;
-    for (i = 0; i < listkey.Count(); i++) {
+    for (i = 0; i < listkey.Count(); i++)
+    {
       VerseKey *element = SWDYNAMIC_CAST(VerseKey, listkey.GetElement(i));
 
       if (!cont)
         break;
-      if (element) {
+      if (element)
+      {
         wxLogDebug(wxT("BookModule::LookupKey valid element"));
         vk = element->UpperBound();
 
-        while ((*element) <= vk && cont) {
+        while ((*element) <= vk && cont)
+        {
           wxYield();
           versecount++;
-          if (versecount == 300) {
+          if (versecount == 300)
+          {
             wxMessageDialog *msg;
 
             if (m_Frame)
@@ -343,7 +384,8 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
           // These empty columns keep everything else in line :)
           output.append(wxT("<td width='1'></td>"));
 
-          for (it = m_Modules.begin(); it != m_Modules.end(); it++) {
+          for (it = m_Modules.begin(); it != m_Modules.end(); it++)
+          {
             wxLogDebug(wxT("BookModule::LookupKey iterating through modules"));
             curMod = (*it).second;
             wxLogDebug(wxT("BookModule::LookupKey Setting Key"));
@@ -357,7 +399,8 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
             int rowspan = 1;
             wxString thisverse = wxString((const char *) (*curMod), wxConvUTF8);
 
-            if ((*element) > element->LowerBound()) {
+            if ((*element) > element->LowerBound())
+            {
 
               (*element)--;
               curMod->Key((*element));
@@ -372,13 +415,18 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
               wxLogDebug(wxT("BookModule:LookupKey: Current:"));
               wxLogDebug(thisverse);
 
-              if (thisverse.Cmp(prevverse)) {
+              if (thisverse.Cmp(prevverse))
+              {
                 verseout = thisverse;
                 outputcell = true;
-              } else {
+              }
+              else
+              {
                 outputcell = false;
               }
-            } else {
+            }
+            else
+            {
               outputcell = true;
               verseout = thisverse;
             }
@@ -390,7 +438,8 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
             wxString nextverse = wxString((const char *) (*curMod), wxConvUTF8);
 
             while (elemcopy <= vk && !nextverse.Cmp(verseout)
-                   && outputcell) {
+                   && outputcell)
+            {
               rowspan++;
               elemcopy++;
               curMod->Key(elemcopy);
@@ -398,39 +447,47 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
 
             }
 
-            if (outputcell) {
+            if (outputcell)
+            {
               output.
-                append(wxString::
-                       Format(wxT("<td align=left valign=top rowspan=%i>"),
-                              rowspan));
+              append(wxString::
+                     Format(wxT("<td align=left valign=top rowspan=%i>"),
+                            rowspan));
 
               output.append(wxT("<small><font color='#0000FF'>"));
-              if (element->Book() != book) {
+              if (element->Book() != book)
+              {
                 wxLogDebug(wxT("BookModule::LookupKey new book"));
                 output.append(wxString(element->getText(), wxConvUTF8));
-              } else if (element->Chapter() != chapter) {
+              }
+              else if (element->Chapter() != chapter)
+              {
                 wxLogDebug(wxT("BookModule::LookupKey new chapter"));
 
                 output.append(wxString::Format(wxT("%i"), element->Chapter()));
                 output.append(wxT(":"));
               }
 
-              if (element->Book() == book) {
+              if (element->Book() == book)
+              {
                 output.append(wxString::Format(wxT("%i"), element->Verse()));
               }
 
               wxLogDebug(wxT
                          ("BookModule::LookupKey updating last chaper, book, verse"));
               output.append(wxT("</font></small> "));
-              if (!isfootnote) {
+              if (!isfootnote)
+              {
                 output.append(verseout);
-              } else {
+              }
+              else
+              {
                 SWBuf body;
                 wxString wxBody;
 
                 curMod->RenderText();
                 body = curMod->getEntryAttributes()["Footnote"]["1"]
-                  ["body"].c_str();
+                       ["body"].c_str();
                 curMod->RenderText(body);
                 wxBody = wxString((const char *) body.c_str(), wxConvUTF8);
                 output.append(wxBody);
@@ -451,12 +508,15 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
           wxLogDebug(wxT("BookModule::LookupKey incrementing m_Module"));
           (*element)++;
         }
-      } else {
+      }
+      else
+      {
         output.append(wxT("<tr align=left valign=top>"));
         output.append(wxT("<td width='1'></td>"));
         wxYield();
         versecount++;
-        if (versecount == 300) {
+        if (versecount == 300)
+        {
           wxMessageDialog *msg;
 
           if (m_Frame)
@@ -483,7 +543,8 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
         ModMap::iterator it;
         SWModule *curMod = 0;
 
-        for (it = m_Modules.begin(); it != m_Modules.end(); it++) {
+        for (it = m_Modules.begin(); it != m_Modules.end(); it++)
+        {
           curMod = it->second;
           curMod->Key(*listkey.GetElement(i));
 
@@ -494,9 +555,12 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
           output.append(wxString(m_Module->KeyText(), wxConvUTF8));
           output.append(wxT("</font></small> "));
 
-          if (!isfootnote) {
+          if (!isfootnote)
+          {
             output.append(wxString((const char *) (*curMod), wxConvUTF8));
-          } else {
+          }
+          else
+          {
             SWBuf body;
             wxString wxBody;
 
@@ -519,24 +583,29 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
 
     }
 
-  } else {
+  }
+  else
+  {
     m_isbrowsing = true;
 
-    if (listkey.Count() == 0) {
+    if (listkey.Count() == 0)
+    {
       listkey << (const char *) key.mb_str(wxConvUTF8);
     }
     // printf("%s", keybuf);
 
     SWKey *element;
 
-    for (int i = 0; i < listkey.Count(); i++) {
+    for (int i = 0; i < listkey.Count(); i++)
+    {
       element = listkey.GetElement(i);
 
       output.append(wxT("<tr align=left valign=top>"));
       output.append(wxT("<td width='1'></td>"));
       const char *moduleoutput;
 
-      for (it = m_Modules.begin(); it != m_Modules.end(); it++) {
+      for (it = m_Modules.begin(); it != m_Modules.end(); it++)
+      {
         output.append(wxT("<td align=left valign=top>"));
 
         wxLogDebug(wxT("BookModule::LookupKey iterating through modules"));
@@ -582,7 +651,8 @@ wxFrame *BookModule::GetControl(wxWindow * parent)
   if (m_Frame)
     return m_Frame;
 
-  if (!strcmp(m_Module->Type(), "Generic Books")) {
+  if (!strcmp(m_Module->Type(), "Generic Books"))
+  {
     TreeKey *key;
 
     m_Frame = new DropDownCtrl(parent, m_Module, bsTree);
@@ -593,10 +663,14 @@ wxFrame *BookModule::GetControl(wxWindow * parent)
     key->firstChild();
 
     AddTreeSiblings(tree, tree->AddRoot(wxT("Root")), key);
-  } else if (!strcmp(m_Module->Type(), "Daily Devotional")) {
+  }
+  else if (!strcmp(m_Module->Type(), "Daily Devotional"))
+  {
     m_Frame = new DropDownCtrl(parent, m_Module, bsCalendar);
-  } else if (!strcmp(m_Module->Type(), "Biblical Texts")
-             || !strcmp(m_Module->Type(), "Commentaries")) {
+  }
+  else if (!strcmp(m_Module->Type(), "Biblical Texts")
+           || !strcmp(m_Module->Type(), "Commentaries"))
+  {
     m_Frame = new DropDownCtrl(parent, m_Module, bsBible);
   }
 
@@ -618,7 +692,8 @@ void BookModule::AddTreeSiblings(wxTreeCtrl * tree, wxTreeItemId parentid,
 
   bool cont = true;
 
-  while (cont) {
+  while (cont)
+  {
 
     wxLogDebug(wxT
                ("BookModule::AddTreeSiblings starting next iteration of while loop"));
@@ -630,20 +705,24 @@ void BookModule::AddTreeSiblings(wxTreeCtrl * tree, wxTreeItemId parentid,
     itemadded =
       tree->AppendItem(parentid, wxString(key->getLocalName(), wxConvUTF8));
 
-    if (key->hasChildren()) {
+    if (key->hasChildren())
+    {
       wxLogDebug(wxT("BookModule::AddTreeSiblings item has children"));
 
       key->firstChild();
       wxLogDebug(wxT("BookModule::AddTreeSiblings adding children"));
       AddTreeSiblings(tree, itemadded, key);
       key->parent();
-    } else {
+    }
+    else
+    {
       wxLogDebug(wxT("BookModule::AddTreeSiblings no children"));
     }
 
     wxLogDebug(wxT("BookModule::AddTreeSiblings moving to next sibling"));
     cont = key->nextSibling();
-    if (key->Error() != 0) {
+    if (key->Error() != 0)
+    {
       wxLogDebug(wxT("BookModule::AddTreeSiblings error occured"));
       cont = false;
     }
@@ -660,15 +739,18 @@ wxString BookModule::ModInfo() const
   ConfigEntMap::iterator cit;
   wxString desc;
 
-  if (m_Description == wxT("")) {
+  if (m_Description == wxT(""))
+  {
     desc =
       wxString(m_Module->Description(),
                wxConvUTF8) + wxT(":") + wxString(m_Module->Type(),
                                                  wxConvUTF8) + wxT("\n\n");
     confmap = m_Module->getConfig();
-    for (cit = confmap.begin(); cit != confmap.end(); cit++) {
+    for (cit = confmap.begin(); cit != confmap.end(); cit++)
+    {
       if (!strcmp(cit->first.c_str(), "About")
-          || !strcmp(cit->first.c_str(), "DistributionLicense")) {
+          || !strcmp(cit->first.c_str(), "DistributionLicense"))
+      {
         desc +=
           wxString(cit->first.c_str(),
                    wxConvUTF8) + wxT(": ") + wxString(cit->second.c_str(),

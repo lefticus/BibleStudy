@@ -21,7 +21,8 @@
 /**
  * Used to decode language abbreviations to language names
  **/
-class BibleStudyLanguages {
+class BibleStudyLanguages
+{
 private:
 
   /** The C++ map which links abbreviations to full names */
@@ -30,8 +31,8 @@ private:
 public:
   BibleStudyLanguages();
   ~BibleStudyLanguages();
-  
-  /** 
+
+  /**
    * Add a language using wxString objects 
    * called by AddLanguage (const char *, const char *)
    *
@@ -40,14 +41,14 @@ public:
    */
   void AddLanguage(const wxString &abbreviation, const wxString &description);
 
-  /** Add a language using char arrays 
+  /** Add a language using char arrays
    *
    * @param abbreviation Language abbreviation
    * @param description Full Name of language
    */
   void AddLanguage(const char *abbreviation, const char *description);
 
-  /** 
+  /**
    * Returns the full name of a language from an abbreviation 
    *
    * @param abbreviation Abbreviation of the language being looked up.

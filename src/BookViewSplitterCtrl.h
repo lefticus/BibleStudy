@@ -20,8 +20,8 @@ class SwordTools;
 class BookModule;
 
 BEGIN_DECLARE_EVENT_TYPES()DECLARE_EVENT_TYPE(bsEVT_ACTIVE_MODULE_CHANGE, 1)
-  DECLARE_EVENT_TYPE(bsEVT_BOOK_TREE_CHANGE, 1)
-  DECLARE_EVENT_TYPE(bsEVT_SHOW_BIBLESTUDY, 1) 
+DECLARE_EVENT_TYPE(bsEVT_BOOK_TREE_CHANGE, 1)
+DECLARE_EVENT_TYPE(bsEVT_SHOW_BIBLESTUDY, 1)
 END_DECLARE_EVENT_TYPES()
 
 #define EVT_ACTIVE_MODULE_CHANGE(id, fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_ACTIVE_MODULE_CHANGE, id, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
@@ -34,7 +34,8 @@ END_DECLARE_EVENT_TYPES()
  *
  * Jason Turner
  **/
-class BookViewSplitterCtrl: public wxSplitterWindow {
+class BookViewSplitterCtrl: public wxSplitterWindow
+{
 private:
   BookTreeCtrl *m_BookTree;
   int m_LastSashPosition;
@@ -73,8 +74,8 @@ public:
   void BrowseBackward();
 
   void RemoveActiveView();
-	void RefreshStartPages(const wxString html);
- 
+  void RefreshStartPages(const wxString html);
+
   void OnNewActiveChild(wxCommandEvent &event);
   void OnFocusGot(wxEvent &event);
   void OnLinkClicked(wxCommandEvent &event);
@@ -86,7 +87,7 @@ public:
   void OnUnSplit(wxSplitterEvent &event);
 
   BookModule *GetActiveBookModule();
-  
+
   DECLARE_EVENT_TABLE()
 };
 

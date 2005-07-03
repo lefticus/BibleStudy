@@ -20,7 +20,7 @@
 #include "ReadingPlanWizard.h"
 
 BEGIN_DECLARE_EVENT_TYPES()
-		DECLARE_EVENT_TYPE(bsEVT_EXIT_APP, 1)
+DECLARE_EVENT_TYPE(bsEVT_EXIT_APP, 1)
 END_DECLARE_EVENT_TYPES()
 
 #define EVT_EXIT_APP(fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_EXIT_APP, -1, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
@@ -35,27 +35,28 @@ struct dayRecord;
 class PrefsDialog;
 
 /**
-	* Configuration data structure for BibleStudy Preference Storage
-	*
-	**/
+ * Configuration data structure for BibleStudy Preference Storage
+ *
+ **/
 struct BibleStudyConfig
 {
-	wxString	m_PalmUserName;					// User name for the Palm Pilot desktop user.
-	wxString	m_PalmUserInstallPath;	// The installation path for the Palm Pilot user.
-	wxString	m_PalmUserBackupPath;		// The backup path for the Palm Pilot user.
-	int				m_PalmIntegration;			// True if user wants to use Palm Integration.
+  wxString m_PalmUserName;		// User name for the Palm Pilot desktop user.
+  wxString m_PalmUserInstallPath;	// The installation path for the Palm Pilot user.
+  wxString m_PalmUserBackupPath;	// The backup path for the Palm Pilot user.
+  int m_PalmIntegration;		// True if user wants to use Palm Integration.
 };
 /**
-	* Main window of BibleStudy
-	*
-	**/
-class BibleStudyMainFrame:public wxFrame {
+ * Main window of BibleStudy
+ *
+ **/
+class BibleStudyMainFrame:public wxFrame
+{
 public:
-	void InstallCurrentPlan();
-	void OnPlanChanged(wxCommandEvent & event);
-	wxArrayString GetPlanNames();
-	
-	~BibleStudyMainFrame(); 
+  void InstallCurrentPlan();
+  void OnPlanChanged(wxCommandEvent & event);
+  wxArrayString GetPlanNames();
+
+  ~BibleStudyMainFrame();
 
   BibleStudyMainFrame(SwordTools *, const wxString &title,
                       const wxPoint &pos, const wxSize &size);
@@ -63,7 +64,7 @@ public:
   void OnExit(wxCommandEvent &event);
   void OnAbout(wxCommandEvent &event);
   void OnCloseWindow(wxCommandEvent &event);
-	void OnPrefs(wxCommandEvent & event);
+  void OnPrefs(wxCommandEvent & event);
 
   void OnSplitHorizontally(wxCommandEvent &event);
   void OnSplitVertically(wxCommandEvent &event);
@@ -75,7 +76,7 @@ public:
   void OnDuplicateTab(wxCommandEvent &event);
   void OnCloseOtherTabs(wxCommandEvent &event);
   void OnShowHideBookTree(wxCommandEvent &event);
-	void OnShowHidePlanBar(wxCommandEvent & event);
+  void OnShowHidePlanBar(wxCommandEvent & event);
   void OnTreeItemActivated(wxCommandEvent &event);
   void OnOptionChange(wxCommandEvent &event);
   void OnNewWindow(wxCommandEvent &event);
@@ -85,46 +86,46 @@ public:
   void OnBrowseKey(wxCommandEvent &event);
   void OnBrowseBackward(wxCommandEvent &event);
   void OnBrowseForward(wxCommandEvent &event);
-	void OnNextDay(wxCommandEvent &event);
-	void OnPrevDay(wxCommandEvent &event);
-	void OnCheckDayDone(wxCommandEvent &event);
+  void OnNextDay(wxCommandEvent &event);
+  void OnPrevDay(wxCommandEvent &event);
+  void OnCheckDayDone(wxCommandEvent &event);
 
-	void OnOpenInNewTab(wxCommandEvent &event);
-	void OnOpenInNewWindow(wxCommandEvent &event);
-	void OnOpenInCurrentTab(wxCommandEvent &event);
-	void OnAddToCurrentTab(wxCommandEvent &event);
+  void OnOpenInNewTab(wxCommandEvent &event);
+  void OnOpenInNewWindow(wxCommandEvent &event);
+  void OnOpenInCurrentTab(wxCommandEvent &event);
+  void OnAddToCurrentTab(wxCommandEvent &event);
 
   void OnShowStartPage(wxCommandEvent &event);
-	wxString BuildStartPage();
+  wxString BuildStartPage();
 
-	void OnActiveModuleChange(wxCommandEvent &event);
-	void OnBookTreeChange(wxCommandEvent &event);
+  void OnActiveModuleChange(wxCommandEvent &event);
+  void OnBookTreeChange(wxCommandEvent &event);
 
   void DisplayModule(sword::SWModule *module);
-	void DisplayModule(BookModule *module);
+  void DisplayModule(BookModule *module);
 
-	void OnShowHowBecomeChristian(wxCommandEvent &event);
-	void OnShowWhyBecomeChristian(wxCommandEvent &event);
-	void OnShowHowGrowSpiritually(wxCommandEvent &event);
-	void OnShowBibleStudy(wxCommandEvent &event);
+  void OnShowHowBecomeChristian(wxCommandEvent &event);
+  void OnShowWhyBecomeChristian(wxCommandEvent &event);
+  void OnShowHowGrowSpiritually(wxCommandEvent &event);
+  void OnShowBibleStudy(wxCommandEvent &event);
 
-	void OnShowReadingPlanPage(wxCommandEvent& event);
-	void OnReadingPlannerWiz(wxCommandEvent& event);
-	void ShowReadingPlan();
-	wxString ReadingPlannerHeading();
-	wxString InsertReadingPlan() const;
-	wxString BuildStringAssignment(dayRecord* recP) const;
-	wxString GetLinkString(wxString strBook, int chapter) const;
-	void LayoutChildren();
-	void UpdatePlanToolBar();
-	void ShowHidePlanBar(bool show);
-	wxDateTime GetPlanDate() {return m_PlanDate;}
-	void SetPlanDate(const wxDateTime& date);
-	
-	void SaveConfig();
-	void LoadConfig();
-	
-	void ShowStartPage();
+  void OnShowReadingPlanPage(wxCommandEvent& event);
+  void OnReadingPlannerWiz(wxCommandEvent& event);
+  void ShowReadingPlan();
+  wxString ReadingPlannerHeading();
+  wxString InsertReadingPlan() const;
+  wxString BuildStringAssignment(dayRecord* recP) const;
+  wxString GetLinkString(wxString strBook, int chapter) const;
+  void LayoutChildren();
+  void UpdatePlanToolBar();
+  void ShowHidePlanBar(bool show);
+  wxDateTime GetPlanDate() {return m_PlanDate;}
+  void SetPlanDate(const wxDateTime& date);
+
+  void SaveConfig();
+  void LoadConfig();
+
+  void ShowStartPage();
 
   wxString BibleStudies() const;
   wxString Heading() const;
@@ -133,11 +134,11 @@ public:
   wxString SearchBox() const;
 
 private:
-	KJVBible rpBible;
-	void OnSize(wxSizeEvent& event);
+  KJVBible rpBible;
+  void OnSize(wxSizeEvent& event);
 
-	/** Cross-platform config storage, uses native storage, either .conf or registry, etc. */
-	BibleStudyConfig m_Config;
+  /** Cross-platform config storage, uses native storage, either .conf or registry, etc. */
+  BibleStudyConfig m_Config;
 
   /** Reference to the main split that seperates treeview from books */
   BookViewSplitterCtrl * m_WindowSplit;
@@ -154,21 +155,21 @@ private:
   /** Initial setup of splitters, called by constructor */
   void SetupSplitterWindows();
 
-	/** The Current ReadingPlanner file **/
-	RPpdb *m_pdbFile;
+  /** The Current ReadingPlanner file **/
+  RPpdb *m_pdbFile;
 
-	/** Current Date for the ReadingPlaner **/
-	wxDateTime m_PlanDate;
-  
-	/** Update the toolbars to represent the currently viewed tab */
+  /** Current Date for the ReadingPlaner **/
+  wxDateTime m_PlanDate;
+
+  /** Update the toolbars to represent the currently viewed tab */
   void UpdateToolbars(BookModule *);
 
   /** Create a new window */
   BibleStudyMainFrame *OpenNewWindow();
 
-	/** Preferences Form Frame */
-	PrefsDialog * m_PrefsDialog;
-	DECLARE_EVENT_TABLE()
+  /** Preferences Form Frame */
+  PrefsDialog * m_PrefsDialog;
+  DECLARE_EVENT_TABLE()
 };
 
 #endif

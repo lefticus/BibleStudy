@@ -20,7 +20,7 @@ class BookModule;
 #include <swmgr.h>
 
 BEGIN_DECLARE_EVENT_TYPES()
-  DECLARE_EVENT_TYPE(bsEVT_CHILD_SET_FOCUS, 1)
+DECLARE_EVENT_TYPE(bsEVT_CHILD_SET_FOCUS, 1)
 END_DECLARE_EVENT_TYPES()
 
 #define EVT_CHILD_SET_FOCUS(id, fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_CHILD_SET_FOCUS, id, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
@@ -29,7 +29,8 @@ END_DECLARE_EVENT_TYPES()
  * Tabbed viewing of book modules
  *
  **/
-class BookViewCtrl:public wxNotebook {
+class BookViewCtrl:public wxNotebook
+{
 private:
   BookViewEventHandler *m_CustEventHandler;
 
@@ -69,16 +70,16 @@ public:
   void OnSetFocus(wxFocusEvent &event);
   void OnLeftUp(wxMouseEvent &event);
   void OnNotebookPageChanged(wxNotebookEvent &event);
-	void RefreshStartPages(const wxString html);
+  void RefreshStartPages(const wxString html);
 
   void SetIcon();
 
   BookModule *GetActiveBookModule();
 public:
-	// This may seem silly since we can call GetPageCount but the problem is when 
-	// we are in the midst of creating that first tab and the change page event 
-	// is called and I want to get info from a tab that is not complete.
-	bool m_firstTabCreated;
+  // This may seem silly since we can call GetPageCount but the problem is when
+  // we are in the midst of creating that first tab and the change page event
+  // is called and I want to get info from a tab that is not complete.
+  bool m_firstTabCreated;
   DECLARE_EVENT_TABLE()
 };
 

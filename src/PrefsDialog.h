@@ -21,27 +21,27 @@ struct BibleStudyConfig;
  * Preferences Dialog Box for BibleStudy
  *
  **/
-class PrefsDialog: public wxDialog {
+class PrefsDialog: public wxDialog
+{
 private:
-	BibleStudyConfig* m_gConfig;
-	wxTextCtrl* m_InstallPathCtl;
-	wxTextCtrl* m_BackupPathCtl;
-	wxButton  *	m_btnDetect;
-	wxButton  *	m_btnBrowseInstall;
-	wxButton  *	m_btnBrowseBackup;
-	wxRadioBox* m_radConfig;
+  BibleStudyConfig* m_gConfig;
+  wxTextCtrl* m_InstallPathCtl;
+  wxTextCtrl* m_BackupPathCtl;
+  wxButton  *	m_btnDetect;
+  wxButton  *	m_btnBrowseInstall;
+  wxButton  *	m_btnBrowseBackup;
+  wxRadioBox* m_radConfig;
 public:
-	void OnChangeConfig(wxCommandEvent & event);
-	void EnablePalmControls(bool enable);
-	void BrowsePath(wxTextCtrl * ctl);
-	void OnDetectPalmConfig(wxCommandEvent & event);
-	void OnBrowseBackupPath(wxCommandEvent & event);
-	void OnBrowseInstallPath(wxCommandEvent & event);
-	bool TransferDataToWindow();
+  void OnChangeConfig(wxCommandEvent & event);
+  void EnablePalmControls(bool enable);
+  void BrowsePath(wxTextCtrl * ctl);
+  void OnDetectPalmConfig(wxCommandEvent & event);
+  void OnBrowseBackupPath(wxCommandEvent & event);
+  void OnBrowseInstallPath(wxCommandEvent & event);
+  bool TransferDataToWindow();
   PrefsDialog(wxWindow* parent, wxWindowID id, BibleStudyConfig* gConfig);
-	~PrefsDialog(){}
+  ~PrefsDialog(){}
   DECLARE_EVENT_TABLE()
 };
 
-#endif // _PREFSDIALOG_H_ 
-
+#endif // _PREFSDIALOG_H_

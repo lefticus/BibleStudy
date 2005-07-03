@@ -19,23 +19,21 @@
 #include "../icons/splashscreen.xpm"
 
 BEGIN_EVENT_TABLE(BibleStudyApp, wxApp)
-	EVT_EXIT_APP(BibleStudyApp::OnExitApp)
+EVT_EXIT_APP(BibleStudyApp::OnExitApp)
 END_EVENT_TABLE()
 
 BibleStudyApp::BibleStudyApp()
-{
-}
+{}
 
 BibleStudyApp::~BibleStudyApp()
-{
-}
+{}
 
 bool BibleStudyApp::OnInit()
 {
 #ifdef __WXDEBUG__
-	wxLogStderr *log = new wxLogStderr();
+  wxLogStderr *log = new wxLogStderr();
 
-	wxLog::SetActiveTarget(log);
+  wxLog::SetActiveTarget(log);
 #endif
 
   // wxHandleFatalExceptions(TRUE)
@@ -43,17 +41,16 @@ bool BibleStudyApp::OnInit()
   /*
    * Show Splash Screen First 
    */
-  /* To-Do Remove this comment later after debug
-	wxSplashScreen *splash = new wxSplashScreen(wxBitmap(splashscreen_xpm),
-                                              wxSPLASH_CENTRE_ON_SCREEN |
-                                              wxSPLASH_TIMEOUT,
-                                              6000, NULL, -1,
-                                              wxDefaultPosition,
-                                              wxDefaultSize,
-                                              wxSIMPLE_BORDER | wxSTAY_ON_TOP);
-	*/
 
-	wxYield();
+  /*wxSplashScreen *splash =*/ new wxSplashScreen(wxBitmap(splashscreen_xpm),
+      wxSPLASH_CENTRE_ON_SCREEN |
+      wxSPLASH_TIMEOUT,
+      6000, NULL, -1,
+      wxDefaultPosition,
+      wxDefaultSize,
+      wxSIMPLE_BORDER | wxSTAY_ON_TOP);
+
+  wxYield();
 
   /*
    * create a default frame and display it 
@@ -62,13 +59,13 @@ bool BibleStudyApp::OnInit()
     new BibleStudyMainFrame(&m_SwordTools, APPTITLE, wxDefaultPosition,
                             wxSize(640, 480));
 
-	frame->Show(TRUE);
-	wxYield();
-	frame->ShowStartPage();
+  frame->Show(TRUE);
+  wxYield();
+  frame->ShowStartPage();
   // splash->Close();
 
 
-	return TRUE;
+  return TRUE;
 }
 
 void BibleStudyApp::OnExitApp(wxCommandEvent & event)
@@ -77,17 +74,19 @@ void BibleStudyApp::OnExitApp(wxCommandEvent & event)
                          wxT("Close all windows and exit BibleStudy?"),
                          wxT("Exit Bible Study?"), wxYES_NO | wxICON_QUESTION);
 
-	if (dialog.ShowModal() == wxID_YES) {
-		wxYield();
-		wxLogDebug(wxT("Exiting Application"));
-		wxWindow *window;
+  if (dialog.ShowModal() == wxID_YES)
+  {
+    wxYield();
+    wxLogDebug(wxT("Exiting Application"));
+    wxWindow *window;
 
-		window = wxWindow::FindWindowByName(wxT("BibleStudyWindow"));
+    window = wxWindow::FindWindowByName(wxT("BibleStudyWindow"));
 
-		while (window) {
-			window->Destroy();
-			wxYield();
-			window = wxWindow::FindWindowByName(wxT("BibleStudyWindow"));
-		}
-	}
+    while (window)
+    {
+      window->Destroy();
+      wxYield();
+      window = wxWindow::FindWindowByName(wxT("BibleStudyWindow"));
+    }
+  }
 }

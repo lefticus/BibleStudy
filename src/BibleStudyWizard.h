@@ -20,35 +20,37 @@
 class BookViewCtrl;
 
 /**
-	*
-	* Jason Turner
-	**/
-class BibleStudyWizardPage:public wxWizardPageSimple {
+ *
+ * Jason Turner
+**/
+class BibleStudyWizardPage:public wxWizardPageSimple
+{
 public:
   BibleStudyWizardPage(wxWizard *parent, sword::SWModule *module,
                        wxString text, wxString reference);
-		~BibleStudyWizardPage();
+  ~BibleStudyWizardPage();
 
   void OnResize(wxSizeEvent & event);
 
 private:
-		BookViewCtrl *m_BookViewCtrl;
-		wxTextCtrl *m_TextCtrl;
+  BookViewCtrl *m_BookViewCtrl;
+  wxTextCtrl *m_TextCtrl;
   sword::SWModule *m_Module;
 
-		DECLARE_EVENT_TABLE()
+  DECLARE_EVENT_TABLE()
 };
 
 /**
-	*
-	* Jason Turner
-	**/
-class BibleStudyWizard : public wxWizard {
+ *
+ * Jason Turner
+ **/
+class BibleStudyWizard : public wxWizard
+{
 public:
-		BibleStudyWizard(wxWindow *parent, int id, wxString title);
-		~BibleStudyWizard();
+  BibleStudyWizard(wxWindow *parent, int id, wxString title);
+  ~BibleStudyWizard();
 
-		bool RunWizard();
+  bool RunWizard();
   void AddPage(sword::SWModule *module, wxString text, wxString reference);
 
 private:

@@ -28,10 +28,11 @@ enum bsDropDownMode {
 /**
  * @author Jason Turner
  */
-class DropDownCtrl : public wxMiniFrame {
+class DropDownCtrl : public wxMiniFrame
+{
 private:
   bsDropDownMode m_Mode;
-  
+
   wxTreeCtrl * m_Tree;
   wxCalendarCtrl *m_Calendar;
   wxComboBox *m_BookCB;
@@ -41,7 +42,7 @@ private:
   wxStaticText *m_ChapterLabel;
   wxStaticText *m_VerseLabel;
   wxButton *m_Button;
- 
+
   void UpdateBookCB();
   void UpdateVerseCB();
   void UpdateChapterCB();

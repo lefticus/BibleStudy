@@ -29,26 +29,26 @@ BEGIN_EVENT_TABLE(BookViewSplitterCtrl, wxGenericSplitterWindow)
 #else
 BEGIN_EVENT_TABLE(BookViewSplitterCtrl, wxSplitterWindow)
 #endif
-  EVT_CHILD_SET_FOCUS(-1, BookViewSplitterCtrl::OnNewActiveChild)
-  EVT_SPLITTER_UNSPLIT(-1, BookViewSplitterCtrl::OnUnSplit)
-  EVT_LINK_CLICKED(BookViewSplitterCtrl::OnLinkClicked)
-  EVT_LINK_HOVER(BookViewSplitterCtrl::OnLinkHover)
+EVT_CHILD_SET_FOCUS(-1, BookViewSplitterCtrl::OnNewActiveChild)
+EVT_SPLITTER_UNSPLIT(-1, BookViewSplitterCtrl::OnUnSplit)
+EVT_LINK_CLICKED(BookViewSplitterCtrl::OnLinkClicked)
+EVT_LINK_HOVER(BookViewSplitterCtrl::OnLinkHover)
 END_EVENT_TABLE()DEFINE_EVENT_TYPE(bsEVT_ACTIVE_MODULE_CHANGE)
 
 DEFINE_EVENT_TYPE(bsEVT_BOOK_TREE_CHANGE)
 DEFINE_EVENT_TYPE(bsEVT_SHOW_BIBLESTUDY)
 
 BookViewSplitterCtrl::BookViewSplitterCtrl(wxWindow * parent,
-                                           SwordTools * nswordtools,
-                                           const wxPoint pos,
-                                           const wxSize size) 
-                     : wxSplitterWindow(parent, -1, pos, size, wxSP_3D |
-                                        wxSP_LIVE_UPDATE,
-                                        wxT("splitterWindow")),
-                       m_SwordTools(nswordtools)
+    SwordTools * nswordtools,
+    const wxPoint pos,
+    const wxSize size)
+    : wxSplitterWindow(parent, -1, pos, size, wxSP_3D |
+                       wxSP_LIVE_UPDATE,
+                       wxT("splitterWindow")),
+    m_SwordTools(nswordtools)
 {
   m_LastFocus = NULL;
-	SetMinimumPaneSize(50);
+  SetMinimumPaneSize(50);
 
   m_TopLevelSplit =
     new wxSplitterWindow(this, -1, wxDefaultPosition, wxDefaultSize,
@@ -87,15 +87,17 @@ BookViewSplitterCtrl::BookViewSplitterCtrl(wxWindow * parent,
 }
 
 BookViewSplitterCtrl::~BookViewSplitterCtrl()
-{
-}
+{}
 
 bool BookViewSplitterCtrl::ShowHideBookTree()
 {
-  if (IsSplit()) {
+  if (IsSplit())
+  {
     m_LastSashPosition = GetSashPosition();
     Unsplit(m_BookTree);
-  } else {
+  }
+  else
+  {
     wxSplitterWindow::SplitVertically(m_BookTree, m_TopLevelSplit,
                                       m_LastSashPosition);
     m_BookTree->Show(true);
@@ -183,13 +185,14 @@ void BookViewSplitterCtrl::OnNewActiveChild(wxCommandEvent & event)
   wxLogTrace(wxTRACE_Messages,
              wxT("BookViewSplitterCtrl::OnNewActiveChild called"));
   if (!wxString(wxT("wxNotebook")).
-      CompareTo(event.GetEventObject()->GetClassInfo()->GetClassName())) {
+      CompareTo(event.GetEventObject()->GetClassInfo()->GetClassName()))
+  {
     m_LastFocus = (BookViewCtrl *) event.GetEventObject();
   }
-	if(m_LastFocus->m_firstTabCreated && m_LastFocus->GetPageText(m_LastFocus->GetSelection()).IsSameAs(wxT("Start Page")))
-		reinterpret_cast<BibleStudyMainFrame*>(GetParent())->ShowHidePlanBar(true);
-	else
-		reinterpret_cast<BibleStudyMainFrame*>(GetParent())->ShowHidePlanBar(false);
+  if(m_LastFocus->m_firstTabCreated && m_LastFocus->GetPageText(m_LastFocus->GetSelection()).IsSameAs(wxT("Start Page")))
+    reinterpret_cast<BibleStudyMainFrame*>(GetParent())->ShowHidePlanBar(true);
+  else
+    reinterpret_cast<BibleStudyMainFrame*>(GetParent())->ShowHidePlanBar(false);
   event.Skip();
 
   wxCommandEvent eventCustom(bsEVT_ACTIVE_MODULE_CHANGE);
@@ -204,7 +207,8 @@ void BookViewSplitterCtrl::OnLinkClicked(wxCommandEvent & event)
 {
   wxString target;
 
-  if (event.GetString().StartsWith(wxT("biblestudy://"), &target)) {
+  if (event.GetString().StartsWith(wxT("biblestudy://"), &target))
+  {
     wxCommandEvent eventCustom(bsEVT_SHOW_BIBLESTUDY);
 
     eventCustom.SetEventObject(this);
@@ -222,22 +226,29 @@ void BookViewSplitterCtrl::SplitHorizontally()
 {
   wxSplitterWindow *nparent;
 
-  if (m_TopLevelSplit->IsSplit()) {
+  if (m_TopLevelSplit->IsSplit())
+  {
     nparent = (wxSplitterWindow *) GetActiveBookViewCtrl()->GetParent();
-    if (nparent->IsSplit()) {
+    if (nparent->IsSplit())
+    {
       // Nothing to do.
-    } else {
+    }
+    else
+    {
       BookViewCtrl *bookview = new BookViewCtrl(nparent, -1, wxDefaultPosition,
-                                                wxDefaultSize);
+                               wxDefaultSize);
 
       bookview->AddTab();
       m_LastFocus = bookview;
       nparent->SplitHorizontally(nparent->GetWindow1(), bookview);
     }
-  } else {
+  }
+  else
+  {
     BookViewCtrl *bookview;
 
-    if (m_FirstChildSplit->IsShown()) {
+    if (m_FirstChildSplit->IsShown())
+    {
 
       bookview =
         new BookViewCtrl(m_SecondChildSplit, -1, wxDefaultPosition,
@@ -247,7 +258,9 @@ void BookViewSplitterCtrl::SplitHorizontally()
       m_SecondChildSplit->Show(true);
       bookview->Show(true);
       m_TopLevelSplit->SplitHorizontally(m_FirstChildSplit, m_SecondChildSplit);
-    } else {
+    }
+    else
+    {
       m_FirstChildSplit->Show(true);
       bookview =
         new BookViewCtrl(m_FirstChildSplit, -1, wxDefaultPosition,
@@ -267,22 +280,29 @@ void BookViewSplitterCtrl::SplitVertically()
 {
   wxSplitterWindow *nparent;
 
-  if (m_TopLevelSplit->IsSplit()) {
+  if (m_TopLevelSplit->IsSplit())
+  {
     nparent = (wxSplitterWindow *) GetActiveBookViewCtrl()->GetParent();
-    if (nparent->IsSplit()) {
+    if (nparent->IsSplit())
+    {
       // Nothing to do.
-    } else {
+    }
+    else
+    {
       BookViewCtrl *bookview = new BookViewCtrl(nparent, -1, wxDefaultPosition,
-                                                wxDefaultSize);
+                               wxDefaultSize);
 
       bookview->AddTab();
       m_LastFocus = bookview;
       nparent->SplitVertically(nparent->GetWindow1(), bookview);
     }
-  } else {
+  }
+  else
+  {
     BookViewCtrl *bookview;
 
-    if (m_FirstChildSplit->IsShown()) {
+    if (m_FirstChildSplit->IsShown())
+    {
 
       bookview =
         new BookViewCtrl(m_SecondChildSplit, -1, wxDefaultPosition,
@@ -292,7 +312,9 @@ void BookViewSplitterCtrl::SplitVertically()
       m_SecondChildSplit->Show(true);
       bookview->Show(true);
       m_TopLevelSplit->SplitVertically(m_FirstChildSplit, m_SecondChildSplit);
-    } else {
+    }
+    else
+    {
       m_FirstChildSplit->Show(true);
       bookview =
         new BookViewCtrl(m_FirstChildSplit, -1, wxDefaultPosition,
@@ -315,14 +337,18 @@ void BookViewSplitterCtrl::RemoveActiveView()
 
   parent = (wxSplitterWindow *) m_LastFocus->GetParent();
 
-  if (parent->IsSplit()) {
+  if (parent->IsSplit())
+  {
     childToRemove = m_LastFocus;
-  } else {
+  }
+  else
+  {
     childToRemove = parent;
     parent = (wxSplitterWindow *) parent->GetParent();
   }
 
-  if (parent->IsSplit()) {
+  if (parent->IsSplit())
+  {
     parent->Unsplit(childToRemove);
   }
 }
@@ -336,7 +362,8 @@ void BookViewSplitterCtrl::OnUnSplit(wxSplitterEvent & event)
   windowBeingRemoved = event.GetWindowBeingRemoved();
 
   if (windowBeingRemoved == m_FirstChildSplit
-      || windowBeingRemoved == m_SecondChildSplit) {
+      || windowBeingRemoved == m_SecondChildSplit)
+  {
 
     splitBeingRemoved = (wxSplitterWindow *) windowBeingRemoved;
 
@@ -348,7 +375,9 @@ void BookViewSplitterCtrl::OnUnSplit(wxSplitterEvent & event)
     if (bookViewBeingRemoved)
       bookViewBeingRemoved->Destroy();
 
-  } else if (windowBeingRemoved != m_BookTree) {
+  }
+  else if (windowBeingRemoved != m_BookTree)
+  {
     windowBeingRemoved->Destroy();
   }
 
@@ -382,39 +411,44 @@ void BookViewSplitterCtrl::OnLinkHover(wxCommandEvent & event)
   wxString key;
   BookModule *book = NULL;
 
-  if (!event.GetString().StartsWith(wxT("biblestudy://"))) {
+  if (!event.GetString().StartsWith(wxT("biblestudy://")))
+  {
     book =
       m_SwordTools->GetModuleFromLink(event.GetString(),
                                       GetActiveBookViewCtrl()->
                                       GetActiveBookModule());
     key = m_SwordTools->GetKeyFromLink(event.GetString());
 
-    if (book) {
+    if (book)
+    {
       html->SetHTMLToolTip(book->LookupKey(key, wxT(""), 0, true));
       delete book;
-    } else {
+    }
+    else
+    {
       html->SetHTMLToolTip(wxT(""));
     }
-  } else {
+  }
+  else
+  {
     html->SetHTMLToolTip(wxT(""));
   }
 }
 
 void BookViewSplitterCtrl::RefreshStartPages(const wxString html)
 {
-	((BookViewCtrl*)m_FirstChildSplit->GetWindow1())->RefreshStartPages(html);
-	if(m_FirstChildSplit->IsSplit())
-	{
-		((BookViewCtrl*)m_FirstChildSplit->GetWindow2())->RefreshStartPages(html);
-	}
-	if (m_TopLevelSplit->IsSplit())
-	{
-		((BookViewCtrl*)m_SecondChildSplit->GetWindow1())->RefreshStartPages(html);
-		if(m_SecondChildSplit->IsSplit())
-		{
-			((BookViewCtrl*)m_SecondChildSplit->GetWindow2())->RefreshStartPages(html);
-		}
-	}
+  ((BookViewCtrl*)m_FirstChildSplit->GetWindow1())->RefreshStartPages(html);
+  if(m_FirstChildSplit->IsSplit())
+  {
+    ((BookViewCtrl*)m_FirstChildSplit->GetWindow2())->RefreshStartPages(html);
+  }
+  if (m_TopLevelSplit->IsSplit())
+  {
+    ((BookViewCtrl*)m_SecondChildSplit->GetWindow1())->RefreshStartPages(html);
+    if(m_SecondChildSplit->IsSplit())
+    {
+      ((BookViewCtrl*)m_SecondChildSplit->GetWindow2())->RefreshStartPages(html);
+    }
+  }
 
 }
-

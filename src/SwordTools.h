@@ -22,7 +22,8 @@ class BookModule;
  * Wrapper for SWMgr, with utilities
  *
  **/
-class SwordTools {
+class SwordTools
+{
 
 private:
 

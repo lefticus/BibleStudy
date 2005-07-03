@@ -18,7 +18,8 @@
  *
  * Jason Turner
  **/
-class HTMLToolTip:public wxFrame {
+class HTMLToolTip:public wxFrame
+{
 private:
   wxHtmlWindow *htmlwin;
   wxString m_html;
@@ -33,7 +34,7 @@ public:
   void OnLeftWindow(wxMouseEvent &event);
   void OnKillFocus(wxFocusEvent &event);
   void OnKeyDown(wxKeyEvent &event);
-  
+
   DECLARE_EVENT_TABLE()
 
 };

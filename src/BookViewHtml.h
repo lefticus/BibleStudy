@@ -19,8 +19,8 @@
 
 
 BEGIN_DECLARE_EVENT_TYPES()
-		DECLARE_EVENT_TYPE(bsEVT_LINK_CLICKED, 1)
-		DECLARE_EVENT_TYPE(bsEVT_LINK_HOVER, 1) 
+DECLARE_EVENT_TYPE(bsEVT_LINK_CLICKED, 1)
+DECLARE_EVENT_TYPE(bsEVT_LINK_HOVER, 1)
 END_DECLARE_EVENT_TYPES()
 
 #define EVT_LINK_CLICKED(fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_LINK_CLICKED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
@@ -30,18 +30,19 @@ END_DECLARE_EVENT_TYPES()
  *
  * Jason Turner
  **/
-class BookViewHtml: public wxHtmlWindow {
+class BookViewHtml: public wxHtmlWindow
+{
 private:
   void OnLinkClicked(const wxHtmlLinkInfo & info);
   void OnCellMouseHover(wxHtmlCell * cell, wxCoord x, wxCoord y);
   HTMLToolTip m_htmltooltip;
 
 public:
-  BookViewHtml(wxWindow * parent, wxWindowID id = -1, 
-               const wxPoint & pos = wxDefaultPosition, 
-	       const wxSize & size = wxDefaultSize, 
-	       long style = wxHW_SCROLLBAR_AUTO, 
-	       const wxString & name = wxT("htmlWindow"));
+  BookViewHtml(wxWindow * parent, wxWindowID id = -1,
+               const wxPoint & pos = wxDefaultPosition,
+               const wxSize & size = wxDefaultSize,
+               long style = wxHW_SCROLLBAR_AUTO,
+               const wxString & name = wxT("htmlWindow"));
 
   ~BookViewHtml();
 

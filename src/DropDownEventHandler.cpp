@@ -14,21 +14,19 @@
 #include <wx/log.h>
 
 BEGIN_EVENT_TABLE(DropDownEventHandler, wxEvtHandler)
-  EVT_SET_FOCUS(DropDownEventHandler::OnSetFocus)
-  EVT_KILL_FOCUS(DropDownEventHandler::OnKillFocus)
-  EVT_TREE_ITEM_ACTIVATED(-1, DropDownEventHandler::OnItemActivated)
-  EVT_CALENDAR(-1, DropDownEventHandler::OnDateSelected)
-  EVT_MOVE(DropDownEventHandler::OnMove)
-  EVT_TOOL(-1, DropDownEventHandler::OnVerseSelected)
+EVT_SET_FOCUS(DropDownEventHandler::OnSetFocus)
+EVT_KILL_FOCUS(DropDownEventHandler::OnKillFocus)
+EVT_TREE_ITEM_ACTIVATED(-1, DropDownEventHandler::OnItemActivated)
+EVT_CALENDAR(-1, DropDownEventHandler::OnDateSelected)
+EVT_MOVE(DropDownEventHandler::OnMove)
+EVT_TOOL(-1, DropDownEventHandler::OnVerseSelected)
 END_EVENT_TABLE()
 
 DropDownEventHandler::DropDownEventHandler()
-{
-}
+{}
 
 DropDownEventHandler::~DropDownEventHandler()
-{
-}
+{}
 
 void DropDownEventHandler::OnSetFocus(wxFocusEvent &event)
 {

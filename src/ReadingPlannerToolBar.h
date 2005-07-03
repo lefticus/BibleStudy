@@ -23,11 +23,11 @@ class wxCalendarEvent;
 //class wxGauge;
 
 
-BEGIN_DECLARE_EVENT_TYPES() 
-	DECLARE_EVENT_TYPE(bsEVT_BROWSE_NEXT_DAY, 1) 
-	DECLARE_EVENT_TYPE(bsEVT_BROWSE_PREV_DAY, 1)
-	DECLARE_EVENT_TYPE(bsEVT_CHECK_DONE, 1)
-	DECLARE_EVENT_TYPE(bsEVT_PLAN_CHANGED, 1)
+BEGIN_DECLARE_EVENT_TYPES()
+DECLARE_EVENT_TYPE(bsEVT_BROWSE_NEXT_DAY, 1)
+DECLARE_EVENT_TYPE(bsEVT_BROWSE_PREV_DAY, 1)
+DECLARE_EVENT_TYPE(bsEVT_CHECK_DONE, 1)
+DECLARE_EVENT_TYPE(bsEVT_PLAN_CHANGED, 1)
 END_DECLARE_EVENT_TYPES()
 
 #define EVT_BROWSE_NEXT_DAY(fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_BROWSE_NEXT_DAY, -1, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
@@ -39,28 +39,29 @@ END_DECLARE_EVENT_TYPES()
  * Toolbar for dealing with ReadingPlanner Navigation
  *
  **/
-class ReadingPlannerToolBar: public wxToolBar {
+class ReadingPlannerToolBar: public wxToolBar
+{
 private:
   wxComboBox *m_DropDownPlans;
   wxMiniFrame* m_subFrame;
-	wxCalendarCtrl* m_Calendar;
-	wxCheckBox *m_checkDone;
-	wxGauge *m_gaugeDone;
+  wxCalendarCtrl* m_Calendar;
+  wxCheckBox *m_checkDone;
+  wxGauge *m_gaugeDone;
 
 public:
   ReadingPlannerToolBar(wxWindow * parent, wxWindowID id, long style);
   ~ReadingPlannerToolBar();
-	void SetControlStates(int percent, bool done, bool enable);
-	void OnBrowseNextDay(wxCommandEvent & event);
-	void OnBrowsePrevDay(wxCommandEvent & event);
-	void OnBrowseCheckDone(wxCommandEvent & event);
-	void OnClickCalendar(wxCommandEvent & event);
-	void OnCalendarDone(wxCommandEvent & event);
-	void OnCalendarClose(wxCalendarEvent & event);
-	void OnCalendarChange(wxCalendarEvent & event);
-	void OnCalendarToday(wxCommandEvent & event);
-	void OnPlanChanged(wxCommandEvent & event);
-	void SetComboPlanNames();
+  void SetControlStates(int percent, bool done, bool enable);
+  void OnBrowseNextDay(wxCommandEvent & event);
+  void OnBrowsePrevDay(wxCommandEvent & event);
+  void OnBrowseCheckDone(wxCommandEvent & event);
+  void OnClickCalendar(wxCommandEvent & event);
+  void OnCalendarDone(wxCommandEvent & event);
+  void OnCalendarClose(wxCalendarEvent & event);
+  void OnCalendarChange(wxCalendarEvent & event);
+  void OnCalendarToday(wxCommandEvent & event);
+  void OnPlanChanged(wxCommandEvent & event);
+  void SetComboPlanNames();
   DECLARE_EVENT_TABLE()
 };
 

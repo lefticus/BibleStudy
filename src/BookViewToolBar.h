@@ -18,11 +18,11 @@
 #include <wx/calctrl.h>
 
 BEGIN_DECLARE_EVENT_TYPES()
-	DECLARE_EVENT_TYPE(bsEVT_LOAD_KEY, 1)
-  DECLARE_EVENT_TYPE(bsEVT_SEARCH, 1)
-  DECLARE_EVENT_TYPE(bsEVT_BROWSE_KEY, 1)
-  DECLARE_EVENT_TYPE(bsEVT_BROWSE_BACKWARD, 1)
-  DECLARE_EVENT_TYPE(bsEVT_BROWSE_FORWARD, 1) 
+DECLARE_EVENT_TYPE(bsEVT_LOAD_KEY, 1)
+DECLARE_EVENT_TYPE(bsEVT_SEARCH, 1)
+DECLARE_EVENT_TYPE(bsEVT_BROWSE_KEY, 1)
+DECLARE_EVENT_TYPE(bsEVT_BROWSE_BACKWARD, 1)
+DECLARE_EVENT_TYPE(bsEVT_BROWSE_FORWARD, 1)
 END_DECLARE_EVENT_TYPES()
 
 #define EVT_LOAD_KEY(fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_LOAD_KEY, -1, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
@@ -39,7 +39,8 @@ END_DECLARE_EVENT_TYPES()
  * Toolbar with inputs for searching in a Module.
  *
  **/
-class BookViewToolBar: public wxToolBar {
+class BookViewToolBar: public wxToolBar
+{
 private:
   wxTextCtrl *m_LookupKey;
   wxComboBox *m_DropDownRange;

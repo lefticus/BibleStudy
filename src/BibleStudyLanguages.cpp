@@ -236,10 +236,9 @@ BibleStudyLanguages::BibleStudyLanguages()
 }
 
 BibleStudyLanguages::~BibleStudyLanguages()
-{
-}
+{}
 
-void BibleStudyLanguages::AddLanguage(const wxString &abbreviation, 
+void BibleStudyLanguages::AddLanguage(const wxString &abbreviation,
                                       const wxString &description)
 {
   mLanguages[abbreviation] = description;
@@ -255,7 +254,7 @@ void BibleStudyLanguages::AddLanguage(const char *abbreviation,
     wxString(description, wxConvUTF8);
 }
 
-wxString BibleStudyLanguages::GetLanguage(const wxString &abbreviation) 
+wxString BibleStudyLanguages::GetLanguage(const wxString &abbreviation)
 {
   return mLanguages[abbreviation];
 }

@@ -23,7 +23,8 @@ class BookViewToolBar;
  *
  * Custom event handler
  **/
-class DropDownEventHandler : public wxEvtHandler {
+class DropDownEventHandler : public wxEvtHandler
+{
 private:
   BookViewToolBar * m_parent;
 

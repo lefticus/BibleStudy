@@ -15,16 +15,14 @@
 #include <wx/log.h>
 
 BEGIN_EVENT_TABLE(BookViewEventHandler, wxEvtHandler)
-  EVT_SET_FOCUS(BookViewEventHandler::OnSetFocus)
+EVT_SET_FOCUS(BookViewEventHandler::OnSetFocus)
 END_EVENT_TABLE()
 
 BookViewEventHandler::BookViewEventHandler()
-{
-}
+{}
 
 BookViewEventHandler::~BookViewEventHandler()
-{
-}
+{}
 
 void BookViewEventHandler::OnSetFocus(wxFocusEvent & event)
 {

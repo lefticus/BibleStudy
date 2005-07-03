@@ -1,4 +1,3 @@
-
 /***************************************************************************
  *   Copyright (C) 2003 by Jason Turner                                    *
  *   jason@whensdinner.com                                                 *
@@ -44,24 +43,25 @@ enum {
 };
 
 #if USE_GENERIC_TREECTRL
-BEGIN_EVENT_TABLE(BookTreeCtrl, wxGenericTreeCtrl)
+  BEGIN_EVENT_TABLE(BookTreeCtrl, wxGenericTreeCtrl)
 #else
-BEGIN_EVENT_TABLE(BookTreeCtrl, wxTreeCtrl)
+  BEGIN_EVENT_TABLE(BookTreeCtrl, wxTreeCtrl)
 #endif
-  EVT_RIGHT_UP(BookTreeCtrl::OnRightUp)
-  EVT_RIGHT_DOWN(BookTreeCtrl::OnRightDown)
-  EVT_MENU(ID_BookTreePopupOpenInNewTab, BookTreeCtrl::OnOpenModule)
-  EVT_MENU(ID_BookTreePopupOpenInNewWindow, BookTreeCtrl::OnOpenModule)
-  EVT_MENU(ID_BookTreePopupOpen, BookTreeCtrl::OnOpenModule)
-  EVT_MENU(ID_BookTreePopupAddToCurrentTab, BookTreeCtrl::OnOpenModule)
-  EVT_MENU(ID_BookTreePopupInformation, BookTreeCtrl::OnInformation)
-  EVT_TREE_ITEM_ACTIVATED(-1, BookTreeCtrl::OnItemActivated)
-  END_EVENT_TABLE()DEFINE_EVENT_TYPE(bsEVT_OPEN_IN_CURRENT_TAB)
-  DEFINE_EVENT_TYPE(bsEVT_OPEN_IN_NEW_TAB)
-  DEFINE_EVENT_TYPE(bsEVT_OPEN_IN_NEW_WINDOW)
-  DEFINE_EVENT_TYPE(bsEVT_ADD_TO_CURRENT_TAB) BookTreeCtrl::~BookTreeCtrl()
+EVT_RIGHT_UP(BookTreeCtrl::OnRightUp)
+EVT_RIGHT_DOWN(BookTreeCtrl::OnRightDown)
+EVT_MENU(ID_BookTreePopupOpenInNewTab, BookTreeCtrl::OnOpenModule)
+EVT_MENU(ID_BookTreePopupOpenInNewWindow, BookTreeCtrl::OnOpenModule)
+EVT_MENU(ID_BookTreePopupOpen, BookTreeCtrl::OnOpenModule)
+EVT_MENU(ID_BookTreePopupAddToCurrentTab, BookTreeCtrl::OnOpenModule)
+EVT_MENU(ID_BookTreePopupInformation, BookTreeCtrl::OnInformation)
+EVT_TREE_ITEM_ACTIVATED(-1, BookTreeCtrl::OnItemActivated)
+END_EVENT_TABLE()DEFINE_EVENT_TYPE(bsEVT_OPEN_IN_CURRENT_TAB)
+DEFINE_EVENT_TYPE(bsEVT_OPEN_IN_NEW_TAB)
+DEFINE_EVENT_TYPE(bsEVT_OPEN_IN_NEW_WINDOW)
+DEFINE_EVENT_TYPE(bsEVT_ADD_TO_CURRENT_TAB) BookTreeCtrl::~BookTreeCtrl()
 {
-  if (m_PopupMenu) {
+  if (m_PopupMenu)
+  {
     delete m_PopupMenu;
   }
 }
@@ -69,7 +69,8 @@ BEGIN_EVENT_TABLE(BookTreeCtrl, wxTreeCtrl)
 void BookTreeCtrl::OnItemActivated(wxTreeEvent & event)
 {
   wxLogTrace(wxTRACE_Messages, wxT("BookTreeCtrl::OnItemActivated called"));
-  if (GetChildrenCount(GetSelection(), false)) {
+  if (GetChildrenCount(GetSelection(), false))
+  {
     wxLogDebug(wxT("BookTreeCtrl::OnItemActivated not a leaf"));
 
     /*
@@ -77,16 +78,21 @@ void BookTreeCtrl::OnItemActivated(wxTreeEvent & event)
      * this expand 
      */
 #ifndef __WINDOWS__
-    if (IsExpanded(GetSelection())) {
+    if (IsExpanded(GetSelection()))
+    {
       wxLogDebug(wxT("BookTreeCtrl::OnItemActivated Collapse"));
       Collapse(GetSelection());
-    } else {
+    }
+    else
+    {
       wxLogDebug(wxT("BookTreeCtrl::OnItemActivated Expand"));
       Expand(GetSelection());
     }
 #endif
 
-  } else {
+  }
+  else
+  {
     wxLogDebug(wxT("BookTreeCtrl::OnItemActivated is a leaf"));
     wxCommandEvent eventCustom(bsEVT_OPEN_IN_CURRENT_TAB);
 
@@ -102,7 +108,8 @@ void BookTreeCtrl::OnOpenModule(wxCommandEvent & event)
 
   wxLogTrace(wxTRACE_Messages, wxT("BookTreeCtrl::OnOpenModule called"));
 
-  switch (event.GetId()) {
+  switch (event.GetId())
+  {
   case ID_BookTreePopupOpenInNewTab:
     eventCustom = new wxCommandEvent(bsEVT_OPEN_IN_NEW_TAB);
     break;
@@ -120,9 +127,12 @@ void BookTreeCtrl::OnOpenModule(wxCommandEvent & event)
   }
 
   eventCustom->SetEventObject(this);
-  if (GetItemData(GetSelection())) {
+  if (GetItemData(GetSelection()))
+  {
     eventCustom->SetClientData(GetItemData(GetSelection())->GetModule());
-  } else {
+  }
+  else
+  {
     wxLogDebug(wxT("BookTreeCtrl::OnOpenModule no item selected"));
   }
   ProcessEvent(*eventCustom);
@@ -133,7 +143,8 @@ void BookTreeCtrl::OnOpenModule(wxCommandEvent & event)
 void BookTreeCtrl::OnRightUp(wxMouseEvent & event)
 {
   wxLogTrace(wxTRACE_Messages, wxT("BookTreeCtrl::OnRightUp called"));
-  if (!GetChildrenCount(GetSelection(), false)) {
+  if (!GetChildrenCount(GetSelection(), false))
+  {
     PopupMenu(m_PopupMenu, event.GetPosition());
   }
 }
@@ -165,29 +176,32 @@ void BookTreeCtrl::RefreshBookList(bool ShowLanguages)
 
   Modules = m_SwordTools->GetModuleMap();
   wxTreeItemId rootnode,
-    childnode,
-    langnode,
-    curNode;
+  childnode,
+  langnode,
+  curNode;
 
   std::map < string, wxTreeItemId > treenodes;
   std::map < string, wxTreeItemId > treelangnodes;
 
   string group,
-    grouplang;
+  grouplang;
 
   wxString configEntry;
 
   rootnode = AddRoot(wxT("books"));
-  for (it = Modules->begin(); it != Modules->end(); it++) {
+  for (it = Modules->begin(); it != Modules->end(); it++)
+  {
     curMod = (*it).second;
     wxLogDebug(wxT("type %s"),
                (const wxChar *) wxString(curMod->Type(), wxConvUTF8));
 
     configEntry = wxT("");
     configEntry = wxString(curMod->getConfigEntry("Category"), wxConvUTF8);
-    if (!configEntry.CompareTo(wxT(""))) {
+    if (!configEntry.CompareTo(wxT("")))
+    {
       childnode = treenodes[curMod->Type()];
-      if (!childnode.IsOk()) {
+      if (!childnode.IsOk())
+      {
         wxLogDebug(wxT("appending type"));
         childnode =
           AppendItem(rootnode, wxString(curMod->Type(), wxConvUTF8),
@@ -196,9 +210,12 @@ void BookTreeCtrl::RefreshBookList(bool ShowLanguages)
       }
 
       group = curMod->Type();
-    } else {
+    }
+    else
+    {
       childnode = treenodes[(const char *) configEntry.mb_str()];
-      if (!childnode.IsOk()) {
+      if (!childnode.IsOk())
+      {
         childnode =
           AppendItem(rootnode, configEntry, ID_CLOSEDFOLDER_ICON,
                      ID_CLOSEDFOLDER_ICON);
@@ -214,9 +231,11 @@ void BookTreeCtrl::RefreshBookList(bool ShowLanguages)
                (const wxChar *) wxString(curMod->Lang(), wxConvUTF8));
     grouplang.append(curMod->Lang());
 
-    if (ShowLanguages) {
+    if (ShowLanguages)
+    {
       langnode = treelangnodes[grouplang];
-      if (!langnode.IsOk()) {
+      if (!langnode.IsOk())
+      {
         wxString language;
 
         wxLogDebug(wxT("appending language"));
@@ -230,7 +249,9 @@ void BookTreeCtrl::RefreshBookList(bool ShowLanguages)
 
         treelangnodes[grouplang] = langnode;
       }
-    } else {
+    }
+    else
+    {
       langnode = childnode;
     }
 
@@ -240,37 +261,46 @@ void BookTreeCtrl::RefreshBookList(bool ShowLanguages)
     modname += wxString(curMod->Description(), wxConvUTF8);
     wxLogDebug(wxT("appending module %s"), (const wxChar *) modname);
 
-                /** SET ICON **/
-    if (!strcmp(curMod->Type(), "Biblical Texts")) {
+    /** SET ICON **/
+    if (!strcmp(curMod->Type(), "Biblical Texts"))
+    {
       curNode =
         AppendItem(langnode,
                    wxString(curMod->Name(),
                             wxConvUTF8) + wxT(" - ") +
                    wxString(curMod->Description(), wxConvUTF8),
                    ID_BIBLICAL_TEXT_ICON, ID_BIBLICAL_TEXT_ICON);
-    } else if (!strcmp(curMod->Type(), "Lexicons / Dictionaries")
-               || !strcmp(curMod->Type(), "Glossaries")) {
+    }
+    else if (!strcmp(curMod->Type(), "Lexicons / Dictionaries")
+             || !strcmp(curMod->Type(), "Glossaries"))
+    {
       curNode =
         AppendItem(langnode,
                    wxString(curMod->Name(),
                             wxConvUTF8) + wxT(" - ") +
                    wxString(curMod->Description(), wxConvUTF8), ID_LEXICON_ICON,
                    ID_LEXICON_ICON);
-    } else if (!strcmp(curMod->Type(), "Commentaries")) {
+    }
+    else if (!strcmp(curMod->Type(), "Commentaries"))
+    {
       curNode =
         AppendItem(langnode,
                    wxString(curMod->Name(),
                             wxConvUTF8) + wxT(" - ") +
                    wxString(curMod->Description(), wxConvUTF8),
                    ID_COMMENTARY_ICON, ID_COMMENTARY_ICON);
-    } else if (!strcmp(curMod->Type(), "Daily Devotional")) {
+    }
+    else if (!strcmp(curMod->Type(), "Daily Devotional"))
+    {
       curNode =
         AppendItem(langnode,
                    wxString(curMod->Name(),
                             wxConvUTF8) + wxT(" - ") +
                    wxString(curMod->Description(), wxConvUTF8),
                    ID_DEVOTIONAL_ICON, ID_DEVOTIONAL_ICON);
-    } else {
+    }
+    else
+    {
       curNode =
         AppendItem(langnode,
                    wxString(curMod->Name(),
@@ -279,7 +309,7 @@ void BookTreeCtrl::RefreshBookList(bool ShowLanguages)
                    ID_BOOK_ICON);
     }
 
-                /** END SET ICON **/
+    /** END SET ICON **/
 
     SetItemData(curNode, new BookTreeItemData(curMod));
     SortChildren(childnode);
@@ -300,9 +330,9 @@ void BookTreeCtrl::OnInformation(wxCommandEvent & event)
 BookTreeCtrl::BookTreeCtrl(wxWindow * parent, wxWindowID id,
                            const wxPoint & pos,
                            const wxSize & size)
-            : wxTreeCtrl(parent, id, pos, size,
-                         wxTR_HIDE_ROOT | wxTR_NO_BUTTONS | wxTR_LINES_AT_ROOT,
-                         wxDefaultValidator, wxT("listCtrl"))
+    : wxTreeCtrl(parent, id, pos, size,
+                 wxTR_HIDE_ROOT | wxTR_NO_BUTTONS | wxTR_LINES_AT_ROOT,
+                 wxDefaultValidator, wxT("listCtrl"))
 {
   SetupIcons();
 
@@ -341,12 +371,16 @@ void BookTreeCtrl::SetupIcons()
 
   int sizeOrig = icons[0].GetWidth();
 
-  for (size_t i = 0; i < WXSIZEOF(icons); i++) {
-    if (size == sizeOrig) {
+  for (size_t i = 0; i < WXSIZEOF(icons); i++)
+  {
+    if (size == sizeOrig)
+    {
       images->Add(icons[i]);
-    } else {
+    }
+    else
+    {
       images->
-        Add(wxBitmap(wxBitmap(icons[i]).ConvertToImage().Rescale(size, size)));
+      Add(wxBitmap(wxBitmap(icons[i]).ConvertToImage().Rescale(size, size)));
     }
   }
 
@@ -365,12 +399,10 @@ void BookTreeCtrl::SetItemData(const wxTreeItemId & item,
 }
 
 BookTreeItemData::BookTreeItemData(SWModule *newModule)
-                : m_Module(newModule)
-{
-}
+    : m_Module(newModule)
+{}
 
-void
-  BookTreeItemData::SetModule(SWModule * newModule)
+void BookTreeItemData::SetModule(SWModule * newModule)
 {
   m_Module = newModule;
 }

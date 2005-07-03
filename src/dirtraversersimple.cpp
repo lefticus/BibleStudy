@@ -20,24 +20,20 @@
 #include "dirtraversersimple.h"
 
 DirTraverserSimple::DirTraverserSimple(wxArrayString& folders)
- : m_folders(folders)
-{
-}
+    : m_folders(folders)
+{}
 
 
 DirTraverserSimple::~DirTraverserSimple()
-{
-}
+{}
 
 wxDirTraverseResult DirTraverserSimple::OnFile(const wxString& WXUNUSED(filename))
 {
-	return wxDIR_CONTINUE;
+  return wxDIR_CONTINUE;
 }
 
 wxDirTraverseResult DirTraverserSimple::OnDir(const wxString& dirname)
 {
-	m_folders.Add(dirname);
-	return wxDIR_CONTINUE;
+  m_folders.Add(dirname);
+  return wxDIR_CONTINUE;
 }
-
-

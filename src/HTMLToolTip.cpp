@@ -10,18 +10,18 @@
  ***************************************************************************/
 #include "HTMLToolTip.h"
 
-BEGIN_EVENT_TABLE(HTMLToolTip, wxFrame) 
-  EVT_LEAVE_WINDOW(HTMLToolTip::OnLeftWindow) 
-  EVT_KEY_DOWN(HTMLToolTip::OnKeyDown) 
-  EVT_KILL_FOCUS(HTMLToolTip::OnKillFocus) 
+BEGIN_EVENT_TABLE(HTMLToolTip, wxFrame)
+EVT_LEAVE_WINDOW(HTMLToolTip::OnLeftWindow)
+EVT_KEY_DOWN(HTMLToolTip::OnKeyDown)
+EVT_KILL_FOCUS(HTMLToolTip::OnKillFocus)
 END_EVENT_TABLE()
 
 HTMLToolTip::HTMLToolTip(wxWindow *parent)
-       : wxFrame(parent, -1, wxT(""), wxDefaultPosition, 
-                 wxSize(200, 200),
-                 wxSIMPLE_BORDER | wxFRAME_NO_TASKBAR | wxFRAME_FLOAT_ON_PARENT,
-                 wxT("ToolTip")),
-         m_html(wxT("")), m_tooltipchanged(false)
+    : wxFrame(parent, -1, wxT(""), wxDefaultPosition,
+              wxSize(200, 200),
+              wxSIMPLE_BORDER | wxFRAME_NO_TASKBAR | wxFRAME_FLOAT_ON_PARENT,
+              wxT("ToolTip")),
+    m_html(wxT("")), m_tooltipchanged(false)
 {
   htmlwin =
     new wxHtmlWindow(this, -1, GetClientAreaOrigin(), GetClientSize(),
@@ -30,8 +30,7 @@ HTMLToolTip::HTMLToolTip(wxWindow *parent)
 }
 
 HTMLToolTip::~HTMLToolTip()
-{
-}
+{}
 
 void HTMLToolTip::SetHTML(const wxString &html)
 {
@@ -61,20 +60,29 @@ bool HTMLToolTip::Show(bool show)
 {
   bool retval;
 
-  if (show) {
+  if (show)
+  {
 
-    if (m_html == wxT("")) {
+    if (m_html == wxT(""))
+    {
       retval = wxFrame::Show(false);
-    } else {
-      if (!IsShown() || m_tooltipchanged) {
+    }
+    else
+    {
+      if (!IsShown() || m_tooltipchanged)
+      {
         Move(wxGetMousePosition().x - 4, wxGetMousePosition().y - 4);
         retval = wxFrame::Show(true);
         htmlwin->SetFocus();
-      } else {
+      }
+      else
+      {
         retval = false;
       }
     }
-  } else {
+  }
+  else
+  {
     retval = wxFrame::Show(false);
   }
 
@@ -83,9 +91,12 @@ bool HTMLToolTip::Show(bool show)
 
 void HTMLToolTip::OnKeyDown(wxKeyEvent & event)
 {
-  if (event.GetKeyCode() == WXK_ESCAPE) {
+  if (event.GetKeyCode() == WXK_ESCAPE)
+  {
     wxFrame::Show(false);
-  } else {
+  }
+  else
+  {
     event.Skip();
   }
 }

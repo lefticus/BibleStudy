@@ -15,7 +15,7 @@
 #include <wx/log.h>
 
 BEGIN_EVENT_TABLE(BookViewHtml, wxHtmlWindow)
-  EVT_LEFT_DOWN(BookViewHtml::OnMouseDown)
+EVT_LEFT_DOWN(BookViewHtml::OnMouseDown)
 END_EVENT_TABLE()
 
 DEFINE_EVENT_TYPE(bsEVT_LINK_CLICKED)
@@ -25,14 +25,12 @@ BookViewHtml::BookViewHtml(wxWindow * parent, wxWindowID id,
                            const wxPoint & pos, const wxSize & size,
                            long style,
                            const wxString &name)
-             : wxHtmlWindow(parent, id, pos, size, style, name),
-	       m_htmltooltip(this)
-{
-}
+    : wxHtmlWindow(parent, id, pos, size, style, name),
+    m_htmltooltip(this)
+{}
 
 BookViewHtml::~BookViewHtml()
-{
-}
+{}
 
 void BookViewHtml::OnLinkClicked(const wxHtmlLinkInfo &info)
 {
@@ -52,18 +50,22 @@ void BookViewHtml::OnCellMouseHover(wxHtmlCell *cell, wxCoord x, wxCoord y)
 
   link = cell->GetLink();
 
-  if (link) {
+  if (link)
+  {
     wxCommandEvent eventCustom(bsEVT_LINK_HOVER);
 
     eventCustom.SetEventObject(this);
     eventCustom.SetString(link->GetHref());
     ProcessEvent(eventCustom);
-  } else {
+  }
+  else
+  {
     m_htmltooltip.SetHTML(wxT(""));
   }
 
   m_htmltooltip.Show(true);
-  if (m_htmltooltip.IsShown()) {
+  if (m_htmltooltip.IsShown())
+  {
     m_htmltooltip.SetFocus();
   }
 }
