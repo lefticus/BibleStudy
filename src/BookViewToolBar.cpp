@@ -66,8 +66,7 @@ BookViewToolBar::BookViewToolBar(wxWindow * parent, wxWindowID id, long style)
   AddSeparator();
 
   m_LookupKey = new wxTextCtrl(this, ID_ToolTextKey);
-  m_LookupKey->SetSize((int) (m_LookupKey->GetSize().GetWidth() * 1.5),
-                       m_LookupKey->GetSize().GetHeight());
+  m_LookupKey->SetSize(200, m_LookupKey->GetSize().GetHeight());
   AddControl(m_LookupKey);
   AddTool(ID_ToolListKey, wxT("Sections"), wxBitmap(list_xpm),
           wxNullBitmap, wxITEM_NORMAL, wxT("List Sections"),
@@ -79,9 +78,7 @@ BookViewToolBar::BookViewToolBar(wxWindow * parent, wxWindowID id, long style)
 
   m_DropDownRange =
     new wxComboBox(this, ID_ToolDropDownRange, wxT(""), wxDefaultPosition,
-                   wxDefaultSize, 0, NULL, wxCB_READONLY);
-  m_DropDownRange->SetSize((int) (m_DropDownRange->GetSize().GetWidth() * 1.75),
-                           m_DropDownRange->GetSize().GetHeight());
+                   wxSize(200, -1), 0, NULL, wxCB_READONLY);
   AddRanges();
 
   AddControl(m_DropDownRange);

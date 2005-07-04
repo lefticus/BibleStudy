@@ -82,7 +82,6 @@ ReadingPlannerToolBar::ReadingPlannerToolBar(wxWindow * parent, wxWindowID id, l
           wxT("Browse ReadingPlan forward one day."));
 
   AddSeparator();
-  AddSeparator();
   m_checkDone = new wxCheckBox(this, ID_CheckDone, wxT("Done"));
   m_checkDone->SetToolTip(wxT("Mark Assignment Read"));
   AddControl(m_checkDone);
