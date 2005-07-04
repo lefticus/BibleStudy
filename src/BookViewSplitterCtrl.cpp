@@ -11,7 +11,7 @@
 #include <wx/log.h>
 #include <wx/event.h>
 
-#include <swmodule.h>
+#include <sword/swmodule.h>
 
 #include <BookViewSplitterCtrl.h>
 #include <BibleStudyMainFrame.h>

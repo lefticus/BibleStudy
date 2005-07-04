@@ -11,9 +11,9 @@
 #ifndef _BOOKMODULE_H_
 #define _BOOKMODULE_H_
 
-#include <swmodule.h>
-#include <swmgr.h>
-#include <treekey.h>
+#include <sword/swmodule.h>
+#include <sword/swmgr.h>
+#include <sword/treekey.h>
 
 #include <wx/frame.h>
 #include <wx/treectrl.h>

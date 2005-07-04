@@ -13,8 +13,8 @@
 
 #include <wx/string.h>
 
-#include <swmgr.h>
-#include <swmodule.h>
+#include <sword/swmgr.h>
+#include <sword/swmodule.h>
 
 class BookModule;
 

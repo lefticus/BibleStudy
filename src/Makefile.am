@@ -16,10 +16,10 @@ biblestudy_SOURCES = biblestudy.cpp biblestudy.h dirtraversersimple.cpp BibleStu
 
 
 # set the include path found by configure
-INCLUDES = $(all_includes) -I/usr/include/sword 
+INCLUDES = $(all_includes) -I/usr/include/sword -I/usr/local/include/sword
 
 # the library search path.
-biblestudy_LDFLAGS = $(all_libraries) $(WINDOWS_LINKFLAGS) `wx-config --libs` -D_WX_WIN -lReadingPlanner -lsword -lboost_filesystem
+biblestudy_LDFLAGS = $(all_libraries) $(WINDOWS_LINKFLAGS) `wx-config --libs` -D_WX_WIN
 
 
 AM_CFLAGS =

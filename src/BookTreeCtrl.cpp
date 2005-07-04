@@ -21,7 +21,7 @@
 #include <wx/imaglist.h>
 #include <wx/image.h>
 
-#include <swmgr.h>
+#include <sword/swmgr.h>
 
 #include "../icons/book.xpm"
 #include "../icons/bible.xpm"

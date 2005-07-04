@@ -19,8 +19,8 @@
 #include <wx/image.h>
 #include <wx/clipbrd.h>
 
-#include <swmodule.h>
-#include <swmgr.h>
+#include <sword/swmodule.h>
+#include <sword/swmgr.h>
 
 using namespace sword;
 

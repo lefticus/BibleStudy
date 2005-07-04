@@ -11,7 +11,7 @@
 
 #include <DropDownCtrl.h>
 
-#include <versekey.h>
+#include <sword/versekey.h>
 
 #include <wx/textctrl.h>
 #include <wx/log.h>

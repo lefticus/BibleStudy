@@ -15,6 +15,20 @@
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
+/* Define to 1 if you have the `boost_filesystem' library
+   (-lboost_filesystem). */
+#undef HAVE_LIBBOOST_FILESYSTEM
+
+/* Define to 1 if you have the `ReadingPlanner' library (-lReadingPlanner). */
+#undef HAVE_LIBREADINGPLANNER
+
+/* Define to 1 if you have the <libreadingplanner/PDBManager.h> header file.
+   */
+#undef HAVE_LIBREADINGPLANNER_PDBMANAGER_H
+
+/* Define to 1 if you have the `sword' library (-lsword). */
+#undef HAVE_LIBSWORD
+
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H
 

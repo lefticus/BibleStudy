@@ -17,7 +17,7 @@
 #include <wx/treectrl.h>
 #include <wx/minifram.h>
 #include <wx/stattext.h>
-#include <swmodule.h>
+#include <sword/swmodule.h>
 
 enum bsDropDownMode {
   bsCalendar = 1,

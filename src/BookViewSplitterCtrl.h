@@ -12,7 +12,7 @@
 #define _BOOKVIEWSPLITTERCTRL_H_
 
 #include <wx/splitter.h>
-#include <swmodule.h>
+#include <sword/swmodule.h>
 
 class BookTreeCtrl;
 class BookViewCtrl;

@@ -17,7 +17,7 @@ class BookModule;
 
 #include <wx/notebook.h>
 
-#include <swmgr.h>
+#include <sword/swmgr.h>
 
 BEGIN_DECLARE_EVENT_TYPES()
 DECLARE_EVENT_TYPE(bsEVT_CHILD_SET_FOCUS, 1)
