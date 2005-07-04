@@ -9,7 +9,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 #include "BibleStudyLanguages.h"
-
+#include <wx/log.h>
+#include <iostream>
 /**
  * default constructor
  *
@@ -229,7 +230,8 @@ BibleStudyLanguages::BibleStudyLanguages()
   AddLanguage("x-E-SRN", "Sranan");
 
   AddLanguage("yi", "Yiddish");
-
+  AddLanguage("yo", "Yoruba");
+  
   AddLanguage("za", "Zhuang");
   AddLanguage("zh", "Chinese");
   AddLanguage("zu", "Zulu");
@@ -256,5 +258,9 @@ void BibleStudyLanguages::AddLanguage(const char *abbreviation,
 
 wxString BibleStudyLanguages::GetLanguage(const wxString &abbreviation)
 {
+  if (mLanguages[abbreviation] == wxT("")) {
+    wxLogDebug(wxT("Unknown abberviation: ") + abbreviation);
+    std::cout << abbreviation.mb_str() << std::endl;
+  }
   return mLanguages[abbreviation];
 }

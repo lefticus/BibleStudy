@@ -331,7 +331,9 @@ BookTreeCtrl::BookTreeCtrl(wxWindow * parent, wxWindowID id,
                            const wxPoint & pos,
                            const wxSize & size)
     : wxTreeCtrl(parent, id, pos, size,
-                 wxTR_HIDE_ROOT | wxTR_NO_BUTTONS | wxTR_LINES_AT_ROOT,
+                 wxTR_HIDE_ROOT | wxTR_HAS_BUTTONS
+		 | wxTR_FULL_ROW_HIGHLIGHT
+		 | wxTR_SINGLE,
                  wxDefaultValidator, wxT("listCtrl"))
 {
   SetupIcons();
