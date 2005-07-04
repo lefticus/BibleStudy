@@ -65,7 +65,6 @@ ReadingPlannerToolBar::ReadingPlannerToolBar(wxWindow * parent, wxWindowID id, l
   AddSeparator();
   AddControl(m_DropDownPlans);
   AddSeparator();
-  AddSeparator();
 
   AddTool(ID_ToolPrev, wxT("Previous"), wxBitmap(previousdate_xpm),
           wxNullBitmap, wxITEM_NORMAL, wxT("Previous"),
