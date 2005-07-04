@@ -43,6 +43,9 @@ EVT_MENU(ID_MenuRemoveSplit, BibleStudyMainFrame::OnRemoveActiveView)
 EVT_MENU(ID_MenuShowStartPage, BibleStudyMainFrame::OnShowStartPage)
 EVT_MENU(ID_MenuShowHideRPToolBar, BibleStudyMainFrame::OnShowHidePlanBar)
 
+EVT_MENU(ID_MenuCopy, BibleStudyMainFrame::OnCopy)
+EVT_MENU(ID_MenuSelectAll, BibleStudyMainFrame::OnSelectAll)
+	
 EVT_MENU(ID_MenuNewTab, BibleStudyMainFrame::OnNewTab)
 EVT_MENU(ID_MenuCloseTab, BibleStudyMainFrame::OnCloseTab)
 EVT_MENU(ID_MenuShowHideBookTree, BibleStudyMainFrame::OnShowHideBookTree)
@@ -135,6 +138,7 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools,
   wxWindowDisabler disableAll;
 
   wxMenu *menuFile = new wxMenu();
+  wxMenu *menuEdit = new wxMenu();
   wxMenu *menuHelp = new wxMenu();
   wxMenu *menuBibleStudies = new wxMenu();
   wxMenu *menuWindow = new wxMenu();
@@ -149,6 +153,10 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools,
   menuFile->AppendSeparator();
   menuFile->Append(ID_MenuExit, wxT("E&xit"));
 
+  menuEdit->Append(ID_MenuCopy, wxT("&Copy"));
+  menuEdit->AppendSeparator();
+  menuEdit->Append(ID_MenuSelectAll, wxT("Select &All"));
+  
   menuHelp->Append(ID_MenuAbout, wxT("&About BibleStudy"));
 
   menuWindow->Append(ID_MenuShowStartPage, wxT("Show Start Page"));
@@ -232,6 +240,7 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools,
   wxMenuBar *menuBar = new wxMenuBar();
 
   menuBar->Append(menuFile, wxT("&File"));
+  menuBar->Append(menuEdit, wxT("&Edit"));
   menuBar->Append(menuBibleStudies, wxT("&Bible Studies"));
   menuBar->Append(menuOptions, wxT("&Options"));
   menuBar->Append(menuWindow, wxT("&Window"));
@@ -275,6 +284,7 @@ void BibleStudyMainFrame::UpdatePlanToolBar()
     else m_PlanToolBar->SetControlStates(m_pdbFile->PercentDone(), false, false);
   }
 }
+
 /*
  * note: this biblestudy is hardcoded into the .exe to make sure that it
  * can never be seperated from the application 
@@ -410,6 +420,23 @@ void BibleStudyMainFrame::OnShowHowGrowSpiritually(wxCommandEvent &)
 
   wiz->RunWizard();
   wiz->Destroy();
+}
+
+
+void BibleStudyMainFrame::OnSelectAll(wxCommandEvent &event)
+{
+   wxLogTrace(wxTRACE_Messages,
+             wxT("BibleStudyMainFrame::OnSelectAll called")); 
+   
+   m_WindowSplit->SelectAll();
+}
+
+void BibleStudyMainFrame::OnCopy(wxCommandEvent &event)
+{
+   wxLogTrace(wxTRACE_Messages,
+             wxT("BibleStudyMainFrame::OnCopy called")); 
+   
+   m_WindowSplit->Copy();
 }
 
 /**

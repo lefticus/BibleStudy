@@ -45,6 +45,9 @@ public:
   void DuplicateTab();
   void DuplicateTab(BookModule *);
 
+  void Copy();
+  void SelectAll();
+  
   /**
    * Sets the module for the active tab
    */

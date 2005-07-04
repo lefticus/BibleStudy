@@ -43,6 +43,8 @@ enum {
   ID_MenuShowReadingPlanPage,
   ID_MenuShowHideRPToolBar,
   ID_MenuPrefs,
+  ID_MenuCopy,
+  ID_MenuSelectAll,
 
   /* Must remain last */
   ID_MenuTopBookOption

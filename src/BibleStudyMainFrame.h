@@ -66,6 +66,9 @@ public:
   void OnCloseWindow(wxCommandEvent &event);
   void OnPrefs(wxCommandEvent & event);
 
+  void OnCopy(wxCommandEvent &event);
+  void OnSelectAll(wxCommandEvent &event);
+  
   void OnSplitHorizontally(wxCommandEvent &event);
   void OnSplitVertically(wxCommandEvent &event);
   void OnRemoveActiveView(wxCommandEvent &event);

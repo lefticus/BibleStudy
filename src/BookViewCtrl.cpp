@@ -17,6 +17,7 @@
 #include <wx/sizer.h>
 #include <wx/log.h>
 #include <wx/image.h>
+#include <wx/clipbrd.h>
 
 #include <swmodule.h>
 #include <swmgr.h>
@@ -150,6 +151,32 @@ void BookViewCtrl::CloseTab()
   }
 
   PostChildSetFocus();
+}
+
+void BookViewCtrl::Copy()
+{
+  BookViewHtml *html;
+  html =
+    (BookViewHtml *) GetPage(GetSelection())->GetChildren().GetFirst()->
+      GetData();
+  
+  wxString selection = html->SelectionToText();
+
+  if (wxTheClipboard->Open()) {
+    wxTheClipboard->SetData(new wxTextDataObject(selection));
+    wxTheClipboard->Close();
+  } else {
+    wxLogDebug(wxT("Unable to open clipboard"));
+  }
+}
+
+void BookViewCtrl::SelectAll()
+{
+  BookViewHtml *html;
+  html =
+    (BookViewHtml *) GetPage(GetSelection())->GetChildren().GetFirst()->
+      GetData();
+  html->SelectAll();
 }
 
 void BookViewCtrl::LookupKey(const wxString &key)

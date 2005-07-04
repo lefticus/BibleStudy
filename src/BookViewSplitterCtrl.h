@@ -59,6 +59,9 @@ public:
   void CloseOtherTabs();
   void DuplicateTab();
 
+  void Copy(); 
+  void SelectAll();
+  
   void OpenInCurrentTab(sword::SWModule *);
   void OpenInCurrentTab(const wxString &html);
   void OpenInNewTab(sword::SWModule *);

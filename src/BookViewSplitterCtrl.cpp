@@ -222,6 +222,18 @@ BookViewCtrl *BookViewSplitterCtrl::GetActiveBookViewCtrl()
   return m_LastFocus;
 }
 
+
+
+void BookViewSplitterCtrl::Copy()
+{ 
+  GetActiveBookViewCtrl()->Copy(); 
+}
+
+void BookViewSplitterCtrl::SelectAll()
+{
+  GetActiveBookViewCtrl()->SelectAll(); 
+}
+ 
 void BookViewSplitterCtrl::SplitHorizontally()
 {
   wxSplitterWindow *nparent;
