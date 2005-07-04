@@ -651,7 +651,8 @@ wxFrame *BookModule::GetControl(wxWindow * parent)
   if (m_Frame)
     return m_Frame;
 
-  if (!strcmp(m_Module->Type(), "Generic Books"))
+  if (!strcmp(m_Module->Type(), "Generic Books")
+      || !strcmp(m_Module->Type(), "Essays"))
   {
     TreeKey *key;
 
