@@ -189,7 +189,7 @@ void BookViewSplitterCtrl::OnNewActiveChild(wxCommandEvent & event)
   {
     m_LastFocus = (BookViewCtrl *) event.GetEventObject();
   }
-  if(m_LastFocus->m_firstTabCreated && m_LastFocus->GetPageText(m_LastFocus->GetSelection()).IsSameAs(wxT("Start Page")))
+  if(m_LastFocus->m_firstTabCreated && m_LastFocus->GetPageText(m_LastFocus->GetSelection()).IsSameAs(_("Start Page")))
     reinterpret_cast<BibleStudyMainFrame*>(GetParent())->ShowHidePlanBar(true);
   else
     reinterpret_cast<BibleStudyMainFrame*>(GetParent())->ShowHidePlanBar(false);

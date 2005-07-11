@@ -58,37 +58,37 @@ ReadingPlannerToolBar::ReadingPlannerToolBar(wxWindow * parent, wxWindowID id, l
   SetToolSeparation(5);
   wxArrayString planNames = ((BibleStudyMainFrame*) GetParent())->GetPlanNames();
   if(!planNames.Count())
-    planNames.Insert(wxT("No Plans Found"),0);
+    planNames.Insert(_("No Plans Found"),0);
   m_DropDownPlans = new wxComboBox((wxWindow *)this, (wxWindowID)ID_ComboPlans, planNames[0], wxDefaultPosition, wxSize(200,-1),planNames, wxCB_READONLY);
   AddSeparator();
-  AddControl(new wxStaticText(this,-1,wxT("Reading Plan")));
+  AddControl(new wxStaticText(this,-1,_("Reading Plan")));
   AddSeparator();
   AddControl(m_DropDownPlans);
   AddSeparator();
 
-  AddTool(ID_ToolPrev, wxT("Previous"), wxBitmap(previousdate_xpm),
-          wxNullBitmap, wxITEM_NORMAL, wxT("Previous"),
-          wxT("Browse ReadingPlan forward one day."));
+  AddTool(ID_ToolPrev, _("Previous"), wxBitmap(previousdate_xpm),
+          wxNullBitmap, wxITEM_NORMAL, _("Previous"),
+          _("Browse ReadingPlan back one day."));
 
 
-  AddTool(ID_ToolCalendar, wxT("Calendar"), wxBitmap(calendar_xpm),
-          wxNullBitmap, wxITEM_NORMAL, wxT("Open Calendar Chooser"),
-          wxT("Browse backward in the current book."));
+  AddTool(ID_ToolCalendar, _("Calendar"), wxBitmap(calendar_xpm),
+          wxNullBitmap, wxITEM_NORMAL, _("Open Calendar Chooser"),
+          _("Browse backward in the current book."));
 
 
-  AddTool(ID_ToolNext, wxT("Next"), wxBitmap(nextdate_xpm),
-          wxNullBitmap, wxITEM_NORMAL, wxT("Next"),
-          wxT("Browse ReadingPlan forward one day."));
+  AddTool(ID_ToolNext, _("Next"), wxBitmap(nextdate_xpm),
+          wxNullBitmap, wxITEM_NORMAL, _("Next"),
+          _("Browse ReadingPlan forward one day."));
 
   AddSeparator();
-  m_checkDone = new wxCheckBox(this, ID_CheckDone, wxT("Done"));
-  m_checkDone->SetToolTip(wxT("Mark Assignment Read"));
+  m_checkDone = new wxCheckBox(this, ID_CheckDone, _("Done"));
+  m_checkDone->SetToolTip(_("Mark Assignment Read"));
   AddControl(m_checkDone);
   AddSeparator();
   m_gaugeDone = new wxGauge(this, ID_GaugeDone, 104,wxDefaultPosition, wxSize(175,18));
   AddControl(m_gaugeDone);
   //AddControl(new wxCalendarCtrl(this, ID_ToolCalendar));
-  m_subFrame = new wxMiniFrame(this, ID_DateFrame, wxT("Select Date"), wxDefaultPosition, wxDefaultSize, wxCLOSE_BOX | wxSTAY_ON_TOP | wxCAPTION);
+  m_subFrame = new wxMiniFrame(this, ID_DateFrame, _("Select Date"), wxDefaultPosition, wxDefaultSize, wxCLOSE_BOX | wxSTAY_ON_TOP | wxCAPTION);
   wxBoxSizer *frameTopSizer = new wxBoxSizer(wxVERTICAL);
   wxBoxSizer *frameButtonSizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -98,8 +98,8 @@ ReadingPlannerToolBar::ReadingPlannerToolBar(wxWindow * parent, wxWindowID id, l
   //wxSize size = m_Calendar->GetSize();
   //size.y += 51;
   //size.x += 9;
-  wxButton* btnDone = new wxButton(m_subFrame, ID_DateDone, wxT("Done"), wxDefaultPosition, wxSize(55,-1));
-  wxButton* btnToday = new wxButton(m_subFrame, ID_DateToday, wxT("Today"), wxDefaultPosition, wxSize(55,-1));
+  wxButton* btnDone = new wxButton(m_subFrame, ID_DateDone, _("Done"), wxDefaultPosition, wxSize(55,-1));
+  wxButton* btnToday = new wxButton(m_subFrame, ID_DateToday, _("Today"), wxDefaultPosition, wxSize(55,-1));
 
   frameButtonSizer->Add(btnToday, 0, wxALIGN_RIGHT | wxRIGHT,3);
   frameButtonSizer->Add(btnDone, 0, wxALIGN_RIGHT);
@@ -119,7 +119,7 @@ void ReadingPlannerToolBar::SetComboPlanNames()
   wxCommandEvent fakeEvent = wxCommandEvent();
   wxArrayString planNames = ((BibleStudyMainFrame*) GetParent())->GetPlanNames();
   if(!planNames.Count())
-    planNames.Insert(wxT("No Plans Found"),0);
+    planNames.Insert(_("No Plans Found"),0);
   m_DropDownPlans->Clear();
   for(unsigned int i = 0; i < planNames.Count(); i++)
     m_DropDownPlans->Insert(planNames[i], i);

@@ -71,8 +71,8 @@ bool BibleStudyApp::OnInit()
 void BibleStudyApp::OnExitApp(wxCommandEvent & event)
 {
   wxMessageDialog dialog((wxWindow *) event.GetEventObject(),
-                         wxT("Close all windows and exit BibleStudy?"),
-                         wxT("Exit Bible Study?"), wxYES_NO | wxICON_QUESTION);
+                         _("Close all windows and exit BibleStudy?"),
+                         _("Exit Bible Study?"), wxYES_NO | wxICON_QUESTION);
 
   if (dialog.ShowModal() == wxID_YES)
   {

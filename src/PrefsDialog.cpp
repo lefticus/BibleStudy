@@ -43,7 +43,7 @@ EVT_BUTTON(ID_BrowseBackup, PrefsDialog::OnBrowseBackupPath)
 EVT_RADIOBOX(ID_RadioChoice, PrefsDialog::OnChangeConfig)
 END_EVENT_TABLE()
 
-PrefsDialog::PrefsDialog(wxWindow* parent, wxWindowID id, BibleStudyConfig* gConfig):wxDialog(parent, id, wxT("BibleStudy Preferences"),wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE)
+PrefsDialog::PrefsDialog(wxWindow* parent, wxWindowID id, BibleStudyConfig* gConfig):wxDialog(parent, id, _("BibleStudy Preferences"),wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE)
 {
   m_gConfig = gConfig;
   wxBoxSizer *topLevelSizer = new wxBoxSizer(wxVERTICAL);
@@ -55,27 +55,27 @@ PrefsDialog::PrefsDialog(wxWindow* parent, wxWindowID id, BibleStudyConfig* gCon
 
   static const wxString choices[] =
     {
-      wxT("Use Default"),
-      wxT("Use Palm Desktop Directories")
+      _("Use Default"),
+      _("Use Palm Desktop Directories")
     };
   Centre();
 
 
-  wxStaticBox *box = new wxStaticBox(this, wxID_ANY, wxT("ReadingPlanner Integration"), wxDefaultPosition, wxDefaultSize);
+  wxStaticBox *box = new wxStaticBox(this, wxID_ANY, _("ReadingPlanner Integration"), wxDefaultPosition, wxDefaultSize);
   wxStaticBoxSizer* staticSizer = new wxStaticBoxSizer(box, wxVERTICAL );
-  m_radConfig = new wxRadioBox(this, ID_RadioChoice, wxT("Location Configurations"),
+  m_radConfig = new wxRadioBox(this, ID_RadioChoice, _("Location Configurations"),
                                wxDefaultPosition, wxDefaultSize, 2, choices, 1, wxRA_SPECIFY_COLS, wxGenericValidator(&m_gConfig->m_PalmIntegration) );
 
-  wxButton *btnOK = new wxButton(this,wxID_OK, wxT("OK"), wxDefaultPosition, wxDefaultSize);
-  wxButton *btnCancel = new wxButton(this,wxID_CANCEL, wxT("Cancel"), wxDefaultPosition, wxDefaultSize);
+  wxButton *btnOK = new wxButton(this,wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize);
+  wxButton *btnCancel = new wxButton(this,wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize);
 
-  m_btnDetect = new wxButton(this,ID_DetectPalm, wxT("Detect Palm User Settings"), wxDefaultPosition, wxDefaultSize);
-  m_btnBrowseInstall = new wxButton(this,ID_BrowseInstall, wxT("Browse"), wxDefaultPosition, wxDefaultSize);
-  m_btnBrowseBackup = new wxButton(this,ID_BrowseBackup, wxT("Browse"), wxDefaultPosition, wxDefaultSize);
+  m_btnDetect = new wxButton(this,ID_DetectPalm, _("Detect Palm User Settings"), wxDefaultPosition, wxDefaultSize);
+  m_btnBrowseInstall = new wxButton(this,ID_BrowseInstall, _("Browse"), wxDefaultPosition, wxDefaultSize);
+  m_btnBrowseBackup = new wxButton(this,ID_BrowseBackup, _("Browse"), wxDefaultPosition, wxDefaultSize);
 
 
-  wxStaticText* txtInstall = new wxStaticText(this, wxID_ANY,wxT("Palm User Install Path"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
-  wxStaticText* txtBackup = new wxStaticText(this, wxID_ANY,wxT("Palm User Backup Path"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
+  wxStaticText* txtInstall = new wxStaticText(this, wxID_ANY, _("Palm User Install Path"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
+  wxStaticText* txtBackup = new wxStaticText(this, wxID_ANY, _("Palm User Backup Path"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
 
   m_InstallPathCtl = new wxTextCtrl(this, wxID_ANY,wxT(""), wxDefaultPosition, wxSize(490,-1), 0, wxTextValidator(wxFILTER_NONE, &m_gConfig->m_PalmUserInstallPath));
   m_BackupPathCtl = new wxTextCtrl(this, wxID_ANY,wxT(""), wxDefaultPosition, wxSize(490,-1), 0, wxTextValidator(wxFILTER_NONE, &m_gConfig->m_PalmUserBackupPath));
@@ -166,7 +166,7 @@ void PrefsDialog::OnDetectPalmConfig(wxCommandEvent &event)
     PltGetUser(i,buf,&psbufSize);
     users.Add(wxString(buf, wxConvUTF8));
   }
-  user = wxGetSingleChoice(wxT("Select a user name to use for configuration:"),wxT("Choose HotSync ID"),users ,this);
+  user = wxGetSingleChoice(_("Select a user name to use for configuration:"),wxT("Choose HotSync ID"),users ,this);
 
   m_gConfig->m_PalmUserName = user;
   memcpy(&pUser, user.mb_str(), user.length() + 1);
@@ -181,7 +181,7 @@ void PrefsDialog::OnDetectPalmConfig(wxCommandEvent &event)
 #endif
   // Actually this should be a specific define for Linux since Macs will be entirely different as well, but I am being lazy and no one is building on a Mac yet so, if you are I apologize: dtrotzjr
 #ifndef WIN32
-  wxMessageDialog* errorMsg = new wxMessageDialog(this, wxT("Error locating KPilot's directories, if you know you have KPilot installed then locate and browse the directory manually"),wxT("Cannot find KPilot Directories"),wxOK );
+  wxMessageDialog* errorMsg = new wxMessageDialog(this, _("Error locating KPilot's directories, if you know you have KPilot installed then locate and browse the directory manually"), _("Cannot find KPilot Directories"),wxOK );
   wxString basePath = ::wxGetHomeDir();
   wxString installPath, backupPath;
   basePath += wxT("/.kde/share/apps/kpilot/");
@@ -206,7 +206,7 @@ void PrefsDialog::OnDetectPalmConfig(wxCommandEvent &event)
     leafIndex = paths[i].Find('/',true);
     users.Add(paths[i].SubString(++leafIndex, paths[i].Length()));
   }
-  user = wxGetSingleChoice(wxT("Select a user name to use for configuration:"),wxT("Choose HotSync ID"),users ,this);
+  user = wxGetSingleChoice(_("Select a user name to use for configuration:"), _("Choose HotSync ID"),users ,this);
   backupPath += user;
   m_InstallPathCtl->SetValue(installPath);
   m_BackupPathCtl->SetValue(backupPath);

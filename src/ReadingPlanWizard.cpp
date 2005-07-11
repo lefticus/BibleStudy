@@ -8,16 +8,17 @@ BEGIN_EVENT_TABLE(ReadingPlanWizard, wxWizard)
 EVT_WIZARD_PAGE_CHANGED(ID_RPWizard, ReadingPlanWizard::OnShowingBooksPage)
 END_EVENT_TABLE()
 
-ReadingPlanWizard::ReadingPlanWizard(wxWindow* parent, KJVBible *bible, int id) : wxWizard(parent, id, wxT("ReadingPlanner Wizard"), wxBitmap(readingplannerwiz_xpm))
+ReadingPlanWizard::ReadingPlanWizard(wxWindow* parent, KJVBible *bible, int id) : wxWizard(parent, id, _("ReadingPlanner Wizard"), wxBitmap(readingplannerwiz_xpm))
 {
 
   m_page1 = new wxWizardPageSimple(this);
   wxStaticText *text = new wxStaticText(m_page1, -1,
-                                        _T("This wizard will walk you through the steps of creating a ReadingPlan.\n")
-                                        _T("\n")
-                                        _T("Follow the instructions on the following pages.")
-                                       );
-  SetPageSize(wxSize(400,250));
+                                        wxString(_("This wizard will walk you through the steps of creating a ReadingPlan.")) 
+					+ wxT("\n\n")
+                                        + wxString(_("Follow the instructions on the following pages.")));
+  //SetPageSize(wxSize(400,250));
+
+  GetPageAreaSizer()->Add(m_page1);
   m_page2 = new ReadingPlanWizardBooksPage(this, bible);
   m_page3 = new ReadingPlanWizardDatesPage(this);
   m_page4 = new ReadingPlanWizardOptsPage(this);
@@ -58,15 +59,15 @@ ReadingPlanWizardBooksPage::ReadingPlanWizardBooksPage(wxWizard *parent, KJVBibl
   wxBoxSizer *NTsizer = new wxBoxSizer( wxVERTICAL );
   m_listOT = new BookListBox(tstOT, bible, this, ID_BookList_OT, wxDefaultPosition, wxSize(170, 145), wxLB_MULTIPLE);
   m_listNT = new BookListBox(tstNT, bible, this, ID_BookList_NT, wxDefaultPosition, wxSize(170, 145), wxLB_MULTIPLE);
-  m_strOT = new wxStaticText(this, -1,wxT("Old Testament Books:"), wxDefaultPosition);
-  m_strNT = new wxStaticText(this, -1,wxT("New Testament Books:"), wxDefaultPosition);
+  m_strOT = new wxStaticText(this, -1,_("Old Testament Books:"), wxDefaultPosition);
+  m_strNT = new wxStaticText(this, -1,_("New Testament Books:"), wxDefaultPosition);
   OTsizer->Add(m_strOT, 0, wxALIGN_LEFT, 2);
-  OTsizer->Add(m_listOT, 0, wxALIGN_CENTER, 2);
+  OTsizer->Add(m_listOT, 1, wxALIGN_CENTER | wxEXPAND, 2);
   NTsizer->Add(m_strNT, 0, wxALIGN_LEFT, 2);
-  NTsizer->Add(m_listNT, 0, wxALIGN_CENTER, 2);
-  topsizer->Add(OTsizer, 0,  wxALIGN_CENTER, 5);
+  NTsizer->Add(m_listNT, 1, wxALIGN_CENTER | wxEXPAND, 2);
+  topsizer->Add(OTsizer, 1,  wxALIGN_CENTER | wxEXPAND, 5);
   topsizer->Add(8,5);
-  topsizer->Add(NTsizer, 0, wxALIGN_CENTER, 5);
+  topsizer->Add(NTsizer, 1, wxALIGN_CENTER | wxEXPAND, 5);
   SetSizer( topsizer );
   topsizer->SetSizeHints(this);
 }
@@ -95,7 +96,7 @@ ReadingPlanWizardDatesPage::ReadingPlanWizardDatesPage(wxWizard *parent) : wxWiz
   m_calStart = new wxCalendarCtrl(dynamic_cast<wxWindow*>(this), ID_CalendarCtrlStart ,
                                   wxDateTime(wxDefaultDateTime).SetToCurrent(),
                                   wxDefaultPosition,
-                                  wxSize(195,145),
+                                  wxDefaultSize,
                                   wxCAL_SUNDAY_FIRST |
                                   wxCAL_SHOW_HOLIDAYS |
                                   wxRAISED_BORDER );
@@ -105,40 +106,47 @@ ReadingPlanWizardDatesPage::ReadingPlanWizardDatesPage(wxWizard *parent) : wxWiz
   m_calEnd = new wxCalendarCtrl(dynamic_cast<wxWindow*>(this), ID_CalendarCtrlEnd,
                                 endDate,
                                 wxDefaultPosition,
-                                wxSize(195,145),
+                                wxDefaultSize,
                                 wxCAL_SUNDAY_FIRST |
                                 wxCAL_SHOW_HOLIDAYS |
                                 wxRAISED_BORDER );
-  m_calStart->Hide();
-  m_calEnd->Hide();
+//  m_calStart->Hide();
+//  m_calEnd->Hide();
 
-  m_strStart = new wxStaticText(this, -1,wxT("Start Date:"), wxDefaultPosition);
-  m_strEnd = new wxStaticText(this, -1,wxT("End Date:"), wxDefaultPosition);
+  m_strStart = new wxStaticText(this, -1, _("Start Date") + wxString(wxT(":")), wxDefaultPosition);
+  m_strEnd = new wxStaticText(this, -1, _("End Date") + wxString(wxT(":")), wxDefaultPosition);
 
-  startDatesizer->Add(m_strStart, 0, wxALIGN_TOP | wxALIGN_LEFT);
-  startDatesizer->Add(m_calStart, 0, wxALIGN_CENTER | wxALIGN_LEFT);
-  startDatesizer->SetSizeHints(this);
-  endDatesizer->Add(m_strEnd, 0, wxALIGN_LEFT, 2);
-  endDatesizer->Add(m_calEnd, 0, wxALIGN_LEFT, 2);
-  topDatesizer->Add(startDatesizer, 0, wxALIGN_TOP | wxALIGN_LEFT, 10);
+  startDatesizer->Add(m_strStart, 0);
+  startDatesizer->Add(m_calStart, 1, wxEXPAND);
+//  startDatesizer->SetSizeHints(this);
+//  
+  endDatesizer->Add(m_strEnd, 0);
+  endDatesizer->Add(m_calEnd, 1, wxEXPAND);
+  topDatesizer->Add(startDatesizer, 1, wxEXPAND, 10);
   topDatesizer->Add(15,5);
-  topDatesizer->Add(endDatesizer, 0, wxALIGN_TOP | wxALIGN_LEFT, 10);
+  topDatesizer->Add(endDatesizer, 1, wxEXPAND, 10);
 
-  m_statBox = new wxStaticBox(this, -1, wxT("Days of Week"));
+//  SetSizer( topDatesizer );
+//  topDatesizer->SetSizeHints(this);
+
+  
+  
+  
+  m_statBox = new wxStaticBox(this, -1, _("Days of Week"));
   wxStaticBoxSizer* statsizer = new wxStaticBoxSizer(m_statBox, wxHORIZONTAL);
-  m_ckSunday = new wxCheckBox(this, ID_CheckCtrlSun, wxT("Sunday"), wxDefaultPosition, wxSize(-1,-1));
+  m_ckSunday = new wxCheckBox(this, ID_CheckCtrlSun, _("Sunday"), wxDefaultPosition, wxSize(-1,-1));
   m_ckSunday->SetValue(true);
-  m_ckMonday = new wxCheckBox(this, ID_CheckCtrlMon, wxT("Monday"), wxDefaultPosition, wxSize(-1,-1));
+  m_ckMonday = new wxCheckBox(this, ID_CheckCtrlMon, _("Monday"), wxDefaultPosition, wxSize(-1,-1));
   m_ckMonday->SetValue(true);
-  m_ckTuesday = new wxCheckBox(this, ID_CheckCtrlTue, wxT("Tuesday"), wxDefaultPosition, wxSize(-1,-1));
+  m_ckTuesday = new wxCheckBox(this, ID_CheckCtrlTue, _("Tuesday"), wxDefaultPosition, wxSize(-1,-1));
   m_ckTuesday->SetValue(true);
-  m_ckWednesday = new wxCheckBox(this, ID_CheckCtrlWed, wxT("Wednesday"), wxDefaultPosition, wxSize(-1,-1));
+  m_ckWednesday = new wxCheckBox(this, ID_CheckCtrlWed, _("Wednesday"), wxDefaultPosition, wxSize(-1,-1));
   m_ckWednesday->SetValue(true);
-  m_ckThursday = new wxCheckBox(this, ID_CheckCtrlThu, wxT("Thursday"), wxDefaultPosition, wxSize(-1,-1));
+  m_ckThursday = new wxCheckBox(this, ID_CheckCtrlThu, _("Thursday"), wxDefaultPosition, wxSize(-1,-1));
   m_ckThursday->SetValue(true);
-  m_ckFriday = new wxCheckBox(this, ID_CheckCtrlFri, wxT("Friday"), wxDefaultPosition, wxSize(-1,-1));
+  m_ckFriday = new wxCheckBox(this, ID_CheckCtrlFri, _("Friday"), wxDefaultPosition, wxSize(-1,-1));
   m_ckFriday->SetValue(true);
-  m_ckSaturday = new wxCheckBox(this, ID_CheckCtrlSat, wxT("Saturday"), wxDefaultPosition, wxSize(-1,-1));
+  m_ckSaturday = new wxCheckBox(this, ID_CheckCtrlSat, _("Saturday"), wxDefaultPosition, wxSize(-1,-1));
   m_ckSaturday->SetValue(true);
 
   weekdaysSizer->Add(m_ckSunday);
@@ -150,19 +158,22 @@ ReadingPlanWizardDatesPage::ReadingPlanWizardDatesPage(wxWizard *parent) : wxWiz
   weekdaysSizer->Add(m_ckSaturday);
   statsizer->Add(weekdaysSizer);
 
-  m_lblDayTotal = new wxStaticText(this, ID_TextCtrlTotal, wxT("Total Days: 00"),wxDefaultPosition, wxSize(-1,-1));
+  m_lblDayTotal = new wxStaticText(this, ID_TextCtrlTotal, _("Total Days") + wxString(wxT(": 0")),wxDefaultPosition, wxSize(-1,-1));
 
   m_dateBegin = (RPDate)(&m_calStart->GetDate());
   m_dateEnd = (RPDate)(&m_calEnd->GetDate());
   m_dayFlags = SUNDAY | MONDAY | TUESDAY | WEDNESDAY | THURSDAY | FRIDAY | SATURDAY;
   UpdateDays();
-  topsizer->Add(topDatesizer,0);
+  topsizer->Add(topDatesizer,1);
   topsizer->Add(5,15);
   topsizer->Add(statsizer,0);
   topsizer->Add(5,5);
   topsizer->Add(m_lblDayTotal,0);
   SetSizer( topsizer );
   topsizer->SetSizeHints(this);
+
+  //m_strEnd->SetSize(m_calEnd->GetSize().GetWidth(), m_strEnd->GetSize().GetHeight());
+  //m_strStart->SetSize(m_calStart->GetSize().GetWidth(), m_strStart->GetSize().GetHeight());
 }
 
 void ReadingPlanWizardDatesPage::UpdateDays()
@@ -210,12 +221,12 @@ void ReadingPlanWizardDatesPage::UpdateDays()
       }
       currDay.advanceDate(1);
     }
-    caption.Printf(wxT("Total Days: %d"), m_intTotalDays);
-    m_lblDayTotal->SetLabel(caption);
+    caption.Printf(wxT(": %d"), m_intTotalDays);
+    m_lblDayTotal->SetLabel(_("Total Days") + caption);
   }
   else
   {
-    m_lblDayTotal->SetLabel(wxT("Total Days: 0"));
+    m_lblDayTotal->SetLabel(_("Total Days") + wxString(wxT(": 0")));
   }
 }
 
@@ -312,8 +323,8 @@ DAYFLAGS ReadingPlanWizardDatesPage::getDayFlags()
 
 ReadingPlanWizardOptsPage::ReadingPlanWizardOptsPage(wxWizard *parent) : wxWizardPageSimple(parent)
 {
-  new wxStaticText(this, wxID_ANY, wxT("Name ReadingPlan (31 characters max): "), wxPoint(0,0));
-  m_planName = new wxTextCtrl(this, ID_EditPlanName, wxT("Un-named ReadingPlan"), wxPoint(0,16), wxSize(200, 20));
+  new wxStaticText(this, wxID_ANY, _("Name ReadingPlan (31 characters max): "), wxPoint(0,0));
+  m_planName = new wxTextCtrl(this, ID_EditPlanName, _("Un-named ReadingPlan"), wxPoint(0,16), wxSize(200, 20));
 }
 
 wxString ReadingPlanWizardOptsPage::getPlanName()

@@ -15,6 +15,7 @@
 #include <wx/progdlg.h>
 #include <wx/log.h>
 #include <wx/msgdlg.h>
+#include <wx/intl.h>
 
 #include <sword/swmodule.h>
 #include <sword/versekey.h>
@@ -284,8 +285,15 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
   if (search != wxT(""))
   {
     wxLogDebug(wxT("Range: %s, Key: %s"), key.c_str(), search.c_str());
-    wxProgressDialog pd(wxT("Searching..."),
-                        wxT("Searching for \"") + search + wxT("\""), 100, NULL,
+    wxString title;
+    wxString caption;
+    title = _("Searching...");
+    caption = _("Searching for");
+    caption += wxT(" \""); 
+    caption += search;
+    caption += wxT("\"");
+    wxProgressDialog pd(title,
+                        caption, 100, NULL,
                         wxPD_APP_MODAL | wxPD_AUTO_HIDE | wxPD_CAN_ABORT |
                         wxPD_ELAPSED_TIME | wxPD_ESTIMATED_TIME |
                         wxPD_REMAINING_TIME);
@@ -359,17 +367,15 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
             if (m_Frame)
               msg =
                 new wxMessageDialog(m_Frame->GetParent(),
-                                    wxT
-                                    ("More than 300 verses found, continue?"),
-                                    wxT("Too many verses found."),
+                                    _("More than 300 verses found, continue?"),
+                                    _("Too many verses found."),
                                     wxICON_QUESTION | wxYES_NO | wxNO_DEFAULT |
                                     wxCENTRE, wxDefaultPosition);
             else
               msg =
                 new wxMessageDialog(NULL,
-                                    wxT
-                                    ("More than 300 verses found, continue?"),
-                                    wxT("Too many verses found."),
+                                    _("More than 300 verses found, continue?"),
+                                    _("Too many verses found."),
                                     wxICON_QUESTION | wxYES_NO | wxNO_DEFAULT |
                                     wxCENTRE, wxDefaultPosition);
 
@@ -473,8 +479,7 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
                 output.append(wxString::Format(wxT("%i"), element->Verse()));
               }
 
-              wxLogDebug(wxT
-                         ("BookModule::LookupKey updating last chaper, book, verse"));
+              wxLogDebug(wxT("BookModule::LookupKey updating last chaper, book, verse"));
               output.append(wxT("</font></small> "));
               if (!isfootnote)
               {
@@ -522,15 +527,15 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
           if (m_Frame)
             msg =
               new wxMessageDialog(m_Frame->GetParent(),
-                                  wxT("More than 300 verses found, continue?"),
-                                  wxT("Too many verses found."),
+                                  _("More than 300 verses found, continue?"),
+                                  _("Too many verses found."),
                                   wxICON_QUESTION | wxYES_NO | wxNO_DEFAULT |
                                   wxCENTRE, wxDefaultPosition);
           else
             msg =
               new wxMessageDialog(NULL,
-                                  wxT("More than 300 verses found, continue?"),
-                                  wxT("Too many verses found."),
+                                  _("More than 300 verses found, continue?"),
+			      	  _("Too many verses found."),
                                   wxICON_QUESTION | wxYES_NO | wxNO_DEFAULT |
                                   wxCENTRE, wxDefaultPosition);
 
@@ -696,8 +701,7 @@ void BookModule::AddTreeSiblings(wxTreeCtrl * tree, wxTreeItemId parentid,
   while (cont)
   {
 
-    wxLogDebug(wxT
-               ("BookModule::AddTreeSiblings starting next iteration of while loop"));
+    wxLogDebug(wxT("BookModule::AddTreeSiblings starting next iteration of while loop"));
     wxLogDebug(wxT("BookModule::AddTreeSiblings adding: %i"), key->Index());
     wxString name;
 

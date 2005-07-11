@@ -53,24 +53,24 @@ BookListBox::BookListBox(testamentType testament, KJVBible *bible, wxWindow* par
 
 void BookListBox::ShowContextMenu(const wxPoint& pos)
 {
-  wxMenu menu(_T("Selections"));
+  wxMenu menu(_("Selections"));
 
-  menu.Append(ID_PopSelectAll, _T("&Select All"));
-  menu.Append(ID_PopDeselectAll, _T("&Deselect All"));
-  menu.Append(ID_PopInvertSel, _T("&Invert Selection"));
+  menu.Append(ID_PopSelectAll, _("&Select All"));
+  menu.Append(ID_PopDeselectAll, _("&Deselect All"));
+  menu.Append(ID_PopInvertSel, _("&Invert Selection"));
   menu.AppendSeparator();
   if(m_testament == tstOT)
   {
-    menu.Append(ID_PopSelectOTLaw, _T("&Law"));
-    menu.Append(ID_PopSelectOTHistory, _T("&History"));
-    menu.Append(ID_PopSelectOTPsalms, _T("&Psalms, ect."));
-    menu.Append(ID_PopSelectOTProphets, _T("&Prophets"));
+    menu.Append(ID_PopSelectOTLaw, _("&Law"));
+    menu.Append(ID_PopSelectOTHistory, _("&History"));
+    menu.Append(ID_PopSelectOTPsalms, _("&Psalms, ect."));
+    menu.Append(ID_PopSelectOTProphets, _("&Prophets"));
   }
   else if(m_testament == tstNT)
   {
-    menu.Append(ID_PopSelectNTGospels, _T("&Gospels"));
-    menu.Append(ID_PopSelectNTHistory, _T("&History"));
-    menu.Append(ID_PopSelectNTEpistles, _T("&Epistles"));
+    menu.Append(ID_PopSelectNTGospels, _("&Gospels"));
+    menu.Append(ID_PopSelectNTHistory, _("&History"));
+    menu.Append(ID_PopSelectNTEpistles, _("&Epistles"));
   }
   PopupMenu(&menu, pos.x, pos.y);
 

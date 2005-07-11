@@ -146,34 +146,34 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools,
 
   SetIcon(wxIcon(biblestudy_xpm));
 
-  menuFile->Append(ID_MenuNewWindow, wxT("&New Window"));
-  menuFile->Append(ID_MenuCloseWindow, wxT("&Close Window"));
+  menuFile->Append(ID_MenuNewWindow, _("&New Window"));
+  menuFile->Append(ID_MenuCloseWindow, _("&Close Window"));
   menuFile->AppendSeparator();
-  menuFile->Append(ID_MenuReadingPlannerWiz, wxT("&ReadingPlanner Wizard..."));
+  menuFile->Append(ID_MenuReadingPlannerWiz, _("&ReadingPlanner Wizard..."));
   menuFile->AppendSeparator();
-  menuFile->Append(ID_MenuExit, wxT("E&xit"));
+  menuFile->Append(ID_MenuExit, _("E&xit"));
 
-  menuEdit->Append(ID_MenuCopy, wxT("&Copy"));
+  menuEdit->Append(ID_MenuCopy, _("&Copy"));
   menuEdit->AppendSeparator();
-  menuEdit->Append(ID_MenuSelectAll, wxT("Select &All"));
+  menuEdit->Append(ID_MenuSelectAll, _("Select &All"));
   
-  menuHelp->Append(ID_MenuAbout, wxT("&About BibleStudy"));
+  menuHelp->Append(ID_MenuAbout, _("&About BibleStudy"));
 
-  menuWindow->Append(ID_MenuShowStartPage, wxT("Show Start Page"));
-  menuWindow->Append(ID_MenuShowHideBookTree, wxT("Show/Hide Book List"));
-  menuWindow->Append(ID_MenuShowHideRPToolBar, wxT("Show/Hide ReadingPlanner Toolbar"));
+  menuWindow->Append(ID_MenuShowStartPage, _("Show Start Page"));
+  menuWindow->Append(ID_MenuShowHideBookTree, _("Show/Hide Book List"));
+  menuWindow->Append(ID_MenuShowHideRPToolBar, _("Show/Hide ReadingPlanner Toolbar"));
   menuWindow->AppendSeparator();
 
-  menuWindow->Append(ID_MenuSplitVertically, wxT("Split View &Left/Right"));
+  menuWindow->Append(ID_MenuSplitVertically, _("Split View &Left/Right"));
 
-  menuWindow->Append(ID_MenuSplitHorizontally, wxT("Split View &Top/Bottom"));
-  menuWindow->Append(ID_MenuRemoveSplit, wxT("&Remove Active View"));
+  menuWindow->Append(ID_MenuSplitHorizontally, _("Split View &Top/Bottom"));
+  menuWindow->Append(ID_MenuRemoveSplit, _("&Remove Active View"));
   menuWindow->AppendSeparator();
-  menuWindow->Append(ID_MenuNewTab, wxT("&New Tab"));
-  menuWindow->Append(ID_MenuCloseTab, wxT("Close Tab"));
-  menuWindow->Append(ID_MenuCloseOtherTabs, wxT("Close Other Tabs"));
-  menuWindow->Append(ID_MenuDetachTab, wxT("Detach Tab"));
-  menuWindow->Append(ID_MenuDuplicateTab, wxT("Duplicate Tab"));
+  menuWindow->Append(ID_MenuNewTab, _("&New Tab"));
+  menuWindow->Append(ID_MenuCloseTab, _("Close Tab"));
+  menuWindow->Append(ID_MenuCloseOtherTabs, _("Close Other Tabs"));
+  menuWindow->Append(ID_MenuDetachTab, _("Detach Tab"));
+  menuWindow->Append(ID_MenuDuplicateTab, _("Duplicate Tab"));
 
   StringList optlist;
 
@@ -205,7 +205,7 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools,
   StringList::iterator it;
   int id = ID_MenuTopBookOption;
 
-  menuOptions->Append(ID_MenuPrefs, wxT("Preferences"));
+  menuOptions->Append(ID_MenuPrefs, _("Preferences"));
   menuOptions->AppendSeparator();
 
   for (it = optlist.begin(); it != optlist.end(); it++)
@@ -233,23 +233,23 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools,
   // menuBibleStudies->Append(ID_MenuBibleStudyWhy, wxT("Why Should I
   // Become a Christian?"));
   menuBibleStudies->Append(ID_MenuBibleStudyHow,
-                           wxT("How Can I Become a Christian?"));
+                           _("How Can I Become a Christian?"));
   menuBibleStudies->Append(ID_MenuBibleStudyGrow,
-                           wxT("How Can I Grow as a Christian?"));
+                           _("How Can I Grow as a Christian?"));
 
   wxMenuBar *menuBar = new wxMenuBar();
 
-  menuBar->Append(menuFile, wxT("&File"));
-  menuBar->Append(menuEdit, wxT("&Edit"));
-  menuBar->Append(menuBibleStudies, wxT("&Bible Studies"));
-  menuBar->Append(menuOptions, wxT("&Options"));
-  menuBar->Append(menuWindow, wxT("&Window"));
-  menuBar->Append(menuHelp, wxT("&Help"));
+  menuBar->Append(menuFile, _("&File"));
+  menuBar->Append(menuEdit, _("&Edit"));
+  menuBar->Append(menuBibleStudies, _("&Bible Studies"));
+  menuBar->Append(menuOptions, _("&Options"));
+  menuBar->Append(menuWindow, _("&Window"));
+  menuBar->Append(menuHelp, _("&Help"));
 
   SetMenuBar(menuBar);
 
   CreateStatusBar();
-  SetStatusText(wxT("Welcome to BibleStudy!"));
+  SetStatusText(_("Welcome to BibleStudy!"));
 
   m_ToolBar =
     new BookViewToolBar(this, ID_BookViewToolBar, wxTB_HORIZONTAL |
@@ -297,8 +297,7 @@ void BibleStudyMainFrame::OnShowWhyBecomeChristian(wxCommandEvent &)
   wxWindowDisabler *disableAll = new wxWindowDisabler();
 
   BibleStudyWizard *wiz = new BibleStudyWizard(this, -1,
-                          wxT
-                          ("Why Should I Become a Christian?"));
+                          _("Why Should I Become a Christian?"));
 
   wiz->AddPage(NULL,
                wxT
@@ -339,36 +338,28 @@ void BibleStudyMainFrame::OnShowHowBecomeChristian(wxCommandEvent &)
   wxWindowDisabler *disableAll = new wxWindowDisabler();
 
   BibleStudyWizard *wiz = new BibleStudyWizard(this, -1,
-                          wxT
-                          ("How Can I Become a Christian?"));
+                          _("How Can I Become a Christian?"));
 
   wiz->AddPage(NULL,
-               wxT
-               ("Becoming a Christian means loving Christ, serving His church, and wanting to spread His Love throughout the world."),
+               _("Becoming a Christian means loving Christ, serving His church, and wanting to spread His Love throughout the world."),
                wxT(""));
   wiz->AddPage(mod,
-               wxT
-               ("Recognize that God loves us but our sin has separated us from God, fram a live with eternal purpose, and from a healthy relationship with others."),
+               _("Recognize that God loves us but our sin has separated us from God, fram a live with eternal purpose, and from a healthy relationship with others."),
                wxT("ro 3:23"));
   wiz->AddPage(mod,
-               wxT
-               ("Realize you cannot do enough good to earn God's forgiveness from sin, nor can you find true fulfillment through your own efforts."),
+               _("Realize you cannot do enough good to earn God's forgiveness from sin, nor can you find true fulfillment through your own efforts."),
                wxT("eph 2:8-9"));
   wiz->AddPage(mod,
-               wxT
-               ("Jesus Christ alone can provide forgiveness from eternal punishment for sin. He alone can free us from the present penalty of sin, our selfishness, which damages our relationships with others. He alone can take away the price of sin, our sense of emptiness, and give our lives meaning and purpose."),
+               _("Jesus Christ alone can provide forgiveness from eternal punishment for sin. He alone can free us from the present penalty of sin, our selfishness, which damages our relationships with others. He alone can take away the price of sin, our sense of emptiness, and give our lives meaning and purpose."),
                wxT("jn 14:6"));
   wiz->AddPage(mod,
-               wxT
-               ("Confess, believe, and repent in order to be saved from sin."),
+               _("Confess, believe, and repent in order to be saved from sin."),
                wxT("Ro 10:9; Acts 3:19"));
   wiz->AddPage(mod,
-               wxT
-               ("Follow Jesus by observing His teachings, participating in His church, and furthering His mission."),
+               _("Follow Jesus by observing His teachings, participating in His church, and furthering His mission."),
                wxT("jn 12:26"));
   wiz->AddPage(mod,
-               wxT
-               ("If you have questions regarding the Christian Faith or if you are still investigating Christianity, please call 1-800-NEED-HIM"),
+               _("If you have questions regarding the Christian Faith or if you are still investigating Christianity, please call 1-800-NEED-HIM"),
                wxT(""));
 
   delete disableAll;
@@ -385,36 +376,28 @@ void BibleStudyMainFrame::OnShowHowGrowSpiritually(wxCommandEvent &)
   wxWindowDisabler *disableAll = new wxWindowDisabler();
 
   BibleStudyWizard *wiz = new BibleStudyWizard(this, -1,
-                          wxT
-                          ("How Can I Grow as a Christian?"));
+                          _("How Can I Grow as a Christian?"));
 
   wiz->AddPage(mod,
-               wxT
-               ("Now that you have started your new life, you are probably asking yourself \"What do I do now?\"\n\nThe old habits and character traits that marked your life before Christ are passing away."),
+               _("Now that you have started your new life, you are probably asking yourself \"What do I do now?\"\n\nThe old habits and character traits that marked your life before Christ are passing away."),
                wxT("II Cor 5:17"));
   wiz->AddPage(mod,
-               wxT
-               ("Allow the Holy Spirit (God's Spirit) to work in and through you."),
+               _("Allow the Holy Spirit (God's Spirit) to work in and through you."),
                wxT("John 16:13; John 14:16"));
   wiz->AddPage(mod,
-               wxT
-               ("Read God's Word.\n\nAs much as we need daily food to nourish our physical bodies, we need spiritual nourishment."),
+               _("Read God's Word.\n\nAs much as we need daily food to nourish our physical bodies, we need spiritual nourishment."),
                wxT("Mat 14:16"));
   wiz->AddPage(mod,
-               wxT
-               ("Talk to God.\n\nNow that you belong to Him, do not hesitate to talk with Him daily."),
+               _("Talk to God.\n\nNow that you belong to Him, do not hesitate to talk with Him daily."),
                wxT("I John 5:14"));
   wiz->AddPage(mod,
-               wxT
-               ("Get involved with God's people.\n\nYou are special and unique, created with gifts and talents that are needed in God's kingdom."),
+               _("Get involved with God's people.\n\nYou are special and unique, created with gifts and talents that are needed in God's kingdom."),
                wxT("I Cor 12:14"));
   wiz->AddPage(mod,
-               wxT
-               ("Guard yourself against temptation.\n\nWe do have an enemy. He is called the Devil, Satan. Now that you have given your life over to God, he will come tempt you to change your ming. Guard yourself!"),
+               _("Guard yourself against temptation.\n\nWe do have an enemy. He is called the Devil, Satan. Now that you have given your life over to God, he will come tempt you to change your ming. Guard yourself!"),
                wxT("James 4:7-8; I Peter 5:8-9"));
   wiz->AddPage(mod,
-               wxT
-               ("Rejoice!\n\nYou belong to God. You are His child and in His family! You will always be in His presence. Jesus is ocming back for all His children!"),
+               _("Rejoice!\n\nYou belong to God. You are His child and in His family! You will always be in His presence. Jesus is ocming back for all His children!"),
                wxT("Jn 14:3"));
   delete disableAll;
 
@@ -617,9 +600,8 @@ void BibleStudyMainFrame::OnShowBibleStudy(wxCommandEvent & event)
 void BibleStudyMainFrame::OnAbout(wxCommandEvent & event)
 {
   wxLogTrace(wxTRACE_Messages, wxT("BibleStudyMainFrame::OnAbout called"));
-  wxMessageBox(wxT
-               ("This is BibleStudy bible software.\nMany thanks to the Sword project. (www.crosswire.org/sword)\n\nAlso Thanks to Timothy Butler for the use of the icons.\n\nLicensed under the GPL (http://www.gnu.org/licenses/gpl.html).\nPlease distribute freely."),
-               wxT("About BibleStudy"), wxOK | wxICON_INFORMATION, this);
+  wxMessageBox(_("This is BibleStudy bible software.\nMany thanks to the Sword project. (www.crosswire.org/sword)\n\nAlso Thanks to Timothy Butler for the use of the icons.\n\nLicensed under the GPL (http://www.gnu.org/licenses/gpl.html).\nPlease distribute freely."),
+               _("About BibleStudy"), wxOK | wxICON_INFORMATION, this);
 }
 
 void BibleStudyMainFrame::OnNewWindow(wxCommandEvent & event)
@@ -745,7 +727,9 @@ wxString BibleStudyMainFrame::BuildStartPage()
 {
   wxString page;
 
-  page = wxT("<html><title>Start Page</title>");
+  page = wxT("<html><title>");
+  page += _("Start Page");
+  page += wxT("</title>");
   page += wxT("<table>");
   page +=
     wxT
@@ -770,7 +754,9 @@ void BibleStudyMainFrame::ShowReadingPlan()
   wxString page;
   wxDateTime today = wxDateTime::Today();
 
-  page = wxT("<html><title>ReadingPlanner</title>");
+  page = wxT("<html><title>");
+  page += _("ReadingPlanner");
+  page += wxT("</title>");
   page += wxT("<table>");
   page += wxT("<tr><td bgcolor=#000000 colspan=2><table cellpadding=1 cellspacing=0 width='100%'><tr><td align=center bgcolor=#000099 border=1 width='100%'><font color=#FFFFFF>") + ReadingPlannerHeading() + wxT("</font></td></tr></table></td></tr>");
   page += wxT("<tr><td valign=top>");
@@ -792,11 +778,13 @@ wxString BibleStudyMainFrame::InsertReadingPlan() const
   wxString output;
   PDBErr lastErr = m_pdbFile->PDBGetLastError();
   if(!m_pdbFile->DBIsOpen() || lastErr != errNone)
-    return output = wxT("Error Reading Plan File");
+    return output = _("Error Reading Plan File");
   m_pdbFile->PDBDatabaseInfo(dbName);
   m_pdbFile->StripName(dbName);
   int index = m_pdbFile->FindDayIndex((RPDate)(&m_PlanDate));
-  output = wxT("<table cellpadding=1 cellspacing=0 width='100%'><tr><td align=center bgcolor=#215697><font color=#FFFFFF>ReadingPlan</font></td></tr>");
+  output = wxT("<table cellpadding=1 cellspacing=0 width='100%'><tr><td align=center bgcolor=#215697><font color=#FFFFFF>");
+  output += _("ReadingPlan");
+  output += wxT("</font></td></tr>");
   output += wxT("<tr><td>");
   output += wxT("<b><i><font size=+1>") + wxString(dbName,wxConvUTF8) + wxT("</i></b>  - ");
   output += m_PlanDate.FormatDate() + wxT("</font><br>");
@@ -804,7 +792,7 @@ wxString BibleStudyMainFrame::InsertReadingPlan() const
   {
     output += BuildStringAssignment(m_pdbFile->PDBGetRecord(index));
   }
-  else output += wxT("Nothing Assigned for Today");
+  else output += _("Nothing Assigned for Today");
   output += wxT("</td></tr></table>");
   return output;
 }
@@ -819,9 +807,9 @@ wxString BibleStudyMainFrame::ProverbOfTheDay() const
   key = wxT("prov ");
   key += wxString::Format(wxT("%i"), today.GetDay());
 
-  output =
-    wxT
-    ("<table cellpadding=1 cellspacing=0><tr><td align=center bgcolor=#990000><font color=#FFFFFF>Proverb Of The Day</font></td></tr>");
+  output = wxT("<table cellpadding=1 cellspacing=0><tr><td align=center bgcolor=#990000><font color=#FFFFFF>");
+  output += _("Proverb Of The Day");
+  output += wxT("</font></td></tr>");
   output += wxT("<tr><td>");
   output += web.LookupKey(key);
   output += wxT("</td></tr></table>");
@@ -833,14 +821,17 @@ wxString BibleStudyMainFrame::BibleStudies() const
   wxString output;
 
   output =
-    wxT
-    ("<table cellpadding=1 cellspacing=0 width='100%'><tr><td align=center bgcolor=#990099><font color=#FFFFFF>Bible Studies</font></td></tr>");
+    wxT("<table cellpadding=1 cellspacing=0 width='100%'><tr><td align=center bgcolor=#990099><font color=#FFFFFF>");
+  output += _("Bible Studies");
+  output += wxT("</font></td></tr>");
   output +=
-    wxT
-    ("<tr><td><a href='biblestudy://How_Can_I_Become_A_Christian'>How Can I Become a Christian?</a></td></tr>");
+    wxT("<tr><td><a href='biblestudy://How_Can_I_Become_A_Christian'>");
+  output += _("How Can I Become a Christian?");
+  output += wxT("</a></td></tr>");
   output +=
-    wxT
-    ("<tr><td><a href='biblestudy://How_Can_I_Grow_As_A_Christian'>How Can I Grow as a Christian?</a></td></tr>");
+    wxT("<tr><td><a href='biblestudy://How_Can_I_Grow_As_A_Christian'>");
+  output += wxT("How Can I Grow as a Christian?");
+  output += wxT("</a></td></tr>");
   output += wxT("</table>");
   return output;
 }
@@ -870,8 +861,9 @@ wxString BibleStudyMainFrame::DevotionalOfTheDay() const
     wxString::Format(wxT("%02i.%02i"), today.GetMonth() + 1, today.GetDay());
 
   output =
-    wxT
-    ("<table cellpadding=1 cellspacing=0><tr><td align=center bgcolor=#009900><font color=#FFFFFF>Daily Devotional</font></td></tr>");
+    wxT("<table cellpadding=1 cellspacing=0><tr><td align=center bgcolor=#009900><font color=#FFFFFF>");
+  output += _("Daily Devotional");
+  output += wxT("</font></td></tr>");
   output += wxT("<tr><td>");
   output += sme.LookupKey(key);
   output += wxT("</td></tr></table>");
@@ -882,7 +874,9 @@ wxString BibleStudyMainFrame::Heading() const
 {
   wxString output;
   wxDateTime today = wxDateTime::Today();
-  output = wxT("<b><font size=+1>Welcome To BibleStudy ") + today.FormatDate() + wxT("</font></b>");
+  output = wxT("<b><font size=+1>");
+  output += _("Welcome To BibleStudy"); 
+  output += wxT(" ") + today.FormatDate() + wxT("</font></b>");
   return output;
 }
 
@@ -890,7 +884,9 @@ wxString BibleStudyMainFrame::ReadingPlannerHeading()
 {
   wxString output;
   wxDateTime today = wxDateTime::Today();
-  output = wxT("<b><font size=+1>ReadingPlanner for BibleStudy ") + today.FormatDate() + wxT("</font></b>");
+  output = wxT("<b><font size=+1>");
+  output += _("ReadingPlanner for BibleStudy");
+  output += wxT(" ") + today.FormatDate() + wxT("</font></b>");
   return output;
 }
 
@@ -952,7 +948,9 @@ wxString BibleStudyMainFrame::BuildStringAssignment(dayRecord* recP) const
   int prevBook = recP->pSel[0].m_nBookNum;
   output = wxT("<b>");
   output += wxString(rpBible.getName(recP->pSel[0].m_nBookNum).c_str(), wxConvUTF8);
-  output += wxT("</b><br>   Chapter: ");
+  output += wxT("</b><br>   ");
+  output += _("Chapter");
+  output += wxT(": ");
   strBook = wxString(rpBible.getName(recP->pSel[0].m_nBookNum).c_str(),wxConvUTF8);
   output += GetLinkString(strBook, recP->pSel[0].m_nChapterNum + 1);
   for(count = 1;count < recP->totalAssigned; count++)
@@ -962,7 +960,9 @@ wxString BibleStudyMainFrame::BuildStringAssignment(dayRecord* recP) const
     {
       output += wxT("<br><b>");
       output += strBook;
-      output += wxT("</b><br>   Chapter: ");
+      output += wxT("</b><br>   ");
+      output += _("Chapter");
+      output += wxT(": ");
       output += GetLinkString(strBook, recP->pSel[count].m_nChapterNum + 1);
       prevBook = recP->pSel[count].m_nBookNum;
     }

@@ -15,6 +15,7 @@
 
 #include <wx/textctrl.h>
 #include <wx/log.h>
+#include <wx/intl.h>
 
 using namespace sword;
 
@@ -55,20 +56,20 @@ DropDownCtrl::DropDownCtrl(wxWindow *parent, SWModule *module,
     break;
   case bsBible:
     SetClientSize(wxSize(305, 70));
-    m_BookLabel = new wxStaticText(this, -1, wxT("Book:"),
+    m_BookLabel = new wxStaticText(this, -1, _("Book") + wxString(wxT(":")),
                                    wxPoint(GetClientAreaOrigin().x + 2,
                                            GetClientAreaOrigin().y + 2),
                                    wxSize(150, wxDefaultSize.GetHeight()),
                                    0);
 
-    m_ChapterLabel = new wxStaticText(this, -1, wxT("Chapter:"),
+    m_ChapterLabel = new wxStaticText(this, -1, _("Chapter") + wxString(wxT(":")),
                                       wxPoint(m_BookLabel->GetPosition().x +
                                               m_BookLabel->GetSize().GetWidth() + 2,
                                               m_BookLabel->GetPosition().y),
                                       wxSize(73, wxDefaultSize.GetHeight()),
                                       0);
 
-    m_VerseLabel = new wxStaticText(this, -1, wxT("Verse:"),
+    m_VerseLabel = new wxStaticText(this, -1, _("Verse") + wxString(wxT(":")),
                                     wxPoint(m_ChapterLabel->GetPosition().x +
                                             m_ChapterLabel->GetSize().GetWidth() + 2,
                                             m_ChapterLabel->GetPosition().y),
@@ -98,11 +99,11 @@ DropDownCtrl::DropDownCtrl(wxWindow *parent, SWModule *module,
                             wxDefaultSize.GetHeight()),
                      0, NULL, wxCB_READONLY);
     m_Button =
-      new wxButton(this, -1, wxT("Select"),
+      new wxButton(this, -1, _("Select"),
                    wxPoint(m_BookCB->GetPosition().x,
                            m_VerseCB->GetPosition().y +
                            m_VerseCB->GetSize().GetHeight() + 2), wxDefaultSize,
-                   0, wxDefaultValidator, wxT("Select"));
+                   0, wxDefaultValidator, _("Select"));
 
     /*
        * m_BookCB->PushEventHandler(this);

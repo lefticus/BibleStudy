@@ -20,6 +20,7 @@
 #include <wx/artprov.h>
 #include <wx/imaglist.h>
 #include <wx/image.h>
+#include <wx/intl.h>
 
 #include <sword/swmgr.h>
 
@@ -323,7 +324,7 @@ void BookTreeCtrl::OnInformation(wxCommandEvent & event)
 {
   BookModule bm(GetItemData(GetSelection())->GetModule());
 
-  wxMessageBox(bm.ModInfo(), wxT("Module Information"),
+  wxMessageBox(bm.ModInfo(), _("Module Information"),
                wxOK | wxICON_INFORMATION, this->GetParent()->GetParent());
 }
 
@@ -342,15 +343,15 @@ BookTreeCtrl::BookTreeCtrl(wxWindow * parent, wxWindowID id,
    * Build Popup Menu 
    */
   m_PopupMenu = new wxMenu();
-  m_PopupMenu->Append(ID_BookTreePopupOpen, wxT("Open"));
-  m_PopupMenu->Append(ID_BookTreePopupOpenInNewTab, wxT("Open In New Tab"));
+  m_PopupMenu->Append(ID_BookTreePopupOpen, _("Open"));
+  m_PopupMenu->Append(ID_BookTreePopupOpenInNewTab, _("Open In New Tab"));
   m_PopupMenu->Append(ID_BookTreePopupOpenInNewWindow,
-                      wxT("Open In New Window"));
+		      _("Open In New Window"));
   m_PopupMenu->AppendSeparator();
   m_PopupMenu->Append(ID_BookTreePopupAddToCurrentTab,
-                      wxT("Add To Current Tab"));
+                      _("Add To Current Tab"));
   m_PopupMenu->AppendSeparator();
-  m_PopupMenu->Append(ID_BookTreePopupInformation, wxT("Module Information"));
+  m_PopupMenu->Append(ID_BookTreePopupInformation, _("Module Information"));
 }
 
 void BookTreeCtrl::SetupIcons()

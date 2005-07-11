@@ -18,6 +18,7 @@
 #include <wx/log.h>
 #include <wx/image.h>
 #include <wx/clipbrd.h>
+#include <wx/intl.h>
 
 #include <sword/swmodule.h>
 #include <sword/swmgr.h>
@@ -528,7 +529,7 @@ void BookViewCtrl::RefreshStartPages(const wxString html)
 {
   for(unsigned int i = 0; i < GetPageCount(); i++)
   {
-    if(GetPageText(i).IsSameAs(wxT("Start Page")))
+    if(GetPageText(i).IsSameAs(_("Start Page")))
     {
       BookViewHtml *htmlBook  = (BookViewHtml *) GetPage(i)->GetChildren().GetFirst()->GetData();
       htmlBook->SetPage(html);
