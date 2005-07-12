@@ -53,7 +53,7 @@ BookListBox::BookListBox(testamentType testament, KJVBible *bible, wxWindow* par
 
 void BookListBox::ShowContextMenu(const wxPoint& pos)
 {
-  wxMenu menu(_("Selections"));
+  wxMenu menu;
 
   menu.Append(ID_PopSelectAll, _("&Select All"));
   menu.Append(ID_PopDeselectAll, _("&Deselect All"));
@@ -72,7 +72,8 @@ void BookListBox::ShowContextMenu(const wxPoint& pos)
     menu.Append(ID_PopSelectNTHistory, _("&History"));
     menu.Append(ID_PopSelectNTEpistles, _("&Epistles"));
   }
-  PopupMenu(&menu, pos.x, pos.y);
+
+  PopupMenu(&menu);
 
   // test for destroying items in popup menus
 #if 0 // doesn't work in wxGTK!

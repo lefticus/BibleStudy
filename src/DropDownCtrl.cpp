@@ -56,20 +56,20 @@ DropDownCtrl::DropDownCtrl(wxWindow *parent, SWModule *module,
     break;
   case bsBible:
     SetClientSize(wxSize(305, 70));
-    m_BookLabel = new wxStaticText(this, -1, _("Book") + wxString(wxT(":")),
+    m_BookLabel = new wxStaticText(this, -1, _("Book:"),
                                    wxPoint(GetClientAreaOrigin().x + 2,
                                            GetClientAreaOrigin().y + 2),
                                    wxSize(150, wxDefaultSize.GetHeight()),
                                    0);
 
-    m_ChapterLabel = new wxStaticText(this, -1, _("Chapter") + wxString(wxT(":")),
+    m_ChapterLabel = new wxStaticText(this, -1, _("Chapter:"),
                                       wxPoint(m_BookLabel->GetPosition().x +
                                               m_BookLabel->GetSize().GetWidth() + 2,
                                               m_BookLabel->GetPosition().y),
                                       wxSize(73, wxDefaultSize.GetHeight()),
                                       0);
 
-    m_VerseLabel = new wxStaticText(this, -1, _("Verse") + wxString(wxT(":")),
+    m_VerseLabel = new wxStaticText(this, -1, _("Verse:"),
                                     wxPoint(m_ChapterLabel->GetPosition().x +
                                             m_ChapterLabel->GetSize().GetWidth() + 2,
                                             m_ChapterLabel->GetPosition().y),

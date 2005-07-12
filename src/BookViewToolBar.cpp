@@ -18,6 +18,7 @@
 #include <wx/textctrl.h>
 #include <wx/frame.h>
 #include <wx/log.h>
+#include <wx/intl.h>
 
 #include "../icons/addtab.xpm"
 #include "../icons/removetab.xpm"
@@ -50,31 +51,31 @@ BookViewToolBar::BookViewToolBar(wxWindow * parent, wxWindowID id, long style)
   SetToolBitmapSize(wxSize(22, 22));
   SetToolSeparation(5);
 
-  AddTool(ID_ToolShowHideBookTree, wxT("Book List"), wxBitmap(booktree_xpm),
-          wxNullBitmap, wxITEM_CHECK, wxT("Show/Hide Book List"),
-          wxT("Show or hide the list of books that are on the left side of the window."));
+  AddTool(ID_ToolShowHideBookTree, _("Book List"), wxBitmap(booktree_xpm),
+          wxNullBitmap, wxITEM_CHECK, _("Show/Hide Book List"),
+          _("Show or hide the list of books that are on the left side of the window."));
   AddSeparator();
 
-  AddTool(ID_ToolNewTab, wxT("Add Tab"), wxBitmap(addtab_xpm),
-          wxNullBitmap, wxITEM_NORMAL, wxT("Add a New Tab"),
-          wxT("Add a new tab in the current view."));
+  AddTool(ID_ToolNewTab, _("Add Tab"), wxBitmap(addtab_xpm),
+          wxNullBitmap, wxITEM_NORMAL, _("Add a New Tab"),
+          _("Add a new tab in the current view."));
 
-  AddTool(ID_ToolRemoveTab, wxT("Remove Tab"), wxBitmap(removetab_xpm),
-          wxNullBitmap, wxITEM_NORMAL, wxT("Remove Current Tab"),
-          wxT("Remove the currently selected tab."));
+  AddTool(ID_ToolRemoveTab, _("Remove Tab"), wxBitmap(removetab_xpm),
+          wxNullBitmap, wxITEM_NORMAL, _("Remove Current Tab"),
+          _("Remove the currently selected tab."));
 
   AddSeparator();
 
   m_LookupKey = new wxTextCtrl(this, ID_ToolTextKey);
   m_LookupKey->SetSize(200, m_LookupKey->GetSize().GetHeight());
   AddControl(m_LookupKey);
-  AddTool(ID_ToolListKey, wxT("Sections"), wxBitmap(list_xpm),
-          wxNullBitmap, wxITEM_NORMAL, wxT("List Sections"),
-          wxT("List all sections, chapters or words in the currently opened book."));
+  AddTool(ID_ToolListKey, _("Sections"), wxBitmap(list_xpm),
+          wxNullBitmap, wxITEM_NORMAL, _("List Sections"),
+          _("List all sections, chapters or words in the currently opened book."));
 
-  AddTool(ID_ToolLookupKey, wxT("Lookup"), wxBitmap(lookup_xpm),
-          wxNullBitmap, wxITEM_NORMAL, wxT("Lookup Entry"),
-          wxT("Lookup the section, word or reference currently entered on the toolbar."));
+  AddTool(ID_ToolLookupKey, _("Lookup"), wxBitmap(lookup_xpm),
+          wxNullBitmap, wxITEM_NORMAL, _("Lookup Entry"),
+          _("Lookup the section, word or reference currently entered on the toolbar."));
 
   m_DropDownRange =
     new wxComboBox(this, ID_ToolDropDownRange, wxT(""), wxDefaultPosition,
@@ -82,17 +83,17 @@ BookViewToolBar::BookViewToolBar(wxWindow * parent, wxWindowID id, long style)
   AddRanges();
 
   AddControl(m_DropDownRange);
-  AddTool(ID_ToolSearchKey, wxT("Search"), wxBitmap(search_xpm),
-          wxNullBitmap, wxITEM_NORMAL, wxT("Search Entry"),
-          wxT("Search for the words currently entered on the toolbar."));
+  AddTool(ID_ToolSearchKey, _("Search"), wxBitmap(search_xpm),
+          wxNullBitmap, wxITEM_NORMAL, _("Search Entry"),
+          _("Search for the words currently entered on the toolbar."));
 
-  AddTool(ID_ToolBackward, wxT("Backward"), wxBitmap(back_xpm),
-          wxNullBitmap, wxITEM_NORMAL, wxT("Go Backward"),
-          wxT("Browse backward in the current book."));
+  AddTool(ID_ToolBackward, _("Backward"), wxBitmap(back_xpm),
+          wxNullBitmap, wxITEM_NORMAL, _("Go Backward"),
+          _("Browse backward in the current book."));
 
-  AddTool(ID_ToolForward, wxT("Forward"), wxBitmap(forward_xpm),
-          wxNullBitmap, wxITEM_NORMAL, wxT("Go Forward"),
-          wxT("Browse forward in the current book."));
+  AddTool(ID_ToolForward, _("Forward"), wxBitmap(forward_xpm),
+          wxNullBitmap, wxITEM_NORMAL, _("Go Forward"),
+          _("Browse forward in the current book."));
 
   Realize();
 
@@ -109,36 +110,36 @@ wxString BookViewToolBar::GetRange()
 
 void BookViewToolBar::AddRanges()
 {
-  m_DropDownRange->Append(wxT("Old Testament"),
+  m_DropDownRange->Append(_("Old Testament"),
                           new wxString(wxT("Gen-Mal"), wxConvUTF8));
-  m_DropDownRange->Append(wxT("Mosaic Law"),
+  m_DropDownRange->Append(_("Mosaic Law"),
                           new wxString(wxT("Gen-Deut"), wxConvUTF8));
-  m_DropDownRange->Append(wxT("OT History"),
+  m_DropDownRange->Append(_("OT History"),
                           new wxString(wxT("Josh-Esther"), wxConvUTF8));
-  m_DropDownRange->Append(wxT("Books of Wisdom"),
+  m_DropDownRange->Append(_("Books of Wisdom"),
                           new wxString(wxT("Job-Song"), wxConvUTF8));
-  m_DropDownRange->Append(wxT("Major Prophets"),
+  m_DropDownRange->Append(_("Major Prophets"),
                           new wxString(wxT("Is-Dan"), wxConvUTF8));
-  m_DropDownRange->Append(wxT("Minor Prophets"),
+  m_DropDownRange->Append(_("Minor Prophets"),
                           new wxString(wxT("Hos-Mal"), wxConvUTF8));
-  m_DropDownRange->Append(wxT("Megillot"),
+  m_DropDownRange->Append(_("Megillot"),
                           new wxString(wxT("Ruth, Esther, Ecc, Song, Lam"),
                                        wxConvUTF8));
 
-  m_DropDownRange->Append(wxT("New Testament"),
+  m_DropDownRange->Append(_("New Testament"),
                           new wxString(wxT("Mat-Rev"), wxConvUTF8));
-  m_DropDownRange->Append(wxT("Gospels"),
+  m_DropDownRange->Append(_("Gospels"),
                           new wxString(wxT("Mat-John"), wxConvUTF8));
-  m_DropDownRange->Append(wxT("NT History"),
+  m_DropDownRange->Append(_("NT History"),
                           new wxString(wxT("Mat-Acts"), wxConvUTF8));
-  m_DropDownRange->Append(wxT("Paul's Letters"),
+  m_DropDownRange->Append(_("Paul's Letters"),
                           new wxString(wxT("Ro-Phil"), wxConvUTF8));
-  m_DropDownRange->Append(wxT("Other Letters"),
+  m_DropDownRange->Append(_("Other Letters"),
                           new wxString(wxT("Heb-Rev"), wxConvUTF8));
-  m_DropDownRange->Append(wxT("All Letters"),
+  m_DropDownRange->Append(_("All Letters"),
                           new wxString(wxT("Ro-Rev"), wxConvUTF8));
 
-  m_DropDownRange->Append(wxT("No Restrictions"),
+  m_DropDownRange->Append(_("No Restrictions"),
                           new wxString(wxT(""), wxConvUTF8));
 
   m_DropDownRange->SetSelection(13);
@@ -167,11 +168,9 @@ void BookViewToolBar::SetDropDownFrame(wxFrame *subframe)
 
       if (m_SubFrame->GetPreviousHandler() != NULL)
       {
-        wxLogDebug(wxT
-                   ("BookViewToolBar::SetDropDownFrame Popping Event Handler"));
+        wxLogDebug(wxT("BookViewToolBar::SetDropDownFrame Popping Event Handler"));
         handler = m_SubFrame->PopEventHandler(FALSE);
-        wxLogDebug(wxT
-                   ("BookViewToolBar::SetDropDownFrame Event Handler Popped"));
+        wxLogDebug(wxT("BookViewToolBar::SetDropDownFrame Event Handler Popped"));
       }
 
     }

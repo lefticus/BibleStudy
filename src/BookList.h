@@ -38,10 +38,10 @@ protected:
   void OnCheckboxToggle(wxCommandEvent &event);
 #ifdef __WXMSW__
   void OnContextMenu(wxContextMenuEvent& event)
-  { ShowContextMenu(ScreenToClient(event.GetPosition())); }
+  { ShowContextMenu(event.GetPosition()); }
 #else
   void OnRightUp(wxMouseEvent& event)
-  { ShowContextMenu(event.GetPosition()); }
+  { ShowContextMenu(ClientToScreen(event.GetPosition())); }
 #endif
 
 private:

@@ -113,8 +113,11 @@ ReadingPlanWizardDatesPage::ReadingPlanWizardDatesPage(wxWizard *parent) : wxWiz
 //  m_calStart->Hide();
 //  m_calEnd->Hide();
 
-  m_strStart = new wxStaticText(this, -1, _("Start Date") + wxString(wxT(":")), wxDefaultPosition);
-  m_strEnd = new wxStaticText(this, -1, _("End Date") + wxString(wxT(":")), wxDefaultPosition);
+  m_strStart = new wxStaticText(this, -1, _("Start Date:"), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE);
+  m_strEnd = new wxStaticText(this, -1, _("End Date:"), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE);
+
+  m_strEnd->SetMinSize(wxSize(m_calEnd->GetSize().GetWidth(), m_strEnd->GetSize().GetHeight()));
+  m_strStart->SetMinSize(wxSize(m_calStart->GetSize().GetWidth(), m_strStart->GetSize().GetHeight()));
 
   startDatesizer->Add(m_strStart, 0);
   startDatesizer->Add(m_calStart, 1, wxEXPAND);
@@ -158,7 +161,7 @@ ReadingPlanWizardDatesPage::ReadingPlanWizardDatesPage(wxWizard *parent) : wxWiz
   weekdaysSizer->Add(m_ckSaturday);
   statsizer->Add(weekdaysSizer);
 
-  m_lblDayTotal = new wxStaticText(this, ID_TextCtrlTotal, _("Total Days") + wxString(wxT(": 0")),wxDefaultPosition, wxSize(-1,-1));
+  m_lblDayTotal = new wxStaticText(this, ID_TextCtrlTotal, _("Total Days:") + wxString(wxT(" 0")),wxDefaultPosition, wxSize(-1,-1));
 
   m_dateBegin = (RPDate)(&m_calStart->GetDate());
   m_dateEnd = (RPDate)(&m_calEnd->GetDate());
@@ -172,8 +175,6 @@ ReadingPlanWizardDatesPage::ReadingPlanWizardDatesPage(wxWizard *parent) : wxWiz
   SetSizer( topsizer );
   topsizer->SetSizeHints(this);
 
-  //m_strEnd->SetSize(m_calEnd->GetSize().GetWidth(), m_strEnd->GetSize().GetHeight());
-  //m_strStart->SetSize(m_calStart->GetSize().GetWidth(), m_strStart->GetSize().GetHeight());
 }
 
 void ReadingPlanWizardDatesPage::UpdateDays()
@@ -221,12 +222,12 @@ void ReadingPlanWizardDatesPage::UpdateDays()
       }
       currDay.advanceDate(1);
     }
-    caption.Printf(wxT(": %d"), m_intTotalDays);
-    m_lblDayTotal->SetLabel(_("Total Days") + caption);
+    caption.Printf(wxT(" %d"), m_intTotalDays);
+    m_lblDayTotal->SetLabel(_("Total Days:") + caption);
   }
   else
   {
-    m_lblDayTotal->SetLabel(_("Total Days") + wxString(wxT(": 0")));
+    m_lblDayTotal->SetLabel(_("Total Days:") + wxString(wxT(" 0")));
   }
 }
 

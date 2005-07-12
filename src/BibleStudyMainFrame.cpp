@@ -949,8 +949,8 @@ wxString BibleStudyMainFrame::BuildStringAssignment(dayRecord* recP) const
   output = wxT("<b>");
   output += wxString(rpBible.getName(recP->pSel[0].m_nBookNum).c_str(), wxConvUTF8);
   output += wxT("</b><br>   ");
-  output += _("Chapter");
-  output += wxT(": ");
+  output += _("Chapter:");
+  output += wxT(" ");
   strBook = wxString(rpBible.getName(recP->pSel[0].m_nBookNum).c_str(),wxConvUTF8);
   output += GetLinkString(strBook, recP->pSel[0].m_nChapterNum + 1);
   for(count = 1;count < recP->totalAssigned; count++)
@@ -961,8 +961,8 @@ wxString BibleStudyMainFrame::BuildStringAssignment(dayRecord* recP) const
       output += wxT("<br><b>");
       output += strBook;
       output += wxT("</b><br>   ");
-      output += _("Chapter");
-      output += wxT(": ");
+      output += _("Chapter:");
+      output += wxT(" ");
       output += GetLinkString(strBook, recP->pSel[count].m_nChapterNum + 1);
       prevBook = recP->pSel[count].m_nBookNum;
     }
