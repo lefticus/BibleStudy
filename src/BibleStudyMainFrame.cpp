@@ -293,7 +293,13 @@ void BibleStudyMainFrame::OnShowWhyBecomeChristian(wxCommandEvent &)
 {
   SWModule *mod = NULL;
 
-  mod = m_SwordTools->GetModule("KJV");
+  mod = m_SwordTools->GetDefaultBible();
+  if (mod == NULL) {
+    wxMessageDialog d(this, _("No bibles found, please install at least one bible module."), _("No Bibles Found!"), wxOK | wxICON_ERROR);
+    d.ShowModal();
+    return;
+  }
+
   wxWindowDisabler *disableAll = new wxWindowDisabler();
 
   BibleStudyWizard *wiz = new BibleStudyWizard(this, -1,
@@ -333,8 +339,12 @@ void BibleStudyMainFrame::OnShowHowBecomeChristian(wxCommandEvent &)
 {
   SWModule *mod = NULL;
 
-  mod = m_SwordTools->GetModule("KJV");
-
+  mod = m_SwordTools->GetDefaultBible();
+  if (mod == NULL) {
+    wxMessageDialog d(this, _("No bibles found, please install at least one bible module."), _("No Bibles Found!"), wxOK | wxICON_ERROR);
+    d.ShowModal();
+    return;
+  }
   wxWindowDisabler *disableAll = new wxWindowDisabler();
 
   BibleStudyWizard *wiz = new BibleStudyWizard(this, -1,
@@ -372,7 +382,13 @@ void BibleStudyMainFrame::OnShowHowGrowSpiritually(wxCommandEvent &)
 {
   SWModule *mod = NULL;
 
-  mod = m_SwordTools->GetModule("KJV");
+  mod = m_SwordTools->GetDefaultBible();
+  if (mod == NULL) {
+    wxMessageDialog d(this, _("No bibles found, please install at least one bible module."), _("No Bibles Found!"), wxOK | wxICON_ERROR);
+    d.ShowModal();
+    return;
+  }  
+  
   wxWindowDisabler *disableAll = new wxWindowDisabler();
 
   BibleStudyWizard *wiz = new BibleStudyWizard(this, -1,
@@ -802,7 +818,13 @@ wxString BibleStudyMainFrame::ProverbOfTheDay() const
   wxString output;
   wxString key;
   wxDateTime today = wxDateTime::Today();
-  BookModule web(m_SwordTools->GetModule("KJV"));
+
+  SWModule *mod = m_SwordTools->GetDefaultBible();
+  if (mod == NULL) {
+    return wxT("");
+  }
+
+  BookModule bible(mod);
 
   key = wxT("prov ");
   key += wxString::Format(wxT("%i"), today.GetDay());
@@ -811,7 +833,7 @@ wxString BibleStudyMainFrame::ProverbOfTheDay() const
   output += _("Proverb Of The Day");
   output += wxT("</font></td></tr>");
   output += wxT("<tr><td>");
-  output += web.LookupKey(key);
+  output += bible.LookupKey(key);
   output += wxT("</td></tr></table>");
   return output;
 }
@@ -854,9 +876,16 @@ wxString BibleStudyMainFrame::DevotionalOfTheDay() const
 {
   wxString output;
   wxDateTime today = wxDateTime::Today();
-  BookModule sme(m_SwordTools->GetModule("SME"));
+ 
+  SWModule *mod = m_SwordTools->GetDefaultDevotional();
+  if (mod == NULL) {
+    return wxT("");
+  }  
+  
   wxString key;
-
+  
+  BookModule devotional(mod);
+ 
   key =
     wxString::Format(wxT("%02i.%02i"), today.GetMonth() + 1, today.GetDay());
 
@@ -865,7 +894,7 @@ wxString BibleStudyMainFrame::DevotionalOfTheDay() const
   output += _("Daily Devotional");
   output += wxT("</font></td></tr>");
   output += wxT("<tr><td>");
-  output += sme.LookupKey(key);
+  output += devotional.LookupKey(key);
   output += wxT("</td></tr></table>");
   return output;
 }

@@ -25,9 +25,13 @@
 #include <libreadingplanner/pdbResource.h>
 #include "BookList.h"
 
+#ifdef HAVE_CONFIG_G
+#include "../config.h"
+#endif
+
 // If Windows build we want to include a PalmDesktop helper file
 // Requires Palm CDK 4.03
-#ifdef WIN32
+#ifdef HAVE_LIBINSTAIDE
 // I had to define these for a very specific case because
 // wxWidgets must be redefining TCHAR when unicode is on and
 // I got linker errors for these functions.
@@ -151,7 +155,7 @@ void PrefsDialog::OnChangeConfig(wxCommandEvent &event)
 void PrefsDialog::OnDetectPalmConfig(wxCommandEvent &event)
 {
   // If Windows build we want to handle being able to detect the Palm Desktop settings.
-#ifdef WIN32
+#ifdef HAVE_LIBINSTAIDE
   wxArrayString users;
   wxString user;
   char pPath[MAX_PATH_NAME];
@@ -180,7 +184,7 @@ void PrefsDialog::OnDetectPalmConfig(wxCommandEvent &event)
   m_BackupPathCtl->SetValue(backupPath);
 #endif
   // Actually this should be a specific define for Linux since Macs will be entirely different as well, but I am being lazy and no one is building on a Mac yet so, if you are I apologize: dtrotzjr
-#ifndef WIN32
+#ifndef HAVE_LIBINSTAIDE
   wxMessageDialog* errorMsg = new wxMessageDialog(this, _("Error locating KPilot's directories, if you know you have KPilot installed then locate and browse the directory manually"), _("Cannot find KPilot Directories"),wxOK );
   wxString basePath = ::wxGetHomeDir();
   wxString installPath, backupPath;

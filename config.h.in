@@ -19,6 +19,9 @@
    (-lboost_filesystem). */
 #undef HAVE_LIBBOOST_FILESYSTEM
 
+/* Define to 1 if you have the `instaide' library (-linstaide). */
+#undef HAVE_LIBINSTAIDE
+
 /* Define to 1 if you have the `ReadingPlanner' library (-lReadingPlanner). */
 #undef HAVE_LIBREADINGPLANNER
 

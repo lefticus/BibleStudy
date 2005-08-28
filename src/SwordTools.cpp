@@ -21,7 +21,8 @@
 
 using namespace sword;
 
-SwordTools::SwordTools()
+SwordTools::SwordTools() : m_DefaultBible(NULL), m_DefaultDevotional(NULL),
+			   m_BibleSearched(false), m_DevotionalSearched(false)
 {
 #if wxUSE_UNICODE
   m_SwordManager =
@@ -32,44 +33,128 @@ SwordTools::SwordTools()
 #endif
 }
 
+SWModule* SwordTools::GetDefaultBible()
+{
+  if (!m_BibleSearched) {
+    m_DefaultBible = FindModule(m_BibleName.c_str(), m_BibleLang.c_str(), "Biblical Texts");
+    m_BibleSearched = true;
+  }
+
+  return m_DefaultBible;
+}
+
+SWModule* SwordTools::GetDefaultDevotional()
+{
+  if (!m_DevotionalSearched) {
+    m_DefaultDevotional = FindModule(m_DevotionalName.c_str(), m_DevotionalLang.c_str(), "Daily Devotional");
+    m_DevotionalSearched = true;
+  }
+  
+  return m_DefaultDevotional;
+}
+
+
+SWModule * SwordTools::FindModule(const std::string &name, const std::string &language, const std::string &type)
+{
+  SWModule *mod = NULL;
+  if (type == "") {
+    return NULL;
+  }
+  
+  if (name != "") {
+    mod = GetModule(name.c_str());
+    if (mod != NULL) {
+      if (type != mod->Type()) {
+        mod = NULL;
+      }
+    }
+  } 
+  
+  if (mod == NULL) {
+    ModMap::iterator it;
+    ModMap *mods = GetModuleMap();
+   
+    for (it = mods->begin(); it != mods->end(); it++) {
+      SWModule *tempmod;
+      tempmod = (*it).second;
+      if (type == tempmod->Type()) {
+	if (language == tempmod->Lang()) {
+	  return tempmod;
+	} else {
+	  if (mod == NULL) {
+            mod = tempmod;
+	  }
+	}
+      }
+    }
+  }
+
+  return mod;
+}
+
+void SwordTools::SetDefaultDevotional(const std::string &name, const std::string &lang)
+{
+  m_DevotionalName = name;
+  m_DevotionalLang = lang;
+}
+
+void SwordTools::SetDefaultBible(const std::string &name, const std::string &lang)
+{
+  m_BibleName = name;
+  m_BibleLang = lang;
+}
+
 BookModule *SwordTools::GetModuleFromLink(const wxString &link,
     BookModule * oldbm)
 {
   wxLogDebug(wxT("GetModuleFromLink called with link: ") + link);
   BookModule *bm = NULL;
+  SWModule *sm = NULL;
 
   if (link.StartsWith(wxT("#G")))
   {
-    bm = new BookModule(GetModule("StrongsGreek"));
+    sm = GetModule("StrongsGreek");
   }
   else if (link.StartsWith(wxT("#H")))
   {
-    bm = new BookModule(GetModule("StrongsHebrew"));
+    sm = GetModule("StrongsHebrew");
   }
   else if (link.Find(wxT("type=Strongs")) > -1)
   {
     if (link.Find(wxT("value=G")) > -1)
     {
-      bm = new BookModule(GetModule("StrongsGreek"));
+      sm = GetModule("StrongsGreek");
     }
     else
     {
-      bm = new BookModule(GetModule("StrongsHebrew"));
+      sm = GetModule("StrongsHebrew");
     }
+  }
+  else if (link.Find(wxT("type=Greek")) > -1)
+  {
+    sm = GetModule("StrongsGreek");
+  }
+  else if (link.Find(wxT("type=Hebrew")) > -1)
+  {
+    sm = GetModule("StrongsHebrew");
+  }
+  else if (link.Find(wxT("type=x-Robinson")) > -1)
+  {
+    sm = GetModule("Robinson");
   }
   else if (link.Find(wxT("type=morph")) > -1)
   {
     if (link.Find(wxT("Robinson")) > -1)
     {
-      bm = new BookModule(GetModule("Robinson"));
+      sm = GetModule("Robinson");
     }
     else if (link.Find(wxT("Packard")) > -1)
     {
-      bm = new BookModule(GetModule("Packard"));
+      sm = GetModule("Packard");
     }
     else if (link.Find(wxT("class=none")) == -1)
     {
-      bm = new BookModule(GetModule("Robinson"));
+      sm = GetModule("Robinson");
     }
   }
   else if (link.Find(wxT("passage=")) > -1)
@@ -82,22 +167,27 @@ BookModule *SwordTools::GetModuleFromLink(const wxString &link,
 
       if (token == wxT("version"))
       {
-        bm = new BookModule(GetModule(tokenizer.GetNextToken().mb_str()));
+        sm = GetModule(tokenizer.GetNextToken().mb_str());
         break;
       }
     }
 
-    if (!bm)
+    if (!sm)
     {
-      bm = new BookModule(GetModule("KJV"));
+      sm = GetDefaultBible();
     }
   }
   else if (link.Find(wxT("noteID=")) > -1)
   {
-    bm = new BookModule(GetModule(oldbm->GetName().mb_str()));
+    sm = GetModule(oldbm->GetName().mb_str());
   }
 
-  return bm;
+  
+  if (sm != NULL) {
+    return new BookModule(sm);
+  } else {
+    return NULL;
+  }
 }
 
 wxString SwordTools::GetKeyFromLink(const wxString &link)
@@ -114,15 +204,7 @@ wxString SwordTools::GetKeyFromLink(const wxString &link)
   }
   else if (link.Find(wxT("value=")) > -1)
   {
-    wxStringTokenizer tokenizer(link, wxT(" ="));
-
     key = link.Mid(link.Find(wxT("value=")) + 6);
-
-    if (link.Find(wxT("type=Strongs")) > -1)
-    {
-      key.StartsWith(wxT("G"), &key);
-      key.StartsWith(wxT("H"), &key);
-    }
   }
   else if (link.Find(wxT("passage=")) > -1)
   {

@@ -11,7 +11,7 @@ echo "$ACLOCAL"
 echo "*** Recreating configure"
 AUTOCONF="$AUTODIR""autoconf"
 AUTOHEAD="$AUTODIR""autoheader"
-#	$AUTOHEAD ;
+	$AUTOHEAD ;
 	$AUTOCONF;
 	
 echo "*** Recreating the Makefile.in files"

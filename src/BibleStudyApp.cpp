@@ -38,6 +38,9 @@ bool BibleStudyApp::OnInit()
 
   // wxHandleFatalExceptions(TRUE)
 
+  m_SwordTools.SetDefaultDevotional("SME", "en");
+  m_SwordTools.SetDefaultBible("KJV", "en");
+
   /*
    * Show Splash Screen First 
    */
