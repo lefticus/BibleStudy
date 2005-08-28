@@ -100,6 +100,7 @@ void SwordTools::SetDefaultDevotional(const std::string &name, const std::string
 
 void SwordTools::SetDefaultBible(const std::string &name, const std::string &lang)
 {
+  std::cout << "Default bible: " << name << " " << lang << std::endl;
   m_BibleName = name;
   m_BibleLang = lang;
 }

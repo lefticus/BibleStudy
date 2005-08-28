@@ -13,7 +13,7 @@
 
 #include <wx/app.h>
 #include <SwordTools.h>
-
+#include <wx/cmdline.h>
 /**
  * Main Class for BibleStudy.
  *
@@ -37,6 +37,8 @@ public:
    */
   bool OnInit();
   void OnExitApp(wxCommandEvent &event);
+  void OnInitCmdLine(wxCmdLineParser&);
+  bool OnCmdLineParsed(wxCmdLineParser&);
 
   DECLARE_EVENT_TABLE()};
 

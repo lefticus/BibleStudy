@@ -35,11 +35,12 @@ bool BibleStudyApp::OnInit()
 
   wxLog::SetActiveTarget(log);
 #endif
+  m_SwordTools.SetDefaultDevotional("SME", "en");
+  m_SwordTools.SetDefaultBible("KJV", "en");  
+  
+  wxApp::OnInit();
 
   // wxHandleFatalExceptions(TRUE)
-
-  m_SwordTools.SetDefaultDevotional("SME", "en");
-  m_SwordTools.SetDefaultBible("KJV", "en");
 
   /*
    * Show Splash Screen First 
@@ -69,6 +70,58 @@ bool BibleStudyApp::OnInit()
 
 
   return TRUE;
+}
+
+void BibleStudyApp::OnInitCmdLine(wxCmdLineParser& parser)
+{
+  const wxCmdLineEntryDesc cmdLineDesc[] =
+  {
+    { wxCMD_LINE_OPTION, wxT("b"), wxT("bible"),  _("bible module name") },
+    { wxCMD_LINE_OPTION, wxT("d"), wxT("devotional"),  _("devotional module name") },
+    { wxCMD_LINE_OPTION, wxT("l"), wxT("language"),  _("language") },
+    { wxCMD_LINE_NONE }
+  };
+
+  parser.SetDesc(cmdLineDesc);
+}
+
+bool BibleStudyApp::OnCmdLineParsed(wxCmdLineParser& parser)
+{
+
+
+  wxString bible, devotional, lang;
+  bool biblefound, devofound, langfound;
+  
+  biblefound = parser.Found(wxT("b"), &bible);
+  devofound = parser.Found(wxT("d"), &devotional);
+  langfound = parser.Found(wxT("l"), &lang);
+
+  if (biblefound) {
+    if (langfound) {
+      m_SwordTools.SetDefaultBible((const char*)bible.mb_str(), (const char *)lang.mb_str());
+    } else {
+      m_SwordTools.SetDefaultBible((const char *)bible.mb_str(), "en");
+    }
+  } else {
+    if (langfound) {
+      m_SwordTools.SetDefaultBible("", (const char *)lang.mb_str());
+    } 
+  }
+ 
+  if (devofound) {
+    if (langfound) {
+      m_SwordTools.SetDefaultDevotional((const char *)devotional.mb_str(), (const char *)lang.mb_str());
+    } else {
+      m_SwordTools.SetDefaultDevotional((const char *)devotional.mb_str(), "en");
+    }
+  } else {
+    if (langfound) {
+      m_SwordTools.SetDefaultDevotional("", (const char *)lang.mb_str());
+    } 
+  }
+
+  
+  return wxApp::OnCmdLineParsed(parser);
 }
 
 void BibleStudyApp::OnExitApp(wxCommandEvent & event)
