@@ -354,7 +354,7 @@ void BibleStudyMainFrame::OnShowHowBecomeChristian(wxCommandEvent &)
                _("Becoming a Christian means loving Christ, serving His church, and wanting to spread His Love throughout the world."),
                wxT(""));
   wiz->AddPage(mod,
-               _("Recognize that God loves us but our sin has separated us from God, fram a live with eternal purpose, and from a healthy relationship with others."),
+               _("Recognize that God loves us but our sin has separated us from God, from a live with eternal purpose, and from a healthy relationship with others."),
                wxT("ro 3:23"));
   wiz->AddPage(mod,
                _("Realize you cannot do enough good to earn God's forgiveness from sin, nor can you find true fulfillment through your own efforts."),
