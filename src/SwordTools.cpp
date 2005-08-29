@@ -13,6 +13,7 @@
 
 #include <wx/tokenzr.h>
 #include <wx/log.h>
+#include <wx/uri.h>
 
 #include <sword/markupfiltmgr.h>
 #include <sword/swmgr.h>
@@ -109,7 +110,6 @@ BookModule *SwordTools::GetModuleFromLink(const wxString &link,
     BookModule * oldbm)
 {
   wxLogDebug(wxT("GetModuleFromLink called with link: ") + link);
-  BookModule *bm = NULL;
   SWModule *sm = NULL;
 
   if (link.StartsWith(wxT("#G")))
@@ -158,7 +158,7 @@ BookModule *SwordTools::GetModuleFromLink(const wxString &link,
       sm = GetModule("Robinson");
     }
   }
-  else if (link.Find(wxT("passage=")) > -1)
+  else if (link.Find(wxT("passage=")) > -1 || link.Find(wxT("scripRef")) > -1)
   {
     wxStringTokenizer tokenizer(link, wxT(" ="));
 
@@ -195,6 +195,7 @@ wxString SwordTools::GetKeyFromLink(const wxString &link)
 {
   wxString key;
 
+
   if (link.StartsWith(wxT("#G"), &key))
   {
     // nothing to do, key is now in "key"
@@ -206,6 +207,10 @@ wxString SwordTools::GetKeyFromLink(const wxString &link)
   else if (link.Find(wxT("value=")) > -1)
   {
     key = link.Mid(link.Find(wxT("value=")) + 6);
+    int end = key.Find(wxT("&"));
+    key = key.Mid(0, end);
+    key = wxURI::Unescape(key);
+    key.Replace(wxT("+"), wxT(" "), true);
   }
   else if (link.Find(wxT("passage=")) > -1)
   {
