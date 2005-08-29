@@ -67,6 +67,7 @@ public:
   void Search(const wxString &range, const wxString &search, int searchtype);
   void BrowseForward();
   void BrowseBackward();
+  void BrowseFirst();
 
   void ChildGotFocus();
   void PostChildSetFocus(BookModule *bm = NULL);

@@ -47,6 +47,7 @@ public:
 
   wxString BrowseForward();
   wxString BrowseBackward();
+  wxString BrowseFirst();
 
   /** Return the last lookup key */
   wxString GetLastLookupKey() const;

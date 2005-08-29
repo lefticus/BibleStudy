@@ -153,11 +153,12 @@ BibleStudyLanguages::BibleStudyLanguages()
   AddLanguage(_T("om"), _("Oromo"));
   AddLanguage(_T("or"), _("Oriya"));
   AddLanguage(_T("os"), _("Ossetian; Ossetic"));
-
+  
   AddLanguage(_T("pa"), _("Panjabi"));
   AddLanguage(_T("pap"), _("Papiamento"));
   AddLanguage(_T("pi"), _("Pali"));
   AddLanguage(_T("pl"), _("Polish"));
+  AddLanguage(_T("po"), _("Polish"));
   AddLanguage(_T("ps"), _("Pushto"));
   AddLanguage(_T("pt"), _("Portuguese"));
 

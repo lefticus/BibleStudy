@@ -236,6 +236,20 @@ void BookViewCtrl::BrowseBackward()
     html->SetPage(mod->BrowseBackward());
 }
 
+void BookViewCtrl::BrowseFirst()
+{
+  BookViewHtml *html;
+  BookModule *mod;
+
+  html =
+    (BookViewHtml *) GetPage(GetSelection())->GetChildren().GetFirst()->
+    GetData();
+  mod = (BookModule *) html->GetClientData();
+
+  if (mod)
+    html->SetPage(mod->BrowseFirst());
+}
+
 void BookViewCtrl::Search(const wxString &range, const wxString &search,
                           int searchtype)
 {
@@ -366,7 +380,7 @@ void BookViewCtrl::OpenInCurrentTab(SWModule * newModule)
     }
     else
     {
-      LookupKey(wxT(""));
+      BrowseFirst();
     }
 
     PostChildSetFocus(bookmod);

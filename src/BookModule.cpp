@@ -176,6 +176,50 @@ wxString BookModule::BrowseForward()
   }
 }
 
+wxString BookModule::BrowseFirst()
+{
+  if (m_Module == NULL) {
+    return wxT("");
+  }
+
+
+  SWKey *k = m_Module->CreateKey();
+
+  if (k->isTraversable()) {
+    k->setPosition(POS_TOP);
+  
+    wxWindowDisabler disableAll;
+    wxBusyCursor busy;
+
+    m_Module->Key(*k);
+
+  
+    int count = 0;
+    while (m_Module->Error() == 0 
+	   && (const char*)(*m_Module) != NULL
+           && wxString((const char *) (*m_Module), wxConvUTF8) == wxT("")) {
+  
+      if (m_keytype == bsVerseKey) {
+        VerseKey *vk = SWDYNAMIC_CAST(VerseKey, k);
+        if (vk != NULL) {
+          vk->Book(vk->Book() + 1);
+        }
+      } else {
+        k->increment(1);
+      }
+
+      count++;
+      m_Module->Key(*k);
+    }
+  }
+
+  wxString key = wxString(k->getText(), wxConvUTF8);
+  delete k;
+
+  return LookupKey(key, wxT(""), 0, false, true);
+
+}
+
 wxString BookModule::BrowseBackward()
 {
   if (m_isbrowsing)
@@ -242,7 +286,6 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
 
   if (!tooltip)
   {
-
     wxBusyCursor busy;
   }
 
@@ -260,9 +303,6 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
 
   m_isbrowsing = browse;
 
-  if (m_isbrowsing)
-    key = key.BeforeLast(wxT(':'));
-
 #if wxUSE_UNICODE
   output =
     wxT("<meta http-equiv='Content-Type' content='text/html; charset=UTF8'>");
@@ -277,10 +317,14 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
   // char keybuf[512];
   // keybuf[wxConvUTF8.WC2MB(keybuf, key.c_str(), key.Length())]=0;
 
-  if (m_keytype == bsVerseKey)
+  if (m_keytype == bsVerseKey) {
+    if (m_isbrowsing)
+      key = key.BeforeLast(wxT(':'));
+
     listkey = vk.ParseVerseList(key.mb_str(wxConvUTF8), "Gen1:1", true);
-  else
+  } else {
     listkey.ClearList();
+  }
 
   if (search != wxT(""))
   {
