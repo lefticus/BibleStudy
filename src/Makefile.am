@@ -20,6 +20,6 @@ biblestudy_SOURCES = biblestudy.cpp dirtraversersimple.cpp BibleStudyApp.cpp Bib
 #INCLUDES = $(all_includes) -I/usr/include/sword -I/usr/local/include/sword
 
 # the library search path.
-biblestudy_LDFLAGS = $(WINDOWS_LINKFLAGS) `wx-config --libs` -D_WX_WIN
+biblestudy_LDFLAGS = $(WINDOWS_LINKFLAGS) `wx-config --libs @WX_LIBS_ARGS@` -D_WX_WIN
 
 

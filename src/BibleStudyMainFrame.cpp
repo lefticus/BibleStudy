@@ -264,6 +264,7 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools,
   UpdatePlanToolBar();
 
 
+  ShowHidePlanBar(false);
   SetupSplitterWindows();
   LayoutChildren();
 }
@@ -537,6 +538,7 @@ void BibleStudyMainFrame::OnNextDay(wxCommandEvent & event)
   m_PlanDate.Add(wxDateSpan(0,0,0,1));
   UpdatePlanToolBar();
   m_WindowSplit->RefreshStartPages(BuildStartPage());
+  std::cout << "Showing next day..." << std::endl;
 }
 
 void BibleStudyMainFrame::OnPrevDay(wxCommandEvent & event)
@@ -752,11 +754,11 @@ wxString BibleStudyMainFrame::BuildStartPage()
     ("<tr><td bgcolor=#000000 colspan=2><table cellpadding=1 cellspacing=0 width='100%'><tr><td align=center bgcolor=#000099 border=1 width='100%'><font color=#FFFFFF>")
     + Heading() + wxT("</font></td></tr></table></td></tr>");
   page +=
-    wxT("<tr><td valign=top>") + BibleStudies() +
+    wxT("<tr><td valign=top width='50%'>") + BibleStudies() +
     wxT("</td><td valign=top rowspan=2>");
   page += InsertReadingPlan();
   page += ProverbOfTheDay() +  wxT("</td></tr>");
-  page += wxT("<tr><td valign=top>") + DevotionalOfTheDay() + wxT("</td></tr>");
+  page += wxT("<tr><td valign=top width='50%'>") + DevotionalOfTheDay() + wxT("</td></tr>");
   page += wxT("</table>");
   page += wxT("</html>");
   return page;

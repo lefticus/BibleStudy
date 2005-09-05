@@ -9,19 +9,30 @@ AC_PROG_CXX
 AC_LANG_CPLUSPLUS
 AM_PROG_LIBTOOL
 AM_OPTIONS_WXCONFIG
-
+AC_ARG_WITH([wxmozilla], [AS_HELP_STRING(--with-wxmozilla,Use the wxMozilla library for HTML rendering)], [AC_DEFINE(WITH_WXMOZILLA, [], [Defined if wxMozilla library is to be used]) with_wxmozilla=1], with_wxmozilla=0)
 
 AC_CHECK_HEADERS(libreadingplanner/PDBManager.h, ,
 	AC_MSG_ERROR(ReadingPlanner libraries not found))
 
-AC_CHECK_LIB(boost_filesystem, main, ,
-	AC_MSG_ERROR(boost_filesystem library was not found))
+#AC_CHECK_LIB(boost_filesystem, main, ,
+#	AC_MSG_ERROR(boost_filesystem library was not found))
 AC_CHECK_LIB(sword, main, ,
 	AC_MSG_ERROR(sword library was not found))
 AC_CHECK_LIB(ReadingPlanner, main, ,
 	AC_MSG_ERROR(ReadingPlanner library was not found))
 AC_CHECK_LIB(instaide, PltGetUserCount, , 
         AC_MSG_NOTICE(Palm library not found))
+	
+if test "$with_wxmozilla" == 1; then
+	AC_MSG_NOTICE(Using wxMozilla library)
+	LDFLAGS="$LDFLAGS -lwxmozilla_gtk2u-2.6"
+	wx_libs="std"
+else
+	AC_MSG_NOTICE(Using internal wxHTML for HTML rendering)
+	wx_libs="std"
+fi
+
+AC_SUBST(WX_LIBS_ARGS, $wx_libs)
 
 AM_PATH_WXCONFIG(2.4.0, WXFOUND=1)
 

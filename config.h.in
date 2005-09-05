@@ -15,10 +15,6 @@
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
-/* Define to 1 if you have the `boost_filesystem' library
-   (-lboost_filesystem). */
-#undef HAVE_LIBBOOST_FILESYSTEM
-
 /* Define to 1 if you have the `instaide' library (-linstaide). */
 #undef HAVE_LIBINSTAIDE
 
@@ -79,3 +75,6 @@
 
 /* Version number of package */
 #undef VERSION
+
+/* Defined if wxMozilla library is to be used */
+#undef WITH_WXMOZILLA

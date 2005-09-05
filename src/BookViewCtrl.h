@@ -75,6 +75,7 @@ public:
   void OnLeftUp(wxMouseEvent &event);
   void OnNotebookPageChanged(wxNotebookEvent &event);
   void RefreshStartPages(const wxString html);
+  void RefreshTitles();
 
   void SetIcon();
 

@@ -284,7 +284,6 @@ void BookViewCtrl::OpenInCurrentTab(BookModule * bm)
       GetActiveBookModule()->AddModule(curMod);
     }
 
-    SetPageText(GetSelection(), GetActiveBookModule()->GetName());
 
     if (bm->GetLastSearch() != wxT(""))
       Search(bm->GetLastLookupKey(), bm->GetLastSearch(), 0);
@@ -317,9 +316,13 @@ void BookViewCtrl::OpenInCurrentTab(const wxString &html)
 void BookViewCtrl::AddToCurrentTab(SWModule * mod)
 {
   GetActiveBookModule()->AddModule(mod);
-  SetPageText(GetSelection(), GetActiveBookModule()->GetName());
   LookupKey(GetActiveBookModule()->GetLastLookupKey());
 
+  BookViewHtml *htmlwindow;
+  htmlwindow =
+    (BookViewHtml *) GetPage(GetSelection())->GetChildren().GetFirst()->
+    GetData();
+  SetPageText(GetSelection(), wxString(htmlwindow->GetOpenedPageTitle()));
 }
 
 void BookViewCtrl::AddToCurrentTab(BookModule * mod)
@@ -346,7 +349,6 @@ void BookViewCtrl::OpenInCurrentTab(SWModule * newModule)
 
   if (newModule)
   {
-    SetPageText(GetSelection(), wxString(newModule->Name(), wxConvUTF8));
 
     bookmod = new BookModule(newModule);
     html->SetClientData(bookmod);
@@ -395,6 +397,7 @@ void BookViewCtrl::OpenInCurrentTab(SWModule * newModule)
 
   html->SetFocus();
   html->Refresh();
+  SetPageText(GetSelection(), wxString(html->GetOpenedPageTitle()));
 
   if (prevbookmod)
     delete prevbookmod;
@@ -538,6 +541,14 @@ void BookViewCtrl::DuplicateTab(BookModule * bm)
   SetSelection(selection);
 }
 
+void BookViewCtrl::RefreshTitles()
+{
+  for(unsigned int i = 0; i < GetPageCount(); i++)
+  {
+    BookViewHtml *htmlBook  = (BookViewHtml *) GetPage(i)->GetChildren().GetFirst()->GetData();
+    SetPageText(i, htmlBook->GetOpenedPageTitle());
+  }
+}
 
 void BookViewCtrl::RefreshStartPages(const wxString html)
 {

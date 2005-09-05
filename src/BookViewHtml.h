@@ -18,23 +18,44 @@
 #include <wx/window.h>
 
 
+#ifdef HAVE_CONFIG_H
+#include <../config.h>
+#endif
+
+#ifdef WITH_WXMOZILLA
+#include <wxmozilla/wxMozilla.h>
+#endif
+
+
 BEGIN_DECLARE_EVENT_TYPES()
 DECLARE_EVENT_TYPE(bsEVT_LINK_CLICKED, 1)
 DECLARE_EVENT_TYPE(bsEVT_LINK_HOVER, 1)
+DECLARE_EVENT_TYPE(bsEVT_TITLE_CHANGED, 1)
 END_DECLARE_EVENT_TYPES()
 
 #define EVT_LINK_CLICKED(fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_LINK_CLICKED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
 #define EVT_LINK_HOVER(fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_LINK_HOVER, -1, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_TITLE_CHANGED(fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_TITLE_CHANGED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
 
 /**
  *
  * Jason Turner
  **/
+
+#ifdef WITH_WXMOZILLA
+class BookViewHtml: public wxMozillaBrowser
+#else
 class BookViewHtml: public wxHtmlWindow
+#endif
 {
 private:
   void OnLinkClicked(const wxHtmlLinkInfo & info);
   void OnCellMouseHover(wxHtmlCell * cell, wxCoord x, wxCoord y);
+#ifdef WITH_WXMOZILLA
+  void OnBeforeLoad(wxMozillaBeforeLoadEvent &);
+  void OnTitleChanged(wxMozillaTitleChangedEvent &);
+#endif
+  
   HTMLToolTip m_htmltooltip;
 
 public:
@@ -49,6 +70,18 @@ public:
   void SetHTMLToolTip(const wxString &html);
   void OnMouseDown(wxMouseEvent &event);
 
+#ifdef WITH_WXMOZILLA
+  void SetFonts(wxString normal_face, wxString fixed_face,
+		const int *sizes = NULL) {};
+
+  wxString GetOpenedPageTitle() {
+    return GetTitle();
+  }
+  
+  wxString SelectionToText() {return GetSelection();}
+#endif
+
+  DECLARE_DYNAMIC_CLASS(BookViewHtml)
   DECLARE_EVENT_TABLE()
 };
 

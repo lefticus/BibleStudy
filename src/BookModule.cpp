@@ -369,6 +369,9 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
   else
     output.append(wxT("<html>"));
 
+  output.append(wxT("<title>"));
+  output.append(GetName());
+  output.append(wxT("</title>"));
   output.append(wxT("<table>"));
 
   ModMap::iterator it;
@@ -380,7 +383,7 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
   for (it = m_Modules.begin(); it != m_Modules.end(); it++)
   {
     curMod = (*it).second;
-    output.append(wxT("<th><font color='#0000FF'>"));
+    output.append(wxString::Format(wxT("<th width='%i%%'><font color='#0000FF'>"), 100/m_Modules.size()));
     output.append(wxString(curMod->Description(), wxConvUTF8));
     output.append(wxT("</font></th>"));
   }
@@ -441,6 +444,10 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
             wxLogDebug(wxT("BookModule::LookupKey Setting Key"));
 
             curMod->Key((*element));
+        
+            ConfigEntMap::iterator entry;
+	    ConfigEntMap section = curMod->getConfig();
+	    bool rtl = ((entry = section.find("Direction")) != section.end()) ? ((*entry).second == "RtoL") : false;
 
             wxLogDebug(wxT("BookModule::LookupKey writing verse to output"));
 
@@ -503,6 +510,9 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
               append(wxString::
                      Format(wxT("<td align=left valign=top rowspan=%i>"),
                             rowspan));
+	      if (rtl) {
+		output.append(wxT("<div dir=\"rtl\" align=right>"));
+	      }
 
               output.append(wxT("<small><font color='#0000FF'>"));
               if (element->Book() != book)
@@ -541,6 +551,10 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
                 wxBody = wxString((const char *) body.c_str(), wxConvUTF8);
                 output.append(wxBody);
               }
+	      
+	      if (rtl) {
+		output.append(wxT("</div>"));
+	      }
 
               output.append(wxT("</td>"));
             }
@@ -692,6 +706,7 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
   // color=#999900'>\\0</font>"));
   // }
 
+  std::cout << output.mb_str() << std::endl;
   return output;
 }
 

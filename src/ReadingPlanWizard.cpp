@@ -33,7 +33,11 @@ void ReadingPlanWizard::OnShowingBooksPage(wxWizardEvent& event)
   wxWizardPage* page = event.GetPage();
   try
   {
-    page3 = dynamic_cast<ReadingPlanWizardDatesPage*>(page);
+    if (page == m_page3) {
+      page3 = static_cast<ReadingPlanWizardDatesPage*>(page);
+    }
+    
+    //page3 = dynamic_cast<ReadingPlanWizardDatesPage*>(page);
     if(page3)
     {
       m_page3->m_calStart->Show();
@@ -93,7 +97,7 @@ ReadingPlanWizardDatesPage::ReadingPlanWizardDatesPage(wxWizard *parent) : wxWiz
   wxBoxSizer *endDatesizer = new wxBoxSizer( wxVERTICAL );
   wxGridSizer *weekdaysSizer = new wxGridSizer(2,4,2,10);
 
-  m_calStart = new wxCalendarCtrl(dynamic_cast<wxWindow*>(this), ID_CalendarCtrlStart ,
+  m_calStart = new wxCalendarCtrl(this, ID_CalendarCtrlStart ,
                                   wxDateTime(wxDefaultDateTime).SetToCurrent(),
                                   wxDefaultPosition,
                                   wxDefaultSize,
@@ -103,7 +107,7 @@ ReadingPlanWizardDatesPage::ReadingPlanWizardDatesPage(wxWizard *parent) : wxWiz
   wxDateTime endDate(wxDefaultDateTime);
   endDate.SetToCurrent();
   endDate.Add(wxDateSpan(1,0,0,-1));
-  m_calEnd = new wxCalendarCtrl(dynamic_cast<wxWindow*>(this), ID_CalendarCtrlEnd,
+  m_calEnd = new wxCalendarCtrl(this, ID_CalendarCtrlEnd,
                                 endDate,
                                 wxDefaultPosition,
                                 wxDefaultSize,

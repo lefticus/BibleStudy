@@ -56,7 +56,7 @@ ReadingPlannerToolBar::ReadingPlannerToolBar(wxWindow * parent, wxWindowID id, l
 {
   SetToolBitmapSize(wxSize(22, 22));
   SetToolSeparation(5);
-  wxArrayString planNames = ((BibleStudyMainFrame*) GetParent())->GetPlanNames();
+  wxArrayString planNames = ((BibleStudyMainFrame*) parent)->GetPlanNames();
   if(!planNames.Count())
     planNames.Insert(_("No Plans Found"),0);
   m_DropDownPlans = new wxComboBox((wxWindow *)this, (wxWindowID)ID_ComboPlans, planNames[0], wxDefaultPosition, wxSize(200,-1),planNames, wxCB_READONLY);

@@ -33,6 +33,7 @@ EVT_CHILD_SET_FOCUS(-1, BookViewSplitterCtrl::OnNewActiveChild)
 EVT_SPLITTER_UNSPLIT(-1, BookViewSplitterCtrl::OnUnSplit)
 EVT_LINK_CLICKED(BookViewSplitterCtrl::OnLinkClicked)
 EVT_LINK_HOVER(BookViewSplitterCtrl::OnLinkHover)
+EVT_TITLE_CHANGED(BookViewSplitterCtrl::OnTitleChanged)
 END_EVENT_TABLE()DEFINE_EVENT_TYPE(bsEVT_ACTIVE_MODULE_CHANGE)
 
 DEFINE_EVENT_TYPE(bsEVT_BOOK_TREE_CHANGE)
@@ -189,12 +190,14 @@ void BookViewSplitterCtrl::OnNewActiveChild(wxCommandEvent & event)
   {
     m_LastFocus = (BookViewCtrl *) event.GetEventObject();
   }
+
+/*
   if(m_LastFocus->m_firstTabCreated && m_LastFocus->GetPageText(m_LastFocus->GetSelection()).IsSameAs(_("Start Page")))
     reinterpret_cast<BibleStudyMainFrame*>(GetParent())->ShowHidePlanBar(true);
   else
     reinterpret_cast<BibleStudyMainFrame*>(GetParent())->ShowHidePlanBar(false);
   event.Skip();
-
+*/
   wxCommandEvent eventCustom(bsEVT_ACTIVE_MODULE_CHANGE);
 
   eventCustom.SetEventObject(this);
@@ -445,6 +448,24 @@ void BookViewSplitterCtrl::OnLinkHover(wxCommandEvent & event)
   {
     html->SetHTMLToolTip(wxT(""));
   }
+}
+
+void BookViewSplitterCtrl::OnTitleChanged(wxCommandEvent &event)
+{
+  ((BookViewCtrl*)m_FirstChildSplit->GetWindow1())->RefreshTitles();
+  if(m_FirstChildSplit->IsSplit())
+  {
+    ((BookViewCtrl*)m_FirstChildSplit->GetWindow2())->RefreshTitles();
+  }
+  if (m_TopLevelSplit->IsSplit())
+  {
+    ((BookViewCtrl*)m_SecondChildSplit->GetWindow1())->RefreshTitles();
+    if(m_SecondChildSplit->IsSplit())
+    {
+      ((BookViewCtrl*)m_SecondChildSplit->GetWindow2())->RefreshTitles();
+    }
+  }
+
 }
 
 void BookViewSplitterCtrl::RefreshStartPages(const wxString html)

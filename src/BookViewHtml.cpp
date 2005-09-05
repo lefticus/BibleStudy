@@ -14,13 +14,41 @@
 
 #include <wx/log.h>
 
+#ifdef HAVE_CONFIG_H
+#include <../config.h>
+#endif
+
+
+#ifdef WITH_WXMOZILLA
+#include <wxmozilla/wxMozilla.h>
+#endif
+
+#ifdef WITH_WXMOZILLA
+IMPLEMENT_CLASS(BookViewHtml, wxMozillaBrowser)
+BEGIN_EVENT_TABLE(BookViewHtml, wxMozillaBrowser)
+EVT_MOZILLA_BEFORE_LOAD(BookViewHtml::OnBeforeLoad)
+EVT_MOZILLA_TITLE_CHANGED(BookViewHtml::OnTitleChanged)
+END_EVENT_TABLE()
+#else
+IMPLEMENT_CLASS(BookViewHtml, wxHtmlWindow)
 BEGIN_EVENT_TABLE(BookViewHtml, wxHtmlWindow)
 EVT_LEFT_DOWN(BookViewHtml::OnMouseDown)
 END_EVENT_TABLE()
+#endif 
 
 DEFINE_EVENT_TYPE(bsEVT_LINK_CLICKED)
 DEFINE_EVENT_TYPE(bsEVT_LINK_HOVER)
+DEFINE_EVENT_TYPE(bsEVT_TITLE_CHANGED)
 
+#ifdef WITH_WXMOZILLA
+BookViewHtml::BookViewHtml(wxWindow * parent, wxWindowID id,
+                           const wxPoint & pos, const wxSize & size,
+                           long style,
+                           const wxString &name)
+    : wxMozillaBrowser(parent, id, pos, size, style, name),
+    m_htmltooltip(this)
+{}
+#else
 BookViewHtml::BookViewHtml(wxWindow * parent, wxWindowID id,
                            const wxPoint & pos, const wxSize & size,
                            long style,
@@ -28,9 +56,34 @@ BookViewHtml::BookViewHtml(wxWindow * parent, wxWindowID id,
     : wxHtmlWindow(parent, id, pos, size, style, name),
     m_htmltooltip(this)
 {}
+#endif
+
 
 BookViewHtml::~BookViewHtml()
 {}
+
+#ifdef WITH_WXMOZILLA
+void BookViewHtml::OnBeforeLoad(wxMozillaBeforeLoadEvent &evt)
+{
+  
+  wxCommandEvent eventCustom(bsEVT_LINK_CLICKED);
+
+  eventCustom.SetEventObject(this);
+  eventCustom.SetString(evt.GetURL());
+  evt.Cancel();
+  ProcessEvent(eventCustom);
+}
+
+void BookViewHtml::OnTitleChanged(wxMozillaTitleChangedEvent &evt)
+{
+  
+  wxCommandEvent eventCustom(bsEVT_TITLE_CHANGED);
+
+  eventCustom.SetEventObject(this);
+  eventCustom.SetString(evt.GetTitle());
+  ProcessEvent(eventCustom);
+}
+#endif
 
 void BookViewHtml::OnLinkClicked(const wxHtmlLinkInfo &info)
 {

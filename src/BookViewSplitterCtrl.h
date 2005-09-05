@@ -83,6 +83,7 @@ public:
   void OnFocusGot(wxEvent &event);
   void OnLinkClicked(wxCommandEvent &event);
   void OnLinkHover(wxCommandEvent &event);
+  void OnTitleChanged(wxCommandEvent &event);
 
   void SplitHorizontally();
   void SplitVertically();
