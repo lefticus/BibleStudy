@@ -38,6 +38,7 @@ END_EVENT_TABLE()DEFINE_EVENT_TYPE(bsEVT_ACTIVE_MODULE_CHANGE)
 
 DEFINE_EVENT_TYPE(bsEVT_BOOK_TREE_CHANGE)
 DEFINE_EVENT_TYPE(bsEVT_SHOW_BIBLESTUDY)
+DEFINE_EVENT_TYPE(bsEVT_SHOW_MODULE_LINK)
 
 BookViewSplitterCtrl::BookViewSplitterCtrl(wxWindow * parent,
     SwordTools * nswordtools,
@@ -210,13 +211,38 @@ void BookViewSplitterCtrl::OnLinkClicked(wxCommandEvent & event)
 {
   wxString target;
 
+  std::cout << "Link clicked:" << std::endl;
+  
   if (event.GetString().StartsWith(wxT("biblestudy://"), &target))
   {
     wxCommandEvent eventCustom(bsEVT_SHOW_BIBLESTUDY);
 
     eventCustom.SetEventObject(this);
     eventCustom.SetString(target);
-    ProcessEvent(eventCustom);
+    AddPendingEvent(eventCustom);
+  } else {
+
+    wxString key;
+    BookModule *book = NULL;
+
+    std::cout << "Looking up link book " << event.GetString().mb_str() << std::endl;
+    
+    book =
+      m_SwordTools->GetModuleFromLink(event.GetString(),
+                                      GetActiveBookViewCtrl()->
+                                      GetActiveBookModule());
+    key = m_SwordTools->GetKeyFromLink(event.GetString());
+
+    if (book)
+    {
+      wxCommandEvent eventCustom(bsEVT_SHOW_MODULE_LINK);
+
+      eventCustom.SetEventObject(this);
+      eventCustom.SetClientData(book);
+      eventCustom.SetString(key);
+      AddPendingEvent(eventCustom);
+      std::cout << "Posting show module link event" << std::endl;
+    }
   }
 }
 

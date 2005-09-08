@@ -65,6 +65,8 @@ public:
   bsKeyType GetKeyType(sword::SWModule * mod) const;
   bool IsBrowsing() const;
 
+  wxString GetTypeDescription() const { return m_TypeDescription; }
+
   static void Percent(char, void *);
 
 private:
@@ -76,6 +78,7 @@ private:
   wxString m_LastLookupKey;
   wxString m_LastSearch;
   mutable wxString m_Description;
+  wxString m_TypeDescription;
 
   wxFrame *m_Frame;
 

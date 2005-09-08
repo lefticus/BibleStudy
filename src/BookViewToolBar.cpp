@@ -66,26 +66,29 @@ BookViewToolBar::BookViewToolBar(wxWindow * parent, wxWindowID id, long style)
 
   AddSeparator();
 
+  AddTool(ID_ToolListKey, _("Select Entry"), wxBitmap(list_xpm),
+          wxNullBitmap, wxITEM_NORMAL, _("Select Entry"),
+          _("Select a section, chapter or date in the currently opened book."));
+
+  AddSeparator();
+
   m_LookupKey = new wxTextCtrl(this, ID_ToolTextKey);
   m_LookupKey->SetSize(200, m_LookupKey->GetSize().GetHeight());
   AddControl(m_LookupKey);
-  AddTool(ID_ToolListKey, _("Sections"), wxBitmap(list_xpm),
-          wxNullBitmap, wxITEM_NORMAL, _("List Sections"),
-          _("List all sections, chapters or words in the currently opened book."));
 
   AddTool(ID_ToolLookupKey, _("Lookup"), wxBitmap(lookup_xpm),
           wxNullBitmap, wxITEM_NORMAL, _("Lookup Entry"),
           _("Lookup the section, word or reference currently entered on the toolbar."));
 
-  m_DropDownRange =
-    new wxComboBox(this, ID_ToolDropDownRange, wxT(""), wxDefaultPosition,
-                   wxSize(200, -1), 0, NULL, wxCB_READONLY);
-  AddRanges();
+//  m_DropDownRange =
+//    new wxComboBox(this, ID_ToolDropDownRange, wxT(""), wxDefaultPosition,
+//                   wxSize(200, -1), 0, NULL, wxCB_READONLY);
+//  AddRanges();
 
-  AddControl(m_DropDownRange);
-  AddTool(ID_ToolSearchKey, _("Search"), wxBitmap(search_xpm),
-          wxNullBitmap, wxITEM_NORMAL, _("Search Entry"),
-          _("Search for the words currently entered on the toolbar."));
+//  AddControl(m_DropDownRange);
+//  AddTool(ID_ToolSearchKey, _("Search"), wxBitmap(search_xpm),
+//          wxNullBitmap, wxITEM_NORMAL, _("Search Entry"),
+//          _("Search for the words currently entered on the toolbar."));
 
   AddTool(ID_ToolBackward, _("Backward"), wxBitmap(back_xpm),
           wxNullBitmap, wxITEM_NORMAL, _("Go Backward"),
@@ -112,19 +115,21 @@ void BookViewToolBar::AddRanges()
 {
   m_DropDownRange->Append(_("Old Testament"),
                           new wxString(wxT("Gen-Mal"), wxConvUTF8));
-  m_DropDownRange->Append(_("Mosaic Law"),
+  m_DropDownRange->Append(_("Law"),
                           new wxString(wxT("Gen-Deut"), wxConvUTF8));
   m_DropDownRange->Append(_("OT History"),
                           new wxString(wxT("Josh-Esther"), wxConvUTF8));
   m_DropDownRange->Append(_("Books of Wisdom"),
                           new wxString(wxT("Job-Song"), wxConvUTF8));
-  m_DropDownRange->Append(_("Major Prophets"),
-                          new wxString(wxT("Is-Dan"), wxConvUTF8));
-  m_DropDownRange->Append(_("Minor Prophets"),
-                          new wxString(wxT("Hos-Mal"), wxConvUTF8));
-  m_DropDownRange->Append(_("Megillot"),
-                          new wxString(wxT("Ruth, Esther, Ecc, Song, Lam"),
-                                       wxConvUTF8));
+  m_DropDownRange->Append(_("Prophets"),
+                          new wxString(wxT("Is-Mal"), wxConvUTF8));
+//  m_DropDownRange->Append(_("Major Prophets"),
+//                          new wxString(wxT("Is-Dan"), wxConvUTF8));
+//  m_DropDownRange->Append(_("Minor Prophets"),
+//                          new wxString(wxT("Hos-Mal"), wxConvUTF8));
+//  m_DropDownRange->Append(_("Megillot"),
+//                          new wxString(wxT("Ruth, Esther, Ecc, Song, Lam"),
+//                                       wxConvUTF8));
 
   m_DropDownRange->Append(_("New Testament"),
                           new wxString(wxT("Mat-Rev"), wxConvUTF8));
@@ -156,6 +161,20 @@ wxString BookViewToolBar::GetLookupKey() const
 void BookViewToolBar::SetLookupKey(const wxString &newKey)
 {
   m_LookupKey->SetValue(newKey);
+}
+
+void BookViewToolBar::SetTypeDescription(const wxString &typeDesc)
+{
+  SetToolShortHelp(ID_ToolListKey, _("Select ") + typeDesc);
+  FindById(ID_ToolListKey)->SetLabel(_("Select ") + typeDesc);
+  UpdateWindowUI(wxUPDATE_UI_RECURSE);
+  Realize();
+}
+
+void BookViewToolBar::EnableNavigation(bool enable) 
+{
+  EnableTool(ID_ToolBackward, enable);
+  EnableTool(ID_ToolForward, enable);
 }
 
 void BookViewToolBar::SetDropDownFrame(wxFrame *subframe)

@@ -20,6 +20,8 @@
 #include <wx/clipbrd.h>
 #include <wx/intl.h>
 
+#include <iostream>
+
 #include <sword/swmodule.h>
 #include <sword/swmgr.h>
 
@@ -284,13 +286,17 @@ void BookViewCtrl::OpenInCurrentTab(BookModule * bm)
       GetActiveBookModule()->AddModule(curMod);
     }
 
+    std::cout << " lastlookup: " << bm->GetLastLookupKey().mb_str()
+	    << " last search: " << bm->GetLastSearch().mb_str() << std::endl;
 
     if (bm->GetLastSearch() != wxT(""))
       Search(bm->GetLastLookupKey(), bm->GetLastSearch(), 0);
-    else if (bm->IsBrowsing())
-      BrowseKey(bm->GetLastLookupKey() + wxT(":"));
-    else
+    else if (bm->IsBrowsing()) {
+      BrowseKey(bm->GetLastLookupKey() );
+    } else {
+      std::cout << "Looking up last lookup key" << std::endl;
       LookupKey(bm->GetLastLookupKey());
+    }
   }
   else
   {

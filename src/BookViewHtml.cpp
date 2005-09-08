@@ -12,6 +12,8 @@
 #include <BookViewHtml.h>
 #include <HTMLToolTip.h>
 
+#include <iostream>
+
 #include <wx/log.h>
 
 #ifdef HAVE_CONFIG_H
@@ -65,7 +67,7 @@ BookViewHtml::~BookViewHtml()
 #ifdef WITH_WXMOZILLA
 void BookViewHtml::OnBeforeLoad(wxMozillaBeforeLoadEvent &evt)
 {
-  
+ 
   wxCommandEvent eventCustom(bsEVT_LINK_CLICKED);
 
   eventCustom.SetEventObject(this);
@@ -92,7 +94,7 @@ void BookViewHtml::OnLinkClicked(const wxHtmlLinkInfo &info)
 
   eventCustom.SetEventObject(this);
   eventCustom.SetString(info.GetHref());
-  ProcessEvent(eventCustom);
+  AddPendingEvent(eventCustom);
 
   m_htmltooltip.Show(false);
 }

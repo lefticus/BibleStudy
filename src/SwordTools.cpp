@@ -18,6 +18,8 @@
 #include <sword/markupfiltmgr.h>
 #include <sword/swmgr.h>
 
+#include <bsmarkupfiltmgr.h>
+
 #include <iostream>
 
 using namespace sword;
@@ -27,10 +29,10 @@ SwordTools::SwordTools() : m_DefaultBible(NULL), m_DefaultDevotional(NULL),
 {
 #if wxUSE_UNICODE
   m_SwordManager =
-    new SWMgr(0, 0, TRUE, new MarkupFilterMgr(FMT_HTMLHREF, ENC_HTML));
+    new SWMgr(0, 0, TRUE, new BSMarkupFilterMgr(FMT_HTMLHREF, ENC_HTML));
 #else
   m_SwordManager =
-    new SWMgr(0, 0, TRUE, new MarkupFilterMgr(FMT_HTMLHREF, ENC_LATIN1));
+    new SWMgr(0, 0, TRUE, new BSMarkupFilterMgr(FMT_HTMLHREF, ENC_LATIN1));
 #endif
 }
 
@@ -215,6 +217,10 @@ wxString SwordTools::GetKeyFromLink(const wxString &link)
   else if (link.Find(wxT("passage=")) > -1)
   {
     key = link.Mid(link.Find(wxT("passage=")) + 8);
+    int end = key.Find(wxT("&"));
+    key = key.Mid(0, end);
+    key = wxURI::Unescape(key);
+    key.Replace(wxT("+"), wxT(" "), true);
   }
   else if (link.Find(wxT("noteID=")) > -1)
   {

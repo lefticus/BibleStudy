@@ -55,6 +55,8 @@ public:
   void SetLookupKey(const wxString&);
 
   void SetDropDownFrame(wxFrame * subframe);
+  void SetTypeDescription(const wxString &);
+  void EnableNavigation(bool);
   void OnShowDropDown(wxCommandEvent & event);
 
   void DropDownGotFocus();

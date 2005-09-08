@@ -76,6 +76,7 @@ EVT_ADD_TO_CURRENT_TAB(-1, BibleStudyMainFrame::OnAddToCurrentTab)
 EVT_ACTIVE_MODULE_CHANGE(-1, BibleStudyMainFrame::OnActiveModuleChange)
 EVT_BOOK_TREE_CHANGE(-1, BibleStudyMainFrame::OnBookTreeChange)
 EVT_SHOW_BIBLESTUDY(BibleStudyMainFrame::OnShowBibleStudy)
+EVT_SHOW_MODULE_LINK(BibleStudyMainFrame::OnShowModuleLink)
 EVT_LOAD_KEY(BibleStudyMainFrame::OnLoadKey)
 EVT_BROWSE_KEY(BibleStudyMainFrame::OnBrowseKey)
 EVT_BROWSE_BACKWARD(BibleStudyMainFrame::OnBrowseBackward)
@@ -253,7 +254,7 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools,
 
   m_ToolBar =
     new BookViewToolBar(this, ID_BookViewToolBar, wxTB_HORIZONTAL |
-                        wxTB_FLAT );
+                        wxTB_FLAT | wxTB_TEXT);
   SetToolBar(m_ToolBar);
 
   // Add the ReadingPlanner toolbar here.
@@ -492,7 +493,8 @@ void BibleStudyMainFrame::UpdateToolbars(BookModule * bm)
     m_ToolBar->SetDropDownFrame(bm->GetControl(this));
     GetMenuBar()->Enable(ID_MenuDetachTab, true);
     GetMenuBar()->Enable(ID_MenuDuplicateTab, true);
-
+    m_ToolBar->EnableNavigation(bm->IsBrowsing());
+    m_ToolBar->SetTypeDescription(bm->GetTypeDescription());
   }
   else
   {
@@ -500,6 +502,7 @@ void BibleStudyMainFrame::UpdateToolbars(BookModule * bm)
     GetMenuBar()->Enable(ID_MenuDuplicateTab, false);
     m_ToolBar->SetLookupKey(wxT(""));
     m_ToolBar->SetDropDownFrame(NULL);
+    m_ToolBar->EnableNavigation(false);
   }
 }
 
@@ -571,6 +574,11 @@ void BibleStudyMainFrame::OnShowHideBookTree(wxCommandEvent & event)
 {
   wxLogTrace(wxTRACE_Messages,
              wxT("BibleStudyMainFrame::OnShowHideBookTree called"));
+  ShowHideBookTree();
+}
+
+void BibleStudyMainFrame::ShowHideBookTree()
+{
   m_WindowSplit->ShowHideBookTree();
 }
 
@@ -650,6 +658,19 @@ void BibleStudyMainFrame::OnOpenInNewWindow(wxCommandEvent & event)
   wxLogTrace(wxTRACE_Messages,
              wxT("BibleStudyMainFrame::OnOpenInNewWindow called"));
   OpenNewWindow()->DisplayModule((SWModule *) event.GetClientData());
+}
+
+void BibleStudyMainFrame::OnShowModuleLink(wxCommandEvent & event)
+{
+  wxLogTrace(wxTRACE_Messages,
+             wxT("BibleStudyMainFrame::OnOpenInNewWindow called"));
+  BookModule *bm = (BookModule*)(event.GetClientData());
+  std::cout << "Opening link " << event.GetString().mb_str() << std::endl;
+  bm->LookupKey(event.GetString(), wxT(""), 0, true);
+  BibleStudyMainFrame *f = OpenNewWindow();
+  f->ShowHideBookTree();
+  f->DisplayModule(bm);
+
 }
 
 void BibleStudyMainFrame::OnOpenInCurrentTab(wxCommandEvent & event)

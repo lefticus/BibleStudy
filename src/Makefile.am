@@ -13,7 +13,7 @@ biblestudy_resource.o: biblestudy.rc
 AM_CXXFLAGS = `wx-config --cxxflags ` -Wall -D_WX_WIN
 
 bin_PROGRAMS = biblestudy
-biblestudy_SOURCES = biblestudy.cpp dirtraversersimple.cpp BibleStudyApp.cpp BibleStudyMainFrame.cpp BookModule.cpp BookTreeCtrl.cpp BookViewCtrl.cpp BookViewSplitterCtrl.cpp SwordTools.cpp BookViewToolBar.cpp BibleStudyLanguages.cpp BookViewEventHandler.cpp DropDownEventHandler.cpp BibleStudyWizard.cpp BookViewHtml.cpp HTMLToolTip.cpp DropDownCtrl.cpp BookList.cpp PrefsDialog.cpp ReadingPlannerToolBar.cpp ReadingPlanWizard.cpp
+biblestudy_SOURCES = biblestudy.cpp dirtraversersimple.cpp BibleStudyApp.cpp BibleStudyMainFrame.cpp BookModule.cpp BookTreeCtrl.cpp BookViewCtrl.cpp BookViewSplitterCtrl.cpp SwordTools.cpp BookViewToolBar.cpp BibleStudyLanguages.cpp BookViewEventHandler.cpp DropDownEventHandler.cpp BibleStudyWizard.cpp BookViewHtml.cpp HTMLToolTip.cpp DropDownCtrl.cpp BookList.cpp PrefsDialog.cpp ReadingPlannerToolBar.cpp ReadingPlanWizard.cpp bsmarkupfiltmgr.cpp bsosishtmlhref.cpp bsgbfhtmlhref.cpp bsthmlhtmlhref.cpp
 
 
 # set the include path found by configure

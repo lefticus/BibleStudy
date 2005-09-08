@@ -111,6 +111,7 @@ public:
   void OnShowWhyBecomeChristian(wxCommandEvent &event);
   void OnShowHowGrowSpiritually(wxCommandEvent &event);
   void OnShowBibleStudy(wxCommandEvent &event);
+  void OnShowModuleLink(wxCommandEvent &event);
 
   void OnShowReadingPlanPage(wxCommandEvent& event);
   void OnReadingPlannerWiz(wxCommandEvent& event);
@@ -122,6 +123,7 @@ public:
   void LayoutChildren();
   void UpdatePlanToolBar();
   void ShowHidePlanBar(bool show);
+  void ShowHideBookTree();
   wxDateTime GetPlanDate() {return m_PlanDate;}
   void SetPlanDate(const wxDateTime& date);
 

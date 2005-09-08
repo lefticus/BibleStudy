@@ -34,6 +34,20 @@ BookModule::BookModule(SWModule *newModule)
     m_Module = newModule;
     m_Modules[newModule->Name()] = newModule;
     m_keytype = GetKeyType(newModule);
+    if (!strcmp(m_Module->Type(), "Generic Books")
+        || !strcmp(m_Module->Type(), "Essays"))
+    {
+      m_TypeDescription = _("Section");
+    }
+    else if (!strcmp(m_Module->Type(), "Daily Devotional"))
+    {
+      m_TypeDescription = _("Date");
+    }
+    else if (!strcmp(m_Module->Type(), "Biblical Texts")
+             || !strcmp(m_Module->Type(), "Commentaries"))
+    {
+      m_TypeDescription = _("Verse");
+    }
   }
   else
   {
@@ -276,6 +290,7 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
   VerseKey vk;
   wxString output;
   char book = 0;
+  long notenumber = 0;
   int chapter = 0,
                 verse = 0;
   int versecount = 0;
@@ -295,6 +310,8 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
   {
     if (key.Mid(footnoteindex + 3).IsNumber())
     {
+      key.Mid(footnoteindex + 3).ToLong(&notenumber);
+      std::cout << "Is a footnote!!!" << std::endl;
       isfootnote = true;
       wxLogDebug(wxT("BookModule::LookupKey key isfootnote"));
       key = key.Left(footnoteindex);
@@ -318,8 +335,11 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
   // keybuf[wxConvUTF8.WC2MB(keybuf, key.c_str(), key.Length())]=0;
 
   if (m_keytype == bsVerseKey) {
-    if (m_isbrowsing)
-      key = key.BeforeLast(wxT(':'));
+    if (m_isbrowsing) {
+      if (key.Contains(wxT(":"))) {
+        key = key.BeforeLast(wxT(':'));
+      }
+    }
 
     listkey = vk.ParseVerseList(key.mb_str(wxConvUTF8), "Gen1:1", true);
   } else {
@@ -392,6 +412,12 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
   if (m_keytype == bsVerseKey)
   {
     m_LastLookupKey = key;
+
+    if (isfootnote) {
+      m_LastLookupKey = m_LastLookupKey + wxT(".n.") + wxString::Format(wxT("%i"), notenumber);
+      
+    }
+    
     for (i = 0; i < listkey.Count(); i++)
     {
       VerseKey *element = SWDYNAMIC_CAST(VerseKey, listkey.GetElement(i));
@@ -545,7 +571,8 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
                 wxString wxBody;
 
                 curMod->RenderText();
-                body = curMod->getEntryAttributes()["Footnote"]["1"]
+		wxString s = wxString::Format(wxT("%i"), notenumber);
+                body = curMod->getEntryAttributes()["Footnote"][(const char *)(s.mb_str())]
                        ["body"].c_str();
                 curMod->RenderText(body);
                 wxBody = wxString((const char *) body.c_str(), wxConvUTF8);
@@ -627,15 +654,14 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
             SWBuf body;
             wxString wxBody;
 
-            // curMod->SetKey("jn3:3");
             curMod->RenderText();
-            body =
-              curMod->getEntryAttributes()["Footnote"]["1"]["body"].c_str();
+            wxString s = wxString::Format(wxT("%i"), notenumber);
+            body = curMod->getEntryAttributes()["Footnote"][(const char *)(s.mb_str())]
+                       ["body"].c_str();
             curMod->RenderText(body);
             wxBody = wxString((const char *) body.c_str(), wxConvUTF8);
-            // wxLogDebug(wxT("BookModule::LookupKey adding
-            // footnote ") + wxBody);
             output.append(wxBody);
+
           }
 
           output.append(wxT("</td>"));
@@ -706,7 +732,6 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
   // color=#999900'>\\0</font>"));
   // }
 
-  std::cout << output.mb_str() << std::endl;
   return output;
 }
 
