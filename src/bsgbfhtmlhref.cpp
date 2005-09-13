@@ -151,7 +151,7 @@ bool BSGBFHTMLHREF::handleToken(SWBuf &buf, const char *token, BasicFilterUserDa
 		// else 
 		if (!strncmp(token, "WG", 2)) { // strong's numbers
 			//buf += " <small><em>&lt;<a href=\"type=Strongs value=";
-			buf += " <small><em>&lt;<a href=\"passagestudy.jsp?action=showStrongs&type=Greek&value=";
+			buf += " <small><em>&lt;<a href=\"module://passagestudy.jsp?action=showStrongs&type=Greek&value=";
 			for (tok = token+2; *tok; tok++)
 				//if(token[i] != '\"')
 					buf += *tok;
@@ -163,7 +163,7 @@ bool BSGBFHTMLHREF::handleToken(SWBuf &buf, const char *token, BasicFilterUserDa
 		}
 		else if (!strncmp(token, "WH", 2)) { // strong's numbers
 			//buf += " <small><em>&lt;<a href=\"type=Strongs value=";
-			buf += " <small><em>&lt;<a href=\"passagestudy.jsp?action=showStrongs&type=Hebrew&value=";
+			buf += " <small><em>&lt;<a href=\"module://passagestudy.jsp?action=showStrongs&type=Hebrew&value=";
 			for (tok = token+2; *tok; tok++)
 				//if(token[i] != '\"')
 					buf += *tok;
@@ -175,7 +175,7 @@ bool BSGBFHTMLHREF::handleToken(SWBuf &buf, const char *token, BasicFilterUserDa
 		}
 		else if (!strncmp(token, "WTG", 3)) { // strong's numbers tense
 			//buf += " <small><em>(<a href=\"type=Strongs value=";
-			buf += " <small><em>(<a href=\"passagestudy.jsp?action=showStrongs&type=Greek&value=";
+			buf += " <small><em>(<a href=\"module://passagestudy.jsp?action=showStrongs&type=Greek&value=";
 			for (tok = token + 3; *tok; tok++)
 				if(*tok != '\"')
 					buf += *tok;
@@ -187,7 +187,7 @@ bool BSGBFHTMLHREF::handleToken(SWBuf &buf, const char *token, BasicFilterUserDa
 		}
 		else if (!strncmp(token, "WTH", 3)) { // strong's numbers tense
 			//buf += " <small><em>(<a href=\"type=Strongs value=";
-			buf += " <small><em>(<a href=\"passagestudy.jsp?action=showStrongs&type=Hebrew&value=";
+			buf += " <small><em>(<a href=\"module://passagestudy.jsp?action=showStrongs&type=Hebrew&value=";
 			for (tok = token + 3; *tok; tok++)
 				if(*tok != '\"')
 					buf += *tok;
@@ -200,7 +200,7 @@ bool BSGBFHTMLHREF::handleToken(SWBuf &buf, const char *token, BasicFilterUserDa
 
 		else if (!strncmp(token, "WT", 2) && strncmp(token, "WTH", 3) && strncmp(token, "WTG", 3)) { // morph tags
 			//buf += " <small><em>(<a href=\"type=morph class=none value=";
-			buf += " <small><em>(<a href=\"passagestudy.jsp?action=showMorph&type=Greek&value=";
+			buf += " <small><em>(<a href=\"module://passagestudy.jsp?action=showMorph&type=Greek&value=";
 			
 			for (tok = token + 2; *tok; tok++)
 				if(*tok != '\"')
@@ -236,10 +236,10 @@ bool BSGBFHTMLHREF::handleToken(SWBuf &buf, const char *token, BasicFilterUserDa
 			if (vkey) {
 				// leave this special osis type in for crossReference notes types?  Might thml use this some day? Doesn't hurt.
 				//char ch = ((tag.getAttribute("type") && ((!strcmp(tag.getAttribute("type"), "crossReference")) || (!strcmp(tag.getAttribute("type"), "x-cross-ref")))) ? 'x':'n');
-				buf.appendFormatted("<a href=\"passagestudy.jsp?action=showNote&type=n&value=%s&module=%s&passage=%s\"><small><sup>*n</sup></small></a> ", 
-					URL::encode(footnoteNumber.c_str()).c_str(),
-					URL::encode(u->version.c_str()).c_str(), 
-					URL::encode(vkey->getText()).c_str());
+				buf.appendFormatted("<a href=\"module://passagestudy.jsp?action=showNote&type=n&module=%s&passage=%s.n.%s\"><small><sup>*n</sup></small></a> ",
+					URL::encode(u->version.c_str()).c_str(),
+					URL::encode(vkey->getText()).c_str(),
+					URL::encode(footnoteNumber.c_str()).c_str());
 			}
 			u->suspendTextPassThru = true;
 		}

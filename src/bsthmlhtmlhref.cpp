@@ -56,19 +56,19 @@ bool BSThMLHTMLHREF::handleToken(SWBuf &buf, const char *token, BasicFilterUserD
 			SWBuf value = tag.getAttribute("value");
 			if (tag.getAttribute("type") && !strcmp(tag.getAttribute("type"), "morph")) { //&gt;
 				if(value.length())
-					buf.appendFormatted("<small><em>(<a href=\"passagestudy.jsp?action=showMorph&type=Greek&value=%s\">*s</a>) </em></small>", 
+					buf.appendFormatted("<small><em>(<a href=\"module://passagestudy.jsp?action=showMorph&type=Greek&value=%s\">*s</a>) </em></small>", 
 						URL::encode(value.c_str()).c_str(),
 						value.c_str());
 			}
 			else if (tag.getAttribute("type") && !strcmp(tag.getAttribute("type"), "Strongs")) {
 				if(*value == 'H') {
 					value<<1;
-					buf.appendFormatted("<small><em>&lt;<a href=\"passagestudy.jsp?action=showStrongs&type=Hebrew&value=%s\">",
+					buf.appendFormatted("<small><em>&lt;<a href=\"module://passagestudy.jsp?action=showStrongs&type=Hebrew&value=%s\">",
 						URL::encode(value.c_str()).c_str());
 				}
 				else if(*value == 'G') {
 					value<<1;
-					buf.appendFormatted("<small><em>&lt;<a href=\"passagestudy.jsp?action=showStrongs&type=Greek&value=%s\">",
+					buf.appendFormatted("<small><em>&lt;<a href=\"module://passagestudy.jsp?action=showStrongs&type=Greek&value=%s\">",
 						URL::encode(value.c_str()).c_str());
 				}
 				buf += (value.length()) ? value.c_str() : "";
@@ -96,7 +96,7 @@ bool BSThMLHTMLHREF::handleToken(SWBuf &buf, const char *token, BasicFilterUserD
 					if (vkey) {
 						// leave this special osis type in for crossReference notes types?  Might thml use this some day? Doesn't hurt.
 						char ch = ((tag.getAttribute("type") && ((!strcmp(tag.getAttribute("type"), "crossReference")) || (!strcmp(tag.getAttribute("type"), "x-cross-ref")))) ? 'x':'n');
-						buf.appendFormatted("<a href=\"passagestudy.jsp?action=showNote&type=%c&value=%s&module=%s&passage=%s\"><small><sup>*%c</sup></small></a> ", 
+						buf.appendFormatted("<a href=\"module://passagestudy.jsp?action=showNote&type=%c&value=%s&module=%s&passage=%s\"><small><sup>*%c</sup></small></a> ", 
 							ch, 
 							URL::encode(footnoteNumber.c_str()).c_str(), 
 							URL::encode(u->version.c_str()).c_str(), 
@@ -124,7 +124,7 @@ bool BSThMLHTMLHREF::handleToken(SWBuf &buf, const char *token, BasicFilterUserD
 						refList = u->lastTextNode;
 					SWBuf version = tag.getAttribute("version");
 					
-					buf.appendFormatted("&nbsp;<a href=\"passagestudy.jsp?action=showRef&type=scripRef&value=%s&module=%s\">",
+					buf.appendFormatted("&nbsp;<a href=\"module://passagestudy.jsp?action=showRef&type=scripRef&value=%s&module=%s\">",
 						(refList.length()) ? URL::encode(refList.c_str()).c_str() : "", 
 						(version.length()) ? URL::encode(version.c_str()).c_str() : "");
 					buf += u->lastTextNode.c_str();
@@ -141,10 +141,11 @@ bool BSThMLHTMLHREF::handleToken(SWBuf &buf, const char *token, BasicFilterUserD
 					if (vkey) {
 						// leave this special osis type in for crossReference notes types?  Might thml use this some day? Doesn't hurt.
 						//buf.appendFormatted("<a href=\"noteID=%s.x.%s\"><small><sup>*x</sup></small></a> ", vkey->getText(), footnoteNumber.c_str());
-						buf.appendFormatted("<a href=\"passagestudy.jsp?action=showNote&type=x&value=%s&module=%s&passage=%s\"><small><sup>*x</sup></small></a> ",  
-							URL::encode(footnoteNumber.c_str()).c_str(), 
+						buf.appendFormatted("<a href=\"module://passagestudy.jsp?action=showNote&type=x&module=%s&passage=%s.n.%s\"><small><sup>*x</sup></small></a> ",
 							URL::encode(u->version.c_str()).c_str(),
-							URL::encode(vkey->getText()).c_str());
+							URL::encode(vkey->getText()).c_str(),
+							URL::encode(footnoteNumber.c_str()).c_str());
+						
 					
 					}
 				}

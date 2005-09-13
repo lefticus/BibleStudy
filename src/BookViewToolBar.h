@@ -16,6 +16,7 @@
 #include <wx/combobox.h>
 #include <wx/treectrl.h>
 #include <wx/calctrl.h>
+#include "DropDownCtrl.h"
 
 BEGIN_DECLARE_EVENT_TYPES()
 DECLARE_EVENT_TYPE(bsEVT_LOAD_KEY, 1)
@@ -44,7 +45,7 @@ class BookViewToolBar: public wxToolBar
 private:
   wxTextCtrl *m_LookupKey;
   wxComboBox *m_DropDownRange;
-  wxFrame *m_SubFrame;
+  DropDownCtrl *m_SubFrame;
   void AddRanges();
 
 public:
@@ -54,16 +55,9 @@ public:
   wxString GetLookupKey() const;
   void SetLookupKey(const wxString&);
 
-  void SetDropDownFrame(wxFrame * subframe);
+  void SetDropDownFrame(DropDownCtrl* subframe);
   void SetTypeDescription(const wxString &);
   void EnableNavigation(bool);
-  void OnShowDropDown(wxCommandEvent & event);
-
-  void DropDownGotFocus();
-  void DropDownLostFocus();
-  void DropDownItemActivated(wxTreeEvent & event);
-  void DropDownDateSelected(wxCalendarEvent & event);
-  void DropDownVerseSelected(wxCommandEvent & event);
 
   void OnLookupKey(wxCommandEvent & event);
   void OnListKey(wxCommandEvent & event);

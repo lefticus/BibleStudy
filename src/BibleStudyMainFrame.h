@@ -65,6 +65,7 @@ public:
   void OnAbout(wxCommandEvent &event);
   void OnCloseWindow(wxCommandEvent &event);
   void OnPrefs(wxCommandEvent & event);
+  void OnSearchDialog(wxCommandEvent &event);
 
   void OnCopy(wxCommandEvent &event);
   void OnSelectAll(wxCommandEvent &event);

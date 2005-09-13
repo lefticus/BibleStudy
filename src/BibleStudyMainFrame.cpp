@@ -61,6 +61,7 @@ EVT_MENU(ID_MenuBibleStudyWhy, BibleStudyMainFrame::OnShowWhyBecomeChristian)
 EVT_MENU(ID_MenuBibleStudyGrow,
          BibleStudyMainFrame::OnShowHowGrowSpiritually)
 EVT_MENU(ID_MenuPrefs, BibleStudyMainFrame::OnPrefs)
+EVT_MENU(ID_MenuSearch, BibleStudyMainFrame::OnSearchDialog)
 
 EVT_MENU_RANGE(ID_MenuTopBookOption, ID_MenuTopBookOption + 50,
                BibleStudyMainFrame::OnOptionChange)
@@ -206,6 +207,8 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools,
   StringList::iterator it;
   int id = ID_MenuTopBookOption;
 
+  menuOptions->Append(ID_MenuSearch, _("Search"));
+  menuOptions->AppendSeparator();
   menuOptions->Append(ID_MenuPrefs, _("Preferences"));
   menuOptions->AppendSeparator();
 
@@ -1139,6 +1142,49 @@ void BibleStudyMainFrame::OnPrefs(wxCommandEvent &event)
     m_pdbFile->SetBackupPath(localPath.mb_str());
   }
   m_PlanToolBar->SetComboPlanNames();
+}
+
+void BibleStudyMainFrame::OnSearchDialog(wxCommandEvent &event)
+{
+  wxString s = wxGetTextFromUser(_("What words would you like to search for?"), _("Enter Search Words"));
+
+  if (s == wxT("")) return;
+
+  wxString options[] = {_("Entire Bible"), _("Old Testament"),_("Law (Genesis - Deuteronomy"),_("OT History (Joshua - Esther)"),_("Books of Wisdom (Job - Song of Solomon)"),_("Prophets (Isaiah - Malachi)"),_("New Testament"),_("Gospels (Matthew - John)"),_("NT History (Matthew - Acts)"),_("Paul's Letters (Romans - Philippians)"),_("Other Letters (Hebrews - Revelations)"),_("All Letters (Romans - Revelations)")};
+  
+  wxString c = wxGetSingleChoice(_("Which books would you like to search?"), _("Enter Search Range"), 12, options);
+  wxString range;
+  
+  if (c == wxT("")) return;
+  
+  if (c == _("Entire Bible")) {
+    range = wxT("");
+  } else if (c == _("Old Testament")) {
+    range = wxT("Gen-Mal");
+  } else if (c == _("Law (Genesis - Deuteronomy")) {
+    range = wxT("Gen-Deut");
+  } else if (c == _("OT History (Joshua - Esther)")) {
+    range = wxT("Josh-Esther");
+  } else if (c == _("Books of Wisdom (Job - Song of Solomon)")) {
+    range = wxT("Job-Song");
+  } else if (c == _("Prophets (Isaiah - Malachi)")) {
+    range = wxT("Is-Mal");
+  } else if (c == _("New Testament")) {
+    range = wxT("Mat-Rev");
+  } else if (c == _("Gospels (Matthew - John)")) {
+    range = wxT("Mat-John");
+  } else if (c == _("NT History (Matthew - Acts)")) {
+    range = wxT("Mat-Acts");
+  } else if (c == _("Paul's Letters (Romans - Philippians)")) {
+    range = wxT("Ro-Phil");
+  } else if (c == _("Other Letters (Hebrews - Revelations)")) {
+    range = wxT("Heb-Rev");
+  } else if (c == _("All Letters (Romans - Revelations)")) {
+    range = wxT("Ro-Rev");
+  }
+  
+  m_WindowSplit->Search(range, s, -2);
+
 }
 
 wxArrayString BibleStudyMainFrame::GetPlanNames()

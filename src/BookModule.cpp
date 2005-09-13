@@ -367,13 +367,13 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
     if (listkey.Count() == 0 || m_keytype != bsVerseKey)
     {
       searchresult =
-        m_Module->Search(search.mb_str(), searchtype, 0, NULL, 0, &Percent,
+        m_Module->Search(search.mb_str(), searchtype, 2, NULL, 0, &Percent,
                          (void *) &pd);
     }
     else
     {
       searchresult =
-        m_Module->Search(search.mb_str(), searchtype, 0, &listkey, 0, &Percent,
+        m_Module->Search(search.mb_str(), searchtype, 2, &listkey, 0, &Percent,
                          (void *) &pd);
     }
 
@@ -735,7 +735,7 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
   return output;
 }
 
-wxFrame *BookModule::GetControl(wxWindow * parent)
+DropDownCtrl *BookModule::GetControl(wxWindow * parent)
 {
   if (m_Frame)
     return m_Frame;

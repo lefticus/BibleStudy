@@ -15,9 +15,10 @@
 #include <sword/swmgr.h>
 #include <sword/treekey.h>
 
-#include <wx/frame.h>
 #include <wx/treectrl.h>
 #include <wx/string.h>
+
+#include <DropDownCtrl.h>
 
 enum bsKeyType {
   bsVerseKey = 1,
@@ -56,7 +57,7 @@ public:
   wxString ModInfo() const;
 
   /** Returns a combobox for this book */
-  wxFrame *GetControl(wxWindow * parent);
+  DropDownCtrl *GetControl(wxWindow * parent);
 
   void AddModule(sword::SWModule * mod);
 
@@ -80,7 +81,7 @@ private:
   mutable wxString m_Description;
   wxString m_TypeDescription;
 
-  wxFrame *m_Frame;
+  DropDownCtrl *m_Frame;
 
   sword::ModMap m_Modules;
   sword::ListKey m_LastKey;

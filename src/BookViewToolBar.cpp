@@ -177,7 +177,7 @@ void BookViewToolBar::EnableNavigation(bool enable)
   EnableTool(ID_ToolForward, enable);
 }
 
-void BookViewToolBar::SetDropDownFrame(wxFrame *subframe)
+void BookViewToolBar::SetDropDownFrame(DropDownCtrl *subframe)
 {
   if (m_SubFrame != subframe)
   {
@@ -215,112 +215,26 @@ void BookViewToolBar::SetDropDownFrame(wxFrame *subframe)
 
 void BookViewToolBar::OnListKey(wxCommandEvent & event)
 {
-  wxPoint pos;
-
-  pos = GetParent()->ClientToScreen(wxPoint(0, 0));
-  pos.x =
-    pos.x + GetToolSize().GetWidth() * 3 + GetToolSeparation() * 2 +
-    GetMargins().GetWidth();
 
   if (m_SubFrame)
   {
-    if (m_SubFrame->IsShown())
-    {
-      m_SubFrame->Show(false);
+    ToggleTool(ID_ToolListKey, true);
+    m_SubFrame->CentreOnParent();
+      
+    if (m_SubFrame->ShowModal() == wxID_OK) {
+      wxCommandEvent eventCustom(bsEVT_LOAD_KEY);
+
+      eventCustom.SetEventObject(this);
+      eventCustom.SetString(m_SubFrame->GetKey());
+      ProcessEvent(eventCustom);
+
+      m_LookupKey->SetValue(m_SubFrame->GetKey());
     }
-    else
-    {
-      m_SubFrame->Move(pos.x, pos.y);
-      m_SubFrame->Show(true);
-    }
+    ToggleTool(ID_ToolListKey, false); 
   }
 }
 
-void BookViewToolBar::OnShowDropDown(wxCommandEvent & event)
-{
-  wxPoint pos;
 
-  pos = GetParent()->ClientToScreen(wxPoint(0, 0));
-  pos.x =
-    pos.x + GetToolSize().GetWidth() * 4 + GetToolSeparation() * 3 +
-    m_LookupKey->GetSize().GetWidth() + GetMargins().GetWidth();
-
-  if (m_SubFrame)
-  {
-
-    m_SubFrame->Move(pos.x, pos.y);
-    m_SubFrame->Show(true);
-  }
-
-}
-
-void BookViewToolBar::DropDownGotFocus()
-{
-}
-
-void BookViewToolBar::DropDownLostFocus()
-{
-  m_SubFrame->Show(false);
-}
-
-void BookViewToolBar::DropDownItemActivated(wxTreeEvent & event)
-{
-  wxTreeCtrl *tree = (wxTreeCtrl *) event.GetEventObject();
-
-  wxTreeItemId item = event.GetItem();
-  wxTreeItemId parent;
-  wxString key;
-
-  bool cont;
-
-  m_SubFrame->Show(false);
-
-  key = wxT("/") + tree->GetItemText(item);
-
-  cont = true;
-
-  while (cont)
-  {
-    item = tree->GetItemParent(item);
-    parent = tree->GetItemParent(item);
-
-    if (parent)
-    {
-      key = wxT("/") + tree->GetItemText(item) + key;
-    }
-    else
-    {
-      cont = false;
-    }
-  }
-
-  wxCommandEvent eventCustom(bsEVT_LOAD_KEY);
-
-  eventCustom.SetEventObject(this);
-  eventCustom.SetString(key);
-  ProcessEvent(eventCustom);
-
-  m_LookupKey->SetValue(key);
-}
-
-void BookViewToolBar::DropDownDateSelected(wxCalendarEvent & event)
-{
-  m_SubFrame->Show(false);
-  wxDateTime date = event.GetDate();
-
-  wxString key;
-
-  key = key.Format(wxT("%02i.%02i"), date.GetMonth() + 1, date.GetDay());
-  wxLogDebug(wxT("Date Selected: ") + key);
-
-  m_LookupKey->SetValue(key);
-
-  wxCommandEvent eventCustom(bsEVT_LOAD_KEY);
-
-  eventCustom.SetEventObject(this);
-  eventCustom.SetString(key);
-  ProcessEvent(eventCustom);
-}
 
 void BookViewToolBar::OnLookupKey(wxCommandEvent & event)
 {
@@ -360,16 +274,4 @@ void BookViewToolBar::OnBrowseForward(wxCommandEvent & event)
   ProcessEvent(eventCustom);
 }
 
-void BookViewToolBar::DropDownVerseSelected(wxCommandEvent & event)
-{
-  m_SubFrame->Show(false);
 
-  wxLogTrace(wxTRACE_Messages, wxT("BookViewToolBar::OnLookupKey called"));
-  wxLogDebug(wxT("EventString:") + event.GetString());
-  wxCommandEvent eventCustom(bsEVT_BROWSE_KEY);
-
-  eventCustom.SetEventObject(this);
-  eventCustom.SetString(event.GetString());
-  ProcessEvent(eventCustom);
-
-}

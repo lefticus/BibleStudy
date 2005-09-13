@@ -32,12 +32,7 @@ public:
   DropDownEventHandler();
   ~DropDownEventHandler();
 
-  void OnSetFocus(wxFocusEvent &event);
-  void OnKillFocus(wxFocusEvent &event);
-  void OnItemActivated(wxTreeEvent &event);
-  void OnDateSelected(wxCalendarEvent &event);
   void OnMove(wxMoveEvent &event);
-  void OnVerseSelected(wxCommandEvent &event);
 
   void SetParent(BookViewToolBar *parent);
 

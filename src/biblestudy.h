@@ -45,6 +45,7 @@ enum {
   ID_MenuPrefs,
   ID_MenuCopy,
   ID_MenuSelectAll,
+  ID_MenuSearch,
 
   /* Must remain last */
   ID_MenuTopBookOption

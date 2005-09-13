@@ -19,16 +19,16 @@
 
 using namespace sword;
 
-BEGIN_EVENT_TABLE(DropDownCtrl, wxMiniFrame)
+BEGIN_EVENT_TABLE(DropDownCtrl, wxDialog)
 EVT_TEXT(-1, DropDownCtrl::UpdateCBs)
-EVT_BUTTON(-1, DropDownCtrl::OnButtonPress)
 EVT_KEY_DOWN(DropDownCtrl::OnKeyDown)
 END_EVENT_TABLE()
 
 DropDownCtrl::DropDownCtrl(wxWindow *parent, SWModule *module,
                            bsDropDownMode mode)
-    : wxMiniFrame(parent, -1, wxT("Select An Option"),
-                  wxDefaultPosition, wxDefaultSize),
+    : wxDialog(parent, -1, wxT("Select An Option"),
+                  wxDefaultPosition, wxDefaultSize, wxCAPTION 
+		  | wxCLIP_CHILDREN | wxSTAY_ON_TOP),
     m_Mode(mode), m_Tree(NULL), m_Calendar(NULL), m_BookCB(NULL),
     m_ChapterCB(NULL), m_VerseCB(NULL), m_LastBook(0),
     m_LastChapter(0), m_LastVerse(0), m_Module(module)
@@ -43,16 +43,68 @@ DropDownCtrl::DropDownCtrl(wxWindow *parent, SWModule *module,
                          | wxCAL_SHOW_SURROUNDING_WEEKS | wxCAL_SUNDAY_FIRST |
                          wxCAL_SHOW_HOLIDAYS);
     // m_Calendar->PushEventHandler(this);
+    
     SetClientSize(m_Calendar->GetSize());
     m_Calendar->Move(GetClientAreaOrigin());
+    
+    m_Cancel =
+      new wxButton(this, wxID_CANCEL, _("Cancel"),
+                   wxDefaultPosition, wxDefaultSize,
+                   0, wxDefaultValidator, _("Cancel"));
+    
+    if (m_Cancel->GetSize().GetWidth() * 2 + 6 > GetClientSize().GetWidth()) {
+      SetClientSize(m_Cancel->GetSize().GetWidth() * 2 + 6, 
+		      GetClientSize().GetHeight());
+    }
+
+
+    m_Cancel->Move(GetClientSize().GetWidth()
+		    - (m_Cancel->GetSize().GetWidth() + 2), 
+		   GetClientSize().GetHeight() + 2);
+    
+    m_Button =
+      new wxButton(this, wxID_OK, _("OK"),
+                   wxDefaultPosition, wxDefaultSize,
+                   0, wxDefaultValidator, _("OK"));
+
+    m_Button->Move(m_Cancel->GetRect().GetLeft()
+		    - m_Cancel->GetSize().GetWidth() - 2, 
+		    m_Cancel->GetPosition().y);
+    
+    SetClientSize(GetClientSize().GetWidth(), 
+		    GetClientSize().GetHeight() 
+		    + m_Button->GetSize().GetHeight() + 4);
+    m_Calendar->Move((GetClientSize().GetWidth() - m_Calendar->GetSize().GetWidth()) / 2, 0);
     break;
   case bsTree:
     m_Tree =
-      new wxTreeCtrl(this, -1, wxDefaultPosition, wxSize(200, 100),
-                     wxTR_NO_BUTTONS | wxTR_HIDE_ROOT | wxTR_LINES_AT_ROOT);
+      new wxTreeCtrl(this, -1, wxDefaultPosition, wxSize(305, 200),
+                     wxTR_HIDE_ROOT | wxTR_HAS_BUTTONS
+		                      | wxTR_FULL_ROW_HIGHLIGHT | wxTR_SINGLE);
     // m_Tree->PushEventHandler(this);
     SetClientSize(m_Tree->GetSize());
     m_Tree->Move(GetClientAreaOrigin());
+    
+    m_Cancel =
+      new wxButton(this, wxID_CANCEL, _("Cancel"),
+                   wxDefaultPosition, wxDefaultSize,
+                   0, wxDefaultValidator, _("Cancel"));
+
+    m_Cancel->Move(GetClientSize().GetWidth()
+		    - (m_Cancel->GetSize().GetWidth() + 2), 
+		    m_Tree->GetSize().GetHeight() + 2);
+    
+    m_Button =
+      new wxButton(this, wxID_OK, _("OK"),
+                   wxDefaultPosition, wxDefaultSize,
+                   0, wxDefaultValidator, _("OK"));
+
+    m_Button->Move(m_Cancel->GetRect().GetLeft()
+		    - m_Cancel->GetSize().GetWidth() - 2, 
+		    m_Cancel->GetPosition().y);
+    SetClientSize(GetClientSize().GetWidth(), 
+		    GetClientSize().GetHeight() 
+		    + m_Button->GetSize().GetHeight() + 4);
     break;
   case bsBible:
     SetClientSize(wxSize(305, 70));
@@ -98,13 +150,24 @@ DropDownCtrl::DropDownCtrl(wxWindow *parent, SWModule *module,
                      wxSize(m_VerseLabel->GetSize().GetWidth(),
                             wxDefaultSize.GetHeight()),
                      0, NULL, wxCB_READONLY);
-    m_Button =
-      new wxButton(this, -1, _("Select"),
-                   wxPoint(m_BookCB->GetPosition().x,
-                           m_VerseCB->GetPosition().y +
-                           m_VerseCB->GetSize().GetHeight() + 2), wxDefaultSize,
-                   0, wxDefaultValidator, _("Select"));
+    m_Cancel =
+      new wxButton(this, wxID_CANCEL, _("Cancel"),
+                   wxDefaultPosition, wxDefaultSize,
+                   0, wxDefaultValidator, _("Cancel"));
 
+    m_Cancel->Move(m_VerseCB->GetRect().GetRight()
+		    - m_Cancel->GetSize().GetWidth(), 
+		    m_VerseCB->GetPosition().y +
+		    m_VerseCB->GetSize().GetHeight() + 2);
+    
+    m_Button =
+      new wxButton(this, wxID_OK, _("OK"),
+                   wxDefaultPosition, wxDefaultSize,
+                   0, wxDefaultValidator, _("OK"));
+
+    m_Button->Move(m_Cancel->GetRect().GetLeft()
+		    - m_Cancel->GetSize().GetWidth() - 2, 
+		    m_Cancel->GetPosition().y);
     /*
        * m_BookCB->PushEventHandler(this);
        * m_ChapterCB->PushEventHandler(this);
@@ -222,19 +285,47 @@ void DropDownCtrl::UpdateCBs(wxCommandEvent & event)
 
 }
 
-void DropDownCtrl::OnButtonPress(wxCommandEvent & event)
+
+bool DropDownCtrl::TransferDataFromWindow()
 {
-  wxCommandEvent eventCustom(wxEVT_COMMAND_TOOL_CLICKED);
+  if (m_Mode == bsBible) {
+    m_Key = m_BookCB->GetStringSelection() + wxT(" ") +
+                        m_ChapterCB->GetStringSelection() /* + wxT(":") +
+                        m_VerseCB->GetStringSelection() */;
+  } else if (m_Mode == bsCalendar) {
+    wxDateTime date = m_Calendar->GetDate();
+    wxString key;
+    m_Key = key.Format(wxT("%02i.%02i"), date.GetMonth() + 1, date.GetDay());
+  } else if (m_Mode == bsTree) {
 
-  eventCustom.SetEventObject(event.GetEventObject());
-  eventCustom.SetString(m_BookCB->GetStringSelection() + wxT(" ") +
-                        m_ChapterCB->GetStringSelection() + wxT(":") +
-                        m_VerseCB->GetStringSelection());
+    wxTreeItemId item = m_Tree->GetSelection();
+    wxTreeItemId parent;
+    wxString key;
+    bool cont;
 
-  wxLogDebug(wxT("Event String: ") + eventCustom.GetString());
+    key = wxT("/") + m_Tree->GetItemText(item);
 
-  if (GetPreviousHandler())
-    GetPreviousHandler()->ProcessEvent(eventCustom);
+    cont = true;
+
+    while (cont)
+    {
+      item = m_Tree->GetItemParent(item);
+      parent = m_Tree->GetItemParent(item);
+
+      if (parent)
+      {
+        key = wxT("/") + m_Tree->GetItemText(item) + key;
+      }
+      else
+      {
+        cont = false;
+      }
+    }
+
+    m_Key = key;
+  }
+  
+  return true;
 }
 
 void DropDownCtrl::OnKeyDown(wxKeyEvent & event)
@@ -242,7 +333,7 @@ void DropDownCtrl::OnKeyDown(wxKeyEvent & event)
   wxLogDebug(wxT("DropDownCtrl::OnKeyDown called"));
   if (event.GetKeyCode() == WXK_ESCAPE)
   {
-    wxFrame::Show(false);
+    wxDialog::Show(false);
   }
   else
   {

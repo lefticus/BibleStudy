@@ -15,7 +15,7 @@
 #include <wx/button.h>
 #include <wx/calctrl.h>
 #include <wx/treectrl.h>
-#include <wx/minifram.h>
+#include <wx/dialog.h>
 #include <wx/stattext.h>
 #include <sword/swmodule.h>
 
@@ -28,7 +28,7 @@ enum bsDropDownMode {
 /**
  * @author Jason Turner
  */
-class DropDownCtrl : public wxMiniFrame
+class DropDownCtrl : public wxDialog
 {
 private:
   bsDropDownMode m_Mode;
@@ -42,6 +42,7 @@ private:
   wxStaticText *m_ChapterLabel;
   wxStaticText *m_VerseLabel;
   wxButton *m_Button;
+  wxButton *m_Cancel;
 
   void UpdateBookCB();
   void UpdateVerseCB();
@@ -50,6 +51,8 @@ private:
   char m_LastBook;
   int m_LastChapter;
   int m_LastVerse;
+
+  wxString m_Key;
 
   sword::SWModule *m_Module;
 
@@ -61,9 +64,13 @@ public:
   wxCalendarCtrl *GetCalendar();
 
   void UpdateCBs(wxCommandEvent &event);
-  void OnButtonPress(wxCommandEvent &event);
   void OnKeyDown(wxKeyEvent &event);
 
+  bool Validate() { return true; }
+  bool TransferDataFromWindow();
+
+  wxString GetKey() { return m_Key; }
+  
   DECLARE_EVENT_TABLE()
 };
 
