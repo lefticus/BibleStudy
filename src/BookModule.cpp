@@ -199,7 +199,7 @@ wxString BookModule::BrowseFirst()
 
   SWKey *k = m_Module->CreateKey();
 
-  if (k->isTraversable()) {
+  if (k->Traversable()) {
     k->setPosition(POS_TOP);
   
     wxWindowDisabler disableAll;
@@ -311,7 +311,6 @@ wxString BookModule::LookupKey(wxString key, wxString search, int searchtype,
     if (key.Mid(footnoteindex + 3).IsNumber())
     {
       key.Mid(footnoteindex + 3).ToLong(&notenumber);
-      std::cout << "Is a footnote!!!" << std::endl;
       isfootnote = true;
       wxLogDebug(wxT("BookModule::LookupKey key isfootnote"));
       key = key.Left(footnoteindex);

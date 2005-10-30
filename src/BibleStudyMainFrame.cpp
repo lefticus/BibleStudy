@@ -89,7 +89,6 @@ EVT_CHECK_DONE(BibleStudyMainFrame::OnCheckDayDone)
 EVT_PLAN_CHANGED(BibleStudyMainFrame::OnPlanChanged)
 END_EVENT_TABLE()
 
-DEFINE_EVENT_TYPE(bsEVT_EXIT_APP)
 
 BibleStudyMainFrame::~BibleStudyMainFrame()
 {
@@ -257,7 +256,7 @@ BibleStudyMainFrame::BibleStudyMainFrame(SwordTools *newSwordTools,
 
   m_ToolBar =
     new BookViewToolBar(this, ID_BookViewToolBar, wxTB_HORIZONTAL |
-                        wxTB_FLAT | wxTB_TEXT);
+                        wxTB_FLAT | wxTB_TEXT | wxFULL_REPAINT_ON_RESIZE);
   SetToolBar(m_ToolBar);
 
   // Add the ReadingPlanner toolbar here.

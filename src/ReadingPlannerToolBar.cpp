@@ -31,11 +31,6 @@
 #include "../icons/previousdate.xpm"
 #include "../icons/calendar.xpm"
 
-DEFINE_EVENT_TYPE(bsEVT_BROWSE_NEXT_DAY)
-DEFINE_EVENT_TYPE(bsEVT_BROWSE_PREV_DAY)
-DEFINE_EVENT_TYPE(bsEVT_CHECK_DONE)
-DEFINE_EVENT_TYPE(bsEVT_CAL_CHOOSER)
-DEFINE_EVENT_TYPE(bsEVT_PLAN_CHANGED)
 
 BEGIN_EVENT_TABLE(ReadingPlannerToolBar, wxToolBar)
 EVT_COMBOBOX(ID_ComboPlans, ReadingPlannerToolBar::OnPlanChanged)

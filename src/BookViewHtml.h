@@ -26,12 +26,10 @@
 #include <wxmozilla/wxMozilla.h>
 #endif
 
+const wxEventType bsEVT_LINK_CLICKED = 5420;
+const wxEventType bsEVT_LINK_HOVER = 5421;
+const wxEventType bsEVT_TITLE_CHANGED = 5422;
 
-BEGIN_DECLARE_EVENT_TYPES()
-DECLARE_EVENT_TYPE(bsEVT_LINK_CLICKED, 1)
-DECLARE_EVENT_TYPE(bsEVT_LINK_HOVER, 1)
-DECLARE_EVENT_TYPE(bsEVT_TITLE_CHANGED, 1)
-END_DECLARE_EVENT_TYPES()
 
 #define EVT_LINK_CLICKED(fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_LINK_CLICKED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
 #define EVT_LINK_HOVER(fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_LINK_HOVER, -1, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),

@@ -38,9 +38,6 @@ EVT_LEFT_DOWN(BookViewHtml::OnMouseDown)
 END_EVENT_TABLE()
 #endif 
 
-DEFINE_EVENT_TYPE(bsEVT_LINK_CLICKED)
-DEFINE_EVENT_TYPE(bsEVT_LINK_HOVER)
-DEFINE_EVENT_TYPE(bsEVT_TITLE_CHANGED)
 
 #ifdef WITH_WXMOZILLA
 BookViewHtml::BookViewHtml(wxWindow * parent, wxWindowID id,

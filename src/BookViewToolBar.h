@@ -16,15 +16,15 @@
 #include <wx/combobox.h>
 #include <wx/treectrl.h>
 #include <wx/calctrl.h>
+
 #include "DropDownCtrl.h"
 
-BEGIN_DECLARE_EVENT_TYPES()
-DECLARE_EVENT_TYPE(bsEVT_LOAD_KEY, 1)
-DECLARE_EVENT_TYPE(bsEVT_SEARCH, 1)
-DECLARE_EVENT_TYPE(bsEVT_BROWSE_KEY, 1)
-DECLARE_EVENT_TYPE(bsEVT_BROWSE_BACKWARD, 1)
-DECLARE_EVENT_TYPE(bsEVT_BROWSE_FORWARD, 1)
-END_DECLARE_EVENT_TYPES()
+const wxEventType bsEVT_LOAD_KEY = 5404;
+const wxEventType bsEVT_SEARCH = 5405;
+const wxEventType bsEVT_BROWSE_KEY = 5406;
+const wxEventType bsEVT_BROWSE_BACKWARD = 5407;
+const wxEventType bsEVT_BROWSE_FORWARD = 5408;
+
 
 #define EVT_LOAD_KEY(fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_LOAD_KEY, -1, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
 

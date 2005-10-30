@@ -20,7 +20,7 @@
 #include <utilxml.h>
 #include <utilstr.h>
 #include <versekey.h>
-#include <url.h>
+#include "bsurl.h"
 
 using namespace sword; 
 
@@ -89,10 +89,10 @@ bool BSThMLHTMLHREF::handleToken(SWBuf &buf, const char *token, BasicFilterUserD
 					SWBuf footnoteNumber = tag.getAttribute("swordFootnote");
 					VerseKey *vkey;
 					// see if we have a VerseKey * or descendant
-					SWTRY {
+					try {
 						vkey = SWDYNAMIC_CAST(VerseKey, u->key);
 					}
-					SWCATCH ( ... ) {	}
+					catch ( ... ) {	}
 					if (vkey) {
 						// leave this special osis type in for crossReference notes types?  Might thml use this some day? Doesn't hurt.
 						char ch = ((tag.getAttribute("type") && ((!strcmp(tag.getAttribute("type"), "crossReference")) || (!strcmp(tag.getAttribute("type"), "x-cross-ref")))) ? 'x':'n');
@@ -134,10 +134,10 @@ bool BSThMLHTMLHREF::handleToken(SWBuf &buf, const char *token, BasicFilterUserD
 					SWBuf footnoteNumber = u->startTag.getAttribute("swordFootnote");
 					VerseKey *vkey;
 					// see if we have a VerseKey * or descendant
-					SWTRY {
+					try {
 						vkey = SWDYNAMIC_CAST(VerseKey, u->key);
 					}
-					SWCATCH ( ... ) {}
+					catch ( ... ) {}
 					if (vkey) {
 						// leave this special osis type in for crossReference notes types?  Might thml use this some day? Doesn't hurt.
 						//buf.appendFormatted("<a href=\"noteID=%s.x.%s\"><small><sup>*x</sup></small></a> ", vkey->getText(), footnoteNumber.c_str());
@@ -160,11 +160,11 @@ bool BSThMLHTMLHREF::handleToken(SWBuf &buf, const char *token, BasicFilterUserD
 				u->SecHead = false;
 			}
 			else if (tag.getAttribute("class")) {
-				if (!stricmp(tag.getAttribute("class"), "sechead")) {
+				if (!sword::stricmp(tag.getAttribute("class"), "sechead")) {
 					u->SecHead = true;
 					buf += "<br /><b><i>";
 				}
-				else if (!stricmp(tag.getAttribute("class"), "title")) {
+				else if (!sword::stricmp(tag.getAttribute("class"), "title")) {
 					u->SecHead = true;
 					buf += "<br /><b><i>";
 				}

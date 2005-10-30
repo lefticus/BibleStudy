@@ -56,10 +56,7 @@ EVT_MENU(ID_BookTreePopupOpen, BookTreeCtrl::OnOpenModule)
 EVT_MENU(ID_BookTreePopupAddToCurrentTab, BookTreeCtrl::OnOpenModule)
 EVT_MENU(ID_BookTreePopupInformation, BookTreeCtrl::OnInformation)
 EVT_TREE_ITEM_ACTIVATED(-1, BookTreeCtrl::OnItemActivated)
-END_EVENT_TABLE()DEFINE_EVENT_TYPE(bsEVT_OPEN_IN_CURRENT_TAB)
-DEFINE_EVENT_TYPE(bsEVT_OPEN_IN_NEW_TAB)
-DEFINE_EVENT_TYPE(bsEVT_OPEN_IN_NEW_WINDOW)
-DEFINE_EVENT_TYPE(bsEVT_ADD_TO_CURRENT_TAB) 
+END_EVENT_TABLE()
 
 
 BookTreeCtrl::~BookTreeCtrl()
@@ -196,6 +193,11 @@ void BookTreeCtrl::RefreshBookList(bool ShowLanguages)
   for (it = Modules->begin(); it != Modules->end(); it++)
   {
     curMod = (*it).second;
+
+    if (curMod == 0) {
+      continue;
+    }
+
     wxLogDebug(wxT("type %s"),
                (const wxChar *) wxString(curMod->Type(), wxConvUTF8));
 

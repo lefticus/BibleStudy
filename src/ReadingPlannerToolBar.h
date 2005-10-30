@@ -22,13 +22,11 @@ class wxCalendarCtrl;
 class wxCalendarEvent;
 //class wxGauge;
 
+const wxEventType bsEVT_BROWSE_NEXT_DAY = 5413;
+const wxEventType bsEVT_BROWSE_PREV_DAY = 5414;
+const wxEventType bsEVT_CHECK_DONE = 5415;
+const wxEventType bsEVT_PLAN_CHANGED = 5416;
 
-BEGIN_DECLARE_EVENT_TYPES()
-DECLARE_EVENT_TYPE(bsEVT_BROWSE_NEXT_DAY, 1)
-DECLARE_EVENT_TYPE(bsEVT_BROWSE_PREV_DAY, 1)
-DECLARE_EVENT_TYPE(bsEVT_CHECK_DONE, 1)
-DECLARE_EVENT_TYPE(bsEVT_PLAN_CHANGED, 1)
-END_DECLARE_EVENT_TYPES()
 
 #define EVT_BROWSE_NEXT_DAY(fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_BROWSE_NEXT_DAY, -1, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
 #define EVT_BROWSE_PREV_DAY(fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_BROWSE_PREV_DAY, -1, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),

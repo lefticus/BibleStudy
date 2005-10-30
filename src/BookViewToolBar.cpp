@@ -29,11 +29,6 @@
 #include "../icons/forward.xpm"
 #include "../icons/back.xpm"
 
-DEFINE_EVENT_TYPE(bsEVT_LOAD_KEY)
-DEFINE_EVENT_TYPE(bsEVT_BROWSE_KEY)
-DEFINE_EVENT_TYPE(bsEVT_SEARCH)
-DEFINE_EVENT_TYPE(bsEVT_BROWSE_FORWARD)
-DEFINE_EVENT_TYPE(bsEVT_BROWSE_BACKWARD)
 
 BEGIN_EVENT_TABLE(BookViewToolBar, wxToolBar)
 EVT_TOOL(ID_ToolLookupKey, BookViewToolBar::OnLookupKey)
@@ -168,13 +163,15 @@ void BookViewToolBar::SetTypeDescription(const wxString &typeDesc)
   SetToolShortHelp(ID_ToolListKey, _("Select ") + typeDesc);
   FindById(ID_ToolListKey)->SetLabel(_("Select ") + typeDesc);
   UpdateWindowUI(wxUPDATE_UI_RECURSE);
-  Realize();
+//  Realize();
+  Refresh();
 }
 
 void BookViewToolBar::EnableNavigation(bool enable) 
 {
   EnableTool(ID_ToolBackward, enable);
   EnableTool(ID_ToolForward, enable);
+  Refresh();
 }
 
 void BookViewToolBar::SetDropDownFrame(DropDownCtrl *subframe)
@@ -211,6 +208,8 @@ void BookViewToolBar::SetDropDownFrame(DropDownCtrl *subframe)
 
     m_SubFrame = subframe;
   }
+
+  Refresh();
 }
 
 void BookViewToolBar::OnListKey(wxCommandEvent & event)

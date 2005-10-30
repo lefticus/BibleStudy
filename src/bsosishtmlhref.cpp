@@ -19,7 +19,7 @@
 #include <utilxml.h>
 #include <versekey.h>
 #include <swmodule.h>
-#include <url.h>
+#include "bsurl.h"
 
 using namespace sword;
 
@@ -170,10 +170,10 @@ bool BSOSISHTMLHREF::handleToken(SWBuf &buf, const char *token, BasicFilterUserD
 						SWBuf footnoteNumber = tag.getAttribute("swordFootnote");
 						VerseKey *vkey;
 						// see if we have a VerseKey * or descendant
-						SWTRY {
+						try {
 							vkey = SWDYNAMIC_CAST(VerseKey, u->key);
 						}
-						SWCATCH ( ... ) {	}
+						catch ( ... ) {	}
 						if (vkey) {
 							//printf("URL = %s\n",URL::encode(vkey->getText()).c_str());
 							char ch = ((tag.getAttribute("type") && ((!strcmp(tag.getAttribute("type"), "crossReference")) || (!strcmp(tag.getAttribute("type"), "x-cross-ref")))) ? 'x':'n');

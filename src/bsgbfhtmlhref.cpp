@@ -21,7 +21,7 @@
 #include <utilxml.h>
 #include <versekey.h>
 #include <ctype.h>
-#include <url.h>
+#include "bsurl.h"
 
 using namespace sword;
 
@@ -229,10 +229,10 @@ bool BSGBFHTMLHREF::handleToken(SWBuf &buf, const char *token, BasicFilterUserDa
 			SWBuf footnoteNumber = tag.getAttribute("swordFootnote");
 			VerseKey *vkey;
 			// see if we have a VerseKey * or descendant
-			SWTRY {
+			try {
 				vkey = SWDYNAMIC_CAST(VerseKey, u->key);
 			}
-			SWCATCH ( ... ) {	}
+			catch ( ... ) {	}
 			if (vkey) {
 				// leave this special osis type in for crossReference notes types?  Might thml use this some day? Doesn't hurt.
 				//char ch = ((tag.getAttribute("type") && ((!strcmp(tag.getAttribute("type"), "crossReference")) || (!strcmp(tag.getAttribute("type"), "x-cross-ref")))) ? 'x':'n');

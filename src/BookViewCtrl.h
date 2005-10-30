@@ -19,9 +19,7 @@ class BookModule;
 
 #include <sword/swmgr.h>
 
-BEGIN_DECLARE_EVENT_TYPES()
-DECLARE_EVENT_TYPE(bsEVT_CHILD_SET_FOCUS, 1)
-END_DECLARE_EVENT_TYPES()
+const wxEventType bsEVT_CHILD_SET_FOCUS = 5419;
 
 #define EVT_CHILD_SET_FOCUS(id, fn) DECLARE_EVENT_TABLE_ENTRY(bsEVT_CHILD_SET_FOCUS, id, -1, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, (wxObject *) NULL ),
 

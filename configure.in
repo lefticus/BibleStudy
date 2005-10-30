@@ -25,7 +25,6 @@ AC_CHECK_LIB(instaide, PltGetUserCount, ,
 	
 if test "$with_wxmozilla" == 1; then
 	AC_MSG_NOTICE(Using wxMozilla library)
-	LDFLAGS="$LDFLAGS -lwxmozilla_gtk2u-2.6"
 	wx_libs="std"
 else
 	AC_MSG_NOTICE(Using internal wxHTML for HTML rendering)

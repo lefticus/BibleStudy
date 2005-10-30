@@ -41,7 +41,6 @@ enum {
   ID_DEVOTIONAL_ICON
 };
 
-DEFINE_EVENT_TYPE(bsEVT_CHILD_SET_FOCUS)
 BEGIN_EVENT_TABLE(BookViewCtrl, wxNotebook)
 EVT_SET_FOCUS(BookViewCtrl::OnSetFocus)
 EVT_NOTEBOOK_PAGE_CHANGED(-1, BookViewCtrl::OnNotebookPageChanged)
@@ -96,11 +95,11 @@ BookViewCtrl::AddTab()
 {
   wxNotebookPage *page;
   BookViewHtml *html;
-  wxBoxSizer *panelsizer = new wxBoxSizer(wxVERTICAL);
+  wxBoxSizer *panelsizer = new wxBoxSizer(wxHORIZONTAL);
 
   page = new wxPanel(this);
   html =
-    new BookViewHtml(page, -1, wxDefaultPosition, wxDefaultSize, wxVSCROLL,
+    new BookViewHtml(page, -1, wxDefaultPosition, wxDefaultSize, wxNO_BORDER,
                      wxT("htmlwindow"));
 
   BookViewEventHandler *neweventhandler;
@@ -116,7 +115,7 @@ BookViewCtrl::AddTab()
   // Choose approriate font sizes for GTK
   // const int sizes[7] = {10, 12, 14, 16, 19, 24, 32};
   // #endif
-  html->SetFonts(wxT(""), wxT(""), sizes);
+ // html->SetFonts(wxT(""), wxT(""), sizes);
 
   panelsizer->Add(html, 1, wxEXPAND);
   page->SetSizer(panelsizer);

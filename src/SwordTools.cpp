@@ -38,6 +38,7 @@ SwordTools::SwordTools() : m_DefaultBible(NULL), m_DefaultDevotional(NULL),
 
 SWModule* SwordTools::GetDefaultBible()
 {
+
   if (!m_BibleSearched) {
     m_DefaultBible = FindModule(m_BibleName.c_str(), m_BibleLang.c_str(), "Biblical Texts");
     m_BibleSearched = true;
@@ -48,6 +49,7 @@ SWModule* SwordTools::GetDefaultBible()
 
 SWModule* SwordTools::GetDefaultDevotional()
 {
+
   if (!m_DevotionalSearched) {
     m_DefaultDevotional = FindModule(m_DevotionalName.c_str(), m_DevotionalLang.c_str(), "Daily Devotional");
     m_DevotionalSearched = true;
@@ -76,18 +78,19 @@ SWModule * SwordTools::FindModule(const std::string &name, const std::string &la
   if (mod == NULL) {
     ModMap::iterator it;
     ModMap *mods = GetModuleMap();
-   
-    for (it = mods->begin(); it != mods->end(); it++) {
-      SWModule *tempmod;
-      tempmod = (*it).second;
-      if (type == tempmod->Type()) {
-	if (language == tempmod->Lang()) {
-	  return tempmod;
-	} else {
-	  if (mod == NULL) {
-            mod = tempmod;
+    if (mods != NULL) {
+      for (it = mods->begin(); it != mods->end(); it++) {
+        SWModule *tempmod;
+        tempmod = (*it).second;
+        if (type == tempmod->Type()) {
+  	  if (language == tempmod->Lang()) {
+	    return tempmod;
+	  } else {
+	    if (mod == NULL) {
+              mod = tempmod;
+	    }
 	  }
-	}
+        }
       }
     }
   }

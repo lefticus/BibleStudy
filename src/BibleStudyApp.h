@@ -40,6 +40,8 @@ public:
   void OnInitCmdLine(wxCmdLineParser&);
   bool OnCmdLineParsed(wxCmdLineParser&);
 
-  DECLARE_EVENT_TABLE()};
+  DECLARE_EVENT_TABLE()
+
+};
 
 #endif
